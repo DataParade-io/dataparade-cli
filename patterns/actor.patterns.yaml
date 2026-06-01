@@ -1,0 +1,51 @@
+---
+# Shared actor-detection config: regexes and rules to emit actor-related findings.
+# This is language-agnostic; analyzers (TypeScript, Python, etc.) can all load it.
+#
+# The classifier maps patternIds like web_actor / service_actor → type: actor and
+# coarse subTypes (e.g. customer, employee) via classifier/components.classifier.yaml.
+# This file focuses on *where* we see actors in code and which properties to attach.
+
+regexes:
+  # Frontend: Next.js/React session hook file
+  ts_frontend_session_hook_file: "hooks/useSession\\.tsx?$"
+
+  # Backend: NestJS / Express controllers using req.user
+  ts_backend_req_user: "\\breq\\.user\\b"
+
+  # Backend: simple admin role checks
+  ts_role_admin: "\\b(isAdmin|is_admin)\\b|\\brole[s]?\\s*[:=]\\s*['\"]admin['\"]"
+
+rules:
+  # Frontend web customer: useSession hook representing logged-in customer user
+  - id: web_actor_frontend_session
+    patternId: web_actor
+    name: Customer
+    file_path_regex: ts_frontend_session_hook_file
+    confidence: 0.9
+    properties:
+      actorType: customer
+      sourceContext: frontend_session
+
+  # Backend web customer: controllers using req.user (authenticated user context)
+  - id: web_actor_backend_req_user
+    patternId: web_actor
+    name: Customer
+    content_regex: ts_backend_req_user
+    confidence: 0.85
+    properties:
+      actorType: customer
+      sourceContext: backend_controller
+
+  # Backend admin employee: admin checks around user/role handling
+  - id: service_actor_admin_employee
+    patternId: service_actor
+    name: Admin user
+    content_regex: ts_role_admin
+    confidence: 0.8
+    properties:
+      actorType: employee
+      roleNames:
+        - admin
+      sourceContext: backend_role_check
+

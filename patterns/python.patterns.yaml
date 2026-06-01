@@ -1,0 +1,160 @@
+# Python pattern config. All entries share: patternId, optional confidence (default 0.8).
+
+db_clients:
+  - id: psycopg2
+    patternId: database_connection
+    databaseType: postgres
+    importModules:
+      - psycopg2
+      - psycopg
+    callNames:
+      - connect
+    confidence: 0.9
+
+  - id: sqlalchemy
+    patternId: database_connection
+    databaseType: sql
+    importModules:
+      - sqlalchemy
+    callNames:
+      - create_engine
+    confidence: 0.9
+
+  - id: django_orm
+    patternId: database_connection
+    databaseType: sql
+    importModules:
+      - django.db
+    heuristics:
+      usesObjectsAttribute: true
+    confidence: 0.85
+
+auth:
+  jwt:
+    patternId: auth_middleware
+    importModules:
+      - jwt
+    contentRegexes:
+      - "jwt\\.encode\\("
+      - "jwt\\.decode\\("
+    strategy: jwt
+    confidence: 0.85
+
+  decorators:
+    - id: login_required
+      patternId: auth_middleware
+      callNames:
+        - login_required
+      confidence: 0.8
+    - id: is_authenticated
+      patternId: auth_middleware
+      callNames:
+        - IsAuthenticated
+      confidence: 0.8
+
+routes:
+  frameworks:
+    - id: fastapi
+      patternId: express_route
+      importModules:
+        - fastapi
+      decoratorPrefixes:
+        - app.get
+        - app.post
+        - app.put
+        - app.delete
+        - app.patch
+      confidence: 0.9
+
+    - id: flask
+      patternId: express_route
+      importModules:
+        - flask
+      decoratorPrefixes:
+        - app.route
+        - bp.route
+        - blueprint.route
+      confidence: 0.9
+
+    - id: starlette
+      patternId: express_route
+      importModules:
+        - starlette
+      decoratorPrefixes:
+        - app.route
+      confidence: 0.85
+
+    - id: bottle
+      patternId: express_route
+      importModules:
+        - bottle
+      decoratorNames:
+        - route
+        - get
+        - post
+        - put
+        - delete
+      confidence: 0.85
+
+    - id: django_urls
+      patternId: express_route
+      importModules:
+        - django.
+      urlsFileSuffix: "urls.py"
+      pathRegex: "(path|re_path|url)\\(\\s*['\\\"]([^'\\\"]+)['\\\"]"
+      confidence: 0.9
+
+env_config:
+  envVariable:
+    patternId: env_variable
+    regex: "os\\.(environ\\[['\\\"][^'\\\"]+['\\\"]\\]|getenv\\(\\s*['\\\"][^'\\\"]+['\\\"])"
+    confidence: 0.85
+
+  djangoSettings:
+    patternId: config_file
+    fileSuffix: "settings.py"
+    name: django_settings
+    confidence: 0.9
+
+  dotenvConfig:
+    patternId: config_file
+    requiresOsImport: true
+    contentSubstring: "load_dotenv("
+    name: dotenv_config
+    confidence: 0.85
+
+external_apis:
+  httpClients:
+    - id: requests
+      patternId: external_api_call
+      clientName: requests
+      importModules:
+        - requests
+      urlRegex: "['\\\"](https?:\\/\\/[^\\s'\\\"]+)['\\\"]"
+      confidence: 0.85
+
+    - id: httpx
+      patternId: external_api_call
+      clientName: httpx
+      importModules:
+        - httpx
+      urlRegex: "['\\\"](https?:\\/\\/[^\\s'\\\"]+)['\\\"]"
+      confidence: 0.85
+
+    - id: aiohttp
+      patternId: external_api_call
+      clientName: aiohttp
+      importModules:
+        - aiohttp
+      urlRegex: "['\\\"](https?:\\/\\/[^\\s'\\\"]+)['\\\"]"
+      confidence: 0.85
+
+    - id: supabase_python
+      patternId: external_api_call
+      clientName: supabase
+      importModules:
+        - supabase
+      callNames:
+        - create_client
+      confidence: 0.85
+

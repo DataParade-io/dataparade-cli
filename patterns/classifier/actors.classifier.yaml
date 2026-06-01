@@ -1,0 +1,17 @@
+---
+# Actor-specific classifier pattern defaults.
+# This file maps actor-related pattern IDs to component type/subType.
+#
+# Loaded alongside classifier.patterns.yaml by src/classifier/config.ts.
+
+pattern_defaults:
+  web_actor:
+    type: actor
+    subType: customer
+    priority: 15
+
+  service_actor:
+    type: actor
+    subType: employee
+    priority: 15
+

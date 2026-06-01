@@ -1,0 +1,8 @@
+{
+  "name": "monorepo-back",
+  "private": true,
+  "dependencies": {
+    "stripe": "^12.0.0"
+  }
+}
+

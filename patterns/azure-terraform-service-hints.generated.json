@@ -1,0 +1,864 @@
+{
+  "generatedAt": "2026-05-12T12:03:23.815Z",
+  "source": "@cdktf/provider-azurerm@14.x (HashiCorp azurerm)",
+  "hints": [
+    {
+      "id": "gen_azurerm_aadb2c_family",
+      "resource_type_regex": "^azurerm_aadb2c_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_active_family",
+      "resource_type_regex": "^azurerm_active_",
+      "componentSubType": "auth_service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_advanced_family",
+      "resource_type_regex": "^azurerm_advanced_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_advisor_family",
+      "resource_type_regex": "^azurerm_advisor_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_ai_family",
+      "resource_type_regex": "^azurerm_ai_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_analysis_family",
+      "resource_type_regex": "^azurerm_analysis_",
+      "componentSubType": "database",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_api_family",
+      "resource_type_regex": "^azurerm_api_",
+      "componentSubType": "api",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_app_family",
+      "resource_type_regex": "^azurerm_app_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_application_family",
+      "resource_type_regex": "^azurerm_application_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_arc_family",
+      "resource_type_regex": "^azurerm_arc_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_attestation_family",
+      "resource_type_regex": "^azurerm_attestation_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_automanage_family",
+      "resource_type_regex": "^azurerm_automanage_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_automation_family",
+      "resource_type_regex": "^azurerm_automation_",
+      "componentSubType": "config",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_availability_family",
+      "resource_type_regex": "^azurerm_availability_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_backup_family",
+      "resource_type_regex": "^azurerm_backup_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_bastion_family",
+      "resource_type_regex": "^azurerm_bastion_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_batch_family",
+      "resource_type_regex": "^azurerm_batch_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_billing_family",
+      "resource_type_regex": "^azurerm_billing_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_blueprint_family",
+      "resource_type_regex": "^azurerm_blueprint_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_bot_family",
+      "resource_type_regex": "^azurerm_bot_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_capacity_family",
+      "resource_type_regex": "^azurerm_capacity_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_cdn_family",
+      "resource_type_regex": "^azurerm_cdn_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_chaos_family",
+      "resource_type_regex": "^azurerm_chaos_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_client_family",
+      "resource_type_regex": "^azurerm_client_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_cognitive_family",
+      "resource_type_regex": "^azurerm_cognitive_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_communication_family",
+      "resource_type_regex": "^azurerm_communication_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_confidential_family",
+      "resource_type_regex": "^azurerm_confidential_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_consumption_family",
+      "resource_type_regex": "^azurerm_consumption_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_cost_family",
+      "resource_type_regex": "^azurerm_cost_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_custom_family",
+      "resource_type_regex": "^azurerm_custom_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_dashboard_family",
+      "resource_type_regex": "^azurerm_dashboard_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_data_family",
+      "resource_type_regex": "^azurerm_data_",
+      "componentSubType": "database",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_database_family",
+      "resource_type_regex": "^azurerm_database_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_databox_family",
+      "resource_type_regex": "^azurerm_databox_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_databricks_family",
+      "resource_type_regex": "^azurerm_databricks_",
+      "componentSubType": "database",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_datadog_family",
+      "resource_type_regex": "^azurerm_datadog_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_dedicated_family",
+      "resource_type_regex": "^azurerm_dedicated_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_dev_family",
+      "resource_type_regex": "^azurerm_dev_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_digital_family",
+      "resource_type_regex": "^azurerm_digital_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_disk_family",
+      "resource_type_regex": "^azurerm_disk_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_dns_family",
+      "resource_type_regex": "^azurerm_dns_",
+      "componentSubType": "network",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_dynatrace_family",
+      "resource_type_regex": "^azurerm_dynatrace_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_elastic_family",
+      "resource_type_regex": "^azurerm_elastic_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_email_family",
+      "resource_type_regex": "^azurerm_email_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_eventgrid_family",
+      "resource_type_regex": "^azurerm_eventgrid_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_express_family",
+      "resource_type_regex": "^azurerm_express_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_extended_family",
+      "resource_type_regex": "^azurerm_extended_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_fabric_family",
+      "resource_type_regex": "^azurerm_fabric_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_federated_family",
+      "resource_type_regex": "^azurerm_federated_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_firewall_family",
+      "resource_type_regex": "^azurerm_firewall_",
+      "componentSubType": "network",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_fluid_family",
+      "resource_type_regex": "^azurerm_fluid_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_frontdoor_family",
+      "resource_type_regex": "^azurerm_frontdoor_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_function_family",
+      "resource_type_regex": "^azurerm_function_",
+      "componentSubType": "function",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_gallery_family",
+      "resource_type_regex": "^azurerm_gallery_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_graph_family",
+      "resource_type_regex": "^azurerm_graph_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_hdinsight_family",
+      "resource_type_regex": "^azurerm_hdinsight_",
+      "componentSubType": "database",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_healthbot_family",
+      "resource_type_regex": "^azurerm_healthbot_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_healthcare_family",
+      "resource_type_regex": "^azurerm_healthcare_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_hpc_family",
+      "resource_type_regex": "^azurerm_hpc_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_image_family",
+      "resource_type_regex": "^azurerm_image_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_images_family",
+      "resource_type_regex": "^azurerm_images_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_iot_family",
+      "resource_type_regex": "^azurerm_iot_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_iotcentral_family",
+      "resource_type_regex": "^azurerm_iotcentral_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_iothub_family",
+      "resource_type_regex": "^azurerm_iothub_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_ip_family",
+      "resource_type_regex": "^azurerm_ip_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_kubernetes_family",
+      "resource_type_regex": "^azurerm_kubernetes_",
+      "componentSubType": "container",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_lb_family",
+      "resource_type_regex": "^azurerm_lb_",
+      "componentSubType": "network",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_lighthouse_family",
+      "resource_type_regex": "^azurerm_lighthouse_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_linux_family",
+      "resource_type_regex": "^azurerm_linux_",
+      "componentSubType": "function",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_load_family",
+      "resource_type_regex": "^azurerm_load_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_local_family",
+      "resource_type_regex": "^azurerm_local_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_location_family",
+      "resource_type_regex": "^azurerm_location_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_log_family",
+      "resource_type_regex": "^azurerm_log_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_logic_family",
+      "resource_type_regex": "^azurerm_logic_",
+      "componentSubType": "api",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_machine_family",
+      "resource_type_regex": "^azurerm_machine_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_maintenance_family",
+      "resource_type_regex": "^azurerm_maintenance_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_managed_family",
+      "resource_type_regex": "^azurerm_managed_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_management_family",
+      "resource_type_regex": "^azurerm_management_",
+      "componentSubType": "application",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_maps_family",
+      "resource_type_regex": "^azurerm_maps_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_marketplace_family",
+      "resource_type_regex": "^azurerm_marketplace_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_mobile_family",
+      "resource_type_regex": "^azurerm_mobile_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_mongo_family",
+      "resource_type_regex": "^azurerm_mongo_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_monitor_family",
+      "resource_type_regex": "^azurerm_monitor_",
+      "componentSubType": "config",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_nat_family",
+      "resource_type_regex": "^azurerm_nat_",
+      "componentSubType": "network",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_netapp_family",
+      "resource_type_regex": "^azurerm_netapp_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_network_family",
+      "resource_type_regex": "^azurerm_network_",
+      "componentSubType": "network",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_new_family",
+      "resource_type_regex": "^azurerm_new_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_nginx_family",
+      "resource_type_regex": "^azurerm_nginx_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_notification_family",
+      "resource_type_regex": "^azurerm_notification_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_oracle_family",
+      "resource_type_regex": "^azurerm_oracle_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_orbital_family",
+      "resource_type_regex": "^azurerm_orbital_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_orchestrated_family",
+      "resource_type_regex": "^azurerm_orchestrated_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_palo_family",
+      "resource_type_regex": "^azurerm_palo_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_pim_family",
+      "resource_type_regex": "^azurerm_pim_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_platform_family",
+      "resource_type_regex": "^azurerm_platform_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_point_family",
+      "resource_type_regex": "^azurerm_point_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_policy_family",
+      "resource_type_regex": "^azurerm_policy_",
+      "componentSubType": "config",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_portal_family",
+      "resource_type_regex": "^azurerm_portal_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_powerbi_family",
+      "resource_type_regex": "^azurerm_powerbi_",
+      "componentSubType": "database",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_private_family",
+      "resource_type_regex": "^azurerm_private_",
+      "componentSubType": "network",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_provider_family",
+      "resource_type_regex": "^azurerm_provider_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_proximity_family",
+      "resource_type_regex": "^azurerm_proximity_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_public_family",
+      "resource_type_regex": "^azurerm_public_",
+      "componentSubType": "network",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_purview_family",
+      "resource_type_regex": "^azurerm_purview_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_qumulo_family",
+      "resource_type_regex": "^azurerm_qumulo_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_recovery_family",
+      "resource_type_regex": "^azurerm_recovery_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_redhat_family",
+      "resource_type_regex": "^azurerm_redhat_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_resource_family",
+      "resource_type_regex": "^azurerm_resource_",
+      "componentSubType": "application",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_resources_family",
+      "resource_type_regex": "^azurerm_resources_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_restore_family",
+      "resource_type_regex": "^azurerm_restore_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_role_family",
+      "resource_type_regex": "^azurerm_role_",
+      "componentSubType": "auth_service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_route_family",
+      "resource_type_regex": "^azurerm_route_",
+      "componentSubType": "network",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_search_family",
+      "resource_type_regex": "^azurerm_search_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_security_family",
+      "resource_type_regex": "^azurerm_security_",
+      "componentSubType": "config",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_sentinel_family",
+      "resource_type_regex": "^azurerm_sentinel_",
+      "componentSubType": "config",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_service_family",
+      "resource_type_regex": "^azurerm_service_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_shared_family",
+      "resource_type_regex": "^azurerm_shared_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_signalr_family",
+      "resource_type_regex": "^azurerm_signalr_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_site_family",
+      "resource_type_regex": "^azurerm_site_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_snapshot_family",
+      "resource_type_regex": "^azurerm_snapshot_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_source_family",
+      "resource_type_regex": "^azurerm_source_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_spring_family",
+      "resource_type_regex": "^azurerm_spring_",
+      "componentSubType": "container",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_ssh_family",
+      "resource_type_regex": "^azurerm_ssh_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_stack_family",
+      "resource_type_regex": "^azurerm_stack_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_static_family",
+      "resource_type_regex": "^azurerm_static_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_stream_family",
+      "resource_type_regex": "^azurerm_stream_",
+      "componentSubType": "queue",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_subnet_family",
+      "resource_type_regex": "^azurerm_subnet_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_subscription_family",
+      "resource_type_regex": "^azurerm_subscription_",
+      "componentSubType": "application",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_subscriptions_family",
+      "resource_type_regex": "^azurerm_subscriptions_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_synapse_family",
+      "resource_type_regex": "^azurerm_synapse_",
+      "componentSubType": "database",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_system_family",
+      "resource_type_regex": "^azurerm_system_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_template_family",
+      "resource_type_regex": "^azurerm_template_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_tenant_family",
+      "resource_type_regex": "^azurerm_tenant_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_traffic_family",
+      "resource_type_regex": "^azurerm_traffic_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_trusted_family",
+      "resource_type_regex": "^azurerm_trusted_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_video_family",
+      "resource_type_regex": "^azurerm_video_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_virtual_family",
+      "resource_type_regex": "^azurerm_virtual_",
+      "componentSubType": "network",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_vmware_family",
+      "resource_type_regex": "^azurerm_vmware_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_voice_family",
+      "resource_type_regex": "^azurerm_voice_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_vpn_family",
+      "resource_type_regex": "^azurerm_vpn_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_web_family",
+      "resource_type_regex": "^azurerm_web_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_windows_family",
+      "resource_type_regex": "^azurerm_windows_",
+      "componentSubType": "function",
+      "cloud_provider": "azure"
+    },
+    {
+      "id": "gen_azurerm_workloads_family",
+      "resource_type_regex": "^azurerm_workloads_",
+      "componentSubType": "service",
+      "cloud_provider": "azure"
+    }
+  ]
+}

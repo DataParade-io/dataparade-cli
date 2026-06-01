@@ -1,0 +1,13 @@
+{
+  "planned_values": {
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_s3_bucket.only_in_plan",
+          "type": "aws_s3_bucket",
+          "name": "only_in_plan"
+        }
+      ]
+    }
+  }
+}

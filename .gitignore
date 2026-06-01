@@ -1,0 +1,12 @@
+# compiled output
+dist/
+outputs/
+
+# Local default scan outputs (regenerated on every scan; use --output or outputs/)
+dataflow.json
+scan-frontend-summary.json
+
+# Local secrets (use .env.example as template)
+.env
+.env.example
+.env.*.example

@@ -1,0 +1,258 @@
+{
+  "generatedAt": "2026-05-20T15:18:04.013Z",
+  "source": "@cdktf/provider-kubernetes@11.x (HashiCorp kubernetes)",
+  "hints": [
+    {
+      "id": "gen_kubernetes_all_family",
+      "resource_type_regex": "^kubernetes_all_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_annotations_family",
+      "resource_type_regex": "^kubernetes_annotations_",
+      "componentSubType": "config",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_api_family",
+      "resource_type_regex": "^kubernetes_api_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_certificate_family",
+      "resource_type_regex": "^kubernetes_certificate_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_cluster_family",
+      "resource_type_regex": "^kubernetes_cluster_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_config_family",
+      "resource_type_regex": "^kubernetes_config_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_cron_family",
+      "resource_type_regex": "^kubernetes_cron_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_csi_family",
+      "resource_type_regex": "^kubernetes_csi_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_daemon_family",
+      "resource_type_regex": "^kubernetes_daemon_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_daemonset_family",
+      "resource_type_regex": "^kubernetes_daemonset_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_default_family",
+      "resource_type_regex": "^kubernetes_default_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_deployment_family",
+      "resource_type_regex": "^kubernetes_deployment_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_endpoint_family",
+      "resource_type_regex": "^kubernetes_endpoint_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_endpoints_family",
+      "resource_type_regex": "^kubernetes_endpoints_",
+      "componentSubType": "api",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_env_family",
+      "resource_type_regex": "^kubernetes_env_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_horizontal_family",
+      "resource_type_regex": "^kubernetes_horizontal_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_ingress_family",
+      "resource_type_regex": "^kubernetes_ingress_",
+      "componentSubType": "api",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_job_family",
+      "resource_type_regex": "^kubernetes_job_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_labels_family",
+      "resource_type_regex": "^kubernetes_labels_",
+      "componentSubType": "config",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_limit_family",
+      "resource_type_regex": "^kubernetes_limit_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_manifest_family",
+      "resource_type_regex": "^kubernetes_manifest_",
+      "componentSubType": "application",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_mutating_family",
+      "resource_type_regex": "^kubernetes_mutating_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_namespace_family",
+      "resource_type_regex": "^kubernetes_namespace_",
+      "componentSubType": "container",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_network_family",
+      "resource_type_regex": "^kubernetes_network_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_node_family",
+      "resource_type_regex": "^kubernetes_node_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_nodes_family",
+      "resource_type_regex": "^kubernetes_nodes_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_persistent_family",
+      "resource_type_regex": "^kubernetes_persistent_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_pod_family",
+      "resource_type_regex": "^kubernetes_pod_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_priority_family",
+      "resource_type_regex": "^kubernetes_priority_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_provider_family",
+      "resource_type_regex": "^kubernetes_provider_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_replication_family",
+      "resource_type_regex": "^kubernetes_replication_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_resource_family",
+      "resource_type_regex": "^kubernetes_resource_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_resources_family",
+      "resource_type_regex": "^kubernetes_resources_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_role_family",
+      "resource_type_regex": "^kubernetes_role_",
+      "componentSubType": "auth_service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_runtime_family",
+      "resource_type_regex": "^kubernetes_runtime_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_secret_family",
+      "resource_type_regex": "^kubernetes_secret_",
+      "componentSubType": "config",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_server_family",
+      "resource_type_regex": "^kubernetes_server_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_service_family",
+      "resource_type_regex": "^kubernetes_service_",
+      "componentSubType": "api",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_stateful_family",
+      "resource_type_regex": "^kubernetes_stateful_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_storage_family",
+      "resource_type_regex": "^kubernetes_storage_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_token_family",
+      "resource_type_regex": "^kubernetes_token_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    },
+    {
+      "id": "gen_kubernetes_validating_family",
+      "resource_type_regex": "^kubernetes_validating_",
+      "componentSubType": "service",
+      "cloud_provider": "kubernetes"
+    }
+  ]
+}

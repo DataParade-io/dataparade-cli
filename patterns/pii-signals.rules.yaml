@@ -1,0 +1,115 @@
+# PII signal rules consumed by `src/ai-enrichment/pii-signal-rules.ts`.
+# Rule schema:
+# - id: unique rule identifier
+# - category: one of [identifiers, profile_data, credentials]
+# - labels: canonical output labels emitted in thirdPartyDataFlow.dataShared
+# - patterns: regex strings (compiled case-insensitive)
+# Matching notes:
+# - Rules are evaluated per source line.
+# - A match still requires operation-context gating in the data-flow pass.
+# - Prefer snake_case labels for consistency.
+pii_signal_rules:
+  - id: first_name
+    category: profile_data
+    labels:
+      - first_name
+    patterns:
+      - "\\b(first[_-]?name|firstname|given[_-]?name|forename|f[_-]?name|fname)\\b"
+
+  - id: last_name
+    category: profile_data
+    labels:
+      - last_name
+    patterns:
+      - "\\b(last[_-]?name|lastname|family[_-]?name|surname|l[_-]?name|lname)\\b"
+
+  - id: full_name
+    category: profile_data
+    labels:
+      - full_name
+    patterns:
+      - "\\b(full[_-]?name|fullname|display[_-]?name|legal[_-]?name|person[_-]?name)\\b"
+
+  - id: date_of_birth
+    category: profile_data
+    labels:
+      - date_of_birth
+    patterns:
+      - "\\b(date[_-]?of[_-]?birth|dob|d\\.o\\.b|birth[_-]?date|birthdate|bday)\\b"
+
+  - id: phone_number
+    category: profile_data
+    labels:
+      - phone_number
+    patterns:
+      - "\\b(phone|phone[_-]?number|telephone|tel|mobile|mobile[_-]?number|cell|msisdn)\\b"
+
+  - id: address
+    category: profile_data
+    labels:
+      - address
+    patterns:
+      - "\\b(street[_-]?address|mailing[_-]?address|home[_-]?address|billing[_-]?address|shipping[_-]?address|postal[_-]?address|zip[_-]?code|postal[_-]?code|postcode)\\b"
+
+  - id: ssn
+    category: identifiers
+    labels:
+      - social_security_number
+    patterns:
+      - "\\b(ssn|social[_-]?security[_-]?number|socialsecuritynumber|nin|national[_-]?insurance[_-]?number)\\b"
+
+  - id: passport
+    category: identifiers
+    labels:
+      - passport_number
+    patterns:
+      - "\\b(passport[_-]?number|passport[_-]?no|pp[_-]?number|travel[_-]?document[_-]?number)\\b"
+
+  - id: national_id
+    category: identifiers
+    labels:
+      - national_id
+    patterns:
+      - "\\b(national[_-]?id|national[_-]?identifier|nid|id[_-]?number|government[_-]?id|gov[_-]?id)\\b"
+
+  - id: drivers_license
+    category: identifiers
+    labels:
+      - drivers_license_number
+    patterns:
+      - "\\b(driver['’]?s?[_-]?license|driverslicense|driving[_-]?license|driver[_-]?licence|dl[_-]?number|license[_-]?number|licence[_-]?number)\\b"
+
+  - id: tax_id
+    category: identifiers
+    labels:
+      - tax_identifier
+    patterns:
+      - "\\b(tax[_-]?id|taxid|tin|ein|vat[_-]?number|fiscal[_-]?code)\\b"
+
+  - id: account_number
+    category: identifiers
+    labels:
+      - account_number
+    patterns:
+      - "\\b(account[_-]?number|acct[_-]?number|iban|routing[_-]?number|sort[_-]?code|swift|bic)\\b"
+
+  - id: username
+    category: credentials
+    labels:
+      - username
+    patterns:
+      - "\\b(username|user[_-]?name|login|login[_-]?id|userid|user[_-]?id)\\b"
+
+  - id: email
+    category: credentials
+    labels:
+      - user_email
+    patterns:
+      - "\\b(email|email[_-]?address|mail)\\b"
+
+  - id: password
+    category: credentials
+    labels:
+      - user_password
+    patterns:
+      - "\\b(password|passwd|pass|pwd|passphrase|secret)\\b"

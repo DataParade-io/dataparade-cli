@@ -1,0 +1,84 @@
+# Non-PII signal rules consumed by `src/ai-enrichment/non-pii-signal-rules.ts`.
+# Rule schema:
+# - id: unique rule identifier
+# - category: one of [auth_artifacts, usage_metadata, telemetry, content_files, identifiers]
+# - labels: canonical output labels emitted in thirdPartyDataFlow.dataShared
+# - patterns: regex strings (compiled case-insensitive)
+# - capabilities: optional capability tags added to thirdPartyDataFlow.capabilities
+# - directionHint: optional one of [outbound_to_third_party, inbound_from_third_party]
+# Matching notes:
+# - Rules are evaluated per source line with operation-context gating.
+# - content_files signals also require vendor-aware checks in the data-flow pass.
+# - Prefer snake_case labels and lowercase capability names.
+non_pii_signal_rules:
+  - id: auth_token_artifacts
+    category: auth_artifacts
+    labels:
+      - auth_token
+    capabilities:
+      - auth
+    patterns:
+      - "\\b(jwt|oauth2?|access[_-]?token|refresh[_-]?token|id[_-]?token|session|bearer|api[_-]?key|authorization)\\b"
+
+  - id: technical_identifier
+    category: identifiers
+    labels:
+      - technical_identifier
+    patterns:
+      - "\\b(device[_-]?id|installation[_-]?id|cookie[_-]?id|anonymous[_-]?id|ad(vertising)?[_-]?id|ga[_-]?client[_-]?id)\\b"
+
+  - id: telemetry_events
+    category: telemetry
+    labels:
+      - telemetry_event
+    capabilities:
+      - analytics
+    patterns:
+      - "\\b(event[_-]?name|event[_-]?properties|tracking[_-]?payload|analytics[_-]?event|clickstream|screen[_-]?view|funnel[_-]?step)\\b"
+
+  - id: usage_metadata
+    category: usage_metadata
+    labels:
+      - usage_metadata
+    patterns:
+      - "\\b(timestamp|timezone|locale|user[_-]?agent|referrer|request[_-]?id|trace[_-]?id|session[_-]?duration)\\b"
+
+  - id: prompt_content_input
+    category: content_files
+    labels:
+      - prompt_input
+    capabilities:
+      - ai_inference
+    directionHint: outbound_to_third_party
+    patterns:
+      - "\\b(prompt|completion|embedding|chat\\.completions|generateContent|input_text|GoogleGenAI|@google/genai|@google/generative-ai|generativelanguage\\.googleapis\\.com)\\b"
+
+  - id: document_content_input
+    category: content_files
+    labels:
+      - content_input
+    capabilities:
+      - ai_inference
+    directionHint: outbound_to_third_party
+    patterns:
+      - "\\b(attachment|document|file_input|content_block|mime_type|file_name|file_size)\\b"
+
+  - id: storage_metadata
+    category: content_files
+    labels:
+      - file_content
+    capabilities:
+      - storage
+    directionHint: outbound_to_third_party
+    patterns:
+      - "\\b(storage\\.from|bucket|blob|putObject|getObject|uploadBytes|multipart|s3|gcs|object[_-]?key|storage[_-]?path|checksum)\\b"
+
+  - id: webhook_payload
+    category: usage_metadata
+    labels:
+      - webhook_payload
+    capabilities:
+      - webhook
+    directionHint: inbound_from_third_party
+    patterns:
+      - "\\b(webhook|callback|event[_-]?payload)\\b"

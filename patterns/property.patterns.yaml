@@ -1,0 +1,399 @@
+# Shared property-detection config: regexes and rules to set component properties from findings.
+# Aligns with enhance-defaults.ts: only properties listed in DETECTABLE_PROPERTY_KEYS can be set here.
+# Used by all language analyzers (TypeScript, Python, etc.).
+
+regexes:
+  # Auth
+  mfa_strategy: "mfa|totp|webauthn|2fa|two[-_]?factor|authenticator|duo|okta"
+  sso_strategy: "saml|oidc|openid|sso|oauth"
+  # Env: cloud and region
+  env_cloud_aws: "^AWS_|AWS_REGION|AWS_ACCESS_KEY|AWS_SECRET"
+  env_cloud_gcp: "^GCP_|GOOGLE_CLOUD|GCLOUD"
+  env_cloud_azure: "^AZURE_|ARM_"
+  env_region: "^(AWS_REGION|GCP_REGION|AZURE_REGION|REGION|REGION_NAME|LOCATION|DATA_RESIDENCY)"
+  env_vendor_jurisdiction: "^(JURISDICTION|VENDOR_JURISDICTION|COUNTRY|REGION)"
+  # Env: encryption and keys
+  env_encryption: "^(ENCRYPTION_KEY|ENCRYPT_|SSL_KEY|CIPHER_|AES_|SECRET_KEY)"
+  env_connection_ssl: "^(DATABASE_URL|DB_|SSL|TLS|NODE_TLS|REJECT_UNAUTHORIZED)"
+  env_key_rotation: "^(KEY_ROTATION|ROTATION_PERIOD|KMS_ROTATION)"
+  env_backup: "^(BACKUP_|BACKUP_FREQUENCY|SNAPSHOT)"
+  # Env: IP / network
+  env_ip_allowlist: "^(ALLOWED_IPS|IP_WHITELIST|IP_ALLOWLIST|ALLOWED_ORIGINS)"
+  # Config
+  config_audit_logging: "^(audit|logging|log_level|winston|pino)"
+  config_retention: "^(retention|data_retention|retention_period|ttl)"
+  config_request_logging: "^(request_logging|request_log_level|http_log)"
+  config_backup: "^(backup|snapshot|replication)"
+  # Database / file content
+  database_ssl_content: "\\bssl\\s*:\\s*true|rejectUnauthorized|\\.ssl\\s*\\(|tls\\s*:|encrypt\\s*:\\s*true"
+  content_backup: "backup|snapshot|replication|point_in_time"
+  content_https: "https://|ssl:\\s*true|secure:\\s*true"
+
+# Env variable → cloud_provider value (order matters: first match wins)
+cloud_provider_env:
+  - regex: env_cloud_aws
+    value: AWS
+  - regex: env_cloud_gcp
+    value: GCP
+  - regex: env_cloud_azure
+    value: Azure
+
+# Known database/data-store names: when a component name matches (case-insensitive),
+# use it for technology_stack (used by classifier/enhance).
+known_database_names:
+  - postgres
+  - postgresql
+  - redis
+  - mysql
+  - mongodb
+  - elasticsearch
+  - supabase
+
+# Enhancer rules (classifier/enhance.ts): subtypes and defaults per asset/third_party.
+enhance:
+  # subTypes that qualify as "main application" (first one gets isMainApplication: true)
+  main_app_subtypes:
+    - application
+    - api
+    - service
+  # Default hosting_type for third_party when not set
+  default_third_party_hosting: saas
+  # Asset subTypes that imply cloud hosting
+  cloud_asset_subtypes:
+    - api
+    - service
+    - database
+    - cache
+    - container
+    - auth_service
+    - function
+  # Asset subTypes that imply on-premise hosting
+  on_prem_asset_subtypes:
+    - config
+  # supported_operations by asset subType (key = subType, value = list of operations)
+  supported_operations:
+    database:
+      - read
+      - write
+      - query
+    cache:
+      - read
+      - write
+      - query
+    api:
+      - read
+      - write
+      - query
+      - execute
+    service:
+      - read
+      - write
+      - query
+      - execute
+    application:
+      - read
+      - write
+      - query
+      - execute
+    auth_service:
+      - read
+      - write
+      - query
+      - execute
+    function:
+      - read
+      - write
+      - query
+      - execute
+    config:
+      - read
+
+# ---------------------------------------------------------------------------
+# Property inference rules
+# ---------------------------------------------------------------------------
+#
+# These rules map RawFinding → component properties by patternId. The engine
+# applies the rules in order and only relies on:
+# - `regexes` defined above (by name)
+# - input values derived from finding.properties and file content
+# - assignments (constants, fromInput, lookup tables) declared here.
+
+external_api_known_documentation_urls:
+  auth0: "https://auth0.com/docs"
+  stripe: "https://stripe.com/docs"
+  sendgrid: "https://docs.sendgrid.com"
+  twilio: "https://www.twilio.com/docs"
+  openai: "https://platform.openai.com/docs"
+  firebase: "https://firebase.google.com/docs"
+  aws: "https://docs.aws.amazon.com"
+  supabase: "https://supabase.com/docs"
+
+external_api_known_package_names:
+  auth0: "@auth0/auth0-react"
+  stripe: "stripe"
+  sendgrid: "@sendgrid/mail"
+  twilio: "twilio"
+  openai: "openai"
+  firebase: "firebase"
+  supabase: "@supabase/supabase-js"
+
+inference_rules:
+  auth_middleware:
+    # MFA/TOTP/WebAuthn strategies
+    - when:
+        anyOf:
+          - regex:
+              input: strategy
+              regex: mfa_strategy
+          - regex:
+              input: content
+              regex: mfa_strategy
+      set:
+        mfa_required: true
+        authentication_method: mfa
+
+    # SSO/OIDC/OAuth discovery
+    - when:
+        regex:
+          input: strategyStr
+          regex: sso_strategy
+      set:
+        sso_integration: true
+
+    # JWT fallback (only if MFA rule did not already set auth method)
+    - when:
+        allOf:
+          - notSet: authentication_method
+          - anyOf:
+              - equals:
+                  input: library
+                  value: jsonwebtoken
+              - equals:
+                  input: strategy
+                  value: jwt
+      set:
+        authentication_method: jwt
+
+    # OAuth2 fallback
+    - when:
+        allOf:
+          - notSet: authentication_method
+          - anyOf:
+              - equals:
+                  input: strategy
+                  value: oauth
+              - equals:
+                  input: strategy
+                  value: oauth2
+      set:
+        authentication_method: oauth_2_0
+
+    # Passport/Nest auth fallback
+    - when:
+        allOf:
+          - notSet: authentication_method
+          - anyOf:
+              - equals:
+                  input: library
+                  value: passport
+              - equals:
+                  input: library
+                  value: nestjs_auth
+      set:
+        authentication_method:
+          preferInputOrConstant:
+            input: strategy
+            fallback: session
+
+    # Audit logging is enabled when we can tie the finding to a library/strategy.
+    - when:
+        anyOf:
+          - exists: library
+          - exists: strategy
+      set:
+        audit_logging_enabled: true
+
+  env_variable:
+    # Cloud provider first-match wins
+    - when:
+        allOf:
+          - notSet: cloud_provider
+          - regex:
+              input: key
+              regex: env_cloud_aws
+      set:
+        cloud_provider: AWS
+    - when:
+        allOf:
+          - notSet: cloud_provider
+          - regex:
+              input: key
+              regex: env_cloud_gcp
+      set:
+        cloud_provider: GCP
+    - when:
+        allOf:
+          - notSet: cloud_provider
+          - regex:
+              input: key
+              regex: env_cloud_azure
+      set:
+        cloud_provider: Azure
+
+    - when:
+        regex:
+          input: key
+          regex: env_region
+      set:
+        region_location: detected
+    - when:
+        regex:
+          input: key
+          regex: env_vendor_jurisdiction
+      set:
+        vendor_jurisdiction: detected
+    - when:
+        regex:
+          input: key
+          regex: env_encryption
+      set:
+        encrypt_at_rest: aes_256
+    - when:
+        regex:
+          input: key
+          regex: env_connection_ssl
+      set:
+        connection_encryption: true
+    - when:
+        regex:
+          input: key
+          regex: env_key_rotation
+      set:
+        key_rotation_period: detected
+    - when:
+        regex:
+          input: key
+          regex: env_backup
+      set:
+        backup_frequency: detected
+        backup_encryption: true
+    - when:
+        regex:
+          input: key
+          regex: env_ip_allowlist
+      set:
+        ip_allowlisting: true
+
+  config_file:
+    - when:
+        regex:
+          input: key
+          regex: config_audit_logging
+      set:
+        audit_logging_enabled: true
+    - when:
+        regex:
+          input: key
+          regex: config_retention
+      set:
+        data_retention_period_days: 0
+    - when:
+        regex:
+          input: key
+          regex: config_request_logging
+      set:
+        request_logging_level: detected
+    - when:
+        regex:
+          input: key
+          regex: config_backup
+      set:
+        backup_frequency: detected
+        backup_encryption: true
+
+  database_connection:
+    - when:
+        regex:
+          input: content
+          regex: database_ssl_content
+      set:
+        connection_encryption: true
+    - when:
+        regex:
+          input: content
+          regex: content_backup
+      set:
+        backup_frequency: detected
+        backup_encryption: true
+    - when:
+        always: true
+      set:
+        audit_logging_enabled: true
+
+  external_api_call:
+    - when:
+        exists: serviceName
+      set:
+        integration_method: api
+        authentication_method: api_key
+        integration_status: active
+        api_type: rest
+        sdk_available: true
+        code_reference_package:
+          lookup:
+            map: external_api_known_package_names
+            keyInput: serviceName
+            transform: lowercase
+            onMissing: skip
+
+    - when:
+        exists: documentationUrl
+      set:
+        documentation_url:
+          fromInput: documentationUrl
+
+    - when:
+        exists: apiVersion
+      set:
+        api_version:
+          fromInput: apiVersion
+
+    - when:
+        exists: url
+      set:
+        service_url_api_endpoint:
+          fromInput: url
+
+    - when:
+        allOf:
+          - notSet: documentation_url
+          - exists: serviceName
+      set:
+        documentation_url:
+          lookup:
+            map: external_api_known_documentation_urls
+            keyInput: serviceName
+            transform: lowercase
+            onMissing: skip
+
+    - when:
+        always: true
+      set:
+        https_enforced: true
+
+  express_route:
+    - when:
+        anyOf:
+          - exists: httpMethods
+          - exists: path
+      set:
+        request_validation: true
+        connection_encryption: true
+        api_type: rest
+        https_enforced: true
+    - when:
+        regex:
+          input: content
+          regex: content_https
+      set:
+        https_enforced: true

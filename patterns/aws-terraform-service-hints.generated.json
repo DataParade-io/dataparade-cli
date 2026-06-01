@@ -1,0 +1,1446 @@
+{
+  "generatedAt": "2026-05-12T12:03:18.511Z",
+  "source": "@cdktf/provider-aws@21.x (HashiCorp aws ~> 6.x)",
+  "hints": [
+    {
+      "id": "gen_aws_accessanalyzer_family",
+      "resource_type_regex": "^aws_accessanalyzer_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_account_family",
+      "resource_type_regex": "^aws_account_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_acm_family",
+      "resource_type_regex": "^aws_acm_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_acmpca_family",
+      "resource_type_regex": "^aws_acmpca_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_alb_family",
+      "resource_type_regex": "^aws_alb_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ami_family",
+      "resource_type_regex": "^aws_ami_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_amplify_family",
+      "resource_type_regex": "^aws_amplify_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_api_family",
+      "resource_type_regex": "^aws_api_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_app_family",
+      "resource_type_regex": "^aws_app_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_appautoscaling_family",
+      "resource_type_regex": "^aws_appautoscaling_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_appconfig_family",
+      "resource_type_regex": "^aws_appconfig_",
+      "componentSubType": "config",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_appfabric_family",
+      "resource_type_regex": "^aws_appfabric_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_appflow_family",
+      "resource_type_regex": "^aws_appflow_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_appintegrations_family",
+      "resource_type_regex": "^aws_appintegrations_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_applicationinsights_family",
+      "resource_type_regex": "^aws_applicationinsights_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_appmesh_family",
+      "resource_type_regex": "^aws_appmesh_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_apprunner_family",
+      "resource_type_regex": "^aws_apprunner_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_appstream_family",
+      "resource_type_regex": "^aws_appstream_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_appsync_family",
+      "resource_type_regex": "^aws_appsync_",
+      "componentSubType": "api",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_arn_family",
+      "resource_type_regex": "^aws_arn_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_athena_family",
+      "resource_type_regex": "^aws_athena_",
+      "componentSubType": "database",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_auditmanager_family",
+      "resource_type_regex": "^aws_auditmanager_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_autoscaling_family",
+      "resource_type_regex": "^aws_autoscaling_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_autoscalingplans_family",
+      "resource_type_regex": "^aws_autoscalingplans_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_availability_family",
+      "resource_type_regex": "^aws_availability_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_backup_family",
+      "resource_type_regex": "^aws_backup_",
+      "componentSubType": "storage",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_bcmdataexports_family",
+      "resource_type_regex": "^aws_bcmdataexports_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_bedrock_family",
+      "resource_type_regex": "^aws_bedrock_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_bedrockagent_family",
+      "resource_type_regex": "^aws_bedrockagent_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_billing_family",
+      "resource_type_regex": "^aws_billing_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_budgets_family",
+      "resource_type_regex": "^aws_budgets_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_caller_family",
+      "resource_type_regex": "^aws_caller_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_canonical_family",
+      "resource_type_regex": "^aws_canonical_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ce_family",
+      "resource_type_regex": "^aws_ce_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_chatbot_family",
+      "resource_type_regex": "^aws_chatbot_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_chime_family",
+      "resource_type_regex": "^aws_chime_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_chimesdkmediapipelines_family",
+      "resource_type_regex": "^aws_chimesdkmediapipelines_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_chimesdkvoice_family",
+      "resource_type_regex": "^aws_chimesdkvoice_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cleanrooms_family",
+      "resource_type_regex": "^aws_cleanrooms_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cloud9_family",
+      "resource_type_regex": "^aws_cloud9_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cloudcontrolapi_family",
+      "resource_type_regex": "^aws_cloudcontrolapi_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cloudformation_family",
+      "resource_type_regex": "^aws_cloudformation_",
+      "componentSubType": "config",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cloudfront_family",
+      "resource_type_regex": "^aws_cloudfront_",
+      "componentSubType": "api",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cloudfrontkeyvaluestore_family",
+      "resource_type_regex": "^aws_cloudfrontkeyvaluestore_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cloudhsm_family",
+      "resource_type_regex": "^aws_cloudhsm_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cloudsearch_family",
+      "resource_type_regex": "^aws_cloudsearch_",
+      "componentSubType": "database",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cloudtrail_family",
+      "resource_type_regex": "^aws_cloudtrail_",
+      "componentSubType": "config",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cloudwatch_family",
+      "resource_type_regex": "^aws_cloudwatch_",
+      "componentSubType": "config",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codeartifact_family",
+      "resource_type_regex": "^aws_codeartifact_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codebuild_family",
+      "resource_type_regex": "^aws_codebuild_",
+      "componentSubType": "container",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codecatalyst_family",
+      "resource_type_regex": "^aws_codecatalyst_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codecommit_family",
+      "resource_type_regex": "^aws_codecommit_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codeconnections_family",
+      "resource_type_regex": "^aws_codeconnections_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codedeploy_family",
+      "resource_type_regex": "^aws_codedeploy_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codeguruprofiler_family",
+      "resource_type_regex": "^aws_codeguruprofiler_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codegurureviewer_family",
+      "resource_type_regex": "^aws_codegurureviewer_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codepipeline_family",
+      "resource_type_regex": "^aws_codepipeline_",
+      "componentSubType": "container",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codestarconnections_family",
+      "resource_type_regex": "^aws_codestarconnections_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_codestarnotifications_family",
+      "resource_type_regex": "^aws_codestarnotifications_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_comprehend_family",
+      "resource_type_regex": "^aws_comprehend_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_computeoptimizer_family",
+      "resource_type_regex": "^aws_computeoptimizer_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_config_family",
+      "resource_type_regex": "^aws_config_",
+      "componentSubType": "config",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_connect_family",
+      "resource_type_regex": "^aws_connect_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_controltower_family",
+      "resource_type_regex": "^aws_controltower_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_costoptimizationhub_family",
+      "resource_type_regex": "^aws_costoptimizationhub_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_cur_family",
+      "resource_type_regex": "^aws_cur_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_customer_family",
+      "resource_type_regex": "^aws_customer_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_customerprofiles_family",
+      "resource_type_regex": "^aws_customerprofiles_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_dataexchange_family",
+      "resource_type_regex": "^aws_dataexchange_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_datapipeline_family",
+      "resource_type_regex": "^aws_datapipeline_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_datasync_family",
+      "resource_type_regex": "^aws_datasync_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_datazone_family",
+      "resource_type_regex": "^aws_datazone_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_db_family",
+      "resource_type_regex": "^aws_db_",
+      "componentSubType": "database",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_default_family",
+      "resource_type_regex": "^aws_default_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_detective_family",
+      "resource_type_regex": "^aws_detective_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_devicefarm_family",
+      "resource_type_regex": "^aws_devicefarm_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_devopsguru_family",
+      "resource_type_regex": "^aws_devopsguru_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_directory_family",
+      "resource_type_regex": "^aws_directory_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_dlm_family",
+      "resource_type_regex": "^aws_dlm_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_dms_family",
+      "resource_type_regex": "^aws_dms_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_docdbelastic_family",
+      "resource_type_regex": "^aws_docdbelastic_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_drs_family",
+      "resource_type_regex": "^aws_drs_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_dsql_family",
+      "resource_type_regex": "^aws_dsql_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_dx_family",
+      "resource_type_regex": "^aws_dx_",
+      "componentSubType": "network",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ebs_family",
+      "resource_type_regex": "^aws_ebs_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ec2_family",
+      "resource_type_regex": "^aws_ec2_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ecr_family",
+      "resource_type_regex": "^aws_ecr_",
+      "componentSubType": "container",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ecrpublic_family",
+      "resource_type_regex": "^aws_ecrpublic_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_efs_family",
+      "resource_type_regex": "^aws_efs_",
+      "componentSubType": "storage",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_egress_family",
+      "resource_type_regex": "^aws_egress_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_eip_family",
+      "resource_type_regex": "^aws_eip_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_eips_family",
+      "resource_type_regex": "^aws_eips_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_elasticsearch_family",
+      "resource_type_regex": "^aws_elasticsearch_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_elastictranscoder_family",
+      "resource_type_regex": "^aws_elastictranscoder_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_elb_family",
+      "resource_type_regex": "^aws_elb_",
+      "componentSubType": "network",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_emr_family",
+      "resource_type_regex": "^aws_emr_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_emrcontainers_family",
+      "resource_type_regex": "^aws_emrcontainers_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_emrserverless_family",
+      "resource_type_regex": "^aws_emrserverless_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_evidently_family",
+      "resource_type_regex": "^aws_evidently_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_finspace_family",
+      "resource_type_regex": "^aws_finspace_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_fis_family",
+      "resource_type_regex": "^aws_fis_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_flow_family",
+      "resource_type_regex": "^aws_flow_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_fms_family",
+      "resource_type_regex": "^aws_fms_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_fsx_family",
+      "resource_type_regex": "^aws_fsx_",
+      "componentSubType": "storage",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_gamelift_family",
+      "resource_type_regex": "^aws_gamelift_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_glacier_family",
+      "resource_type_regex": "^aws_glacier_",
+      "componentSubType": "storage",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_globalaccelerator_family",
+      "resource_type_regex": "^aws_globalaccelerator_",
+      "componentSubType": "api",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_glue_family",
+      "resource_type_regex": "^aws_glue_",
+      "componentSubType": "database",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_grafana_family",
+      "resource_type_regex": "^aws_grafana_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_guardduty_family",
+      "resource_type_regex": "^aws_guardduty_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_identitystore_family",
+      "resource_type_regex": "^aws_identitystore_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_imagebuilder_family",
+      "resource_type_regex": "^aws_imagebuilder_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_inspector_family",
+      "resource_type_regex": "^aws_inspector_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_inspector2_family",
+      "resource_type_regex": "^aws_inspector2_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_instance_family",
+      "resource_type_regex": "^aws_instance_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_instances_family",
+      "resource_type_regex": "^aws_instances_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_internet_family",
+      "resource_type_regex": "^aws_internet_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_internetmonitor_family",
+      "resource_type_regex": "^aws_internetmonitor_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_iot_family",
+      "resource_type_regex": "^aws_iot_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ip_family",
+      "resource_type_regex": "^aws_ip_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ivs_family",
+      "resource_type_regex": "^aws_ivs_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ivschat_family",
+      "resource_type_regex": "^aws_ivschat_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_kendra_family",
+      "resource_type_regex": "^aws_kendra_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_key_family",
+      "resource_type_regex": "^aws_key_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_keyspaces_family",
+      "resource_type_regex": "^aws_keyspaces_",
+      "componentSubType": "database",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_kinesisanalyticsv2_family",
+      "resource_type_regex": "^aws_kinesisanalyticsv2_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_kms_family",
+      "resource_type_regex": "^aws_kms_",
+      "componentSubType": "auth_service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_lakeformation_family",
+      "resource_type_regex": "^aws_lakeformation_",
+      "componentSubType": "database",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_lambda_family",
+      "resource_type_regex": "^aws_lambda_",
+      "componentSubType": "function",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_launch_family",
+      "resource_type_regex": "^aws_launch_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_lb_family",
+      "resource_type_regex": "^aws_lb_",
+      "componentSubType": "network",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_lbs_family",
+      "resource_type_regex": "^aws_lbs_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_lex_family",
+      "resource_type_regex": "^aws_lex_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_lexv2models_family",
+      "resource_type_regex": "^aws_lexv2models_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_licensemanager_family",
+      "resource_type_regex": "^aws_licensemanager_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_lightsail_family",
+      "resource_type_regex": "^aws_lightsail_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_load_family",
+      "resource_type_regex": "^aws_load_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_location_family",
+      "resource_type_regex": "^aws_location_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_m2_family",
+      "resource_type_regex": "^aws_m2_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_macie2_family",
+      "resource_type_regex": "^aws_macie2_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_main_family",
+      "resource_type_regex": "^aws_main_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_media_family",
+      "resource_type_regex": "^aws_media_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_medialive_family",
+      "resource_type_regex": "^aws_medialive_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_mq_family",
+      "resource_type_regex": "^aws_mq_",
+      "componentSubType": "queue",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_mskconnect_family",
+      "resource_type_regex": "^aws_mskconnect_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_mwaa_family",
+      "resource_type_regex": "^aws_mwaa_",
+      "componentSubType": "container",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_nat_family",
+      "resource_type_regex": "^aws_nat_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_neptunegraph_family",
+      "resource_type_regex": "^aws_neptunegraph_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_network_family",
+      "resource_type_regex": "^aws_network_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_networkfirewall_family",
+      "resource_type_regex": "^aws_networkfirewall_",
+      "componentSubType": "network",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_networkmanager_family",
+      "resource_type_regex": "^aws_networkmanager_",
+      "componentSubType": "network",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_networkmonitor_family",
+      "resource_type_regex": "^aws_networkmonitor_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_notifications_family",
+      "resource_type_regex": "^aws_notifications_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_notificationscontacts_family",
+      "resource_type_regex": "^aws_notificationscontacts_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_oam_family",
+      "resource_type_regex": "^aws_oam_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_opensearch_family",
+      "resource_type_regex": "^aws_opensearch_",
+      "componentSubType": "database",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_opensearchserverless_family",
+      "resource_type_regex": "^aws_opensearchserverless_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_organizations_family",
+      "resource_type_regex": "^aws_organizations_",
+      "componentSubType": "config",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_osis_family",
+      "resource_type_regex": "^aws_osis_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_outposts_family",
+      "resource_type_regex": "^aws_outposts_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_partition_family",
+      "resource_type_regex": "^aws_partition_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_paymentcryptography_family",
+      "resource_type_regex": "^aws_paymentcryptography_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_pinpoint_family",
+      "resource_type_regex": "^aws_pinpoint_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_pinpointsmsvoicev2_family",
+      "resource_type_regex": "^aws_pinpointsmsvoicev2_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_pipes_family",
+      "resource_type_regex": "^aws_pipes_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_placement_family",
+      "resource_type_regex": "^aws_placement_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_polly_family",
+      "resource_type_regex": "^aws_polly_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_prefix_family",
+      "resource_type_regex": "^aws_prefix_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_pricing_family",
+      "resource_type_regex": "^aws_pricing_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_prometheus_family",
+      "resource_type_regex": "^aws_prometheus_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_provider_family",
+      "resource_type_regex": "^aws_provider_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_proxy_family",
+      "resource_type_regex": "^aws_proxy_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_qbusiness_family",
+      "resource_type_regex": "^aws_qbusiness_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_quicksight_family",
+      "resource_type_regex": "^aws_quicksight_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ram_family",
+      "resource_type_regex": "^aws_ram_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_rbin_family",
+      "resource_type_regex": "^aws_rbin_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_redshiftdata_family",
+      "resource_type_regex": "^aws_redshiftdata_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_redshiftserverless_family",
+      "resource_type_regex": "^aws_redshiftserverless_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_region_family",
+      "resource_type_regex": "^aws_region_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_regions_family",
+      "resource_type_regex": "^aws_regions_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_rekognition_family",
+      "resource_type_regex": "^aws_rekognition_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_resiliencehub_family",
+      "resource_type_regex": "^aws_resiliencehub_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_resourceexplorer2_family",
+      "resource_type_regex": "^aws_resourceexplorer2_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_resourcegroups_family",
+      "resource_type_regex": "^aws_resourcegroups_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_resourcegroupstaggingapi_family",
+      "resource_type_regex": "^aws_resourcegroupstaggingapi_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_rolesanywhere_family",
+      "resource_type_regex": "^aws_rolesanywhere_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_route_family",
+      "resource_type_regex": "^aws_route_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_route53_family",
+      "resource_type_regex": "^aws_route53_",
+      "componentSubType": "api",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_route53domains_family",
+      "resource_type_regex": "^aws_route53domains_",
+      "componentSubType": "api",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_route53profiles_family",
+      "resource_type_regex": "^aws_route53profiles_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_route53recoverycontrolconfig_family",
+      "resource_type_regex": "^aws_route53recoverycontrolconfig_",
+      "componentSubType": "api",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_route53recoveryreadiness_family",
+      "resource_type_regex": "^aws_route53recoveryreadiness_",
+      "componentSubType": "api",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_rum_family",
+      "resource_type_regex": "^aws_rum_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_s3control_family",
+      "resource_type_regex": "^aws_s3control_",
+      "componentSubType": "storage",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_s3outposts_family",
+      "resource_type_regex": "^aws_s3outposts_",
+      "componentSubType": "storage",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_s3tables_family",
+      "resource_type_regex": "^aws_s3tables_",
+      "componentSubType": "storage",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_sagemaker_family",
+      "resource_type_regex": "^aws_sagemaker_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_schemas_family",
+      "resource_type_regex": "^aws_schemas_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_security_family",
+      "resource_type_regex": "^aws_security_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_securityhub_family",
+      "resource_type_regex": "^aws_securityhub_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_securitylake_family",
+      "resource_type_regex": "^aws_securitylake_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_serverlessapplicationrepository_family",
+      "resource_type_regex": "^aws_serverlessapplicationrepository_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_service_family",
+      "resource_type_regex": "^aws_service_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_servicecatalog_family",
+      "resource_type_regex": "^aws_servicecatalog_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_servicecatalogappregistry_family",
+      "resource_type_regex": "^aws_servicecatalogappregistry_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_servicequotas_family",
+      "resource_type_regex": "^aws_servicequotas_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ses_family",
+      "resource_type_regex": "^aws_ses_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_sesv2_family",
+      "resource_type_regex": "^aws_sesv2_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_sfn_family",
+      "resource_type_regex": "^aws_sfn_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_shield_family",
+      "resource_type_regex": "^aws_shield_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_signer_family",
+      "resource_type_regex": "^aws_signer_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_snapshot_family",
+      "resource_type_regex": "^aws_snapshot_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_sns_family",
+      "resource_type_regex": "^aws_sns_",
+      "componentSubType": "queue",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_spot_family",
+      "resource_type_regex": "^aws_spot_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_sqs_family",
+      "resource_type_regex": "^aws_sqs_",
+      "componentSubType": "queue",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ssm_family",
+      "resource_type_regex": "^aws_ssm_",
+      "componentSubType": "config",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ssmcontacts_family",
+      "resource_type_regex": "^aws_ssmcontacts_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ssmincidents_family",
+      "resource_type_regex": "^aws_ssmincidents_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ssmquicksetup_family",
+      "resource_type_regex": "^aws_ssmquicksetup_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_ssoadmin_family",
+      "resource_type_regex": "^aws_ssoadmin_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_storagegateway_family",
+      "resource_type_regex": "^aws_storagegateway_",
+      "componentSubType": "storage",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_subnet_family",
+      "resource_type_regex": "^aws_subnet_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_subnets_family",
+      "resource_type_regex": "^aws_subnets_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_swf_family",
+      "resource_type_regex": "^aws_swf_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_synthetics_family",
+      "resource_type_regex": "^aws_synthetics_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_transcribe_family",
+      "resource_type_regex": "^aws_transcribe_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_transfer_family",
+      "resource_type_regex": "^aws_transfer_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_verifiedaccess_family",
+      "resource_type_regex": "^aws_verifiedaccess_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_verifiedpermissions_family",
+      "resource_type_regex": "^aws_verifiedpermissions_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_volume_family",
+      "resource_type_regex": "^aws_volume_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_vpc_family",
+      "resource_type_regex": "^aws_vpc_",
+      "componentSubType": "network",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_vpclattice_family",
+      "resource_type_regex": "^aws_vpclattice_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_vpcs_family",
+      "resource_type_regex": "^aws_vpcs_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_vpn_family",
+      "resource_type_regex": "^aws_vpn_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_waf_family",
+      "resource_type_regex": "^aws_waf_",
+      "componentSubType": "api",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_wafregional_family",
+      "resource_type_regex": "^aws_wafregional_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_wafv2_family",
+      "resource_type_regex": "^aws_wafv2_",
+      "componentSubType": "api",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_workspaces_family",
+      "resource_type_regex": "^aws_workspaces_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_workspacesweb_family",
+      "resource_type_regex": "^aws_workspacesweb_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    },
+    {
+      "id": "gen_aws_xray_family",
+      "resource_type_regex": "^aws_xray_",
+      "componentSubType": "service",
+      "cloud_provider": "aws"
+    }
+  ]
+}

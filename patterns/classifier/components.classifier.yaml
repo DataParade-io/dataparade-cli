@@ -1,0 +1,110 @@
+---
+# Configuration for RawFinding → DetectedComponent classification.
+# All mapping values and string lists live here (no hard-coded tables in TS).
+
+name_normalization:
+  # Suffix tokens to strip from component names (case-insensitive).
+  remove_suffixes:
+    - client
+    - service
+    - database
+    - db
+    - api
+    - sdk
+  # Optional regexes applied after basic trimming to remove common suffix patterns.
+  remove_suffix_patterns:
+    - "[-_ ]service$"
+    - "[-_ ]client$"
+    - "[-_ ]api$"
+    - "[-_ ]db$"
+  # Characters to trim from start/end after normalization.
+  trim_chars: " _-"
+
+pattern_defaults:
+  # HTTP routes / controllers → API-like assets.
+  express_route:
+    type: asset
+    subType: api
+    priority: 30
+
+  # Database and cache clients.
+  database_connection:
+    type: asset
+    subType: database
+    priority: 10
+
+  # Generic external HTTP calls when not recognized as known third-party.
+  external_api_call:
+    type: asset
+    subType: api
+    priority: 20
+
+  # Auth middleware / guards (kept as assets for now).
+  auth_middleware:
+    type: asset
+    subType: auth_service
+    priority: 40
+
+  # Configuration access (files/objects).
+  config_file:
+    type: asset
+    subType: config
+    priority: 50
+
+  # Env variable usage.
+  env_variable:
+    type: asset
+    subType: config
+    priority: 60
+
+  # Lambda-style handlers (future use; kept simple for now).
+  lambda_handler:
+    type: asset
+    subType: function
+    priority: 70
+
+  # Container or service definitions.
+  container_service:
+    type: asset
+    subType: container
+    priority: 80
+
+  # Terraform / IaC (static .tf; subtype refined via finding.properties.componentSubType).
+  terraform_resource:
+    type: asset
+    subType: application
+    priority: 14
+
+  terraform_module:
+    type: asset
+    subType: application
+    priority: 16
+
+  terraform_provider:
+    type: third_party
+    subType: cloud_provider
+    priority: 12
+
+database_type_mapping:
+  # Map databaseType hints from TS patterns → component subType.
+  postgres:
+    subType: database
+  mysql:
+    subType: database
+  mongo:
+    subType: database
+  redis:
+    subType: database
+  unknown:
+    subType: database
+
+resolution:
+  # Prefer third_party over asset when both are possible for the same component.
+  prefer_third_party_over_asset: true
+  # How to aggregate confidence across findings in a group: "max" or "average".
+  confidence_aggregation: max
+
+# Env variable keys that should not be emitted as components (runtime/deployment only).
+env_variable_exclude_keys:
+  - NODE_ENV
+

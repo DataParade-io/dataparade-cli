@@ -1,0 +1,139 @@
+# TypeScript/JS pattern config. All entries share: patternId, optional confidence (default 0.8).
+# Regex lists: use "regexes" for db_clients, httpClients, and auth; routes use specific keys.
+
+routes:
+  frameworks:
+    - id: express
+      patternId: express_route
+      imports:
+        - express
+      routeCallRegexes:
+        - "\\b(app|router)\\.(get|post|put|delete|patch|options|head)\\(\\s*[\"'`]([^\"'`]+)[\"'`]"
+      confidence: 0.9
+    - id: nest
+      patternId: express_route
+      imports:
+        - "@nestjs/common"
+        - "@nestjs/core"
+      controllerDecoratorRegexes:
+        - "@Controller\\(\\s*[\"'`]([^\"'`]*)[\"'`]? "
+      routeDecoratorRegexes:
+        - "@(Get|Post|Put|Delete|Patch|Options|Head)\\(\\s*[\"'`]([^\"'`]*)[\"'`]? "
+      confidence: 0.85
+
+db_clients:
+  - id: pg
+    patternId: database_connection
+    databaseType: postgres
+    importModules:
+      - pg
+    regexes:
+      - "\\bnew\\s+Pool\\s*\\("
+      - "\\bnew\\s+Client\\s*\\("
+    confidence: 0.9
+  - id: mysql2
+    patternId: database_connection
+    databaseType: mysql
+    importModules:
+      - mysql2
+    regexes:
+      - "\\bcreateConnection\\s*\\("
+    confidence: 0.9
+  - id: prisma
+    patternId: database_connection
+    databaseType: unknown
+    importModules:
+      - "@prisma/client"
+    regexes:
+      - "\\bnew\\s+PrismaClient\\s*\\("
+    confidence: 0.9
+  - id: mongoose
+    patternId: database_connection
+    databaseType: mongo
+    importModules:
+      - mongoose
+    regexes:
+      - "\\bmongoose\\.connect\\s*\\("
+    confidence: 0.9
+  - id: redis
+    patternId: database_connection
+    databaseType: redis
+    importModules:
+      - redis
+    regexes:
+      - "\\bcreateClient\\s*\\("
+    confidence: 0.9
+  - id: supabase
+    patternId: database_connection
+    databaseType: postgres
+    importModules:
+      - "@supabase/supabase-js"
+    regexes:
+      - "\\bcreateClient\\s*\\("
+    confidence: 0.9
+
+auth:
+  libraries:
+    - id: passport
+      patternId: auth_middleware
+      importFragments:
+        - passport
+      regexes:
+        - "passport\\.authenticate\\(\\s*[\"'`]([^\"'`]+)[\"'`]"
+      confidence: 0.9
+    - id: jsonwebtoken
+      patternId: auth_middleware
+      importFragments:
+        - jsonwebtoken
+      confidence: 0.8
+    - id: nest_auth
+      patternId: auth_middleware
+      importFragments:
+        - "@nestjs/passport"
+      confidence: 0.85
+
+# Heuristics: all generic detection regexes (process.env, raw SQL, route handlers, config.key).
+heuristics:
+  processEnv:
+    regex: "process\\.env\\.([A-Z0-9_]+)"
+    confidence: 0.95
+  sqlKeyword:
+    regex: "\\bSELECT\\b|\\bINSERT\\b|\\bUPDATE\\b|\\bDELETE\\b"
+    patternId: database_connection
+    confidence: 0.6
+  nextRouteHandler:
+    regex: "\\b(export\\s+(async\\s+)?function\\s+|export\\s+default\\s+async\\s+function\\s+|export\\s+const\\s+\\w+\\s*=\\s*async\\s*)\\w*\\s*\\("
+    confidence: 0.75
+  # Matches config.<identifier>; key names and confidence come from config_keys.keys.
+  configKeyAccess:
+    regex: "\\bconfig\\.([a-zA-Z0-9_]+)\\b"
+
+env_variables:
+  importantKeys:
+    - DATABASE_URL
+    - DB_URL
+    - API_KEY
+
+config_keys:
+  keys:
+    - name: database
+      patternId: config_file
+      confidence: 0.8
+    - name: db
+      patternId: config_file
+      confidence: 0.8
+    - name: apiKey
+      patternId: config_file
+      confidence: 0.8
+    - name: api_key
+      patternId: config_file
+      confidence: 0.8
+    - name: auth
+      patternId: config_file
+      confidence: 0.8
+    - name: redis
+      patternId: config_file
+      confidence: 0.8
+
+# Property-detection regexes and rules live in shared patterns/property.patterns.yaml
+# so all language analyzers (TS, Python, etc.) use the same config.

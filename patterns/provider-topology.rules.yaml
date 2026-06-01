@@ -1,0 +1,765 @@
+fallback_policy:
+  nonConcreteSectionIds:
+    - root
+    - "<unsectioned>"
+    - global
+  actorTargetReverseConfidenceFloor: 0.8
+  preferredApiSourceConfidenceFloor: 0.75
+  crossSectionActorAssetFlowConfidence: 0.7
+  rewriteThroughProviderFlowTypes:
+    - database_query
+    - api_call
+  postgresLikeSignals:
+    - postgres
+    - pg
+    - postgresql
+  genericPgNodeNames:
+    - pg
+    - postgres
+    - postgresql
+  genericPgClientSignals:
+    - pg
+    - postgres
+    - postgresql
+    - node-postgres
+    - psycopg
+    - psycopg2
+  implicitManagedPostgresNodeKeys:
+    - postgres
+  managedResourceMatchHintsByKind:
+    database:
+      - postgres
+      - pg
+      - mysql
+      - mongo
+      - sql
+    cache:
+      - redis
+      - cache
+      - kv
+
+provider_topology_rules:
+  - providerId: supabase
+    providerDisplayName: Supabase
+    canonicalServiceName: supabase
+    allowManagedDatabaseSharedFileInference: true
+    confidence:
+      managedNodeMinConfidence: 0.78
+      providerToManagedNodeFlowConfidence: 0.78
+      providerToManagedResourceFlowConfidence: 0.75
+      sourceToProviderFlowConfidenceFloor: 0.72
+      rewiredFlowConfidenceFloor: 0.75
+      collapseManagedPostgresFlowConfidence: 0.78
+    providerMatchKeys:
+      - supabase
+      - "@supabase"
+      - supabase-js
+      - supabase-py
+      - supabase_py
+      - supabase.com
+    managedResources:
+      - kind: database
+        matchHints:
+          - postgres
+          - pg
+          - postgresql
+          - supabase
+        viaClients:
+          - supabase
+          - "@supabase"
+          - "@supabase/supabase-js"
+          - supabase-js
+          - supabase/postgrest-js
+          - postgrest
+          - supabase db
+          - supabase postgres
+          - supabase sql
+          - supabase connection
+          - supabase pooler
+        directClients:
+          - pg
+          - postgres
+          - postgresql
+          - postgres.js
+          - drizzle
+          - knex
+          - prisma
+          - kysely
+          - sequelize
+          - typeorm
+      - kind: cache
+        matchHints:
+          - redis
+          - cache
+          - kv
+        viaClients:
+          - supabase
+          - "@supabase"
+          - "@supabase/supabase-js"
+          - supabase realtime
+          - supabase channels
+          - supabase replication
+          - supabase broadcast
+          - supabase presence
+          - supabase cache
+          - supabase kv
+          - upstash
+        directClients:
+          - redis
+          - ioredis
+          - "@upstash/redis"
+    managedServiceNodes:
+      - key: postgres
+        label: Supabase Pg
+        componentType: asset
+        componentSubType: database
+        flowType: database_query
+        usageSignals:
+          - database
+          - database_connection
+          - postgres
+          - pg
+          - sql
+          - query
+          - from
+        evidencePatterns:
+          - database_connection
+      - key: auth
+        label: Supabase Auth
+        componentType: asset
+        componentSubType: auth_service
+        flowType: api_call
+        usageSignals:
+          - auth
+          - signin
+          - sign-in
+          - signup
+          - sign-up
+          - session
+          - jwt
+          - user
+        evidencePatterns:
+          - auth_middleware
+      - key: storage
+        label: Supabase Storage
+        componentType: asset
+        componentSubType: file_storage
+        flowType: file_transfer
+        usageSignals:
+          - storage
+          - bucket
+          - upload
+          - file
+          - object
+  - providerId: aws
+    providerDisplayName: Aws
+    canonicalServiceName: aws
+    confidence:
+      managedNodeMinConfidence: 0.78
+      providerToManagedNodeFlowConfidence: 0.78
+      providerToManagedResourceFlowConfidence: 0.75
+      sourceToProviderFlowConfidenceFloor: 0.72
+      rewiredFlowConfidenceFloor: 0.75
+      collapseManagedPostgresFlowConfidence: 0.78
+    providerMatchKeys:
+      - aws
+      - amazon web services
+      - aws-sdk
+      - "@aws-sdk"
+      - amazonaws.com
+      - cloudfront
+      - s3
+      - lambda
+      - rds
+      - dynamodb
+      - aurora
+      - redshift
+      - elasticache
+      - memorydb
+      - opensearch
+    managedResources:
+      - kind: database
+        matchHints:
+          - postgres
+          - pg
+          - mysql
+          - mongo
+          - sql
+        viaClients:
+          - aws
+          - aws-sdk
+          - "@aws-sdk"
+          - "@aws-sdk/client-rds"
+          - "@aws-sdk/client-dynamodb"
+          - "@aws-sdk/lib-dynamodb"
+          - rds
+          - dynamodb
+          - aurora
+          - redshift
+          - documentdb
+          - opensearch
+          - neptune
+          - timestream
+          - keyspaces
+        directClients:
+          - pg
+          - postgres
+          - postgresql
+          - postgres.js
+          - mysql
+          - mysql2
+          - mongodb
+          - mongoose
+          - mssql
+          - knex
+          - prisma
+          - typeorm
+          - sequelize
+          - drizzle
+          - kysely
+      - kind: cache
+        matchHints:
+          - redis
+          - cache
+          - kv
+        viaClients:
+          - aws
+          - aws-sdk
+          - "@aws-sdk"
+          - "@aws-sdk/client-elasticache"
+          - elasticache
+          - memorydb
+          - dynamodb accelerator
+          - dax
+        directClients:
+          - redis
+          - ioredis
+    managedServiceNodes:
+      - key: rds_cluster_instance
+        label: Aws RDS instance
+        componentType: asset
+        componentSubType: compute_service
+        flowType: api_call
+        usageSignals: []
+        terraformResourceTypes:
+          - aws_rds_cluster_instance
+        terraformResourceTypePrefixes: []
+      - key: postgres
+        label: Aws Pg
+        componentType: asset
+        componentSubType: database
+        flowType: database_query
+        usageSignals:
+          - postgres
+          - pg
+          - rds
+          - rds-data
+          - "@aws-sdk/client-rds-data"
+          - aurora
+          - redshift
+          - create-db
+          - migration
+          - database
+        terraformResourceTypePrefixes:
+          # RDS/Aurora control plane (exclude `aws_rds_cluster_instance` — see rds_cluster_instance node).
+          - aws_rds_cluster_parameter_group
+          - aws_rds_cluster_endpoint
+          - aws_rds_cluster_role_association
+          - aws_rds_cluster_activity_stream
+          - aws_dynamodb_
+          - aws_neptune_
+          - aws_redshift_
+          - aws_docdb_
+          - aws_timestream_
+          - aws_keyspaces_
+          - aws_opensearch_
+        terraformResourceTypes:
+          - aws_db_instance
+          - aws_rds_cluster
+          - aws_rds_global_cluster
+      - key: s3
+        label: Aws S3
+        componentType: asset
+        componentSubType: file_storage
+        flowType: file_transfer
+        usageSignals:
+          - s3
+          - s3://
+          - bucket
+          - object storage
+          - object-store
+          - object_store
+          - object key
+          - putobject
+          - getobject
+          - presign
+          - signedurl
+          - signed-url
+          - archive
+          - git-archive
+
+          - "@aws-sdk/client-s3"
+        terraformResourceTypePrefixes:
+          - aws_s3_
+      - key: lambda
+        label: Aws Lambda
+        componentType: asset
+        componentSubType: compute_service
+        flowType: api_call
+        usageSignals:
+          - lambda
+          - lambdas
+          - /lambdas/
+          - handler
+          - function
+          - serverless
+          - "@aws-sdk/client-lambda"
+        terraformResourceTypePrefixes:
+          - aws_lambda_
+  - providerId: azure
+    providerDisplayName: Azure
+    canonicalServiceName: azure
+    confidence:
+      managedNodeMinConfidence: 0.78
+      providerToManagedNodeFlowConfidence: 0.78
+      providerToManagedResourceFlowConfidence: 0.75
+      sourceToProviderFlowConfidenceFloor: 0.72
+      rewiredFlowConfidenceFloor: 0.75
+      collapseManagedPostgresFlowConfidence: 0.78
+    providerMatchKeys:
+      - azure
+      - microsoft azure
+      - azure-sdk
+      - "@azure"
+      - azure.com
+      - azurewebsites.net
+      - cosmos
+      - azure sql
+      - azure database for postgresql
+      - azure cache for redis
+    managedResources:
+      - kind: database
+        matchHints:
+          - postgres
+          - pg
+          - mysql
+          - mongo
+          - sql
+        viaClients:
+          - azure
+          - azure-sdk
+          - "@azure"
+          - "@azure/cosmos"
+          - "@azure/data-tables"
+          - "@azure/arm-postgresql"
+          - "@azure/arm-mysql"
+          - "@azure/arm-sql"
+          - cosmos
+          - azure sql
+          - cosmosdb
+          - documentdb
+          - azure postgres
+          - azure postgresql
+          - azure mysql
+          - azure mariadb
+          - synapse
+        directClients:
+          - pg
+          - postgres
+          - postgresql
+          - postgres.js
+          - mysql
+          - mysql2
+          - mssql
+          - tediously
+          - knex
+          - prisma
+          - typeorm
+          - sequelize
+          - drizzle
+          - kysely
+      - kind: cache
+        matchHints:
+          - redis
+          - cache
+          - kv
+        viaClients:
+          - azure
+          - azure-sdk
+          - "@azure"
+          - azure cache for redis
+          - azure redis
+          - managed redis
+        directClients:
+          - redis
+          - ioredis
+  - providerId: gcp
+    providerDisplayName: Google
+    canonicalServiceName: google
+    confidence:
+      managedNodeMinConfidence: 0.78
+      providerToManagedNodeFlowConfidence: 0.78
+      providerToManagedResourceFlowConfidence: 0.75
+      sourceToProviderFlowConfidenceFloor: 0.72
+      rewiredFlowConfidenceFloor: 0.75
+      collapseManagedPostgresFlowConfidence: 0.78
+    providerMatchKeys:
+      - gcp
+      - google_ai
+      - google ai
+      - google_auth
+      - google auth
+      - google
+      - google cloud
+      - google-cloud
+      - "@google-cloud"
+      - "googleapis.com"
+      - "cloud.google.com"
+      - "oauth2.googleapis.com"
+      - "accounts.google.com"
+      - "@react-oauth/google"
+      - "google-auth-library"
+      - "google_auth_oauthlib"
+      - "google.golang.org/api"
+      - "googleapiclient"
+      - "storage.googleapis.com"
+      - "pubsub.googleapis.com"
+      - "sqladmin.googleapis.com"
+      - "generativelanguage.googleapis.com"
+      - "aiplatform.googleapis.com"
+      - "vertexai"
+    managedResources:
+      - kind: database
+        matchHints:
+          - postgres
+          - pg
+          - mysql
+          - mongo
+          - sql
+        viaClients:
+          - gcp
+          - google cloud
+          - google-cloud
+          - "@google-cloud"
+          - "@google-cloud/cloud-sql-connector"
+          - "@google-cloud/spanner"
+          - "@google-cloud/datastore"
+          - "@google-cloud/bigquery"
+          - cloud sql
+          - cloudsql
+          - alloydb
+          - spanner
+          - firestore
+          - bigquery
+        directClients:
+          - pg
+          - postgres
+          - postgresql
+          - mysql
+          - mysql2
+          - mssql
+          - sqlite
+          - prisma
+          - drizzle
+          - knex
+          - typeorm
+          - sequelize
+          - kysely
+      - kind: cache
+        matchHints:
+          - redis
+          - cache
+          - kv
+        viaClients:
+          - gcp
+          - google cloud
+          - memorystore
+          - redis
+          - "@google-cloud/redis"
+          - "@google-cloud/memorystore"
+        directClients:
+          - redis
+          - ioredis
+    managedServiceNodes:
+      - key: auth
+        label: Google Auth
+        componentType: asset
+        componentSubType: auth_service
+        flowType: api_call
+        usageSignals:
+          - oauth
+          - oauth2
+          - oidc
+          - openid
+          - accounts.google.com
+          - oauth2.googleapis.com
+          - "@react-oauth/google"
+          - google-auth-library
+      - key: storage
+        label: Google Cloud Storage
+        componentType: asset
+        componentSubType: file_storage
+        flowType: file_transfer
+        usageSignals:
+          - storage.googleapis.com
+          - "@google-cloud/storage"
+          - gcs
+          - google cloud storage
+          - bucket
+          - upload
+      - key: pubsub
+        label: Google Pub Sub
+        componentType: asset
+        componentSubType: message_queue
+        flowType: message_queue
+        usageSignals:
+          - pubsub
+          - pubsub.googleapis.com
+          - "@google-cloud/pubsub"
+          - publish
+          - subscribe
+      - key: postgres
+        label: Google Cloud SQL
+        componentType: asset
+        componentSubType: database
+        flowType: database_query
+        usageSignals:
+          - cloud sql
+          - sqladmin.googleapis.com
+          - "@google-cloud/cloud-sql-connector"
+          - postgres
+          - pg
+      - key: vertex
+        label: Google Vertex AI
+        componentType: third_party
+        componentSubType: ai_provider
+        flowType: api_call
+        usageSignals:
+          - vertex
+          - vertexai
+          - aiplatform.googleapis.com
+          - "@google-cloud/vertexai"
+          - generativelanguage.googleapis.com
+      - key: google_ai
+        label: Google AI
+        componentType: third_party
+        componentSubType: ai_provider
+        flowType: api_call
+        usageSignals:
+          - google_ai
+          - google ai
+          - "@google/generative-ai"
+          - google-generativeai
+          - google-genai
+          - generativelanguage.googleapis.com
+  - providerId: vercel
+    providerDisplayName: Vercel
+    canonicalServiceName: vercel
+    confidence:
+      managedNodeMinConfidence: 0.78
+      providerToManagedNodeFlowConfidence: 0.78
+      providerToManagedResourceFlowConfidence: 0.75
+      sourceToProviderFlowConfidenceFloor: 0.72
+      rewiredFlowConfidenceFloor: 0.75
+      collapseManagedPostgresFlowConfidence: 0.78
+    providerMatchKeys:
+      - vercel
+      - vercel.com
+      - vercel.app
+      - "@vercel"
+      - next.js
+      - edge runtime
+      - edge config
+      - neon
+      - upstash
+      - turso
+    managedResources:
+      - kind: database
+        matchHints:
+          - postgres
+          - pg
+          - mysql
+          - mongo
+          - sql
+        viaClients:
+          - vercel
+          - "@vercel/postgres"
+          - "@vercel/storage"
+          - "@vercel/blob"
+          - "@vercel/kv"
+          - vercel postgres
+          - vercel sql
+          - neon
+          - "@neondatabase/serverless"
+          - turso
+          - "@libsql/client"
+          - planetscale
+          - "@planetscale/database"
+          - kv
+          - blob
+        directClients:
+          - pg
+          - postgres
+          - postgresql
+          - postgres.js
+          - mysql
+          - mysql2
+          - sqlite
+          - better-sqlite3
+          - libsql
+          - prisma
+          - drizzle
+          - knex
+          - typeorm
+          - sequelize
+          - kysely
+          - redis
+      - kind: cache
+        matchHints:
+          - redis
+          - cache
+          - kv
+        viaClients:
+          - vercel
+          - "@vercel/kv"
+          - vercel kv
+          - upstash
+          - "@upstash/redis"
+          - edge config
+        directClients:
+          - redis
+          - ioredis
+          - "@upstash/redis"
+  - providerId: firebase
+    providerDisplayName: Firebase
+    canonicalServiceName: firebase
+    confidence:
+      managedNodeMinConfidence: 0.78
+      providerToManagedNodeFlowConfidence: 0.78
+      providerToManagedResourceFlowConfidence: 0.75
+      sourceToProviderFlowConfidenceFloor: 0.72
+      rewiredFlowConfidenceFloor: 0.75
+      collapseManagedPostgresFlowConfidence: 0.78
+    providerMatchKeys:
+      - firebase
+      - firebase.google.com
+      - google firebase
+      - "@firebase"
+      - "@google-cloud/firestore"
+      - firestore
+      - realtime database
+      - cloud firestore
+      - cloud functions for firebase
+    managedResources:
+      - kind: database
+        matchHints:
+          - postgres
+          - pg
+          - mysql
+          - mongo
+          - sql
+        viaClients:
+          - firebase
+          - "@firebase"
+          - firebase-admin
+          - firebase-admin/firestore
+          - "@firebase/firestore"
+          - "@firebase/database"
+          - "@google-cloud/firestore"
+          - firestore
+          - realtime database
+          - cloud firestore
+          - firebase data connect
+        directClients:
+          - pg
+          - postgres
+          - postgresql
+          - mysql
+          - mysql2
+          - mongodb
+          - mongoose
+          - sqlite
+          - prisma
+          - drizzle
+          - knex
+          - typeorm
+          - sequelize
+          - kysely
+      - kind: cache
+        matchHints:
+          - redis
+          - cache
+          - kv
+        viaClients:
+          - firebase
+          - firebase hosting cache
+          - firebase app check
+          - firebase cache
+          - firestore cache
+        directClients:
+          - redis
+          - ioredis
+  - providerId: kubernetes
+    providerMatchKeys:
+      - kubernetes
+      - hashicorp/kubernetes
+      - k8s
+      - kube
+    managedServiceNodes:
+      - key: workload
+        label: Kubernetes workload
+        componentType: asset
+        componentSubType: service
+        flowType: api_call
+        usageSignals: []
+        terraformResourceTypePrefixes:
+          - kubernetes_deployment
+          - kubernetes_stateful_set
+          - kubernetes_daemon_set
+          - kubernetes_daemonset
+          - kubernetes_job
+          - kubernetes_cron_job
+      - key: service
+        label: Kubernetes Service
+        componentType: asset
+        componentSubType: api
+        flowType: api_call
+        usageSignals: []
+        terraformResourceTypePrefixes:
+          - kubernetes_service
+          - kubernetes_endpoints
+      - key: ingress
+        label: Kubernetes Ingress
+        componentType: asset
+        componentSubType: api
+        flowType: api_call
+        usageSignals: []
+        terraformResourceTypePrefixes:
+          - kubernetes_ingress
+      - key: config
+        label: Kubernetes Config
+        componentType: asset
+        componentSubType: config
+        flowType: api_call
+        usageSignals: []
+        terraformResourceTypePrefixes:
+          - kubernetes_secret
+          - kubernetes_config_map
+      - key: storage
+        label: Kubernetes Storage
+        componentType: asset
+        componentSubType: storage
+        flowType: file_transfer
+        usageSignals: []
+        terraformResourceTypePrefixes:
+          - kubernetes_persistent_volume
+          - kubernetes_persistent_volume_claim
+          - kubernetes_storage_class
+      - key: namespace
+        label: Kubernetes Namespace
+        componentType: asset
+        componentSubType: container
+        flowType: api_call
+        usageSignals: []
+        terraformResourceTypes:
+          - kubernetes_namespace

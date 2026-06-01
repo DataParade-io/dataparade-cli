@@ -1,0 +1,84 @@
+{
+  "name": "@dataparade/cli",
+  "version": "0.0.1",
+  "description": "dataPARADE CLI — scan codebases for privacy and security data flows",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "DataParade",
+  "homepage": "https://github.com/DataParade-io/dataparade-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DataParade-io/dataparade-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DataParade-io/dataparade-cli/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "dataparade",
+    "privacy",
+    "data-flow",
+    "security",
+    "cli",
+    "scanner"
+  ],
+  "private": false,
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./ai-providers": {
+      "types": "./dist/src/ai-enrichment/providers/index.d.ts",
+      "default": "./dist/src/ai-enrichment/providers/index.js"
+    }
+  },
+  "bin": {
+    "@dataparade/cli": "dist/bin/cli.js"
+  },
+  "scripts": {
+    "generate:terraform-provider-hints": "node scripts/generate-terraform-provider-hints.mjs",
+    "generate:aws-terraform-hints": "node scripts/generate-aws-terraform-hints.mjs",
+    "generate:azure-terraform-hints": "node scripts/generate-terraform-provider-hints.mjs --azure-only",
+    "generate:kubernetes-terraform-hints": "node scripts/generate-terraform-provider-hints.mjs --kubernetes-only",
+    "build": "pnpm exec tsc -p tsconfig.json",
+    "prepublishOnly": "pnpm run build && pnpm run test",
+    "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "pretest": "pnpm run build",
+    "test": "jest",
+    "scan": "node dist/bin/cli.js scan",
+    "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js"
+  },
+  "dependencies": {
+    "@sentry/node": "^10.38.0",
+    "dotenv": "^16.4.7",
+    "langsmith": "^0.3.14",
+    "commander": "^12.1.0",
+    "yaml": "^2.8.2",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.18.0",
+    "globals": "^15.14.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ]
+}

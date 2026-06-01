@@ -1,0 +1,495 @@
+# Terraform structural patterns (block syntax, references, type hints, satellites).
+# All matching rules live here — analyzers compile these at load time.
+
+version: 1
+
+syntax:
+  # Line must look like a top-level Terraform block before deeper regex checks.
+  block_line_probe_regex: "^(?:resource|data|module|provider)\\s+"
+  block_patterns:
+    - kind: resource
+      regex: '^resource\s+"([^"]+)"\s+"([^"]+)"\s*\{\s*$'
+      resource_type_group: 1
+      block_name_group: 2
+    - kind: data
+      regex: '^data\s+"([^"]+)"\s+"([^"]+)"\s*\{\s*$'
+      resource_type_group: 1
+      block_name_group: 2
+    - kind: module
+      regex: '^module\s+"([^"]+)"\s*\{\s*$'
+      block_name_group: 1
+    - kind: provider
+      regex: '^provider\s+"([^"]+)"\s*\{\s*$'
+      block_name_group: 1
+
+# First-token skip list for generic reference extraction (HCL reserved / meta).
+reserved_reference_first_tokens:
+  - var
+  - local
+  - module
+  - each
+  - path
+  - terraform
+  - count
+
+# Order: first matching regex wins for each body span (global iteration).
+reference_patterns:
+  - id: data_block_refs
+    regex: "\\bdata\\.([a-z0-9_]+)\\.([a-z0-9_]+)\\b"
+    flags: gi
+    template: "data.$1.$2"
+  - id: resource_and_intermediate_attr_refs
+    regex: "\\b([a-z][a-z0-9_]*)\\.([a-z0-9_]+)(?:\\.[a-z0-9_]+)?\\b"
+    flags: gi
+    template: "$1.$2"
+    skip_when_first_token_reserved: true
+
+# Satellite resources attach to an existing primary resource (same file) and do not become separate nodes.
+satellite_resource_rules:
+  - id: s3_bucket_scoped_attachments
+    child_resource_type_regex: '^aws_s3_bucket_(acl|ownership_controls|logging|versioning|public_access_block|server_side_encryption_configuration|lifecycle_configuration|replication_configuration|website|cors_configuration|policy|object_lock_configuration|notification)$'
+    parent_address_from_body_line:
+      regex: '^\s*bucket\s*=\s*((?:[a-z][a-z0-9_]*)\.([a-z0-9_]+))(?:\.[a-z0-9_.]+)?\s*$'
+      capture_group: 1
+
+# resource_type regex: first match wins (list order matters).
+resource_type_hints:
+  - id: aws_db_instance
+    resource_type_regex: "^aws_db_instance$"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_rds_cluster
+    resource_type_regex: "^aws_rds_cluster$"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_dynamodb_table
+    resource_type_regex: "^aws_dynamodb_table$"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_elasticache_cluster
+    resource_type_regex: "^aws_elasticache_cluster$"
+    componentSubType: cache
+    cloud_provider: aws
+  - id: aws_s3_bucket_exact
+    resource_type_regex: "^aws_s3_bucket$"
+    componentSubType: storage
+    cloud_provider: aws
+  - id: aws_s3_family
+    resource_type_regex: "^aws_s3_"
+    componentSubType: storage
+    cloud_provider: aws
+  - id: aws_lambda_function
+    resource_type_regex: "^aws_lambda_function$"
+    componentSubType: function
+    cloud_provider: aws
+  - id: aws_sqs_queue
+    resource_type_regex: "^aws_sqs_queue$"
+    componentSubType: queue
+    cloud_provider: aws
+  - id: aws_sns_topic
+    resource_type_regex: "^aws_sns_topic$"
+    componentSubType: queue
+    cloud_provider: aws
+  - id: aws_api_gateway_rest_api
+    resource_type_regex: "^aws_api_gateway_rest_api$"
+    componentSubType: api
+    cloud_provider: aws
+  - id: aws_api_gateway_resource
+    resource_type_regex: "^aws_api_gateway_resource$"
+    componentSubType: api
+    cloud_provider: aws
+  - id: aws_api_gateway_method
+    resource_type_regex: "^aws_api_gateway_method$"
+    componentSubType: api
+    cloud_provider: aws
+  - id: aws_api_gateway_integration
+    resource_type_regex: "^aws_api_gateway_integration$"
+    componentSubType: api
+    cloud_provider: aws
+  - id: aws_api_gateway_deployment
+    resource_type_regex: "^aws_api_gateway_deployment$"
+    componentSubType: api
+    cloud_provider: aws
+  - id: aws_api_gatewayv2_api
+    resource_type_regex: "^aws_api_gatewayv2_api$"
+    componentSubType: api
+    cloud_provider: aws
+  - id: aws_cognito_user_pool
+    resource_type_regex: "^aws_cognito_user_pool$"
+    componentSubType: auth_service
+    cloud_provider: aws
+  - id: aws_iam_family
+    resource_type_regex: "^aws_iam_"
+    componentSubType: auth_service
+    cloud_provider: aws
+  - id: aws_lambda_permission
+    resource_type_regex: "^aws_lambda_permission$"
+    componentSubType: auth_service
+    cloud_provider: aws
+  - id: aws_ecs_service
+    resource_type_regex: "^aws_ecs_service$"
+    componentSubType: container
+    cloud_provider: aws
+  - id: aws_apprunner_service
+    resource_type_regex: "^aws_apprunner_service$"
+    componentSubType: service
+    cloud_provider: aws
+  - id: aws_eks_cluster
+    resource_type_regex: "^aws_eks_cluster$"
+    componentSubType: container
+    cloud_provider: aws
+  # AWS — extended families (parity with TS/Python db / cache / messaging / compute / config).
+  - id: aws_rds_family
+    resource_type_regex: "^aws_rds_"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_docdb_family
+    resource_type_regex: "^aws_docdb_"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_neptune_family
+    resource_type_regex: "^aws_neptune_"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_redshift_family
+    resource_type_regex: "^aws_redshift_"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_timestream_family
+    resource_type_regex: "^aws_timestream"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_qldb_family
+    resource_type_regex: "^aws_qldb_"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_dynamodb_family
+    resource_type_regex: "^aws_dynamodb_"
+    componentSubType: database
+    cloud_provider: aws
+  - id: aws_elasticache_family
+    resource_type_regex: "^aws_elasticache_"
+    componentSubType: cache
+    cloud_provider: aws
+  - id: aws_memorydb_family
+    resource_type_regex: "^aws_memorydb_"
+    componentSubType: cache
+    cloud_provider: aws
+  - id: aws_dax_family
+    resource_type_regex: "^aws_dax_"
+    componentSubType: cache
+    cloud_provider: aws
+  - id: aws_kinesis_family
+    resource_type_regex: "^aws_kinesis_"
+    componentSubType: queue
+    cloud_provider: aws
+  - id: aws_msk_family
+    resource_type_regex: "^aws_msk_"
+    componentSubType: queue
+    cloud_provider: aws
+  - id: aws_eventbridge_family
+    resource_type_regex: "^aws_cloudwatch_event_"
+    componentSubType: queue
+    cloud_provider: aws
+  - id: aws_scheduler_family
+    resource_type_regex: "^aws_scheduler_"
+    componentSubType: queue
+    cloud_provider: aws
+  - id: aws_ecs_family
+    resource_type_regex: "^aws_ecs_"
+    componentSubType: container
+    cloud_provider: aws
+  - id: aws_eks_family
+    resource_type_regex: "^aws_eks_"
+    componentSubType: container
+    cloud_provider: aws
+  - id: aws_elastic_beanstalk_family
+    resource_type_regex: "^aws_elastic_beanstalk_"
+    componentSubType: container
+    cloud_provider: aws
+  - id: aws_batch_family
+    resource_type_regex: "^aws_batch_"
+    componentSubType: container
+    cloud_provider: aws
+  - id: aws_apigatewayv2_family
+    resource_type_regex: "^aws_apigatewayv2_"
+    componentSubType: api
+    cloud_provider: aws
+  - id: aws_cognito_family
+    resource_type_regex: "^aws_cognito_"
+    componentSubType: auth_service
+    cloud_provider: aws
+  - id: aws_secretsmanager_family
+    resource_type_regex: "^aws_secretsmanager_"
+    componentSubType: config
+    cloud_provider: aws
+  - id: aws_ssm_parameter_family
+    resource_type_regex: "^aws_ssm_parameter"
+    componentSubType: config
+    cloud_provider: aws
+  - id: aws_ssm_document
+    resource_type_regex: "^aws_ssm_document$"
+    componentSubType: config
+    cloud_provider: aws
+  - id: hashicorp_random_family
+    resource_type_regex: "^random_"
+    componentSubType: application
+    cloud_provider: terraform
+  - id: archive_file
+    resource_type_regex: "^archive_file$"
+    componentSubType: application
+    cloud_provider: terraform
+  - id: google_sql_database_instance
+    resource_type_regex: "^google_sql_database_instance$"
+    componentSubType: database
+    cloud_provider: gcp
+  - id: google_storage_bucket
+    resource_type_regex: "^google_storage_bucket$"
+    componentSubType: storage
+    cloud_provider: gcp
+  - id: google_cloudfunctions_function
+    resource_type_regex: "^google_cloudfunctions_function$"
+    componentSubType: function
+    cloud_provider: gcp
+  - id: google_pubsub_topic
+    resource_type_regex: "^google_pubsub_topic$"
+    componentSubType: queue
+    cloud_provider: gcp
+  - id: google_bigquery_family
+    resource_type_regex: "^google_bigquery_"
+    componentSubType: database
+    cloud_provider: gcp
+  - id: google_spanner_family
+    resource_type_regex: "^google_spanner_"
+    componentSubType: database
+    cloud_provider: gcp
+  - id: google_firestore_family
+    resource_type_regex: "^google_firestore_"
+    componentSubType: database
+    cloud_provider: gcp
+  - id: google_datastore_family
+    resource_type_regex: "^google_datastore_"
+    componentSubType: database
+    cloud_provider: gcp
+  - id: google_redis_instance
+    resource_type_regex: "^google_redis_instance$"
+    componentSubType: cache
+    cloud_provider: gcp
+  - id: google_memcache_instance
+    resource_type_regex: "^google_memcache_instance$"
+    componentSubType: cache
+    cloud_provider: gcp
+  - id: google_storage_family
+    resource_type_regex: "^google_storage_"
+    componentSubType: storage
+    cloud_provider: gcp
+  - id: google_pubsub_family
+    resource_type_regex: "^google_pubsub_"
+    componentSubType: queue
+    cloud_provider: gcp
+  - id: google_cloud_tasks_family
+    resource_type_regex: "^google_cloud_tasks_"
+    componentSubType: queue
+    cloud_provider: gcp
+  - id: google_cloud_scheduler_family
+    resource_type_regex: "^google_cloud_scheduler_"
+    componentSubType: queue
+    cloud_provider: gcp
+  - id: google_api_gateway_family
+    resource_type_regex: "^google_api_gateway_"
+    componentSubType: api
+    cloud_provider: gcp
+  - id: google_apigateway_family
+    resource_type_regex: "^google_apigateway_"
+    componentSubType: api
+    cloud_provider: gcp
+  - id: google_endpoints_service
+    resource_type_regex: "^google_endpoints_service$"
+    componentSubType: api
+    cloud_provider: gcp
+  - id: google_cloud_run_service
+    resource_type_regex: "^google_cloud_run_(v2_)?service$"
+    componentSubType: service
+    cloud_provider: gcp
+  - id: google_cloud_run_family
+    resource_type_regex: "^google_cloud_run_"
+    componentSubType: container
+    cloud_provider: gcp
+  - id: google_container_cluster
+    resource_type_regex: "^google_container_cluster$"
+    componentSubType: container
+    cloud_provider: gcp
+  - id: google_container_node_pool
+    resource_type_regex: "^google_container_node_pool$"
+    componentSubType: container
+    cloud_provider: gcp
+  - id: google_cloudfunctions2_family
+    resource_type_regex: "^google_cloudfunctions2_"
+    componentSubType: function
+    cloud_provider: gcp
+  - id: google_iam_family
+    resource_type_regex: "^google_(project|organization|folder|billing_account|service_account)_iam_"
+    componentSubType: auth_service
+    cloud_provider: gcp
+  - id: google_service_account
+    resource_type_regex: "^google_service_account$"
+    componentSubType: auth_service
+    cloud_provider: gcp
+  - id: google_kms_family
+    resource_type_regex: "^google_kms_"
+    componentSubType: auth_service
+    cloud_provider: gcp
+  - id: google_secret_manager_family
+    resource_type_regex: "^google_secret_manager_"
+    componentSubType: config
+    cloud_provider: gcp
+  - id: azurerm_sql_database
+    resource_type_regex: "^azurerm_sql_database$"
+    componentSubType: database
+    cloud_provider: azure
+  - id: azurerm_storage_account
+    resource_type_regex: "^azurerm_storage_account$"
+    componentSubType: storage
+    cloud_provider: azure
+  - id: azurerm_function_app
+    resource_type_regex: "^azurerm_function_app$"
+    componentSubType: function
+    cloud_provider: azure
+  - id: azurerm_linux_function_app
+    resource_type_regex: "^azurerm_linux_function_app$"
+    componentSubType: function
+    cloud_provider: azure
+  - id: azurerm_windows_function_app
+    resource_type_regex: "^azurerm_windows_function_app$"
+    componentSubType: function
+    cloud_provider: azure
+  - id: azurerm_linux_web_app
+    resource_type_regex: "^azurerm_linux_web_app$"
+    componentSubType: service
+    cloud_provider: azure
+  - id: azurerm_windows_web_app
+    resource_type_regex: "^azurerm_windows_web_app$"
+    componentSubType: service
+    cloud_provider: azure
+  - id: azurerm_cosmosdb_family
+    resource_type_regex: "^azurerm_cosmosdb_"
+    componentSubType: database
+    cloud_provider: azure
+  - id: azurerm_postgresql_family
+    resource_type_regex: "^azurerm_postgresql_"
+    componentSubType: database
+    cloud_provider: azure
+  - id: azurerm_mysql_family
+    resource_type_regex: "^azurerm_mysql_"
+    componentSubType: database
+    cloud_provider: azure
+  - id: azurerm_mariadb_family
+    resource_type_regex: "^azurerm_mariadb_"
+    componentSubType: database
+    cloud_provider: azure
+  - id: azurerm_mssql_family
+    resource_type_regex: "^azurerm_mssql_"
+    componentSubType: database
+    cloud_provider: azure
+  - id: azurerm_redis_family
+    resource_type_regex: "^azurerm_redis_"
+    componentSubType: cache
+    cloud_provider: azure
+  - id: azurerm_kusto_family
+    resource_type_regex: "^azurerm_kusto_"
+    componentSubType: database
+    cloud_provider: azure
+  - id: azurerm_storage_family
+    resource_type_regex: "^azurerm_storage_"
+    componentSubType: storage
+    cloud_provider: azure
+  - id: azurerm_servicebus_family
+    resource_type_regex: "^azurerm_servicebus_"
+    componentSubType: queue
+    cloud_provider: azure
+  - id: azurerm_eventhub_family
+    resource_type_regex: "^azurerm_eventhub"
+    componentSubType: queue
+    cloud_provider: azure
+  - id: azurerm_relay_family
+    resource_type_regex: "^azurerm_relay_"
+    componentSubType: queue
+    cloud_provider: azure
+  - id: azurerm_api_management
+    resource_type_regex: "^azurerm_api_management"
+    componentSubType: api
+    cloud_provider: azure
+  - id: azurerm_kubernetes_cluster
+    resource_type_regex: "^azurerm_kubernetes_cluster$"
+    componentSubType: container
+    cloud_provider: azure
+  - id: azurerm_container_family
+    resource_type_regex: "^azurerm_container_"
+    componentSubType: container
+    cloud_provider: azure
+  - id: azurerm_role_family
+    resource_type_regex: "^azurerm_(role_assignment|role_definition|user_assigned_identity)"
+    componentSubType: auth_service
+    cloud_provider: azure
+  - id: azurerm_key_vault_family
+    resource_type_regex: "^azurerm_key_vault"
+    componentSubType: config
+    cloud_provider: azure
+  - id: azapi_resource
+    resource_type_regex: "^azapi_"
+    componentSubType: application
+    cloud_provider: azure
+  - id: aws_default_family
+    resource_type_regex: "^aws_"
+    componentSubType: application
+    cloud_provider: aws
+  - id: google_default_family
+    resource_type_regex: "^google_"
+    componentSubType: application
+    cloud_provider: gcp
+  - id: azurerm_default_family
+    resource_type_regex: "^azurerm_"
+    componentSubType: application
+    cloud_provider: azure
+  - id: kubernetes_deployment
+    resource_type_regex: "^kubernetes_deployment$"
+    componentSubType: service
+    cloud_provider: kubernetes
+  - id: kubernetes_service
+    resource_type_regex: "^kubernetes_service$"
+    componentSubType: api
+    cloud_provider: kubernetes
+  - id: kubernetes_ingress_v1
+    resource_type_regex: "^kubernetes_ingress_v1$"
+    componentSubType: api
+    cloud_provider: kubernetes
+  - id: kubernetes_secret
+    resource_type_regex: "^kubernetes_secret$"
+    componentSubType: config
+    cloud_provider: kubernetes
+  - id: kubernetes_persistent_volume_claim
+    resource_type_regex: "^kubernetes_persistent_volume_claim$"
+    componentSubType: storage
+    cloud_provider: kubernetes
+  - id: kubernetes_namespace
+    resource_type_regex: "^kubernetes_namespace$"
+    componentSubType: container
+    cloud_provider: kubernetes
+  - id: kubernetes_default_family
+    resource_type_regex: "^kubernetes_"
+    componentSubType: service
+    cloud_provider: kubernetes
+  - id: fallback
+    resource_type_regex: ".*"
+    componentSubType: application
+    cloud_provider: unknown
+
+provider_service_names:
+  - provider_key_regex: "^aws$"
+    serviceName: Amazon Web Services
+  - provider_key_regex: "^google$"
+    serviceName: Google Cloud
+  - provider_key_regex: "^(azurerm|azapi)$"
+    serviceName: Microsoft Azure
+  - provider_key_regex: "^kubernetes$"
+    serviceName: Kubernetes

@@ -1,0 +1,7 @@
+{
+  "name": "typescript-dependency-manifests-e2e",
+  "private": true,
+  "dependencies": {
+    "twilio": "^5.0.0"
+  }
+}

@@ -1,0 +1,169 @@
+---
+# Known third-party services used by the CLI classifier.
+# DP-P0-CLI-202 – dedicated catalog for third_party components.
+
+third_parties:
+  # Payment processors.
+  - serviceName: stripe
+    matchKeys:
+      - stripe
+    type: third_party
+    subType: payment_processor
+
+  - serviceName: braintree
+    matchKeys:
+      - braintree
+      - "api.braintreepayments.com"
+    type: third_party
+    subType: payment_processor
+
+  - serviceName: adyen
+    matchKeys:
+      - adyen
+      - "checkout.adyen.com"
+    type: third_party
+    subType: payment_processor
+
+  - serviceName: paypal
+    matchKeys:
+      - paypal
+      - "api.paypal.com"
+      - "paypalobjects.com"
+    type: third_party
+    subType: payment_processor
+
+  # Email/SaaS providers.
+  - serviceName: sendgrid
+    matchKeys:
+      - sendgrid
+    type: third_party
+    subType: saas_service
+
+  - serviceName: twilio
+    matchKeys:
+      - twilio
+    type: third_party
+    subType: saas_service
+
+  - serviceName: firebase
+    matchKeys:
+      - firebase
+    type: third_party
+    subType: saas_service
+
+  # Database / BaaS platforms.
+  - serviceName: supabase
+    matchKeys:
+      - supabase
+      - "supabase.co"
+      - "supabase.com"
+    type: third_party
+    subType: saas_service
+
+  # API / AI providers.
+  - serviceName: openai
+    matchKeys:
+      - openai
+    type: third_party
+    subType: ai_provider
+
+  - serviceName: anthropic
+    matchKeys:
+      - anthropic
+      - '@anthropic-ai/'
+      - 'api.anthropic.com'
+    type: third_party
+    subType: ai_provider
+
+  - serviceName: openrouter
+    matchKeys:
+      - openrouter
+      - '@openrouter/'
+      - openrouter.ai
+      - openrouter.com
+    type: third_party
+    subType: ai_provider
+
+  - serviceName: google_ai
+    matchKeys:
+      - google_ai
+      - 'generativelanguage.googleapis.com'
+      - '@google-cloud/vertexai'
+      - vertexai
+    type: third_party
+    subType: ai_provider
+
+  - serviceName: clipdrop
+    matchKeys:
+      - clipdrop
+      - clipdrop-api.co
+    type: third_party
+    subType: ai_provider
+
+  - serviceName: thenextleg
+    matchKeys:
+      - thenextleg
+      - thenextleg.io
+    type: third_party
+    subType: ai_provider
+
+  - serviceName: vectorizer
+    matchKeys:
+      - vectorizer
+      - vectorizer.ai
+    type: third_party
+    subType: ai_provider
+
+  # Cloud providers.
+  - serviceName: aws
+    matchKeys:
+      - aws
+      - "@aws-sdk/"
+    type: third_party
+    subType: cloud_provider
+
+  - serviceName: gcp
+    matchKeys:
+      - gcp
+      - "@google-cloud/"
+      - google-cloud
+    type: third_party
+    subType: cloud_provider
+
+  - serviceName: azure
+    matchKeys:
+      - azure
+      - "@azure/"
+    type: third_party
+    subType: cloud_provider
+
+  # Auth & identity providers.
+  - serviceName: google_auth
+    matchKeys:
+      - "accounts.google.com"
+      - "oauth2.googleapis.com"
+      - "www.googleapis.com/oauth2"
+      - "google-auth-library"
+      - "google_auth_oauthlib"
+      - "@react-oauth/google"
+      - "googleapis"
+    type: third_party
+    subType: saas_service
+
+  - serviceName: auth0
+    matchKeys:
+      - auth0
+      - "auth0.com"
+      - "AUTH0_"
+    type: third_party
+    subType: saas_service
+
+  # Error monitoring / observability.
+  - serviceName: sentry
+    matchKeys:
+      - sentry
+      - "sentry.io"
+      - "sentry_sdk"
+    type: third_party
+    subType: saas_service
+

@@ -1,0 +1,167 @@
+---
+# Shared third-party detection config for external API calls / SDKs.
+# Language-agnostic structure; TS/JS analyzer is the first consumer.
+#
+# This file defines *how* to recognize external API calls and known services
+# (Stripe, SendGrid, Twilio, etc.). The classifier then uses
+# classifier/third-party.classifier.yaml to map serviceName → third_party components.
+
+http_clients:
+  - clientId: fetch_axios_got
+    patternId: external_api_call
+    regexes:
+      - "\\b(fetch|axios\\.(get|post|put|delete|patch)|got)\\s*\\(\\s*[\"'`](https?:\\/\\/[^\"'`]+)[\"'`]"
+    confidence: 0.9
+  # Literal https URL in object config (e.g. axios({ url: "https://api.vendor/..." })).
+  - clientId: object_url_literal_https
+    patternId: external_api_call
+    regexes:
+      - "\\b(url)()\\s*:\\s*[\"'`](https?:\\/\\/[^\"'`]+)[\"'`]"
+    confidence: 0.8
+
+# url_host_patterns: optional overrides when the auto-derived registrable host
+# (last two DNS labels) is not the canonical catalog key — e.g. api.stripe.com → stripe.
+# Unknown vendors do not need entries: detection falls back to hostname-based keys.
+services:
+  - serviceName: stripe
+    patternId: external_api_call
+    importFragments:
+      - stripe
+    confidence: 0.85
+    url_host_patterns:
+      - stripe.com
+      - api.stripe.com
+  - serviceName: sendgrid
+    patternId: external_api_call
+    importFragments:
+      - sendgrid
+    confidence: 0.85
+    url_host_patterns:
+      - sendgrid.com
+  - serviceName: twilio
+    patternId: external_api_call
+    importFragments:
+      - twilio
+    confidence: 0.85
+    url_host_patterns:
+      - twilio.com
+      - api.twilio.com
+  - serviceName: openai
+    patternId: external_api_call
+    importFragments:
+      - openai
+    confidence: 0.85
+    url_host_patterns:
+      - openai.com
+      - api.openai.com
+  - serviceName: anthropic
+    patternId: external_api_call
+    importFragments:
+      - '@anthropic-ai/'
+      - anthropic
+    confidence: 0.85
+    url_host_patterns:
+      - anthropic.com
+      - api.anthropic.com
+  - serviceName: openrouter
+    patternId: external_api_call
+    importFragments:
+      - openrouter
+      - '@openrouter/'
+    confidence: 0.85
+    url_host_patterns:
+      - openrouter.ai
+      - openrouter.com
+  - serviceName: google_ai
+    patternId: external_api_call
+    importFragments:
+      - '@google/genai'
+      - '@google-ai/'
+      - '@google-cloud/vertexai'
+      - vertexai
+    confidence: 0.85
+    url_host_patterns:
+      - generativelanguage.googleapis.com
+      - aiplatform.googleapis.com
+      - vertexai.googleapis.com
+  - serviceName: aws
+    patternId: external_api_call
+    importFragments:
+      - "@aws-sdk/"
+      - boto3
+    confidence: 0.85
+    url_host_patterns:
+      - amazonaws.com
+      - aws.amazon.com
+  - serviceName: auth0
+    patternId: external_api_call
+    importFragments:
+      - "@auth0/"
+      - "auth0"
+    confidence: 0.85
+    url_host_patterns:
+      - auth0.com
+      - auth0
+  - serviceName: firebase
+    patternId: external_api_call
+    importFragments:
+      - firebase
+    confidence: 0.85
+    url_host_patterns:
+      - firebase.com
+      - firebase.google
+      - firebasestorage.googleapis.com
+
+  # Database / BaaS platforms used for auth, storage, and database.
+  - serviceName: supabase
+    patternId: external_api_call
+    importFragments:
+      - "@supabase/supabase-js"
+      - supabase
+      - supabase-py
+      - supabase_py
+    confidence: 0.85
+    url_host_patterns:
+      - supabase.co
+      - supabase.com
+
+  # Additional payment processors.
+  - serviceName: braintree
+    patternId: external_api_call
+    importFragments:
+      - braintree
+    confidence: 0.85
+    url_host_patterns:
+      - braintreepayments.com
+      - api.braintreepayments.com
+
+  - serviceName: adyen
+    patternId: external_api_call
+    importFragments:
+      - adyen
+    confidence: 0.85
+    url_host_patterns:
+      - adyen.com
+      - checkout.adyen.com
+
+  - serviceName: paypal
+    patternId: external_api_call
+    importFragments:
+      - paypal
+    confidence: 0.85
+    url_host_patterns:
+      - paypal.com
+      - api.paypal.com
+      - paypalobjects.com
+
+  # Error monitoring / observability.
+  - serviceName: sentry
+    patternId: external_api_call
+    importFragments:
+      - "@sentry/"
+      - sentry
+    confidence: 0.85
+    url_host_patterns:
+      - sentry.io
+      - ingest.sentry.io
+
