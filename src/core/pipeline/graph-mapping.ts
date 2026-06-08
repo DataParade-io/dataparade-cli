@@ -32,6 +32,7 @@ import {
   isMixedAppTerraformScan,
   shouldUseTerraformMinimalServiceDiagramLayout,
 } from "./terraform-minimal-services";
+import { inferDataFlowProtocol } from "./infer-data-flow-protocol";
 
 function stripCodeFromSourceLocation(
   loc: SourceLocation | undefined,
@@ -205,6 +206,11 @@ function mapDataFlowToEdge(
 
   if (flow.actions && flow.actions.length > 0) {
     engineering.actions = flow.actions;
+  }
+
+  const protocol = inferDataFlowProtocol(flow);
+  if (protocol) {
+    engineering.protocol = protocol;
   }
 
   const privacy: Record<string, unknown> = {

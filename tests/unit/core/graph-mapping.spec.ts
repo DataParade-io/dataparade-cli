@@ -128,6 +128,7 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
     const properties = (edge.data as any).properties;
 
     expect(properties.engineering.transferType).toBe("api_call");
+    expect(properties.engineering.protocol).toBe("rest");
     expect(properties.engineering.name).toContain("Test Application");
     expect(properties.engineering.actions).toEqual(["read"]);
 
@@ -147,6 +148,60 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
     expect(properties.targetScope).toBe("local");
     expect(properties.targetScopeConfidence).toBe("high");
     expect(properties.targetScopeReason).toBe("same-section-id");
+  });
+
+  it("sets engineering.protocol to graphql when flow endpoint is a GraphQL URL", () => {
+    const scanResult: ScanResult = {
+      components: [
+        {
+          id: "component-1",
+          name: "API Service",
+          type: "asset",
+          subType: "api",
+          confidence: 0.9,
+          detectedFrom: [{ pattern: "express_route" }],
+          sourceLocations: [
+            { filePath: "src/api.ts", startLine: 1, endLine: 10 },
+          ],
+          properties: {},
+        },
+        {
+          id: "component-2",
+          name: "External API",
+          type: "third_party",
+          subType: "saas_service",
+          confidence: 0.9,
+          detectedFrom: [{ pattern: "external_api_call" }],
+          sourceLocations: [
+            { filePath: "src/api.ts", startLine: 20, endLine: 30 },
+          ],
+          properties: {},
+        },
+      ],
+      dataFlows: [
+        {
+          id: "flow-gql",
+          sourceComponentId: "component-1",
+          targetComponentId: "component-2",
+          type: "api_call",
+          confidence: 0.9,
+          endpoint: "https://api.example.com/graphql",
+          method: "POST",
+        },
+      ],
+      filesScanned: 1,
+      filesSkipped: 0,
+      totalLines: 50,
+      scanDurationMs: 5,
+      warnings: [],
+      errors: [],
+    };
+
+    const graph = buildDiagramGraphFromScanResult(scanResult);
+    const properties = (graph.edges[0]?.data as { properties?: { engineering?: { protocol?: string } } })
+      ?.properties;
+
+    expect(properties?.engineering?.protocol).toBe("graphql");
   });
 
   it("places managed provider service nodes after provider in layout", () => {

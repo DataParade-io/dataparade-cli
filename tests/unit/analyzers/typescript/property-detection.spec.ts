@@ -134,6 +134,19 @@ describe("property-detection", () => {
       expect(out.integration_method).toBe("api");
       expect(out.authentication_method).toBe("api_key");
     });
+
+    it("sets api_type graphql when url path is GraphQL", () => {
+      const finding = makeFinding({
+        pattern: "external_api_call",
+        name: "Graph API",
+        properties: {
+          serviceName: "internal",
+          url: "https://api.example.com/graphql",
+        },
+      });
+      const out = getPropertiesFromFinding(finding);
+      expect(out.api_type).toBe("graphql");
+    });
   });
 
   describe("express_route", () => {
@@ -146,6 +159,17 @@ describe("property-detection", () => {
       const out = getPropertiesFromFinding(finding);
       expect(out.request_validation).toBe(true);
       expect(out.connection_encryption).toBe(true);
+      expect(out.api_type).toBe("rest");
+    });
+
+    it("sets api_type graphql for GraphQL route path", () => {
+      const finding = makeFinding({
+        pattern: "express_route",
+        name: "POST /graphql",
+        properties: { httpMethods: ["POST"], path: "/graphql" },
+      });
+      const out = getPropertiesFromFinding(finding);
+      expect(out.api_type).toBe("graphql");
     });
   });
 });

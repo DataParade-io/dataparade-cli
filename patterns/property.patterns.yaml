@@ -28,6 +28,7 @@ regexes:
   database_ssl_content: "\\bssl\\s*:\\s*true|rejectUnauthorized|\\.ssl\\s*\\(|tls\\s*:|encrypt\\s*:\\s*true"
   content_backup: "backup|snapshot|replication|point_in_time"
   content_https: "https://|ssl:\\s*true|secure:\\s*true"
+  graphql_endpoint: "/graphql|\\bgraphql\\b"
 
 # Env variable → cloud_provider value (order matters: first match wins)
 cloud_provider_env:
@@ -332,7 +333,23 @@ inference_rules:
 
   external_api_call:
     - when:
-        exists: serviceName
+        regex:
+          input: url
+          regex: graphql_endpoint
+      set:
+        integration_method: api
+        authentication_method: api_key
+        integration_status: active
+        api_type: graphql
+        sdk_available: true
+
+    - when:
+        allOf:
+          - exists: serviceName
+          - not:
+              regex:
+                input: url
+                regex: graphql_endpoint
       set:
         integration_method: api
         authentication_method: api_key
@@ -383,9 +400,24 @@ inference_rules:
 
   express_route:
     - when:
-        anyOf:
-          - exists: httpMethods
-          - exists: path
+        regex:
+          input: path
+          regex: graphql_endpoint
+      set:
+        request_validation: true
+        connection_encryption: true
+        api_type: graphql
+        https_enforced: true
+
+    - when:
+        allOf:
+          - anyOf:
+              - exists: httpMethods
+              - exists: path
+          - not:
+              regex:
+                input: path
+                regex: graphql_endpoint
       set:
         request_validation: true
         connection_encryption: true

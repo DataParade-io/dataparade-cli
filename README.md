@@ -112,6 +112,7 @@ The CLI emits **all** Engineering, Privacy, and Security property keys (from the
 - Database: `connection_encryption`, `backup_frequency`, `audit_logging_enabled`, etc. when patterns match.
 - Auth: `mfa_required`, `authentication_method`, `sso_integration` from auth middleware patterns.
 - Routes: `request_validation`, `api_type`, `https_enforced` for route patterns.
+- Data flow edges (graph mapping): `engineering.protocol` is set to `rest` or `graphql` for `api_call` flows when the endpoint, method, or source code indicates HTTP REST vs GraphQL (see `infer-data-flow-protocol.ts`). Pattern rules in `property.patterns.yaml` also set `api_type` to `graphql` for `/graphql` URLs and paths.
 
 **Terraform / IaC (`.tf` / `.tfvars`):**
 
