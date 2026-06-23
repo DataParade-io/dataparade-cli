@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/node";
 const DEFAULT_SENTRY_DSN =
   "https://f0f0617fca41c8c537c50553fb9a8eac@o4510835264192512.ingest.us.sentry.io/4510835291455488";
 
-export type ScanCliAiMode = "byok" | "platform" | "none";
+export type ScanCliAiMode = "byok" | "platform" | "hosted_worker" | "none";
 
 export type ReportScanCliErrorInput = {
   error: unknown;

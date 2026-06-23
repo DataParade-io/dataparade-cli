@@ -6,6 +6,10 @@ export function validateAiInferenceCredentials(
   const errors: string[] = [];
   if (!config.enableAiInference) return errors;
 
+  if (config.hostedInferProxyUrl?.trim()) {
+    return errors;
+  }
+
   const hasByok =
     Boolean(config.aiProvider?.trim()) &&
     Boolean(config.aiModel?.trim()) &&
@@ -36,8 +40,9 @@ export function validateAiInferenceCredentials(
 
 export function resolveAiMode(
   config: ScanConfiguration,
-): "byok" | "platform" | "none" {
+): "byok" | "platform" | "hosted_worker" | "none" {
   if (!config.enableAiInference) return "none";
+  if (config.hostedInferProxyUrl?.trim()) return "hosted_worker";
   if (config.aiApiKey?.trim()) return "byok";
   if (config.workspaceApiKey?.trim()) return "platform";
   return "none";

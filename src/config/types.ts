@@ -59,6 +59,7 @@ export interface CliConfigEnv {
   aiToolLoopMaxSearches?: number;
   aiThirdPartyDataFlowEnabled?: boolean;
   workspaceApiKey?: string;
+  hostedInferProxyUrl?: string;
 }
 
 // Flags we care about from the scan command

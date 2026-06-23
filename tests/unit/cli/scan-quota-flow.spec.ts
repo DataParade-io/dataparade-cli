@@ -31,11 +31,13 @@ describe("scan quota flow", () => {
   afterEach(() => {
     fs.rmSync(tempRoot, { recursive: true, force: true });
     delete process.env.DATAPARADE_WORKSPACE_API_KEY;
+    delete process.env.DATAPARADE_SKIP_AUTO_UPLOAD;
     process.exitCode = 0;
   });
 
   it("skips quota API when workspace key is present but AI is disabled", async () => {
     process.env.DATAPARADE_WORKSPACE_API_KEY = "dp_live_test";
+    process.env.DATAPARADE_SKIP_AUTO_UPLOAD = "true";
 
     await run(["node", "cli", "scan", tempRoot]);
 

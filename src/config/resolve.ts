@@ -330,6 +330,9 @@ export function resolveScanConfiguration(
   if (envConfig.workspaceApiKey) {
     overrides.workspaceApiKey = envConfig.workspaceApiKey;
   }
+  if (envConfig.hostedInferProxyUrl) {
+    overrides.hostedInferProxyUrl = envConfig.hostedInferProxyUrl;
+  }
   if (envConfig.aiModel) {
     overrides.aiModel = envConfig.aiModel;
   }

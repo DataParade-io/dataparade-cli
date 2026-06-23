@@ -23,6 +23,13 @@ export function resolveScanAiInference(env: NodeJS.ProcessEnv): string | undefin
   return value || undefined;
 }
 
+export function resolveHostedInferProxyUrl(
+  env: NodeJS.ProcessEnv,
+): string | undefined {
+  const value = env.SCAN_HOSTED_INFER_PROXY_URL?.trim();
+  return value || undefined;
+}
+
 function parseTruthyEnvFlag(value: string | undefined): boolean {
   if (!value) return false;
   const normalized = value.trim().toLowerCase();

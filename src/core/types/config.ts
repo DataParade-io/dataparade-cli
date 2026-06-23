@@ -50,10 +50,12 @@ export interface ScanConfiguration {
   /** DataParade workspace API key (quota + platform LLM proxy). */
   workspaceApiKey?: string;
   /** How LLM inference is billed: byok (direct provider) or platform (API proxy). */
-  aiMode?: "byok" | "platform" | "none";
+  aiMode?: "byok" | "platform" | "hosted_worker" | "none";
   /** Base URL for platform API (preflight / infer / complete). */
   platformApiBaseUrl?: string;
   /** CLI quota job id from preflight (platform mode). */
   cliQuotaJobId?: string;
+  /** Loopback infer URL when hosted scan runs inside VPC scan worker. */
+  hostedInferProxyUrl?: string;
 }
 

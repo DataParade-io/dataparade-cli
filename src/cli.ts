@@ -2,8 +2,11 @@ import "./config/load-cli-env";
 import pathModule from "path";
 import { Command } from "commander";
 
+import pkg from "../package.json";
+
 import type { DiagramGraphJsonSchema } from "./core/schema";
-import { writeDataflowJson } from "./output/json";
+import { buildDataflowWrapper, writeDataflowJson } from "./output/json";
+import { resolveSkipAutoUpload } from "./config/upload-env";
 import { AI_PROVIDER_IDS, type AiProviderId } from "./ai-enrichment/types";
 import type { CliConfigFlags } from "./config/types";
 import { parseAiInferenceScope } from "./config/inference-scope";
@@ -92,7 +95,7 @@ function createProgram(): Command {
   program
     .name("dataparade")
     .description("DataParade CLI - scan codebases for data flow components")
-    .version("0.0.0");
+    .version(pkg.version);
 
   program
     .command("scan <path>")
@@ -180,6 +183,10 @@ function createProgram(): Command {
       `BYOK LLM provider when using your own API key: ${AI_PROVIDER_IDS.join("|")}`,
     )
     .option("--byok-model <model>", "BYOK model name (env: SCAN_BYOK_MODEL)")
+    .option(
+      "--skip-auto-upload",
+      "Do not upload dataflow.json to the dashboard after scan (env: DATAPARADE_SKIP_AUTO_UPLOAD)",
+    )
     .action(
       async (
         path: string,
@@ -211,6 +218,7 @@ function createProgram(): Command {
           apiKey?: string;
           byokProvider?: AiProviderId;
           byokModel?: string;
+          skipAutoUpload?: boolean;
         },
       ) => {
         let cliQuotaJobId: string | undefined;
@@ -505,6 +513,45 @@ function createProgram(): Command {
               // tests can rely on it.
               // eslint-disable-next-line no-console
               console.log(`[scan] dataflow.json written to ${dataflowOutputPath}`);
+
+              const skipAutoUpload =
+                Boolean(options.skipAutoUpload) ||
+                resolveSkipAutoUpload(process.env);
+              if (!skipAutoUpload) {
+                const uploadApiKey = workspaceApiKey;
+                if (!uploadApiKey) {
+                  // eslint-disable-next-line no-console
+                  console.log(
+                    `[scan] Auto-upload skipped (no workspace API key). Run: dataparade upload ${dataflowOutputPath}`,
+                  );
+                } else {
+                  try {
+                    const { runDataflowUpload } = await import(
+                      "./upload/run-upload"
+                    );
+                    const dataflowWrapper = buildDataflowWrapper(
+                      scanResult,
+                      diagramGraph,
+                    );
+                    await runDataflowUpload({
+                      apiKey: uploadApiKey,
+                      dataflow: dataflowWrapper,
+                      projectName: config.projectName,
+                      scanJobId: cliQuotaJobId,
+                      logPrefix: "[scan]",
+                    });
+                  } catch (uploadError) {
+                    const uploadMessage =
+                      uploadError instanceof Error
+                        ? uploadError.message
+                        : "Unknown upload error.";
+                    // eslint-disable-next-line no-console
+                    console.error(
+                      `[scan] Auto-upload failed: ${uploadMessage}`,
+                    );
+                  }
+                }
+              }
             } catch (dataflowError) {
               await reportScanCliError({
                 error: dataflowError,
@@ -583,6 +630,80 @@ function createProgram(): Command {
               // Quota report failure must not mask the original scan error.
             }
           }
+        }
+      },
+    );
+
+  program
+    .command("upload <file>")
+    .description("Upload a dataflow.json file to the dashboard as an import preview")
+    .option(
+      "--project-name <name>",
+      "Assessment name shown in the preview (default: from file metadata if present)",
+    )
+    .option(
+      "--workspace-api-key <key>",
+      "DataParade workspace API key (env: DATAPARADE_WORKSPACE_API_KEY)",
+    )
+    .option("--api-key <key>", "(deprecated) alias for --workspace-api-key")
+    .action(
+      async (
+        file: string,
+        options: {
+          projectName?: string;
+          workspaceApiKey?: string;
+          apiKey?: string;
+        },
+      ) => {
+        const apiKey =
+          options.workspaceApiKey?.trim() ||
+          options.apiKey?.trim() ||
+          resolveWorkspaceApiKey(process.env);
+        if (!apiKey) {
+          // eslint-disable-next-line no-console
+          console.error(
+            "[upload] error: workspace API key is required (DATAPARADE_WORKSPACE_API_KEY or --workspace-api-key)",
+          );
+          process.exitCode = 1;
+          return;
+        }
+
+        const filePath = pathModule.resolve(process.cwd(), file || "dataflow.json");
+        let dataflow: unknown;
+        try {
+          const { readFileSync } = await import("fs");
+          dataflow = JSON.parse(readFileSync(filePath, "utf8")) as unknown;
+        } catch (err) {
+          const message =
+            err instanceof Error ? err.message : "Failed to read dataflow.json";
+          // eslint-disable-next-line no-console
+          console.error(`[upload] error: ${message}`);
+          process.exitCode = 1;
+          return;
+        }
+
+        let projectName = options.projectName?.trim();
+        if (!projectName && dataflow && typeof dataflow === "object") {
+          const meta = (dataflow as { metadata?: { projectName?: unknown } })
+            .metadata;
+          if (typeof meta?.projectName === "string" && meta.projectName.trim()) {
+            projectName = meta.projectName.trim();
+          }
+        }
+
+        try {
+          const { runDataflowUpload } = await import("./upload/run-upload");
+          await runDataflowUpload({
+            apiKey,
+            dataflow,
+            projectName,
+          });
+        } catch (err) {
+          const message =
+            err instanceof Error ? err.message : "Upload failed.";
+          // eslint-disable-next-line no-console
+          console.error(`[upload] error: ${message}`);
+          process.exitCode = 1;
         }
       },
     );

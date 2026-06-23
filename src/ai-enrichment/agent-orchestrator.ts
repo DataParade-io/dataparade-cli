@@ -23,6 +23,7 @@ import { resolveScannedFileExact } from "./scan-paths";
 
 import type { PlatformProxyProviderConfig } from "./providers/platform-proxy-provider";
 import { PlatformProxyProvider } from "./providers/platform-proxy-provider";
+import { HostedWorkerInferProvider } from "./providers/hosted-worker-infer-provider";
 
 export interface AgentOrchestratorOptions {
   provider: AiProviderId;
@@ -42,6 +43,8 @@ export interface AgentOrchestratorOptions {
   skipStructuralHeuristics?: boolean;
   /** Platform-billed LLM via DataParade API proxy. */
   platformProxy?: PlatformProxyProviderConfig;
+  /** Hosted scan in VPC worker: loopback proxy → scan-cli-ai-helper Lambda. */
+  hostedWorkerInferProxyUrl?: string;
 }
 
 const PROPERTY_AGENT_SLICE_SIZE = 12;
@@ -228,7 +231,9 @@ export async function generateAgenticProposals(
   const skipStructural = options.skipStructuralHeuristics === true;
   const provider = options.platformProxy
     ? new PlatformProxyProvider(options.platformProxy)
-    : createAiProvider(options.provider, {
+    : options.hostedWorkerInferProxyUrl?.trim()
+      ? new HostedWorkerInferProvider(options.hostedWorkerInferProxyUrl.trim())
+      : createAiProvider(options.provider, {
         endpoint: options.endpoint,
         model: options.model,
         apiKey: options.apiKey,

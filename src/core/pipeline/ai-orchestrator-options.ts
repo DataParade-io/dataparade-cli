@@ -55,5 +55,11 @@ export function buildAgentOrchestratorOptions(
     base.providerConcurrency = 1;
   }
 
+  if (aiMode === "hosted_worker" && config.hostedInferProxyUrl?.trim()) {
+    base.hostedWorkerInferProxyUrl = config.hostedInferProxyUrl.trim();
+    base.apiKey = undefined;
+    base.providerConcurrency = 1;
+  }
+
   return base;
 }

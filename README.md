@@ -86,6 +86,30 @@ node dist/bin/cli.js scan path/to/your/project
 
 ---
 
+## Upload to dashboard
+
+After a scan, the CLI **auto-uploads** `dataflow.json` when `DATAPARADE_WORKSPACE_API_KEY` is set (from **Workspace → Access keys**). This creates an **import preview draft** in the web app — not a finished assessment. Open the printed URL to review and edit before creating the diagram.
+
+- Opt out: `--skip-auto-upload` or `DATAPARADE_SKIP_AUTO_UPLOAD=true`
+- Without a workspace key, the scan still succeeds; the CLI suggests running `upload` later
+- Upload alone does **not** consume scan quota (platform AI scans still use preflight/complete as before)
+
+```bash
+# Upload an existing file
+node dist/bin/cli.js upload ./dataflow.json --project-name "My service"
+```
+
+Environment:
+
+| Variable | Purpose |
+|----------|---------|
+| `DATAPARADE_WORKSPACE_API_KEY` | Auth for upload (same key as platform AI) |
+| `DATAPARADE_API_BASE_URL` | Backend API (default: production AWS) |
+| `DATAPARADE_APP_URL` | Frontend base for preview links (default: production app) |
+| `DATAPARADE_SKIP_AUTO_UPLOAD` | Skip post-scan upload when `true`/`1` |
+
+---
+
 ## Output: `dataflow.json`
 
 By default (no `--output` flag), the CLI writes `./dataflow.json` in the current working directory.

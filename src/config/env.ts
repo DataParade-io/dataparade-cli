@@ -5,6 +5,7 @@ import {
   resolveByokApiKey,
   resolveByokModel,
   resolveByokProvider,
+  resolveHostedInferProxyUrl,
   resolveScanAiInference,
   resolveWorkspaceApiKey,
 } from "./scan-env";
@@ -54,6 +55,7 @@ export function loadCliConfigEnv(env: NodeJS.ProcessEnv): CliConfigEnv {
   const aiToolLoopMaxSearches = parseNumber(env.SCAN_AI_TOOL_LOOP_MAX_SEARCHES);
   const aiThirdPartyDataFlowEnabled = parseBoolean(env.SCAN_AI_THIRD_PARTY_DATA_FLOW);
   const workspaceApiKey = resolveWorkspaceApiKey(env);
+  const hostedInferProxyUrl = resolveHostedInferProxyUrl(env);
 
   return {
     excludePaths,
@@ -76,5 +78,6 @@ export function loadCliConfigEnv(env: NodeJS.ProcessEnv): CliConfigEnv {
     aiToolLoopMaxSearches,
     aiThirdPartyDataFlowEnabled,
     workspaceApiKey: workspaceApiKey || undefined,
+    hostedInferProxyUrl: hostedInferProxyUrl || undefined,
   };
 }

@@ -47,6 +47,15 @@ describe("validate-scan-ai", () => {
     expect(resolveAiMode(config)).toBe("platform");
   });
 
+  it("accepts hosted worker infer proxy without BYOK or workspace key", () => {
+    const config = baseConfig({
+      enableAiInference: true,
+      hostedInferProxyUrl: "http://127.0.0.1:4567/infer",
+    });
+    expect(validateAiInferenceCredentials(config)).toEqual([]);
+    expect(resolveAiMode(config)).toBe("hosted_worker");
+  });
+
   it("allows workspace key with AI disabled", () => {
     const errors = validateAiInferenceCredentials(
       baseConfig({

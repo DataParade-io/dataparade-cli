@@ -44,9 +44,10 @@ export const scanConfigurationSchema = z.object({
   aiInferenceScope: z.enum(["default", "third_party_only"]).optional(),
   aiVerbose: z.boolean().optional(),
   workspaceApiKey: z.string().min(1).optional(),
-  aiMode: z.enum(["byok", "platform", "none"]).optional(),
+  aiMode: z.enum(["byok", "platform", "hosted_worker", "none"]).optional(),
   platformApiBaseUrl: z.string().min(1).optional(),
   cliQuotaJobId: z.string().min(1).optional(),
+  hostedInferProxyUrl: z.string().min(1).optional(),
 });
 
 export function parseScanConfiguration(input: unknown): ScanConfiguration {
