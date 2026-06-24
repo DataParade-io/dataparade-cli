@@ -25,7 +25,9 @@ describe("output/json - DP-P0-CLI-403", () => {
 
     const graph = buildDiagramGraphFromScanResult(scanResult);
 
-    const wrapper = buildDataflowWrapper(scanResult, graph);
+    const wrapper = buildDataflowWrapper(scanResult, graph, {
+      projectName: "typescript-basic",
+    });
 
     const validation = validateDataflowJson(wrapper);
     expect(validation.ok).toBe(true);
@@ -45,6 +47,7 @@ describe("output/json - DP-P0-CLI-403", () => {
     expect(validation.value.metadata?.scanDurationMs).toBe(
       scanResult.scanDurationMs,
     );
+    expect(validation.value.metadata?.projectName).toBe("typescript-basic");
 
     const outputPath = path.join(
       os.tmpdir(),

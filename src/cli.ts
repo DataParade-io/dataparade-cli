@@ -501,12 +501,16 @@ function createProgram(): Command {
               process.cwd(),
               options.output ?? "dataflow.json",
             );
+            const resolvedProjectName =
+              config.projectName?.trim() ||
+              pathModule.basename(scanEntry.scanRootDir);
 
             try {
               writeDataflowJson({
                 scanResult,
                 graph: diagramGraph,
                 outputPath: dataflowOutputPath,
+                projectName: resolvedProjectName,
               });
 
               // Always print a short message so non-interactive callers and
@@ -532,11 +536,12 @@ function createProgram(): Command {
                     const dataflowWrapper = buildDataflowWrapper(
                       scanResult,
                       diagramGraph,
+                      { projectName: resolvedProjectName },
                     );
                     await runDataflowUpload({
                       apiKey: uploadApiKey,
                       dataflow: dataflowWrapper,
-                      projectName: config.projectName,
+                      projectName: resolvedProjectName,
                       scanJobId: cliQuotaJobId,
                       logPrefix: "[scan]",
                     });

@@ -17,6 +17,8 @@ export interface BuildDataflowWrapperOptions {
    * dataflow.json schema version.
    */
   schemaVersion?: string;
+  /** Assessment / project name shown in the dashboard import preview. */
+  projectName?: string;
 }
 
 /**
@@ -31,12 +33,14 @@ export function buildDataflowWrapper(
   options: BuildDataflowWrapperOptions = {},
 ): DataflowWrapperSchema {
   const schemaVersion = options.schemaVersion ?? "1.0";
+  const projectName = options.projectName?.trim();
 
   const metadata: DataflowMetadataSchema = {
     componentsCount: scanResult.components.length,
     dataFlowsCount: scanResult.dataFlows.length,
     filesScanned: scanResult.filesScanned,
     scanDurationMs: scanResult.scanDurationMs,
+    ...(projectName ? { projectName } : {}),
   };
 
   if (scanResult.aiInferenceSummary) {
@@ -72,6 +76,8 @@ export interface WriteDataflowJsonOptions {
    * Optional schema version to pass through to `buildDataflowWrapper`.
    */
   schemaVersion?: string;
+  /** Assessment / project name stored in wrapper metadata for upload and preview. */
+  projectName?: string;
 }
 
 /**
@@ -87,9 +93,12 @@ export interface WriteDataflowJsonOptions {
  * can emit a non-zero exit code.
  */
 export function writeDataflowJson(options: WriteDataflowJsonOptions): void {
-  const { scanResult, graph, outputPath, schemaVersion } = options;
+  const { scanResult, graph, outputPath, schemaVersion, projectName } = options;
 
-  const wrapper = buildDataflowWrapper(scanResult, graph, { schemaVersion });
+  const wrapper = buildDataflowWrapper(scanResult, graph, {
+    schemaVersion,
+    projectName,
+  });
 
   const validation = validateDataflowJson(wrapper);
   if (!validation.ok) {
