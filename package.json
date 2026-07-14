@@ -1,6 +1,6 @@
 {
   "name": "@dataparade/cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "dataPARADE CLI — scan codebases for privacy and security data flows",
   "publishConfig": {
     "access": "public",
@@ -8,7 +8,7 @@
   },
   "license": "GPL-3.0-or-later",
   "author": "DataParade",
-  "homepage": "https://github.com/DataParade-io/dataparade-cli#readme",
+  "homepage": "https://app.dataparade.com/docs/cli-import-and-zip",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DataParade-io/dataparade-cli.git"
