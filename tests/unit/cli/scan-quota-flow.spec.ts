@@ -67,6 +67,31 @@ describe("scan quota flow", () => {
     errorSpy.mockRestore();
   });
 
+  it("prints scan in progress message when preflight is blocked by running job", async () => {
+    process.env.DATAPARADE_WORKSPACE_API_KEY = "dp_live_test";
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    fetchMock.mockResolvedValueOnce(
+      jsonResponse(
+        {
+          statusCode: 409,
+          message: {
+            code: "scan_already_running",
+            message:
+              "Scan in progress — start a new scan after the current one completes.",
+          },
+        },
+        409,
+      ),
+    );
+
+    await run(["node", "cli", "scan", tempRoot, "--ai-inference"]);
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      "[scan] scan in progress: Scan in progress — start a new scan after the current one completes.",
+    );
+    errorSpy.mockRestore();
+  });
+
   it("reports failed completion when preflight succeeds but config validation fails", async () => {
     process.env.DATAPARADE_WORKSPACE_API_KEY = "dp_live_test";
     fetchMock
@@ -100,5 +125,42 @@ describe("scan quota flow", () => {
     expect(JSON.parse(String(fetchMock.mock.calls[1][1]?.body))).toEqual(
       expect.objectContaining({ status: "failed", failureCode: "scan_failed" })
     );
+  });
+
+  it("prints ready-for-new-scan message after platform scan completes", async () => {
+    process.env.DATAPARADE_WORKSPACE_API_KEY = "dp_live_test";
+    process.env.DATAPARADE_SKIP_AUTO_UPLOAD = "true";
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const isTty = Object.getOwnPropertyDescriptor(process.stdout, "isTTY");
+    Object.defineProperty(process.stdout, "isTTY", {
+      value: true,
+      configurable: true,
+    });
+
+    fetchMock
+      .mockResolvedValueOnce(
+        jsonResponse({
+          allowed: true,
+          jobId: "job-456",
+          scansRemaining: 2,
+          aiTokensRemaining: 1000,
+          suggestedAiBudgetTokens: 100,
+          aiDelivery: "platform_proxy",
+        }),
+      )
+      .mockResolvedValueOnce(jsonResponse({ ok: true }));
+
+    await run(["node", "cli", "scan", tempRoot, "--ai-inference"]);
+
+    expect(logSpy).toHaveBeenCalledWith(
+      "[scan] Scan finished — you can start a new scan now.",
+    );
+
+    if (isTty) {
+      Object.defineProperty(process.stdout, "isTTY", isTty);
+    } else {
+      delete (process.stdout as { isTTY?: boolean }).isTTY;
+    }
+    logSpy.mockRestore();
   });
 });

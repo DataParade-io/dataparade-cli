@@ -1,4 +1,5 @@
 import { getDataparadeApiBaseUrl } from "./dataparade-api-base-url";
+import { readCliApiErrorMessage } from "./read-cli-api-error-message";
 
 /** Thrown when preflight/complete is rejected with HTTP 403 scan_quota_exceeded. */
 export class CliScanQuotaExceededError extends Error {
@@ -7,6 +8,16 @@ export class CliScanQuotaExceededError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "CliScanQuotaExceededError";
+  }
+}
+
+/** Thrown when preflight is rejected with HTTP 409 scan_already_running. */
+export class CliScanAlreadyRunningError extends Error {
+  readonly code = "scan_already_running" as const;
+
+  constructor(message: string) {
+    super(message);
+    this.name = "CliScanAlreadyRunningError";
   }
 }
 
@@ -45,18 +56,22 @@ export async function cliScanPreflight(input: {
   });
 
   if (!res.ok) {
-    let message = `Scan preflight failed (${res.status})`;
+    const fallback = `Scan preflight failed (${res.status})`;
     let code: string | undefined;
+    let message = fallback;
     try {
-      const body = (await res.json()) as { message?: string | string[]; code?: string };
-      code = body.code;
-      if (typeof body.message === "string") message = body.message;
-      else if (Array.isArray(body.message)) message = body.message.join(", ");
+      const body = await res.json();
+      const parsed = readCliApiErrorMessage(body, fallback);
+      code = parsed.code;
+      message = parsed.message;
     } catch {
       // ignore
     }
     if (res.status === 403 && code === "scan_quota_exceeded") {
       throw new CliScanQuotaExceededError(message);
+    }
+    if (res.status === 409 && code === "scan_already_running") {
+      throw new CliScanAlreadyRunningError(message);
     }
     throw new Error(message);
   }
@@ -87,11 +102,11 @@ export async function cliScanComplete(input: {
   );
 
   if (!res.ok) {
-    let message = `Scan complete report failed (${res.status})`;
+    const fallback = `Scan complete report failed (${res.status})`;
+    let message = fallback;
     try {
-      const body = (await res.json()) as { message?: string | string[] };
-      if (typeof body.message === "string") message = body.message;
-      else if (Array.isArray(body.message)) message = body.message.join(", ");
+      const body = await res.json();
+      message = readCliApiErrorMessage(body, fallback).message;
     } catch {
       // ignore
     }

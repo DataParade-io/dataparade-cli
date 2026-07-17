@@ -30,7 +30,7 @@ export class OllamaGenerateFamilyProvider implements AiProvider {
       },
       body: JSON.stringify({
         model,
-        prompt: `${AI_PROVIDER_SYSTEM_PROMPT}\n\nUser payload:\n${request.prompt}`,
+        prompt: `${request.systemPrompt ?? AI_PROVIDER_SYSTEM_PROMPT}\n\nUser payload:\n${request.prompt}`,
         stream: false,
         options: {
           temperature: request.temperature ?? 0.1,

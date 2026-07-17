@@ -45,7 +45,9 @@ export class GenerateContentFamilyProvider implements AiProvider {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        systemInstruction: { parts: [{ text: AI_PROVIDER_SYSTEM_PROMPT }] },
+        systemInstruction: {
+          parts: [{ text: request.systemPrompt ?? AI_PROVIDER_SYSTEM_PROMPT }],
+        },
         contents: [
           {
             role: "user",

@@ -7,6 +7,12 @@ export interface AiProviderRequest {
   endpoint?: string;
   temperature?: number;
   maxTokens?: number;
+  /**
+   * Overrides the bundled enrichment system prompt (DP-P0-CLI-3813).
+   * Set by the DataParade backend on the Platform AI path so the server owns
+   * the system role. Unset for BYOK, which keeps the CLI-bundled prompt.
+   */
+  systemPrompt?: string;
 }
 
 export interface AiProviderUsage {

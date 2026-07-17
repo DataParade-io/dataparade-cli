@@ -235,6 +235,7 @@ function createProgram(): Command {
         let sentryScanRoot: string | undefined;
         let sentryAiMode: ScanCliAiMode | undefined;
         let sentryAiProvider: string | undefined;
+        const isInteractive = process.stdout.isTTY;
         const workspaceApiKey =
           options.workspaceApiKey?.trim() ||
           options.apiKey?.trim() ||
@@ -266,7 +267,6 @@ function createProgram(): Command {
             return;
           }
 
-          const isInteractive = process.stdout.isTTY;
           const [{ scan, createDefaultScanConfiguration }, { buildDiagramGraphFromScanResult }] =
             await Promise.all([
               import("./core/pipeline/orchestrator"),
@@ -647,29 +647,42 @@ function createProgram(): Command {
               failureMessage: exitFailed ? "CLI scan did not complete successfully" : undefined,
             });
             quotaCompletionReported = true;
+            if (isInteractive) {
+              // eslint-disable-next-line no-console
+              console.log(
+                "[scan] Scan finished — you can start a new scan now.",
+              );
+            }
           }
         } catch (err) {
           const message =
             err instanceof Error ? err.message : "Unknown error during scan.";
           fallbackFailureMessage = message;
-          const { CliScanQuotaExceededError } = await import(
-            "./platform-api/scan-quota-client"
-          );
+          const { CliScanQuotaExceededError, CliScanAlreadyRunningError } =
+            await import("./platform-api/scan-quota-client");
           const quotaBlocked = err instanceof CliScanQuotaExceededError;
+          const scanInProgress = err instanceof CliScanAlreadyRunningError;
           await reportScanCliError({
             error: err,
             scanRoot: sentryScanRoot,
             jobId: cliQuotaJobId,
             aiMode: sentryAiMode,
             aiProvider: sentryAiProvider,
-            failurePhase: quotaBlocked ? "preflight" : "scan_command",
-            failureCode: quotaBlocked ? "scan_quota_exceeded" : "scan_exception",
+            failurePhase:
+              quotaBlocked || scanInProgress ? "preflight" : "scan_command",
+            failureCode: quotaBlocked
+              ? "scan_quota_exceeded"
+              : scanInProgress
+                ? "scan_already_running"
+                : "scan_exception",
           });
           // eslint-disable-next-line no-console
           console.error(
             quotaBlocked
               ? `[scan] workspace quota: ${message}`
-              : `Scan failed: ${message}`,
+              : scanInProgress
+                ? `[scan] scan in progress: ${message}`
+                : `Scan failed: ${message}`,
           );
           process.exitCode = 1;
         } finally {
@@ -684,6 +697,12 @@ function createProgram(): Command {
                 failureMessage: fallbackFailureMessage,
               });
               quotaCompletionReported = true;
+              if (isInteractive) {
+                // eslint-disable-next-line no-console
+                console.log(
+                  "[scan] Scan finished — you can start a new scan now.",
+                );
+              }
             } catch {
               // Quota report failure must not mask the original scan error.
             }

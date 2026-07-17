@@ -45,7 +45,7 @@ export class MessagesFamilyProvider implements AiProvider {
         model,
         max_tokens: maxTokens,
         temperature: request.temperature ?? 0.1,
-        system: buildAnthropicEnrichmentSystemPrompt(),
+        system: request.systemPrompt ?? buildAnthropicEnrichmentSystemPrompt(),
         messages: [{ role: "user", content: request.prompt }],
       }),
     });

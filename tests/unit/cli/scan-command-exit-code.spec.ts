@@ -121,6 +121,7 @@ describe("cli scan command - exit codes", () => {
       fixturesRoot,
       "--output",
       tmpOutputPath(),
+      "--no-ai-inference",
     ]);
 
     expect(process.exitCode).toBe(1);
@@ -164,6 +165,7 @@ describe("cli scan command - exit codes", () => {
       fixturesRoot,
       "--output",
       outputPath,
+      "--no-ai-inference",
     ]);
 
     expect(process.exitCode).toBe(1);

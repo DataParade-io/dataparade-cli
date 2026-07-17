@@ -22,7 +22,16 @@ describe("cli scan command - DP-P0-CLI-402 integration", () => {
         `dataparade-scan-${Date.now()}.json`,
       );
 
-      await run(["node", "cli", "scan", fixturesRoot, "--output", outputPath]);
+      await run([
+        "node",
+        "cli",
+        "scan",
+        fixturesRoot,
+        "--output",
+        outputPath,
+        "--no-ai-inference",
+        "--skip-auto-upload",
+      ]);
 
       const contents = fs.readFileSync(outputPath, "utf8");
       const parsed = JSON.parse(contents);

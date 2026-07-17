@@ -144,7 +144,10 @@ export class ChatCompletionsFamilyProvider implements AiProvider {
     const body = {
       model,
       messages: [
-        { role: "system" as const, content: AI_PROVIDER_SYSTEM_PROMPT },
+        {
+          role: "system" as const,
+          content: request.systemPrompt ?? AI_PROVIDER_SYSTEM_PROMPT,
+        },
         { role: "user" as const, content: request.prompt },
       ],
       temperature: request.temperature ?? 0.1,
