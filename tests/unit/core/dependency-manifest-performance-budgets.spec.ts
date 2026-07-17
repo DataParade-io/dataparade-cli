@@ -73,7 +73,7 @@ describe("dependency-manifest performance budgets (non-fatal)", () => {
       await createManyTypeScriptManifests(root, 600);
       await createManyPythonManifests(root, 600);
 
-      const config = createDefaultScanConfiguration({
+      const config = createDefaultScanConfiguration({ enableAiInference: false,
         languages: ["typescript", "python"],
         enableDataFlowDetection: false,
         deepAnalysis: false,

@@ -150,7 +150,14 @@ function createProgram(): Command {
       "--no-monorepo-package-section-auto",
       "Do not infer monorepoPackageSectionPathDepth from package.json layout when depth is unset",
     )
-    .option("--ai-inference", "Enable post-scan AI inference pipeline")
+    .option(
+      "--ai-inference",
+      "Enable post-scan AI inference (default: on; SCAN_AI_INFERENCE=false also disables)",
+    )
+    .option(
+      "--no-ai-inference",
+      "Disable post-scan AI inference",
+    )
     .option(
       "--ai-provider <provider>",
       `AI provider: ${AI_PROVIDER_IDS.join("|")}`,
@@ -364,7 +371,13 @@ function createProgram(): Command {
               config.enableAiInference &&
               preflight.suggestedAiBudgetTokens > 0
             ) {
-              config.aiBudgetTokens = preflight.suggestedAiBudgetTokens;
+              // suggestedAiBudgetTokens is a server ceiling (remaining quota /
+              // per-job cap), not a spend target. Never raise the CLI working
+              // budget above the configured default (or user override).
+              config.aiBudgetTokens = Math.min(
+                config.aiBudgetTokens ?? 12_000,
+                preflight.suggestedAiBudgetTokens,
+              );
             }
             if (preflight.aiDelivery === "platform_proxy") {
               config.aiMode = "platform";
@@ -372,8 +385,54 @@ function createProgram(): Command {
             if (isInteractive) {
               // eslint-disable-next-line no-console
               console.log(
-                `[scan] quota: scans_remaining=${preflight.scansRemaining} ai_tokens_remaining=${preflight.aiTokensRemaining} job_id=${preflight.jobId}`,
+                `[scan] quota: scans_remaining=${preflight.scansRemaining} ai_tokens_remaining=${preflight.aiTokensRemaining} job_id=${preflight.jobId} working_budget=${config.aiBudgetTokens ?? 0}`,
               );
+            }
+          } else if (
+            !workspaceApiKey &&
+            !usesByok &&
+            config.enableAiInference
+          ) {
+            try {
+              const { cliAnonymousAiSession } = await import(
+                "./platform-api/anonymous-ai-session-client"
+              );
+              const session = await cliAnonymousAiSession({
+                projectName: config.projectName,
+              });
+              cliQuotaJobId = session.jobId;
+              config.cliQuotaJobId = session.jobId;
+              config.anonSessionToken = session.sessionToken;
+              if (session.suggestedAiBudgetTokens > 0) {
+                // Anon suggested value is the hard per-job ceiling (default 100k).
+                // Applying it as the working budget caused scans to burn ~100k tokens.
+                config.aiBudgetTokens = Math.min(
+                  config.aiBudgetTokens ?? 12_000,
+                  session.suggestedAiBudgetTokens,
+                );
+              }
+              if (session.aiDelivery === "platform_proxy") {
+                config.aiMode = "platform";
+              }
+              if (isInteractive) {
+                // eslint-disable-next-line no-console
+                console.log(
+                  `[scan] anonymous platform AI: job_id=${session.jobId} working_budget=${config.aiBudgetTokens ?? 0} server_cap=${session.suggestedAiBudgetTokens} (claim debits actual tokens used)`,
+                );
+              }
+            } catch (anonSessionError) {
+              const { CliAnonymousIpLimitError } = await import(
+                "./platform-api/anonymous-ai-session-client"
+              );
+              const message =
+                anonSessionError instanceof Error
+                  ? anonSessionError.message
+                  : "Anonymous AI session failed.";
+              // eslint-disable-next-line no-console
+              console.error(`[scan] ${message}`);
+              process.exitCode =
+                anonSessionError instanceof CliAnonymousIpLimitError ? 2 : 1;
+              return;
             }
           }
 
@@ -429,12 +488,14 @@ function createProgram(): Command {
             console.log(
               `[scan] llm-inference summary: candidates=${s.candidatesConsidered} proposals=${s.proposalsGenerated} (provider=${s.proposalsGeneratedProvider}) applied=${s.proposalsApplied} (provider=${s.proposalsAppliedProvider}) rejected=${s.proposalsRejected} (${s.aiProvider}/${s.aiModel})`,
             );
-            if (options.aiVerbose) {
-              // eslint-disable-next-line no-console
-              console.log(
-                `[scan] ai-usage totals: provider_calls=${s.providerCalls} tokens_in=${s.inputTokens} tokens_out=${s.outputTokens} tokens_total=${s.totalTokens} estimated_cost_usd=${formatUsd(s.estimatedCostUsd)}`,
-              );
-            }
+            // Always show real provider token usage (budget_cap is only a ceiling, not cost).
+            // eslint-disable-next-line no-console
+            console.log(
+              `[scan] ai-usage: provider_calls=${s.providerCalls} tokens_in=${s.inputTokens} tokens_out=${s.outputTokens} tokens_total=${s.totalTokens}` +
+                (typeof s.estimatedCostUsd === "number"
+                  ? ` estimated_cost_usd=${formatUsd(s.estimatedCostUsd)}`
+                  : ""),
+            );
             if (options.aiVerbose && scanResult.aiInferenceProposalDetails) {
               printAiInferenceVerbose(scanResult.aiInferenceProposalDetails);
             }
@@ -522,39 +583,31 @@ function createProgram(): Command {
                 Boolean(options.skipAutoUpload) ||
                 resolveSkipAutoUpload(process.env);
               if (!skipAutoUpload) {
-                const uploadApiKey = workspaceApiKey;
-                if (!uploadApiKey) {
-                  // eslint-disable-next-line no-console
-                  console.log(
-                    `[scan] Auto-upload skipped (no workspace API key). Run: dataparade upload ${dataflowOutputPath}`,
+                try {
+                  const { runDataflowUpload } = await import(
+                    "./upload/run-upload"
                   );
-                } else {
-                  try {
-                    const { runDataflowUpload } = await import(
-                      "./upload/run-upload"
-                    );
-                    const dataflowWrapper = buildDataflowWrapper(
-                      scanResult,
-                      diagramGraph,
-                      { projectName: resolvedProjectName },
-                    );
-                    await runDataflowUpload({
-                      apiKey: uploadApiKey,
-                      dataflow: dataflowWrapper,
-                      projectName: resolvedProjectName,
-                      scanJobId: cliQuotaJobId,
-                      logPrefix: "[scan]",
-                    });
-                  } catch (uploadError) {
-                    const uploadMessage =
-                      uploadError instanceof Error
-                        ? uploadError.message
-                        : "Unknown upload error.";
-                    // eslint-disable-next-line no-console
-                    console.error(
-                      `[scan] Auto-upload failed: ${uploadMessage}`,
-                    );
-                  }
+                  const dataflowWrapper = buildDataflowWrapper(
+                    scanResult,
+                    diagramGraph,
+                    { projectName: resolvedProjectName },
+                  );
+                  await runDataflowUpload({
+                    apiKey: workspaceApiKey,
+                    dataflow: dataflowWrapper,
+                    projectName: resolvedProjectName,
+                    scanJobId: cliQuotaJobId,
+                    logPrefix: "[scan]",
+                  });
+                } catch (uploadError) {
+                  const uploadMessage =
+                    uploadError instanceof Error
+                      ? uploadError.message
+                      : "Unknown upload error.";
+                  // eslint-disable-next-line no-console
+                  console.error(
+                    `[scan] Auto-upload failed: ${uploadMessage}`,
+                  );
                 }
               }
             } catch (dataflowError) {
@@ -664,14 +717,6 @@ function createProgram(): Command {
           options.workspaceApiKey?.trim() ||
           options.apiKey?.trim() ||
           resolveWorkspaceApiKey(process.env);
-        if (!apiKey) {
-          // eslint-disable-next-line no-console
-          console.error(
-            "[upload] error: workspace API key is required (DATAPARADE_WORKSPACE_API_KEY or --workspace-api-key)",
-          );
-          process.exitCode = 1;
-          return;
-        }
 
         const filePath = pathModule.resolve(process.cwd(), file || "dataflow.json");
         let dataflow: unknown;

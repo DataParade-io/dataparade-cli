@@ -28,9 +28,6 @@ describe("cli scan command - monorepo app plus terraform", () => {
   it(
     "keeps app API hub, reduces TF to provider and module shells, and lays out app left of TF hub",
     async () => {
-      const prevAiInference = process.env.DATAPARADE_AI_INFERENCE;
-      process.env.DATAPARADE_AI_INFERENCE = "false";
-
       const fixturesRoot = path.join(
         __dirname,
         "..",
@@ -44,9 +41,18 @@ describe("cli scan command - monorepo app plus terraform", () => {
         `dataparade-scan-e2e-monorepo-app-plus-terraform-${Date.now()}.json`,
       );
 
-      try {
-        await run(["node", "cli", "scan", fixturesRoot, "--output", outputPath]);
+      await run([
+        "node",
+        "cli",
+        "scan",
+        fixturesRoot,
+        "--output",
+        outputPath,
+        "--no-ai-inference",
+        "--skip-auto-upload",
+      ]);
 
+      try {
         const contents = fs.readFileSync(outputPath, "utf8");
         const parsed = JSON.parse(contents);
         const validation = validateDataflowJson(parsed);
@@ -143,10 +149,8 @@ describe("cli scan command - monorepo app plus terraform", () => {
 
         fs.unlinkSync(outputPath);
       } finally {
-        if (prevAiInference === undefined) {
-          delete process.env.DATAPARADE_AI_INFERENCE;
-        } else {
-          process.env.DATAPARADE_AI_INFERENCE = prevAiInference;
+        if (fs.existsSync(outputPath)) {
+          fs.unlinkSync(outputPath);
         }
       }
     },

@@ -8,9 +8,6 @@ describe("cli scan command - terraform-basic fixture", () => {
   it(
     "scans terraform-basic fixture and produces valid dataflow.json with nodes and edges",
     async () => {
-      const prevAiInference = process.env.DATAPARADE_AI_INFERENCE;
-      process.env.DATAPARADE_AI_INFERENCE = "false";
-
       const fixturesRoot = path.join(
         __dirname,
         "..",
@@ -24,9 +21,18 @@ describe("cli scan command - terraform-basic fixture", () => {
         `dataparade-scan-e2e-terraform-basic-${Date.now()}.json`,
       );
 
-      try {
-        await run(["node", "cli", "scan", fixturesRoot, "--output", outputPath]);
+      await run([
+        "node",
+        "cli",
+        "scan",
+        fixturesRoot,
+        "--output",
+        outputPath,
+        "--no-ai-inference",
+        "--skip-auto-upload",
+      ]);
 
+      try {
         const contents = fs.readFileSync(outputPath, "utf8");
         const parsed = JSON.parse(contents);
         const validation = validateDataflowJson(parsed);
@@ -72,10 +78,8 @@ describe("cli scan command - terraform-basic fixture", () => {
 
         fs.unlinkSync(outputPath);
       } finally {
-        if (prevAiInference === undefined) {
-          delete process.env.DATAPARADE_AI_INFERENCE;
-        } else {
-          process.env.DATAPARADE_AI_INFERENCE = prevAiInference;
+        if (fs.existsSync(outputPath)) {
+          fs.unlinkSync(outputPath);
         }
       }
     },

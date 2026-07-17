@@ -6,3 +6,9 @@ export function buildImportPreviewUrl(draftId: string): string {
   url.searchParams.set("importDraft", draftId);
   return url.toString();
 }
+
+export function buildAnonymousCliPreviewUrl(claimToken: string): string {
+  const base = getDataparadeAppBaseUrl();
+  const encoded = encodeURIComponent(claimToken);
+  return `${base}/preview/cli/${encoded}`;
+}

@@ -22,7 +22,16 @@ describe("cli scan command - monorepo sections", () => {
         `dataparade-scan-e2e-monorepo-front-back-sections-${Date.now()}.json`,
       );
 
-      await run(["node", "cli", "scan", fixturesRoot, "--output", outputPath]);
+      await run([
+        "node",
+        "cli",
+        "scan",
+        fixturesRoot,
+        "--output",
+        outputPath,
+        "--no-ai-inference",
+        "--skip-auto-upload",
+      ]);
 
       const contents = fs.readFileSync(outputPath, "utf8");
       const parsed = JSON.parse(contents);

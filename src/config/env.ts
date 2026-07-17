@@ -27,8 +27,17 @@ function parseStringArray(value: string | undefined): string[] | undefined {
 function parseBoolean(value: string | undefined): boolean | undefined {
   if (value == null) return undefined;
   const normalized = value.trim().toLowerCase();
-  if (normalized === "true") return true;
-  if (normalized === "false") return false;
+  if (normalized === "true" || normalized === "1" || normalized === "yes" || normalized === "on") {
+    return true;
+  }
+  if (
+    normalized === "false" ||
+    normalized === "0" ||
+    normalized === "no" ||
+    normalized === "off"
+  ) {
+    return false;
+  }
   return undefined;
 }
 

@@ -22,7 +22,16 @@ describe("cli scan command - DP-P0-CLI-705 e2e Python basic", () => {
         `dataparade-scan-e2e-python-basic-${Date.now()}.json`,
       );
 
-      await run(["node", "cli", "scan", fixturesRoot, "--output", outputPath]);
+      await run([
+        "node",
+        "cli",
+        "scan",
+        fixturesRoot,
+        "--output",
+        outputPath,
+        "--no-ai-inference",
+        "--skip-auto-upload",
+      ]);
 
       const contents = fs.readFileSync(outputPath, "utf8");
       const parsed = JSON.parse(contents);

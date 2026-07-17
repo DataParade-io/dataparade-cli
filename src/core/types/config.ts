@@ -49,6 +49,11 @@ export interface ScanConfiguration {
   aiThirdPartyDataFlowEnabled?: boolean;
   /** DataParade workspace API key (quota + platform LLM proxy). */
   workspaceApiKey?: string;
+  /**
+   * Anonymous platform AI session token (`dp_anon_…`) from
+   * POST /api/scans/cli/ai/anonymous-session. Mutually exclusive with workspaceApiKey.
+   */
+  anonSessionToken?: string;
   /** How LLM inference is billed: byok (direct provider) or platform (API proxy). */
   aiMode?: "byok" | "platform" | "hosted_worker" | "none";
   /** Base URL for platform API (preflight / infer / complete). */

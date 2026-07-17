@@ -31,7 +31,7 @@ export function createDefaultScanConfiguration(
     languages: undefined,
     minimumConfidence: 0.5,
     deepAnalysis: false,
-    enableAiInference: false,
+    enableAiInference: true,
     aiProvider: "mock",
     aiModel: "heuristic",
     aiEndpoint: undefined,

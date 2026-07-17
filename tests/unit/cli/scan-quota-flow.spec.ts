@@ -39,7 +39,7 @@ describe("scan quota flow", () => {
     process.env.DATAPARADE_WORKSPACE_API_KEY = "dp_live_test";
     process.env.DATAPARADE_SKIP_AUTO_UPLOAD = "true";
 
-    await run(["node", "cli", "scan", tempRoot]);
+    await run(["node", "cli", "scan", tempRoot, "--no-ai-inference"]);
 
     expect(fetchMock).not.toHaveBeenCalled();
   });

@@ -38,10 +38,11 @@ List commands and options: `npx @dataparade/cli --help` and `npx @dataparade/cli
 
 ## Upload to dashboard
 
-After a scan, the CLI **auto-uploads** `dataflow.json` when `DATAPARADE_WORKSPACE_API_KEY` is set (from **Workspace → Access keys**). This creates an **import preview draft** in the web app — not a finished assessment.
+After a scan, the CLI **auto-uploads** `dataflow.json` by default (unless you opt out). This creates an **import preview draft** in the web app — not a finished assessment.
 
+- **With a workspace API key** (`DATAPARADE_WORKSPACE_API_KEY` from **Workspace → Access keys**): prints a dashboard link (`?importDraft=`) for that workspace.
+- **Without a workspace key**: prints a sign-up link (`/preview/cli/<token>`). Create an account to open **Preview & Edit** on your dashboard.
 - Opt out: `--skip-auto-upload` or `DATAPARADE_SKIP_AUTO_UPLOAD=true`
-- Without a workspace key, the scan still succeeds; run `upload` later
 - Upload alone does **not** consume scan quota
 
 ```bash

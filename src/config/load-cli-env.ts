@@ -13,9 +13,13 @@ const CLI_PACKAGE_NAME = "@dataparade/cli";
 
 const tried = { current: false };
 
-function findCliPackageRoot(startDir: string): string | undefined {
+/** @internal Exported for unit tests. */
+export function findCliPackageRoot(startDir: string): string | undefined {
   let dir = path.resolve(startDir);
   const { root } = path.parse(dir);
+  /** Fallback when tsc emits package.json under dist/ but no outer root is found. */
+  let distPackageRoot: string | undefined;
+
   while (dir !== root) {
     const pkgPath = path.join(dir, "package.json");
     if (fs.existsSync(pkgPath)) {
@@ -23,7 +27,11 @@ function findCliPackageRoot(startDir: string): string | undefined {
         const raw = fs.readFileSync(pkgPath, "utf8");
         const pkg = JSON.parse(raw) as { name?: string };
         if (pkg.name === CLI_PACKAGE_NAME) {
-          return dir;
+          if (path.basename(dir) === "dist") {
+            distPackageRoot = dir;
+          } else {
+            return dir;
+          }
         }
       } catch {
         // ignore unreadable or invalid package.json
@@ -31,7 +39,7 @@ function findCliPackageRoot(startDir: string): string | undefined {
     }
     dir = path.dirname(dir);
   }
-  return undefined;
+  return distPackageRoot;
 }
 
 export function loadCliDotenv(): void {

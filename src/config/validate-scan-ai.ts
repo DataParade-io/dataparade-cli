@@ -15,23 +15,31 @@ export function validateAiInferenceCredentials(
     Boolean(config.aiModel?.trim()) &&
     Boolean(config.aiApiKey?.trim());
   const hasWorkspace = Boolean(config.workspaceApiKey?.trim());
+  const hasAnonSession = Boolean(config.anonSessionToken?.trim());
 
-  if (hasByok && hasWorkspace) {
+  if (hasByok && (hasWorkspace || hasAnonSession)) {
     errors.push(
-      "ai-inference: set either SCAN_BYOK_* (your LLM provider) or DATAPARADE_WORKSPACE_API_KEY (platform AI), not both",
+      "ai-inference: set either SCAN_BYOK_* (your LLM provider) or platform AI (DATAPARADE_WORKSPACE_API_KEY or anonymous session), not both",
     );
     return errors;
   }
 
-  if (!hasByok && !hasWorkspace) {
+  if (hasWorkspace && hasAnonSession) {
     errors.push(
-      "ai-inference: LLM inference requires SCAN_BYOK_PROVIDER, SCAN_BYOK_MODEL, and SCAN_BYOK_API_KEY, or DATAPARADE_WORKSPACE_API_KEY for platform AI",
+      "ai-inference: set either DATAPARADE_WORKSPACE_API_KEY or an anonymous AI session, not both",
+    );
+    return errors;
+  }
+
+  if (!hasByok && !hasWorkspace && !hasAnonSession) {
+    errors.push(
+      "ai-inference: LLM inference requires SCAN_BYOK_PROVIDER, SCAN_BYOK_MODEL, and SCAN_BYOK_API_KEY, DATAPARADE_WORKSPACE_API_KEY for platform AI, or an anonymous platform AI session",
     );
   }
 
-  if (hasWorkspace && !config.cliQuotaJobId) {
+  if ((hasWorkspace || hasAnonSession) && !config.cliQuotaJobId) {
     errors.push(
-      "ai-inference: platform AI requires a quota preflight job id (pass DATAPARADE_WORKSPACE_API_KEY and ensure preflight succeeded)",
+      "ai-inference: platform AI requires a quota/session job id (preflight or anonymous-session must succeed)",
     );
   }
 
@@ -44,6 +52,8 @@ export function resolveAiMode(
   if (!config.enableAiInference) return "none";
   if (config.hostedInferProxyUrl?.trim()) return "hosted_worker";
   if (config.aiApiKey?.trim()) return "byok";
-  if (config.workspaceApiKey?.trim()) return "platform";
+  if (config.workspaceApiKey?.trim() || config.anonSessionToken?.trim()) {
+    return "platform";
+  }
   return "none";
 }

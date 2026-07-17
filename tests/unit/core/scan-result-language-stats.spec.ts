@@ -4,7 +4,7 @@ import { createDefaultScanConfiguration, scan } from "../../../src/core/pipeline
 describe("ScanResult.languageStats for Python", () => {
   it("populates languageStats entry for Python files", async () => {
     const rootPath = `${__dirname}/../../fixtures/python-parser-basic`;
-    const config: ScanConfiguration = createDefaultScanConfiguration();
+    const config: ScanConfiguration = createDefaultScanConfiguration({ enableAiInference: false });
 
     const { scanResult } = await scan(rootPath, config);
 

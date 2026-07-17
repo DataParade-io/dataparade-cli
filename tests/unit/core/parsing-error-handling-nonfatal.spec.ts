@@ -43,7 +43,7 @@ describe("parsing error handling - non-fatal", () => {
         Buffer.from("import os\n\x00\n", "utf8"),
       );
 
-      const config = createDefaultScanConfiguration({
+      const config = createDefaultScanConfiguration({ enableAiInference: false,
         languages: ["typescript", "python"],
         enableDataFlowDetection: false,
       });

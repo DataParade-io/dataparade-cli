@@ -12,7 +12,7 @@ describe("cli scan - DP-P0-CLI regression: sentry/route/env", () => {
       "e2e-ts-sentry-route-env",
     );
 
-    const config = createDefaultScanConfiguration({
+    const config = createDefaultScanConfiguration({ enableAiInference: false,
       projectName: "SentryRouteEnvApp",
     });
 

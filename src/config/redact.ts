@@ -11,5 +11,8 @@ export function redactScanConfigurationForDisplay(
   if (config.workspaceApiKey?.trim()) {
     redacted.workspaceApiKey = "<redacted>";
   }
+  if (config.anonSessionToken?.trim()) {
+    redacted.anonSessionToken = "<redacted>";
+  }
   return redacted;
 }

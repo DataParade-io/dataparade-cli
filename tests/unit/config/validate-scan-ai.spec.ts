@@ -47,6 +47,38 @@ describe("validate-scan-ai", () => {
     expect(resolveAiMode(config)).toBe("platform");
   });
 
+  it("accepts anonymous session token with job id for platform mode", () => {
+    const config = baseConfig({
+      enableAiInference: true,
+      anonSessionToken: "dp_anon_abc",
+      cliQuotaJobId: "job-1",
+    });
+    expect(validateAiInferenceCredentials(config)).toEqual([]);
+    expect(resolveAiMode(config)).toBe("platform");
+  });
+
+  it("rejects workspace key and anonymous session together", () => {
+    const errors = validateAiInferenceCredentials(
+      baseConfig({
+        enableAiInference: true,
+        workspaceApiKey: "dp_live_abc",
+        anonSessionToken: "dp_anon_abc",
+        cliQuotaJobId: "job-1",
+      }),
+    );
+    expect(errors.some((e) => e.includes("not both"))).toBe(true);
+  });
+
+  it("requires job id for anonymous platform mode", () => {
+    const errors = validateAiInferenceCredentials(
+      baseConfig({
+        enableAiInference: true,
+        anonSessionToken: "dp_anon_abc",
+      }),
+    );
+    expect(errors.some((e) => e.includes("job id"))).toBe(true);
+  });
+
   it("accepts hosted worker infer proxy without BYOK or workspace key", () => {
     const config = baseConfig({
       enableAiInference: true,

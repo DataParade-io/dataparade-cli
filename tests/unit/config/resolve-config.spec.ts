@@ -119,7 +119,7 @@ describe("resolveScanConfiguration", () => {
     }
   });
 
-  it("does not auto-enable AI when BYOK envs are set without SCAN_AI_INFERENCE", () => {
+  it("does not set enableAiInference from BYOK envs alone (default comes from createDefaultScanConfiguration)", () => {
     const prevProvider = process.env.SCAN_BYOK_PROVIDER;
     const prevModel = process.env.SCAN_BYOK_MODEL;
     const prevKey = process.env.SCAN_BYOK_API_KEY;

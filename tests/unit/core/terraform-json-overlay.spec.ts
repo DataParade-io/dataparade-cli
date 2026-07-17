@@ -25,7 +25,7 @@ describe("terraform JSON overlay in scan pipeline", () => {
     const overlayInRoot = path.join(fixturesRoot, "show-overlay.json");
     fs.copyFileSync(jsonFixture, overlayInRoot);
     try {
-      const config = createDefaultScanConfiguration({
+      const config = createDefaultScanConfiguration({ enableAiInference: false,
         terraformJsonPath: "show-overlay.json",
       });
 

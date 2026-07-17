@@ -20,7 +20,7 @@ describe("output/json - DP-P0-CLI-403", () => {
       "typescript-basic",
     );
 
-    const config = createDefaultScanConfiguration();
+    const config = createDefaultScanConfiguration({ enableAiInference: false });
     const { scanResult } = await scan(fixturesRoot, config);
 
     const graph = buildDiagramGraphFromScanResult(scanResult);
@@ -78,7 +78,7 @@ describe("output/json - DP-P0-CLI-403", () => {
       "typescript-basic",
     );
 
-    const config = createDefaultScanConfiguration();
+    const config = createDefaultScanConfiguration({ enableAiInference: false });
     const { scanResult } = await scan(fixturesRoot, config);
 
     const graph = buildDiagramGraphFromScanResult(scanResult);

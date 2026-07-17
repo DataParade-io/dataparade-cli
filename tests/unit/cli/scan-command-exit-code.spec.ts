@@ -43,6 +43,16 @@ jest.mock("../../../src/core/pipeline/graph-mapping", () => ({
 
 jest.mock("../../../src/output/json", () => ({
   writeDataflowJson: jest.fn(async () => {}),
+  buildDataflowWrapper: jest.fn(() => ({
+    schemaVersion: "1.0",
+    graph: { nodes: [], edges: [], viewport: { x: 0, y: 0, zoom: 1 } },
+    metadata: {
+      componentsCount: 0,
+      dataFlowsCount: 0,
+      filesScanned: 0,
+      scanDurationMs: 0,
+    },
+  })),
 }));
 
 describe("cli scan command - exit codes", () => {
@@ -58,8 +68,20 @@ describe("cli scan command - exit codes", () => {
     return path.join(os.tmpdir(), `dataparade-exit-${Date.now()}.json`);
   }
 
+  let prevSkipAutoUpload: string | undefined;
+
+  beforeEach(() => {
+    prevSkipAutoUpload = process.env.DATAPARADE_SKIP_AUTO_UPLOAD;
+    process.env.DATAPARADE_SKIP_AUTO_UPLOAD = "true";
+  });
+
   afterEach(() => {
     process.exitCode = undefined;
+    if (prevSkipAutoUpload === undefined) {
+      delete process.env.DATAPARADE_SKIP_AUTO_UPLOAD;
+    } else {
+      process.env.DATAPARADE_SKIP_AUTO_UPLOAD = prevSkipAutoUpload;
+    }
   });
 
   it("sets exitCode=1 when scanResult.errors is non-empty", async () => {

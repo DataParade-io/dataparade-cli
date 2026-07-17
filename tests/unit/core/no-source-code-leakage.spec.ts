@@ -48,7 +48,7 @@ describe("output safety - no source code leakage (DP-P0-CLI-XXX)", () => {
       "typescript-basic",
     );
 
-    const config = createDefaultScanConfiguration();
+    const config = createDefaultScanConfiguration({ enableAiInference: false });
     const { scanResult } = await scan(fixturesRoot, config);
 
     const graph = buildDiagramGraphFromScanResult(scanResult);

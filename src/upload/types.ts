@@ -1,5 +1,5 @@
 export type RunDataflowUploadInput = {
-  apiKey: string;
+  apiKey?: string;
   dataflow: unknown;
   projectName?: string;
   scanJobId?: string;
@@ -7,6 +7,6 @@ export type RunDataflowUploadInput = {
 };
 
 export type RunDataflowUploadResult = {
-  draftId: string;
+  draftId?: string;
   previewUrl: string;
 };

@@ -36,17 +36,35 @@ jest.mock("../../../src/core/pipeline/graph-mapping", () => ({
 
 jest.mock("../../../src/output/json", () => ({
   writeDataflowJson: jest.fn(() => {}),
+  buildDataflowWrapper: jest.fn(() => ({
+    schemaVersion: "1.0",
+    graph: { nodes: [], edges: [], viewport: { x: 0, y: 0, zoom: 1 } },
+    metadata: {
+      componentsCount: 0,
+      dataFlowsCount: 0,
+      filesScanned: 0,
+      scanDurationMs: 0,
+    },
+  })),
 }));
 
 describe("cli scan command ai flags", () => {
   let consoleLogSpy: jest.SpyInstance;
+  let prevSkipAutoUpload: string | undefined;
 
   beforeEach(() => {
     consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    prevSkipAutoUpload = process.env.DATAPARADE_SKIP_AUTO_UPLOAD;
+    process.env.DATAPARADE_SKIP_AUTO_UPLOAD = "true";
   });
 
   afterEach(() => {
     consoleLogSpy.mockRestore();
+    if (prevSkipAutoUpload === undefined) {
+      delete process.env.DATAPARADE_SKIP_AUTO_UPLOAD;
+    } else {
+      process.env.DATAPARADE_SKIP_AUTO_UPLOAD = prevSkipAutoUpload;
+    }
   });
 
   it("normalizes --ai-inference-scope third-party-only to third_party_only", async () => {

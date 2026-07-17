@@ -12,7 +12,7 @@ describe("redactScanConfigurationForDisplay", () => {
   });
 
   it("leaves config unchanged when aiApiKey is absent", () => {
-    const config = createDefaultScanConfiguration();
+    const config = createDefaultScanConfiguration({ enableAiInference: false });
     const redacted = redactScanConfigurationForDisplay(config);
     expect(redacted.aiApiKey).toBeUndefined();
   });

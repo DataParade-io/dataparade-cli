@@ -22,7 +22,16 @@ describe("cli scan command - DP-P0-CLI-404 e2e TypeScript sample", () => {
       `dataparade-scan-e2e-ts-sample-${Date.now()}.json`,
     );
 
-    await run(["node", "cli", "scan", fixturesRoot, "--output", outputPath]);
+    await run([
+      "node",
+      "cli",
+      "scan",
+      fixturesRoot,
+      "--output",
+      outputPath,
+      "--no-ai-inference",
+      "--skip-auto-upload",
+    ]);
 
     const contents = fs.readFileSync(outputPath, "utf8");
     const parsed = JSON.parse(contents);

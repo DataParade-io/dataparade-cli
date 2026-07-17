@@ -119,7 +119,7 @@ describe("core/pipeline/structural-scan - DP-P0-CLI-303", () => {
       "terraform-show-extra-bucket.json",
     );
     const warnings: string[] = [];
-    const config = createDefaultScanConfiguration({
+    const config = createDefaultScanConfiguration({ enableAiInference: false,
       terraformJsonPath: outside,
     });
 

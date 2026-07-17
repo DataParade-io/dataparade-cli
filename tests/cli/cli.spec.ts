@@ -14,10 +14,14 @@ describe("CLI", () => {
   });
 
   it("scan <path> writes a dataflow.json wrapper to the current directory and exits 0", () => {
-    const result = spawnSync("node", [cliDistPath, "scan", "."], {
-      encoding: "utf-8",
-      cwd: path.join(__dirname, "../../"),
-    });
+    const result = spawnSync(
+      "node",
+      [cliDistPath, "scan", ".", "--no-ai-inference", "--skip-auto-upload"],
+      {
+        encoding: "utf-8",
+        cwd: path.join(__dirname, "../../"),
+      },
+    );
 
     expect(result.status).toBe(0);
 
@@ -40,10 +44,20 @@ describe("CLI", () => {
     const cliCwd = path.join(__dirname, "../../");
     const frontendPath = "../frontend";
 
-    const result = spawnSync("node", [cliDistPath, "scan", frontendPath], {
-      encoding: "utf-8",
-      cwd: cliCwd,
-    });
+    const result = spawnSync(
+      "node",
+      [
+        cliDistPath,
+        "scan",
+        frontendPath,
+        "--no-ai-inference",
+        "--skip-auto-upload",
+      ],
+      {
+        encoding: "utf-8",
+        cwd: cliCwd,
+      },
+    );
 
     expect(result.status).toBe(0);
 
@@ -62,7 +76,15 @@ describe("CLI", () => {
 
     const result = spawnSync(
       "node",
-      [cliDistPath, "scan", frontendPath, "--output", outputFile],
+      [
+        cliDistPath,
+        "scan",
+        frontendPath,
+        "--output",
+        outputFile,
+        "--no-ai-inference",
+        "--skip-auto-upload",
+      ],
       {
         encoding: "utf-8",
         cwd: cliCwd,

@@ -14,7 +14,9 @@ export function buildAgentOrchestratorOptions(
     "openai";
   const platformModel =
     process.env.SCAN_WORKER_LLM_MODEL?.trim() ||
-    config.aiModel?.trim() ||
+    (config.aiModel?.trim() && config.aiModel.trim() !== "heuristic"
+      ? config.aiModel.trim()
+      : undefined) ||
     "gpt-4o-mini";
 
   const base: AgentOrchestratorOptions = {
@@ -40,12 +42,16 @@ export function buildAgentOrchestratorOptions(
 
   if (
     aiMode === "platform" &&
-    config.workspaceApiKey?.trim() &&
-    config.cliQuotaJobId?.trim()
+    config.cliQuotaJobId?.trim() &&
+    (config.workspaceApiKey?.trim() || config.anonSessionToken?.trim())
   ) {
     base.platformProxy = {
       apiBaseUrl: config.platformApiBaseUrl ?? getDataparadeApiBaseUrl(),
-      workspaceApiKey: config.workspaceApiKey.trim(),
+      workspaceApiKey: (
+        config.workspaceApiKey?.trim() ||
+        config.anonSessionToken?.trim() ||
+        ""
+      ),
       jobId: config.cliQuotaJobId.trim(),
     };
     base.apiKey = undefined;

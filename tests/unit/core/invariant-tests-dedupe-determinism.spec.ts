@@ -27,7 +27,7 @@ describe("invariant-tests - determinism", () => {
       "typescript-basic",
     );
 
-    const config = createDefaultScanConfiguration({
+    const config = createDefaultScanConfiguration({ enableAiInference: false,
       deepAnalysis: false,
     });
 
