@@ -6,7 +6,7 @@ The **dataPARADE CLI** (`@dataparade/cli`) scans a codebase and produces a **`da
 - **Supported languages**: TypeScript, JavaScript, Python, Terraform
 - **License**: GPL-3.0-or-later — see [`LICENSE`](./LICENSE). Source: [DataParade-io/dataparade-cli](https://github.com/DataParade-io/dataparade-cli)
 
-**Full documentation:** [app.dataparade.com/docs/cli-import-and-zip](https://app.dataparade.com/docs/cli-import-and-zip)
+**Full documentation:** [app.dataparade.io/docs/cli-import-and-zip](https://app.dataparade.io/docs/cli-import-and-zip)
 
 ---
 
@@ -49,7 +49,7 @@ After a scan, the CLI **auto-uploads** `dataflow.json` by default (unless you op
 npx @dataparade/cli upload ./dataflow.json --project-name "My service"
 ```
 
-**Full guide:** [Upload to dashboard](https://app.dataparade.com/docs/cli-import-and-zip/upload)
+**Full guide:** [Upload to dashboard](https://app.dataparade.io/docs/cli-import-and-zip/upload)
 
 ---
 
@@ -61,7 +61,7 @@ By default, the CLI writes `./dataflow.json` in the current working directory.
 - The `graph` section is compatible with the DataParade import flow
 - Most node properties are emitted with `null` defaults; only a subset are filled from code patterns — complete the rest in Preview & Edit
 
-**Full guide:** [Output and results](https://app.dataparade.com/docs/cli-import-and-zip/output)
+**Full guide:** [Output and results](https://app.dataparade.io/docs/cli-import-and-zip/output)
 
 ---
 
@@ -69,12 +69,12 @@ By default, the CLI writes `./dataflow.json` in the current working directory.
 
 | Topic | Link |
 |-------|------|
-| CLI hub (all topics) | [CLI Run and Export](https://app.dataparade.com/docs/cli-import-and-zip) |
-| Scan arguments & flags | [Scan arguments](https://app.dataparade.com/docs/cli-import-and-zip/scan-arguments) |
-| `dataparade.config.json` | [Config file](https://app.dataparade.com/docs/cli-import-and-zip/config-file) |
-| Environment variables | [Environment variables](https://app.dataparade.com/docs/cli-import-and-zip/environment-variables) |
-| AI inference | [AI inference](https://app.dataparade.com/docs/cli-import-and-zip/ai-inference) |
-| Scan patterns (YAML) | [Scan patterns](https://app.dataparade.com/docs/cli-import-and-zip/scan-patterns) |
+| CLI hub (all topics) | [CLI Run and Export](https://app.dataparade.io/docs/cli-import-and-zip) |
+| Scan arguments & flags | [Scan arguments](https://app.dataparade.io/docs/cli-import-and-zip/scan-arguments) |
+| `dataparade.config.json` | [Config file](https://app.dataparade.io/docs/cli-import-and-zip/config-file) |
+| Environment variables | [Environment variables](https://app.dataparade.io/docs/cli-import-and-zip/environment-variables) |
+| AI inference | [AI inference](https://app.dataparade.io/docs/cli-import-and-zip/ai-inference) |
+| Scan patterns (YAML) | [Scan patterns](https://app.dataparade.io/docs/cli-import-and-zip/scan-patterns) |
 
 ---
 
