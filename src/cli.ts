@@ -1,6 +1,7 @@
 import "./config/load-cli-env";
 import pathModule from "path";
 import { Command } from "commander";
+import { randomUUID } from "crypto";
 
 import pkg from "../package.json";
 
@@ -18,6 +19,7 @@ import {
   reportScanCliError,
   type ScanCliAiMode,
 } from "./observability/scan-sentry";
+import { reportCliUsageEvent } from "./platform-api/telemetry-client";
 import { validateScanConfiguration } from "./core/schema/scan-config.schema";
 import type { AiInferenceProposalDetail } from "./core/types";
 import { resolveScanFilesystemEntry } from "./ingest/file-system";
@@ -240,6 +242,15 @@ function createProgram(): Command {
           options.workspaceApiKey?.trim() ||
           options.apiKey?.trim() ||
           resolveWorkspaceApiKey(process.env);
+        const usageSessionId = randomUUID();
+        await reportCliUsageEvent({
+          sessionId: usageSessionId,
+          event: "scan_started",
+          command: "scan",
+          hasApiKey: Boolean(workspaceApiKey),
+          apiKey: workspaceApiKey,
+          cliVersion: pkg.version,
+        });
 
         try {
           const rootPathArg = path || ".";
@@ -598,6 +609,8 @@ function createProgram(): Command {
                     projectName: resolvedProjectName,
                     scanJobId: cliQuotaJobId,
                     logPrefix: "[scan]",
+                    cliUsageSessionId: usageSessionId,
+                    command: "scan",
                   });
                 } catch (uploadError) {
                   const uploadMessage =
@@ -686,6 +699,17 @@ function createProgram(): Command {
           );
           process.exitCode = 1;
         } finally {
+          const scanFailed = (process.exitCode ?? 0) !== 0;
+          await reportCliUsageEvent({
+            sessionId: usageSessionId,
+            event: scanFailed ? "scan_failed" : "scan_succeeded",
+            command: "scan",
+            hasApiKey: Boolean(workspaceApiKey),
+            apiKey: workspaceApiKey,
+            cliVersion: pkg.version,
+            errorCode: scanFailed ? "scan_failed" : undefined,
+            errorMessage: scanFailed ? fallbackFailureMessage : undefined,
+          });
           if (platformQuotaApiKey && cliQuotaJobId && !quotaCompletionReported) {
             try {
               const { cliScanComplete } = await import("./platform-api/scan-quota-client");
@@ -736,6 +760,7 @@ function createProgram(): Command {
           options.workspaceApiKey?.trim() ||
           options.apiKey?.trim() ||
           resolveWorkspaceApiKey(process.env);
+        const usageSessionId = randomUUID();
 
         const filePath = pathModule.resolve(process.cwd(), file || "dataflow.json");
         let dataflow: unknown;
@@ -766,6 +791,8 @@ function createProgram(): Command {
             apiKey,
             dataflow,
             projectName,
+            cliUsageSessionId: usageSessionId,
+            command: "upload",
           });
         } catch (err) {
           const message =

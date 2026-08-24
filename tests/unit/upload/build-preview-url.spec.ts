@@ -18,6 +18,15 @@ describe("buildImportPreviewUrl", () => {
       "http://localhost:3001/dashboard?importDraft=draft-abc",
     );
   });
+
+  it("appends cliSession when provided", () => {
+    process.env.DATAPARADE_APP_URL = "http://localhost:3001";
+    const url = buildImportPreviewUrl(
+      "draft-abc",
+      "11111111-1111-4111-8111-111111111111",
+    );
+    expect(url).toContain("cliSession=11111111-1111-4111-8111-111111111111");
+  });
 });
 
 describe("buildAnonymousCliPreviewUrl", () => {
@@ -37,5 +46,14 @@ describe("buildAnonymousCliPreviewUrl", () => {
     expect(url).toBe(
       "http://localhost:3001/preview/cli/claim-token-xyz",
     );
+  });
+
+  it("appends cliSession when provided", () => {
+    process.env.DATAPARADE_APP_URL = "http://localhost:3001";
+    const url = buildAnonymousCliPreviewUrl(
+      "claim-token-xyz",
+      "11111111-1111-4111-8111-111111111111",
+    );
+    expect(url).toContain("cliSession=11111111-1111-4111-8111-111111111111");
   });
 });

@@ -4,6 +4,8 @@ export type RunDataflowUploadInput = {
   projectName?: string;
   scanJobId?: string;
   logPrefix?: string;
+  cliUsageSessionId?: string;
+  command?: "scan" | "upload";
 };
 
 export type RunDataflowUploadResult = {

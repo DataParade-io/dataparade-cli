@@ -14,4 +14,6 @@ export type CliUploadPreviewInput = {
   dataflow: unknown;
   projectName?: string;
   scanJobId?: string;
+  cliUsageSessionId?: string;
+  command?: "scan" | "upload";
 };

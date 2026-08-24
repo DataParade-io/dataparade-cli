@@ -38,6 +38,8 @@ export async function cliUploadAnonymousPreview(input: {
   dataflow: unknown;
   projectName?: string;
   scanJobId?: string;
+  cliUsageSessionId?: string;
+  command?: "scan" | "upload";
 }): Promise<CliAnonymousUploadPreviewResponse> {
   const res = await fetch(
     `${getDataparadeApiBaseUrl()}/api/scans/cli/preview`,
@@ -48,6 +50,8 @@ export async function cliUploadAnonymousPreview(input: {
         dataflow: input.dataflow,
         projectName: input.projectName,
         scanJobId: input.scanJobId,
+        cliUsageSessionId: input.cliUsageSessionId,
+        command: input.command,
       }),
     },
   );
@@ -69,6 +73,8 @@ export async function cliUploadPreview(
       dataflow: input.dataflow,
       projectName: input.projectName,
       scanJobId: input.scanJobId,
+      cliUsageSessionId: input.cliUsageSessionId,
+      command: input.command,
     }),
   });
 
