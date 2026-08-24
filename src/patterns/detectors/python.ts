@@ -5,6 +5,7 @@ import type { RawFinding } from "../../core/types/detection";
 import {
   buildThirdPartyUrlHostPatterns,
   inferServiceNameFromUrl,
+  sourceOf,
 } from "./helpers";
 
 export function detectPythonDatabaseConnectionsFromImportsAndContent(
@@ -14,7 +15,7 @@ export function detectPythonDatabaseConnectionsFromImportsAndContent(
   if (ctx.language !== "python") return [];
 
   const imports = ctx.imports ?? [];
-  const content = ctx.file.content ?? "";
+  const content = sourceOf(ctx);
   const findings: RawFinding[] = [];
 
   for (const db of config.python.dbClients) {
@@ -62,7 +63,7 @@ export function detectPythonAuthFromConfig(
   if (ctx.language !== "python") return [];
 
   const imports = ctx.imports ?? [];
-  const content = ctx.file.content ?? "";
+  const content = sourceOf(ctx);
   const findings: RawFinding[] = [];
 
   const authConfig = config.python.auth;
@@ -112,6 +113,32 @@ export function detectPythonAuthFromConfig(
     });
   }
 
+  for (const lib of authConfig.libraries) {
+    const hasImport =
+      lib.importModules.length > 0 &&
+      lib.importModules.some((mod) =>
+        imports.some((imp: { module: string }) => imp.module.includes(mod)),
+      );
+    const matchesContent =
+      lib.contentRegexes.length > 0 &&
+      lib.contentRegexes.some((re) => re.test(content));
+    if (!hasImport && !matchesContent) continue;
+
+    findings.push({
+      pattern: lib.patternId,
+      name: lib.id,
+      confidence: lib.confidence,
+      location: {
+        filePath: ctx.file.path,
+        startLine: 1,
+        endLine: 1,
+      },
+      properties: {
+        ...(lib.strategy ? { strategy: lib.strategy } : {}),
+      },
+    });
+  }
+
   return findings;
 }
 
@@ -121,7 +148,7 @@ export function detectPythonEnvAndConfigFromConfig(
 ): RawFinding[] {
   if (ctx.language !== "python") return [];
 
-  const content = ctx.file.content ?? "";
+  const content = sourceOf(ctx);
   const findings: RawFinding[] = [];
 
   const envCfg = config.python.envConfig;
@@ -205,7 +232,7 @@ export function detectPythonRoutesFromConfig(
 
   const imports = ctx.imports ?? [];
   const functions = ctx.functions ?? [];
-  const content = ctx.file.content ?? "";
+  const content = sourceOf(ctx);
   const lines = content.split(/\r?\n/);
   const normalizedLowerPath = (ctx.normalizedPath ?? ctx.file.path).toLowerCase();
 
@@ -306,6 +333,34 @@ export function detectPythonRoutesFromConfig(
         }
       }
 
+      continue;
+    }
+
+    if (fw.id === "grpc" && fw.pathRegex) {
+      for (let i = 0; i < lines.length; i += 1) {
+        const text = lines[i]?.trim() ?? "";
+        const match = fw.pathRegex.exec(text);
+        if (!match) continue;
+
+        const routePath = match[1] ?? match[2];
+        findings.push({
+          pattern: fw.patternId,
+          name: `GRPC ${routePath ?? "service"}`,
+          confidence: fw.confidence,
+          location: {
+            filePath: ctx.file.path,
+            startLine: i + 1,
+            endLine: i + 1,
+            code: text,
+          },
+          properties: {
+            framework: fw.id,
+            httpMethods: ["RPC"],
+            ...(routePath ? { path: routePath } : {}),
+            handlerType: "grpc_service",
+          },
+        });
+      }
       continue;
     }
 
@@ -479,10 +534,12 @@ export function detectPythonExternalApisFromConfig(
 
     for (const call of calls) {
       const callee = call.callee ?? "";
-      const matchesClientPrefix = callee.startsWith(`${client.clientName}.`);
       const matchesConfiguredCallName =
         client.callNames.length > 0 &&
         client.callNames.some((name) => callee === name);
+      const matchesClientPrefix =
+        client.callNames.length === 0 &&
+        callee.startsWith(`${client.clientName}.`);
       if (!matchesClientPrefix && !matchesConfiguredCallName) continue;
 
       const snippet = call.argumentsSnippet ?? "";
@@ -502,6 +559,61 @@ export function detectPythonExternalApisFromConfig(
         properties: {
           url,
           ...(serviceName ? { serviceName } : {}),
+        },
+      });
+    }
+  }
+
+  return findings;
+}
+
+export function detectPythonServerlessHandlersFromConfig(
+  ctx: PatternContext,
+  config: UnifiedPatternConfig,
+): RawFinding[] {
+  if (ctx.language !== "python") return [];
+
+  const imports = ctx.imports ?? [];
+  const functions = ctx.functions ?? [];
+  const content = sourceOf(ctx);
+  const lines = content.split(/\r?\n/);
+  const findings: RawFinding[] = [];
+
+  for (const handler of config.python.serverless.handlers) {
+    const hasImport =
+      handler.importModules.length === 0
+        ? false
+        : handler.importModules.some((mod) =>
+            imports.some((imp: { module: string }) =>
+              imp.module.includes(mod),
+            ),
+          );
+
+    for (const fn of functions) {
+      const lineText = lines[fn.location.startLine - 1] ?? "";
+      const matchesFunctionName = handler.functionNameRegexes.some((re) =>
+        re.test(lineText),
+      );
+      const decoratorMatch = fn.decorators.find((decorator) =>
+        handler.decoratorNames.some(
+          (name) => decorator === name || decorator.startsWith(`${name}(`),
+        ),
+      );
+
+      if (!matchesFunctionName && !decoratorMatch) continue;
+      if (!hasImport && !decoratorMatch) continue;
+
+      findings.push({
+        pattern: handler.patternId,
+        name: decoratorMatch
+          ? `${handler.id} ${decoratorMatch}`
+          : `${handler.id} ${fn.name}`,
+        confidence: handler.confidence,
+        location: fn.location,
+        properties: {
+          framework: handler.id,
+          handler: fn.name,
+          handlerType: "serverless_handler",
         },
       });
     }

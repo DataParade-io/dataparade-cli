@@ -9,6 +9,7 @@ import type {
   ScanResult,
   TerraformScanSummary,
 } from "../types";
+import type { FileLanguage } from "../types/file";
 import type { ServiceSection } from "../sectioning/discover-service-sections";
 import { validateScanResult } from "../schema/scan-result.schema";
 import {
@@ -23,9 +24,25 @@ import {
 } from "../../analyzers/terraform/terraform-show-json";
 import { runTerraformShowJsonSync } from "../../analyzers/terraform/terraform-exec";
 import { parsePythonModule } from "../../analyzers/python/parser";
+import { parseGoSourceFile } from "../../analyzers/go/parser";
+import { parseJvmSourceFile } from "../../analyzers/jvm/parser";
+import { parseCppTranslationUnit } from "../../analyzers/cpp/parser";
+import { parseCSharpCompilationUnit } from "../../analyzers/csharp/parser";
 import {
   detectPythonPatternsFromDependencyManifests,
 } from "../../analyzers/python/dependency-manifests";
+import {
+  detectGoPatternsFromDependencyManifests,
+} from "../../analyzers/go/dependency-manifests";
+import {
+  detectJvmPatternsFromDependencyManifests,
+} from "../../analyzers/jvm/dependency-manifests";
+import {
+  detectCppPatternsFromDependencyManifests,
+} from "../../analyzers/cpp/dependency-manifests";
+import {
+  detectDotnetPatternsFromManifests,
+} from "../../analyzers/csharp/dependency-manifests";
 import {
   detectTypeScriptPatternsFromDependencyManifests,
 } from "../../analyzers/typescript/dependency-manifests";
@@ -55,6 +72,57 @@ function patternToRegex(pattern: string): RegExp {
   escaped = escaped.replace(/\\\?/g, "[^/]"); // ?
 
   return new RegExp(`^${escaped}$`);
+}
+
+interface ParsedFileCounts {
+  functionsIndexed: number;
+  callsIndexed: number;
+  warnings: string[];
+}
+
+/**
+ * Parse every file of one language for reporting stats, surfacing parser
+ * warnings without failing the scan.
+ */
+function collectLanguageParserStats(
+  files: FileInfo[],
+  language: FileLanguage,
+  parse: (file: FileInfo) => ParsedFileCounts,
+  warn: (warning: string) => void,
+): LanguageParserStats | undefined {
+  const languageFiles = files.filter((file) => file.language === language);
+  if (languageFiles.length === 0) return undefined;
+
+  let functionsIndexed = 0;
+  let moduleLevelCallsIndexed = 0;
+  const parserWarnings: string[] = [];
+
+  for (const file of languageFiles) {
+    try {
+      const counts = parse(file);
+      functionsIndexed += counts.functionsIndexed;
+      moduleLevelCallsIndexed += counts.callsIndexed;
+      parserWarnings.push(
+        ...counts.warnings.map((w) => `${language}-parser (${file.path}): ${w}`),
+      );
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : `Unknown error in ${language} parser.`;
+      parserWarnings.push(`${language}-parser (${file.path}): ${message}`);
+    }
+  }
+
+  for (const warning of parserWarnings) warn(warning);
+
+  return {
+    language,
+    filesParsed: languageFiles.length,
+    functionsIndexed,
+    moduleLevelCallsIndexed,
+    warnings: parserWarnings,
+  };
 }
 
 export interface StructuralScanPhaseResult {
@@ -112,40 +180,84 @@ export async function runStructuralScanPhase(
 
   const languageStats: LanguageParserStats[] = [];
 
-  // Python parser stats (DP-P0-CLI-702):
-  const pythonFiles = files.filter((file) => file.language === "python");
-  if (pythonFiles.length > 0) {
-    let functionsIndexed = 0;
-    let moduleLevelCallsIndexed = 0;
-    const parserWarnings: string[] = [];
+  // Per-language parser stats (DP-P0-CLI-702).
+  const pythonStats = collectLanguageParserStats(
+    files,
+    "python",
+    (file) => {
+      const moduleModel = parsePythonModule(file);
+      return {
+        functionsIndexed: moduleModel.functions.length,
+        callsIndexed: moduleModel.moduleLevelCalls.length,
+        warnings: moduleModel.warnings,
+      };
+    },
+    warn,
+  );
+  if (pythonStats) languageStats.push(pythonStats);
 
-    for (const file of pythonFiles) {
-      try {
-        const moduleModel = parsePythonModule(file);
-        functionsIndexed += moduleModel.functions.length;
-        moduleLevelCallsIndexed += moduleModel.moduleLevelCalls.length;
-        if (moduleModel.warnings.length > 0) {
-          parserWarnings.push(
-            ...moduleModel.warnings.map((w) => `python-parser (${file.path}): ${w}`),
-          );
-        }
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Unknown error in Python parser.";
-        parserWarnings.push(`python-parser (${file.path}): ${message}`);
-      }
-    }
+  const goStats = collectLanguageParserStats(
+    files,
+    "go",
+    (file) => {
+      const unit = parseGoSourceFile(file);
+      return {
+        functionsIndexed: unit.functions.length,
+        callsIndexed: unit.calls.length,
+        warnings: unit.warnings,
+      };
+    },
+    warn,
+  );
+  if (goStats) languageStats.push(goStats);
 
-    for (const warning of parserWarnings) warn(warning);
-
-    languageStats.push({
-      language: "python",
-      filesParsed: pythonFiles.length,
-      functionsIndexed,
-      moduleLevelCallsIndexed,
-      warnings: parserWarnings,
-    });
+  // One parser, reported per language so the stats stay attributable.
+  for (const jvmLanguage of ["java", "kotlin"] as const) {
+    const jvmStats = collectLanguageParserStats(
+      files,
+      jvmLanguage,
+      (file) => {
+        const unit = parseJvmSourceFile(file);
+        return {
+          functionsIndexed: unit.methods.length,
+          callsIndexed: unit.calls.length,
+          warnings: unit.warnings,
+        };
+      },
+      warn,
+    );
+    if (jvmStats) languageStats.push(jvmStats);
   }
+
+  const cppStats = collectLanguageParserStats(
+    files,
+    "cpp",
+    (file) => {
+      const unit = parseCppTranslationUnit(file);
+      return {
+        functionsIndexed: unit.functions.length,
+        callsIndexed: unit.calls.length,
+        warnings: unit.warnings,
+      };
+    },
+    warn,
+  );
+  if (cppStats) languageStats.push(cppStats);
+
+  const cSharpStats = collectLanguageParserStats(
+    files,
+    "csharp",
+    (file) => {
+      const unit = parseCSharpCompilationUnit(file);
+      return {
+        functionsIndexed: unit.methods.length,
+        callsIndexed: unit.calls.length,
+        warnings: unit.warnings,
+      };
+    },
+    warn,
+  );
+  if (cSharpStats) languageStats.push(cSharpStats);
 
   const minimumConfidence = config.minimumConfidence;
   const tfFiles = files.filter((f) => f.language === "terraform");
@@ -232,6 +344,76 @@ export async function runStructuralScanPhase(
       const message =
         err instanceof Error ? err.message : "Unknown error parsing manifests.";
       warn(`python-manifests: ${message}`);
+    }
+  }
+
+  // Third-party service and dependency detection from Go module manifests.
+  if (!config.languages || config.languages.includes("go")) {
+    try {
+      findings.push(
+        ...(await detectGoPatternsFromDependencyManifests(scanRootDir, {
+          onWarning: warn,
+          excludePaths: config.excludePaths,
+        })),
+      );
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Unknown error parsing manifests.";
+      warn(`go-manifests: ${message}`);
+    }
+  }
+
+  // Third-party service and dependency detection from JVM build manifests
+  // (Maven / Gradle), plus Spring datasource configuration.
+  if (
+    !config.languages ||
+    config.languages.includes("java") ||
+    config.languages.includes("kotlin")
+  ) {
+    try {
+      findings.push(
+        ...(await detectJvmPatternsFromDependencyManifests(scanRootDir, {
+          onWarning: warn,
+          excludePaths: config.excludePaths,
+        })),
+      );
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Unknown error parsing manifests.";
+      warn(`jvm-manifests: ${message}`);
+    }
+  }
+
+  // Third-party service and dependency detection from C++ package manifests
+  // (vcpkg / Conan / CMake).
+  if (!config.languages || config.languages.includes("cpp")) {
+    try {
+      findings.push(
+        ...(await detectCppPatternsFromDependencyManifests(scanRootDir, {
+          onWarning: warn,
+          excludePaths: config.excludePaths,
+        })),
+      );
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Unknown error parsing manifests.";
+      warn(`cpp-manifests: ${message}`);
+    }
+  }
+
+  // .NET project manifests (PackageReference) and appsettings connection strings.
+  if (!config.languages || config.languages.includes("csharp")) {
+    try {
+      findings.push(
+        ...(await detectDotnetPatternsFromManifests(scanRootDir, {
+          onWarning: warn,
+          excludePaths: config.excludePaths,
+        })),
+      );
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Unknown error parsing manifests.";
+      warn(`dotnet-manifests: ${message}`);
     }
   }
 

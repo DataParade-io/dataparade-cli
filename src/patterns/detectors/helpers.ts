@@ -1,5 +1,11 @@
 import type { FileInfo, SourceLocation } from "../../core/types/file";
+import type { PatternContext } from "../engine";
 import type { UnifiedPatternConfig } from "../config";
+
+/** Prefer comment-stripped source when the analyzer supplies it. */
+export function sourceOf(ctx: PatternContext): string {
+  return ctx.strippedContent ?? ctx.file.content ?? "";
+}
 
 export function createLocationFromLine(
   file: FileInfo,

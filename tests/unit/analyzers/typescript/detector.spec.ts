@@ -267,5 +267,268 @@ describe("analyzers/typescript/detector - DP-P0-CLI-104", () => {
 
     (patternConfig.loadTypeScriptPatternConfig as jest.Mock).mockRestore();
   });
+
+  it("detects AWS Lambda handlers as lambda_handler findings", () => {
+    const file = makeFile(
+      `
+        import type { APIGatewayProxyHandler } from "aws-lambda";
+
+        export const handler: APIGatewayProxyHandler = async () => ({
+          statusCode: 200,
+          body: "ok",
+        });
+      `,
+    );
+
+    const findings = detectPatterns(file);
+    const handlers = findings.filter((f) => f.pattern === "lambda_handler");
+
+    expect(handlers.length).toBeGreaterThan(0);
+    expect(handlers[0].properties.framework).toBe("aws_lambda");
+    expect(handlers[0].properties.handlerType).toBe("serverless_handler");
+  });
+
+  it("detects GCP Cloud Functions handlers as lambda_handler findings", () => {
+    const file = makeFile(
+      `
+        import * as functions from "@google-cloud/functions-framework";
+
+        functions.http("helloHttp", (req, res) => {
+          res.send("ok");
+        });
+      `,
+    );
+
+    const findings = detectPatterns(file);
+    const handlers = findings.filter((f) => f.pattern === "lambda_handler");
+
+    expect(handlers.length).toBeGreaterThan(0);
+    expect(handlers[0].properties.framework).toBe("gcp_functions");
+    expect(handlers[0].properties.handlerType).toBe("serverless_handler");
+  });
+
+  it("detects gRPC client dial as external_api_call findings", () => {
+    const file = makeFile(
+      `
+        import * as grpc from "@grpc/grpc-js";
+
+        const client = new GreeterClient(
+          "localhost:50051",
+          grpc.credentials.createInsecure(),
+        );
+      `,
+    );
+
+    const findings = detectPatterns(file);
+    const apiFindings = findings.filter((f) => f.pattern === "external_api_call");
+
+    expect(apiFindings.length).toBeGreaterThan(0);
+    expect(apiFindings.some((f) => f.properties.client === "grpc")).toBe(true);
+  });
+
+  it("detects OAuth2 libraries as auth_middleware findings", () => {
+    const file = makeFile(
+      `
+        import { OAuth2Client } from "google-auth-library";
+
+        const client = new OAuth2Client();
+      `,
+    );
+
+    const findings = detectPatterns(file);
+    const authFindings = findings.filter((f) => f.pattern === "auth_middleware");
+
+    expect(authFindings.length).toBeGreaterThan(0);
+    expect(authFindings.some((f) => f.properties.strategy === "oauth2")).toBe(
+      true,
+    );
+  });
+
+  it("detects dotenv.config as config_file findings", () => {
+    const file = makeFile(
+      `
+        import dotenv from "dotenv";
+        dotenv.config();
+      `,
+    );
+
+    const findings = detectPatterns(file);
+    const configFindings = findings.filter(
+      (f) => f.pattern === "config_file" && f.name === "dotenv_config",
+    );
+
+    expect(configFindings.length).toBeGreaterThan(0);
+  });
+
+  it("still detects Express routes after a template literal that contains //", () => {
+    const file = makeFile(
+      `
+        import express from "express";
+        const app = express();
+        const docs = \`See http://example.com/guide\`;
+        app.get("/users", (_req, res) => res.send("ok"));
+      `,
+    );
+
+    const findings = detectPatterns(file);
+    const routes = findings.filter((f) => f.pattern === "express_route");
+
+    expect(routes.length).toBeGreaterThan(0);
+    expect(routes[0].name).toContain("/users");
+  });
+
+  it("detects gRPC service registration as express_route findings", () => {
+    const file = makeFile(
+      `
+        import * as grpc from "@grpc/grpc-js";
+
+        const server = new grpc.Server();
+        server.addService(serviceDefinition, implementation);
+      `,
+    );
+
+    const findings = detectPatterns(file);
+    const routes = findings.filter((f) => f.pattern === "express_route");
+
+    expect(routes.length).toBeGreaterThan(0);
+    expect(routes.some((f) => f.properties.framework === "grpc")).toBe(true);
+  });
+
+  it("detects Bearer authorization headers as auth_middleware findings", () => {
+    const file = makeFile(
+      `
+        const headers = { Authorization: "Bearer token-value" };
+      `,
+    );
+
+    const findings = detectPatterns(file);
+    const authFindings = findings.filter((f) => f.pattern === "auth_middleware");
+
+    expect(authFindings.length).toBeGreaterThan(0);
+    expect(authFindings.some((f) => f.properties.strategy === "bearer_token")).toBe(
+      true,
+    );
+  });
+
+  it("detects jsonwebtoken import with strategy jwt", () => {
+    const file = makeFile(
+      `
+        import jwt from "jsonwebtoken";
+        const token = jwt.sign({ userId: 1 }, process.env.JWT_SECRET);
+      `,
+    );
+    const findings = detectPatterns(file);
+    const authFindings = findings.filter((f) => f.pattern === "auth_middleware");
+    expect(authFindings.length).toBeGreaterThan(0);
+    expect(authFindings.some((f) => f.properties.strategy === "jwt")).toBe(true);
+  });
+
+  it("detects better-sqlite3 as database_connection with databaseType sqlite", () => {
+    const file = makeFile(
+      `
+        import Database from "better-sqlite3";
+        const db = new Database("app.db");
+      `,
+    );
+    const findings = detectPatterns(file);
+    const dbFindings = findings.filter((f) => f.pattern === "database_connection");
+    expect(dbFindings.length).toBeGreaterThan(0);
+    expect(dbFindings.some((f) => f.properties.databaseType === "sqlite")).toBe(true);
+  });
+
+  it("detects cassandra-driver as database_connection with databaseType cassandra", () => {
+    const file = makeFile(
+      `
+        import { Client } from "cassandra-driver";
+        const client = new Client({ contactPoints: ["localhost"] });
+      `,
+    );
+    const findings = detectPatterns(file);
+    const dbFindings = findings.filter((f) => f.pattern === "database_connection");
+    expect(dbFindings.length).toBeGreaterThan(0);
+    expect(dbFindings.some((f) => f.properties.databaseType === "cassandra")).toBe(true);
+  });
+
+  it("detects mssql as database_connection with databaseType mssql", () => {
+    const file = makeFile(
+      `
+        import sql from "mssql";
+        await sql.connect(config);
+      `,
+    );
+    const findings = detectPatterns(file);
+    const dbFindings = findings.filter((f) => f.pattern === "database_connection");
+    expect(dbFindings.length).toBeGreaterThan(0);
+    expect(dbFindings.some((f) => f.properties.databaseType === "mssql")).toBe(true);
+  });
+
+  it("detects @aws-sdk/client-dynamodb as database_connection with databaseType dynamodb", () => {
+    const file = makeFile(
+      `
+        import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+        const client = new DynamoDBClient({ region: "us-east-1" });
+      `,
+    );
+    const findings = detectPatterns(file);
+    const dbFindings = findings.filter((f) => f.pattern === "database_connection");
+    expect(dbFindings.length).toBeGreaterThan(0);
+    expect(dbFindings.some((f) => f.properties.databaseType === "dynamodb")).toBe(true);
+  });
+
+  it("detects axios as external_api_call findings", () => {
+    const file = makeFile(
+      `
+        import axios from "axios";
+        const res = await axios.get("https://api.example.com/users");
+      `,
+    );
+    const findings = detectPatterns(file);
+    const apiFindings = findings.filter((f) => f.pattern === "external_api_call");
+    expect(apiFindings.length).toBeGreaterThan(0);
+    expect(apiFindings.some((f) => f.properties.client === "axios")).toBe(true);
+  });
+
+  it("detects node-fetch as external_api_call findings", () => {
+    const file = makeFile(
+      `
+        import fetch from "node-fetch";
+        const res = await fetch("https://api.example.com/data");
+      `,
+    );
+    const findings = detectPatterns(file);
+    const apiFindings = findings.filter((f) => f.pattern === "external_api_call");
+    expect(apiFindings.length).toBeGreaterThan(0);
+    expect(apiFindings.some((f) => f.properties.client === "fetch")).toBe(true);
+  });
+
+  it("detects important env variable keys from the importantKeys list", () => {
+    const file = makeFile(
+      `
+        const secret = process.env.JWT_SECRET;
+        const key = process.env.STRIPE_SECRET_KEY;
+      `,
+    );
+    const findings = detectPatterns(file);
+    const envFindings = findings.filter((f) => f.pattern === "env_variable");
+    expect(envFindings.length).toBeGreaterThanOrEqual(2);
+    const keys = envFindings.map((f) => f.properties.key);
+    expect(keys).toContain("JWT_SECRET");
+    expect(keys).toContain("STRIPE_SECRET_KEY");
+  });
+
+  it("does not match Express routes inside line comments", () => {
+    const file = makeFile(
+      `
+        import express from "express";
+        const app = express();
+        // app.get("/hidden", (_req, res) => res.send("nope"));
+      `,
+    );
+
+    const findings = detectPatterns(file);
+    const routes = findings.filter((f) => f.pattern === "express_route");
+
+    expect(routes).toHaveLength(0);
+  });
 });
 

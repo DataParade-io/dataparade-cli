@@ -31,6 +31,11 @@ function normalizeLanguages(
     "yaml",
     "env",
     "python",
+    "cpp",
+    "csharp",
+    "go",
+    "java",
+    "kotlin",
     "terraform",
     "dockerfile",
   ];

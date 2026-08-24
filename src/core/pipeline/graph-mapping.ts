@@ -123,6 +123,9 @@ function mapComponentToNode(
   if (component.subType) {
     (baseData as Record<string, unknown>).componentSubType = component.subType;
   }
+  if (typeof component.confidence === "number") {
+    (baseData as Record<string, unknown>).scanConfidence = component.confidence;
+  }
   if (component.detectedFrom?.length) {
     (baseData as Record<string, unknown>).detectedFrom = component.detectedFrom.map(
       (ref) => stripCodeFromDetectedFromRef(ref),

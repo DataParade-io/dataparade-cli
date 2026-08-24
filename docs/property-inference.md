@@ -8,6 +8,10 @@ Property inference/enrichment runs in both analyzers:
 
 - TypeScript/JavaScript: `cli/src/analyzers/typescript/detector.ts`
 - Python: `cli/src/analyzers/python/detector.ts`
+- Go: `cli/src/analyzers/go/detector.ts`
+- Java/Kotlin: `cli/src/analyzers/jvm/detector.ts`
+- C++: `cli/src/analyzers/cpp/detector.ts`
+- C#/.NET: `cli/src/analyzers/csharp/detector.ts`
 
 ## Where the rules live
 

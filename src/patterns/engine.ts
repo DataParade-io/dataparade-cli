@@ -7,13 +7,47 @@ import {
   detectPythonEnvAndConfigFromConfig as detectPythonEnvAndConfigFromConfigAdapter,
   detectPythonExternalApisFromConfig as detectPythonExternalApisFromConfigAdapter,
   detectPythonRoutesFromConfig as detectPythonRoutesFromConfigAdapter,
+  detectPythonServerlessHandlersFromConfig as detectPythonServerlessHandlersFromConfigAdapter,
 } from "./detectors/python";
+import {
+  detectCppAuthFromConfig as detectCppAuthFromConfigAdapter,
+  detectCppDatabaseConnectionsFromConfig as detectCppDatabaseConnectionsFromConfigAdapter,
+  detectCppEnvAndConfigFromConfig as detectCppEnvAndConfigFromConfigAdapter,
+  detectCppExternalApisFromConfig as detectCppExternalApisFromConfigAdapter,
+  detectCppRoutesFromConfig as detectCppRoutesFromConfigAdapter,
+} from "./detectors/cpp";
+import {
+  detectCSharpAuthFromConfig as detectCSharpAuthFromConfigAdapter,
+  detectCSharpDatabaseConnectionsFromConfig as detectCSharpDatabaseConnectionsFromConfigAdapter,
+  detectCSharpEnvAndConfigFromConfig as detectCSharpEnvAndConfigFromConfigAdapter,
+  detectCSharpExternalApisFromConfig as detectCSharpExternalApisFromConfigAdapter,
+  detectCSharpRoutesFromConfig as detectCSharpRoutesFromConfigAdapter,
+  detectCSharpServerlessHandlersFromConfig as detectCSharpServerlessHandlersFromConfigAdapter,
+} from "./detectors/csharp";
+import {
+  detectGoAuthFromConfig as detectGoAuthFromConfigAdapter,
+  detectGoDatabaseConnectionsFromConfig as detectGoDatabaseConnectionsFromConfigAdapter,
+  detectGoEnvAndConfigFromConfig as detectGoEnvAndConfigFromConfigAdapter,
+  detectGoExternalApisFromConfig as detectGoExternalApisFromConfigAdapter,
+  detectGoRoutesFromConfig as detectGoRoutesFromConfigAdapter,
+  detectGoServerlessHandlersFromConfig as detectGoServerlessHandlersFromConfigAdapter,
+} from "./detectors/go";
+import {
+  detectJvmAuthFromConfig as detectJvmAuthFromConfigAdapter,
+  detectJvmDatabaseConnectionsFromConfig as detectJvmDatabaseConnectionsFromConfigAdapter,
+  detectJvmEnvAndConfigFromConfig as detectJvmEnvAndConfigFromConfigAdapter,
+  detectJvmExternalApisFromConfig as detectJvmExternalApisFromConfigAdapter,
+  detectJvmRoutesFromConfig as detectJvmRoutesFromConfigAdapter,
+  detectJvmServerlessHandlersFromConfig as detectJvmServerlessHandlersFromConfigAdapter,
+} from "./detectors/jvm";
 import {
   detectTypeScriptJavaScriptExternalApisFromHttpClients as detectTypeScriptJavaScriptExternalApisFromHttpClientsAdapter,
   detectTypeScriptRoutesFromConfig as detectTypeScriptRoutesFromConfigAdapter,
   detectTypeScriptDatabaseFromConfig as detectTypeScriptDatabaseFromConfigAdapter,
   detectTypeScriptAuthFromConfig as detectTypeScriptAuthFromConfigAdapter,
   detectTypeScriptEnvAndConfigFromConfig as detectTypeScriptEnvAndConfigFromConfigAdapter,
+  detectTypeScriptServerlessHandlersFromConfig as detectTypeScriptServerlessHandlersFromConfigAdapter,
+  detectTypeScriptExternalApisFromConfig as detectTypeScriptExternalApisFromConfigAdapter,
 } from "./detectors/typescript";
 
 export interface ImportLike {
@@ -32,6 +66,12 @@ export interface PatternContext {
    */
   includeThirdPartyHttpLinePatterns?: boolean;
   imports?: ImportLike[];
+  /**
+   * Source with comments blanked out and line/column layout preserved.
+   * Supplied by the C-family analyzers (C++, C#) so line-based rules do not
+   * match commented-out code. Falls back to `file.content` when absent.
+   */
+  strippedContent?: string;
   moduleLevelCalls?: {
     callee: string;
     argumentsSnippet: string;
@@ -40,6 +80,18 @@ export interface PatternContext {
   functions?: {
     name: string;
     decorators: string[];
+    location: SourceLocation;
+  }[];
+  /**
+   * Declared types (classes, records, structs). `decorators` carries language
+   * annotations attached to the declaration — C# attributes such as
+   * `Route("api/[controller]")`.
+   */
+  types?: {
+    name: string;
+    kind?: string;
+    baseTypes?: string[];
+    decorators?: string[];
     location: SourceLocation;
   }[];
   normalizedPath?: string;
@@ -181,11 +233,51 @@ export function matchPatterns(ctx: PatternContext): RawFinding[] {
   findings.push(...detectPythonEnvAndConfigFromConfigAdapter(ctx, config));
   findings.push(...detectPythonExternalApisFromConfigAdapter(ctx, config));
   findings.push(...detectPythonRoutesFromConfigAdapter(ctx, config));
+  findings.push(
+    ...detectPythonServerlessHandlersFromConfigAdapter(ctx, config),
+  );
+
+  findings.push(...detectCppDatabaseConnectionsFromConfigAdapter(ctx, config));
+  findings.push(...detectCppAuthFromConfigAdapter(ctx, config));
+  findings.push(...detectCppEnvAndConfigFromConfigAdapter(ctx, config));
+  findings.push(...detectCppExternalApisFromConfigAdapter(ctx, config));
+  findings.push(...detectCppRoutesFromConfigAdapter(ctx, config));
+
+  findings.push(
+    ...detectCSharpDatabaseConnectionsFromConfigAdapter(ctx, config),
+  );
+  findings.push(...detectCSharpAuthFromConfigAdapter(ctx, config));
+  findings.push(...detectCSharpEnvAndConfigFromConfigAdapter(ctx, config));
+  findings.push(...detectCSharpExternalApisFromConfigAdapter(ctx, config));
+  findings.push(...detectCSharpRoutesFromConfigAdapter(ctx, config));
+  findings.push(
+    ...detectCSharpServerlessHandlersFromConfigAdapter(ctx, config),
+  );
+
+  findings.push(...detectGoDatabaseConnectionsFromConfigAdapter(ctx, config));
+  findings.push(...detectGoAuthFromConfigAdapter(ctx, config));
+  findings.push(...detectGoEnvAndConfigFromConfigAdapter(ctx, config));
+  findings.push(...detectGoExternalApisFromConfigAdapter(ctx, config));
+  findings.push(...detectGoRoutesFromConfigAdapter(ctx, config));
+  findings.push(...detectGoServerlessHandlersFromConfigAdapter(ctx, config));
+
+  findings.push(...detectJvmDatabaseConnectionsFromConfigAdapter(ctx, config));
+  findings.push(...detectJvmAuthFromConfigAdapter(ctx, config));
+  findings.push(...detectJvmEnvAndConfigFromConfigAdapter(ctx, config));
+  findings.push(...detectJvmExternalApisFromConfigAdapter(ctx, config));
+  findings.push(...detectJvmRoutesFromConfigAdapter(ctx, config));
+  findings.push(...detectJvmServerlessHandlersFromConfigAdapter(ctx, config));
 
   findings.push(...detectTypeScriptRoutesFromConfigAdapter(ctx, config));
   findings.push(...detectTypeScriptDatabaseFromConfigAdapter(ctx, config));
   findings.push(...detectTypeScriptAuthFromConfigAdapter(ctx, config));
   findings.push(...detectTypeScriptEnvAndConfigFromConfigAdapter(ctx, config));
+  findings.push(
+    ...detectTypeScriptServerlessHandlersFromConfigAdapter(ctx, config),
+  );
+  findings.push(
+    ...detectTypeScriptExternalApisFromConfigAdapter(ctx, config),
+  );
 
   return findings;
 }

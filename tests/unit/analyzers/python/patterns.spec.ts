@@ -376,5 +376,206 @@ describe("Python analyzer patterns - DP-P0-CLI-703", () => {
       expect(serviceFinding).toBeDefined();
     },
   );
+
+  it("detects AWS Lambda handlers as lambda_handler findings", () => {
+    const content = [
+      "import boto3",
+      "",
+      "def lambda_handler(event, context):",
+      "    return {'statusCode': 200}",
+      "",
+    ].join("\n");
+
+    const file = makePythonFile(content, "handler.py");
+    const findings = detectPythonPatterns(file);
+    const handlers = findings.filter((f) => f.pattern === "lambda_handler");
+
+    expect(handlers.length).toBeGreaterThan(0);
+    expect(handlers[0].properties.framework).toBe("aws_lambda");
+    expect(handlers[0].properties.handler).toBe("lambda_handler");
+    expect(handlers[0].properties.handlerType).toBe("serverless_handler");
+  });
+
+  it("detects GCP Cloud Functions handlers as lambda_handler findings", () => {
+    const content = [
+      "import functions_framework",
+      "",
+      "@functions_framework.http",
+      "def hello_http(request):",
+      '    return "Hello"',
+      "",
+    ].join("\n");
+
+    const file = makePythonFile(content, "main.py");
+    const findings = detectPythonPatterns(file);
+    const handlers = findings.filter((f) => f.pattern === "lambda_handler");
+
+    expect(handlers.length).toBeGreaterThan(0);
+    expect(handlers[0].properties.framework).toBe("gcp_functions");
+    expect(handlers[0].properties.handler).toBe("hello_http");
+    expect(handlers[0].properties.handlerType).toBe("serverless_handler");
+  });
+
+  it("detects gRPC client channels as external_api_call findings", () => {
+    const content = [
+      "import grpc",
+      "",
+      'channel = grpc.insecure_channel("localhost:50051")',
+      "",
+    ].join("\n");
+
+    const file = makePythonFile(content, "grpc_client.py");
+    const findings = detectPythonPatterns(file);
+    const apiFindings = findings.filter((f) => f.pattern === "external_api_call");
+
+    expect(apiFindings.length).toBeGreaterThan(0);
+    expect(apiFindings.some((f) => f.properties.serviceName === "grpc")).toBe(
+      true,
+    );
+  });
+
+  it("detects OAuth2 libraries as auth_middleware findings", () => {
+    const content = [
+      "from authlib.integrations.flask_client import OAuth",
+      "",
+      "oauth = OAuth()",
+      "",
+    ].join("\n");
+
+    const file = makePythonFile(content, "oauth_app.py");
+    const findings = detectPythonPatterns(file);
+    const authFindings = findings.filter((f) => f.pattern === "auth_middleware");
+
+    expect(authFindings.length).toBeGreaterThan(0);
+    expect(authFindings.some((f) => f.properties.strategy === "oauth2")).toBe(
+      true,
+    );
+  });
+
+  it("detects gRPC routes as express_route findings", () => {
+    const content = [
+      "import grpc",
+      "",
+      "def serve():",
+      "    server = grpc.server(None)",
+      '    server.add_insecure_port("0.0.0.0:50051")',
+      "",
+    ].join("\n");
+
+    const file = makePythonFile(content, "grpc_server.py");
+    const findings = detectPythonPatterns(file);
+    const routes = findings.filter((f) => f.pattern === "express_route");
+
+    expect(routes.length).toBeGreaterThan(0);
+    expect(routes[0].properties.framework).toBe("grpc");
+    expect(routes[0].properties.handlerType).toBe("grpc_service");
+  });
+
+  it("detects Bearer authorization headers as auth_middleware findings", () => {
+    const content = [
+      'headers = {"Authorization": "Bearer secret-token"}',
+      "",
+    ].join("\n");
+
+    const file = makePythonFile(content, "auth_headers.py");
+    const findings = detectPythonPatterns(file);
+    const authFindings = findings.filter((f) => f.pattern === "auth_middleware");
+
+    expect(authFindings.length).toBeGreaterThan(0);
+    expect(authFindings.some((f) => f.properties.strategy === "bearer_token")).toBe(
+      true,
+    );
+  });
+
+  it("detects pymysql as database_connection with databaseType mysql", () => {
+    const content = [
+      "import pymysql",
+      "",
+      "conn = pymysql.connect(host='localhost', user='root', db='mydb')",
+      "",
+    ].join("\n");
+    const file = makePythonFile(content, "db_mysql.py");
+    const findings = detectPythonPatterns(file);
+    const dbFindings = findings.filter((f) => f.pattern === "database_connection");
+    expect(dbFindings.length).toBeGreaterThan(0);
+    expect(dbFindings.some((f) => f.properties.databaseType === "mysql")).toBe(true);
+    expect(dbFindings.some((f) => f.properties.client === "pymysql")).toBe(true);
+  });
+
+  it("detects pymongo/motor as database_connection with databaseType mongodb", () => {
+    const content = [
+      "from motor.motor_asyncio import AsyncIOMotorClient",
+      "",
+      "client = AsyncIOMotorClient('mongodb://localhost:27017')",
+      "",
+    ].join("\n");
+    const file = makePythonFile(content, "db_motor.py");
+    const findings = detectPythonPatterns(file);
+    const dbFindings = findings.filter((f) => f.pattern === "database_connection");
+    expect(dbFindings.length).toBeGreaterThan(0);
+    expect(dbFindings.some((f) => f.properties.databaseType === "mongodb")).toBe(true);
+  });
+
+  it("detects redis-py as database_connection with databaseType redis", () => {
+    const content = [
+      "import redis",
+      "",
+      "r = redis.Redis(host='localhost', port=6379)",
+      "",
+    ].join("\n");
+    const file = makePythonFile(content, "db_redis.py");
+    const findings = detectPythonPatterns(file);
+    const dbFindings = findings.filter((f) => f.pattern === "database_connection");
+    expect(dbFindings.length).toBeGreaterThan(0);
+    expect(dbFindings.some((f) => f.properties.databaseType === "redis")).toBe(true);
+  });
+
+  it("detects asyncpg as database_connection with databaseType postgres", () => {
+    const content = [
+      "import asyncpg",
+      "",
+      "conn = await asyncpg.connect('postgresql://localhost/mydb')",
+      "",
+    ].join("\n");
+    const file = makePythonFile(content, "db_asyncpg.py");
+    const findings = detectPythonPatterns(file);
+    const dbFindings = findings.filter((f) => f.pattern === "database_connection");
+    expect(dbFindings.length).toBeGreaterThan(0);
+    expect(dbFindings.some((f) => f.properties.databaseType === "postgres")).toBe(true);
+    expect(dbFindings.some((f) => f.properties.client === "asyncpg")).toBe(true);
+  });
+
+  it("detects elasticsearch-py as database_connection with databaseType elasticsearch", () => {
+    const content = [
+      "from elasticsearch import Elasticsearch",
+      "",
+      "es = Elasticsearch(['http://localhost:9200'])",
+      "",
+    ].join("\n");
+    const file = makePythonFile(content, "db_elastic.py");
+    const findings = detectPythonPatterns(file);
+    const dbFindings = findings.filter((f) => f.pattern === "database_connection");
+    expect(dbFindings.length).toBeGreaterThan(0);
+    expect(dbFindings.some((f) => f.properties.databaseType === "elasticsearch")).toBe(true);
+  });
+
+  it("does not match routes commented out in Python sources", () => {
+    const content = [
+      "from fastapi import FastAPI",
+      "",
+      "app = FastAPI()",
+      "",
+      "# @app.get('/hidden')",
+      "async def hidden():",
+      "    return {}",
+      "",
+    ].join("\n");
+
+    const file = makePythonFile(content, "commented_routes.py");
+    const findings = detectPythonPatterns(file);
+    const routes = findings.filter((f) => f.pattern === "express_route");
+
+    expect(routes).toHaveLength(0);
+  });
 });
 

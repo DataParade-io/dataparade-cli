@@ -1,0 +1,375 @@
+# C# / .NET pattern config. All entries share: patternId, optional confidence
+# (default 0.8).
+#
+# `usingNamespaces` gates a rule on `using ...;` declarations and matches on a
+# namespace prefix (`Microsoft.AspNetCore.Mvc` matches
+# `Microsoft.AspNetCore.Mvc.Routing`). Leave it empty for rules that must also
+# fire under .NET 6+ implicit global usings, where the `using` line is absent.
+
+db_clients:
+  - id: entity_framework_core
+    patternId: database_connection
+    databaseType: sql
+    usingNamespaces:
+      - Microsoft.EntityFrameworkCore
+    callNames:
+      - UseSqlServer
+      - UseNpgsql
+      - UseSqlite
+      - UseMySql
+      - UseMySQL
+      - UseCosmos
+      - UseInMemoryDatabase
+    baseTypes:
+      - DbContext
+      - IdentityDbContext
+    confidence: 0.9
+
+  - id: sql_server_client
+    patternId: database_connection
+    databaseType: mssql
+    usingNamespaces:
+      - Microsoft.Data.SqlClient
+      - System.Data.SqlClient
+    callNames:
+      - SqlConnection
+    confidence: 0.9
+
+  - id: npgsql
+    patternId: database_connection
+    databaseType: postgres
+    usingNamespaces:
+      - Npgsql
+    callNames:
+      - NpgsqlConnection
+      - NpgsqlDataSource.Create
+    confidence: 0.9
+
+  - id: mysql_connector_net
+    patternId: database_connection
+    databaseType: mysql
+    usingNamespaces:
+      - MySql.Data.MySqlClient
+      - MySqlConnector
+    callNames:
+      - MySqlConnection
+    confidence: 0.9
+
+  - id: sqlite_net
+    patternId: database_connection
+    databaseType: sqlite
+    usingNamespaces:
+      - Microsoft.Data.Sqlite
+      - System.Data.SQLite
+    callNames:
+      - SqliteConnection
+      - SQLiteConnection
+    confidence: 0.9
+
+  - id: dapper
+    patternId: database_connection
+    databaseType: sql
+    usingNamespaces:
+      - Dapper
+    callNames:
+      - QueryAsync
+      - QueryFirstOrDefaultAsync
+      - ExecuteAsync
+    confidence: 0.85
+
+  - id: mongodb_driver
+    patternId: database_connection
+    databaseType: mongodb
+    usingNamespaces:
+      - MongoDB.Driver
+      - MongoDB.Bson
+    callNames:
+      - MongoClient
+    confidence: 0.9
+
+  - id: stackexchange_redis
+    patternId: database_connection
+    databaseType: redis
+    usingNamespaces:
+      - StackExchange.Redis
+    callNames:
+      - ConnectionMultiplexer.Connect
+      - ConnectionMultiplexer.ConnectAsync
+    confidence: 0.9
+
+  - id: cosmos_db
+    patternId: database_connection
+    databaseType: cosmosdb
+    usingNamespaces:
+      - Microsoft.Azure.Cosmos
+    callNames:
+      - CosmosClient
+    confidence: 0.9
+
+  - id: cassandra_net
+    patternId: database_connection
+    databaseType: cassandra
+    usingNamespaces:
+      - Cassandra
+    callNames:
+      - Cluster.Builder
+    confidence: 0.85
+
+  - id: dynamodb_dotnet
+    patternId: database_connection
+    databaseType: dynamodb
+    usingNamespaces:
+      - Amazon.DynamoDBv2
+      - Amazon.DynamoDBv2.DataModel
+      - Amazon.DynamoDBv2.DocumentModel
+    callNames:
+      - AmazonDynamoDBClient
+      - DynamoDBContext
+    confidence: 0.85
+
+auth:
+  libraries:
+    - id: aspnet_core_authentication
+      patternId: auth_middleware
+      usingNamespaces:
+        - Microsoft.AspNetCore.Authentication
+        - Microsoft.AspNetCore.Authorization
+      callNames:
+        - AddAuthentication
+        - AddAuthorization
+        - UseAuthentication
+        - UseAuthorization
+      strategy: aspnet_core
+      confidence: 0.85
+
+    - id: jwt_bearer
+      patternId: auth_middleware
+      usingNamespaces:
+        - Microsoft.AspNetCore.Authentication.JwtBearer
+        - System.IdentityModel.Tokens.Jwt
+        - Microsoft.IdentityModel.Tokens
+      callNames:
+        - AddJwtBearer
+        - JwtSecurityTokenHandler
+        - TokenValidationParameters
+      strategy: jwt
+      confidence: 0.9
+
+    - id: aspnet_core_identity
+      patternId: auth_middleware
+      usingNamespaces:
+        - Microsoft.AspNetCore.Identity
+      callNames:
+        - AddIdentity
+        - AddIdentityCore
+        - AddDefaultIdentity
+      strategy: aspnet_identity
+      confidence: 0.85
+
+    - id: microsoft_identity_web
+      patternId: auth_middleware
+      usingNamespaces:
+        - Microsoft.Identity.Web
+        - Microsoft.AspNetCore.Authentication.OpenIdConnect
+        - Microsoft.AspNetCore.Authentication.OAuth
+      callNames:
+        - AddMicrosoftIdentityWebApp
+        - AddMicrosoftIdentityWebApi
+        - AddAuthentication
+        - AddOpenIdConnect
+        - AddOAuth
+      strategy: oauth2
+      confidence: 0.9
+
+  attributes:
+    - id: authorize_attribute
+      patternId: auth_middleware
+      attributeNames:
+        - Authorize
+      strategy: authorize_attribute
+      confidence: 0.85
+
+routes:
+  frameworks:
+    - id: aspnet_core_mvc
+      patternId: express_route
+      usingNamespaces:
+        - Microsoft.AspNetCore.Mvc
+      confidence: 0.9
+      attributeRoutes:
+        - attribute: HttpGet
+          method: GET
+        - attribute: HttpPost
+          method: POST
+        - attribute: HttpPut
+          method: PUT
+        - attribute: HttpDelete
+          method: DELETE
+        - attribute: HttpPatch
+          method: PATCH
+        - attribute: HttpHead
+          method: HEAD
+        - attribute: HttpOptions
+          method: OPTIONS
+        - attribute: Route
+      controllerAttributes:
+        - ApiController
+      controllerRouteAttributes:
+        - Route
+      controllerBaseTypes:
+        - ControllerBase
+        - Controller
+
+    - id: aspnet_core_minimal_api
+      patternId: express_route
+      confidence: 0.9
+      routeRegexes:
+        - regex: '\.Map(Get|Post|Put|Delete|Patch)\s*\(\s*@?"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+        - regex: '\.MapMethods\s*\(\s*@?"([^"]+)"'
+          pathGroup: 1
+
+    - id: aspnet_core_grpc
+      patternId: express_route
+      usingNamespaces:
+        - Grpc.Core
+        - Grpc.AspNetCore
+      confidence: 0.8
+      routeRegexes:
+        - regex: '\.MapGrpcService\s*<\s*([A-Za-z_][\w.]*)\s*>'
+          pathGroup: 1
+          defaultMethod: RPC
+
+serverless:
+  handlers:
+    - id: azure_functions
+      patternId: lambda_handler
+      usingNamespaces:
+        - Microsoft.Azure.Functions.Worker
+        - Microsoft.Azure.WebJobs
+      attributeNames:
+        - Function
+        - FunctionName
+      confidence: 0.9
+
+    - id: aws_lambda_dotnet
+      patternId: lambda_handler
+      usingNamespaces:
+        - Amazon.Lambda.Core
+        - Amazon.Lambda.APIGatewayEvents
+      attributeNames:
+        - LambdaSerializer
+        - LambdaFunction
+      typeNames:
+        - ILambdaContext
+      confidence: 0.9
+
+    - id: gcp_functions_dotnet
+      patternId: lambda_handler
+      usingNamespaces:
+        - Google.Cloud.Functions.Framework
+      attributeNames:
+        - FunctionsStartup
+      typeNames:
+        - IHttpFunction
+        - ICloudEventFunction
+      confidence: 0.9
+
+env_config:
+  envVariable:
+    patternId: env_variable
+    regex: 'Environment\.GetEnvironmentVariable\s*\(\s*@?"([^"]+)"'
+    confidence: 0.85
+
+  configurationKeys:
+    patternId: env_variable
+    regexes:
+      - '(?:_?[Cc]onfiguration|Configuration|builder\.Configuration)\s*\[\s*@?"([^"]+)"\s*\]'
+      - 'GetConnectionString\s*\(\s*@?"([^"]+)"\s*\)'
+      - 'GetValue<[^>]+>\s*\(\s*@?"([^"]+)"\s*\)'
+      - 'GetSection\s*\(\s*@?"([^"]+)"\s*\)'
+    confidence: 0.8
+
+  configFile:
+    patternId: config_file
+    fileNameRegex: '(^|/)(startup|program|appsettings.*|.*settings|.*options)\.cs$'
+    name: dotnet_config
+    confidence: 0.7
+
+external_apis:
+  httpClients:
+    - id: httpclient
+      patternId: external_api_call
+      clientName: HttpClient
+      usingNamespaces:
+        - System.Net.Http
+      callNames:
+        - HttpClient
+        - GetAsync
+        - PostAsync
+        - PutAsync
+        - DeleteAsync
+        - PatchAsync
+        - SendAsync
+        - GetStringAsync
+        - GetFromJsonAsync
+        - PostAsJsonAsync
+        - PutAsJsonAsync
+      callNameSuffixes:
+        - .GetAsync
+        - .PostAsync
+        - .PutAsync
+        - .DeleteAsync
+        - .PatchAsync
+        - .SendAsync
+        - .GetStringAsync
+        - .GetFromJsonAsync
+        - .PostAsJsonAsync
+      urlRegex: '@?"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: httpclientfactory
+      patternId: external_api_call
+      clientName: HttpClientFactory
+      usingNamespaces:
+        - Microsoft.Extensions.DependencyInjection
+      callNames:
+        - AddHttpClient
+      urlRegex: '@?"(https?:\/\/[^\s"]+)"'
+      confidence: 0.8
+
+    - id: restsharp
+      patternId: external_api_call
+      clientName: RestSharp
+      usingNamespaces:
+        - RestSharp
+      callNames:
+        - RestClient
+        - RestRequest
+      urlRegex: '@?"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: flurl
+      patternId: external_api_call
+      clientName: Flurl
+      usingNamespaces:
+        - Flurl.Http
+        - Flurl
+      callNames:
+        - FlurlClient
+      callNameSuffixes:
+        - .GetJsonAsync
+        - .PostJsonAsync
+      urlRegex: '@?"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: refit
+      patternId: external_api_call
+      clientName: Refit
+      usingNamespaces:
+        - Refit
+      callNames:
+        - RestService.For
+      urlRegex: '@?"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85

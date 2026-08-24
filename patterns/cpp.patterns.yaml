@@ -1,0 +1,314 @@
+# C++ pattern config. All entries share: patternId, optional confidence (default 0.8).
+#
+# Header gating (`includeHeaders`) works on `#include` paths: a value without a
+# "/" matches a whole path segment (`hiredis` matches <hiredis/hiredis.h> but
+# `sql.h` does not match <mysql/mysql.h>); a value with a "/" is matched as a
+# substring (`curl/curl.h`).
+
+db_clients:
+  - id: libpq
+    packageNames:
+      - libpq
+    patternId: database_connection
+    databaseType: postgres
+    includeHeaders:
+      - libpq-fe.h
+    callNames:
+      - PQconnectdb
+      - PQconnectdbParams
+      - PQsetdbLogin
+    confidence: 0.9
+
+  - id: libpqxx
+    packageNames:
+      - libpqxx
+    patternId: database_connection
+    databaseType: postgres
+    includeHeaders:
+      - pqxx/pqxx
+      - pqxx
+    callNames:
+      - pqxx::connection
+      - pqxx::lazyconnection
+    confidence: 0.9
+
+  - id: sqlite3
+    packageNames:
+      - sqlite3
+      - sqlite
+    patternId: database_connection
+    databaseType: sqlite
+    includeHeaders:
+      - sqlite3.h
+      - sqlite3ext.h
+    callNames:
+      - sqlite3_open
+      - sqlite3_open_v2
+      - sqlite3_open16
+    confidence: 0.9
+
+  - id: mysql_connector_cpp
+    packageNames:
+      - libmysql
+      - mysql-connector-cpp
+      - mysql
+    patternId: database_connection
+    databaseType: mysql
+    includeHeaders:
+      - mysql.h
+      - mysql/mysql.h
+      - mysql_driver.h
+      - mysqlx/xdevapi.h
+    callNames:
+      - mysql_real_connect
+      - get_mysql_driver_instance
+      - mysqlx::Session
+      - sql::mysql::get_mysql_driver_instance
+    confidence: 0.9
+
+  - id: mongocxx
+    packageNames:
+      - mongo-cxx-driver
+      - mongocxx
+    patternId: database_connection
+    databaseType: mongodb
+    includeHeaders:
+      - mongocxx/client.hpp
+      - mongocxx/uri.hpp
+      - mongocxx/instance.hpp
+    callNames:
+      - mongocxx::client
+      - mongocxx::uri
+      - mongocxx::pool
+    confidence: 0.9
+
+  - id: hiredis
+    packageNames:
+      - hiredis
+    patternId: database_connection
+    databaseType: redis
+    includeHeaders:
+      - hiredis
+      - hiredis.h
+    callNames:
+      - redisConnect
+      - redisConnectWithTimeout
+      - redisConnectUnix
+    confidence: 0.9
+
+  - id: redis_plus_plus
+    packageNames:
+      - redis-plus-plus
+    patternId: database_connection
+    databaseType: redis
+    includeHeaders:
+      - sw/redis++/redis++.h
+    callNames:
+      - sw::redis::Redis
+      - sw::redis::RedisCluster
+    confidence: 0.85
+
+  - id: soci
+    packageNames:
+      - soci
+    patternId: database_connection
+    databaseType: sql
+    includeHeaders:
+      - soci/soci.h
+      - soci
+    callNames:
+      - soci::session
+    confidence: 0.85
+
+  - id: nanodbc
+    packageNames:
+      - nanodbc
+    patternId: database_connection
+    databaseType: sql
+    includeHeaders:
+      - nanodbc/nanodbc.h
+      - nanodbc.h
+    callNames:
+      - nanodbc::connection
+    confidence: 0.85
+
+  - id: cassandra_cpp
+    packageNames:
+      - cassandra-cpp-driver
+    patternId: database_connection
+    databaseType: cassandra
+    includeHeaders:
+      - cassandra.h
+    callNames:
+      - cass_cluster_new
+      - cass_session_connect
+    confidence: 0.85
+
+  - id: odbc_mssql
+    patternId: database_connection
+    databaseType: mssql
+    includeHeaders:
+      - sql.h
+      - sqlext.h
+      - odbcss.h
+      - sqltypes.h
+    callNames:
+      - SQLConnect
+      - SQLDriverConnect
+      - SQLAllocHandle
+    confidence: 0.85
+
+auth:
+  libraries:
+    - id: jwt_cpp
+      packageNames:
+        - jwt-cpp
+      patternId: auth_middleware
+      includeHeaders:
+        - jwt-cpp/jwt.h
+        - jwt-cpp/traits/kazuho-picojson/defaults.h
+      callNames:
+        - jwt::decode
+        - jwt::verify
+        - jwt::create
+      strategy: jwt
+      confidence: 0.85
+
+    - id: bearer_token_header
+      patternId: auth_middleware
+      contentRegexes:
+        - 'Authorization["'']?\s*,?\s*["'']?\s*Bearer'
+        - '"Authorization"'
+      strategy: bearer_token
+      confidence: 0.7
+
+routes:
+  frameworks:
+    - id: crow
+      patternId: express_route
+      includeHeaders:
+        - crow.h
+        - crow_all.h
+        - crow/app.h
+      confidence: 0.9
+      routeRegexes:
+        - regex: 'CROW_(?:BP_)?ROUTE\s*\(\s*[A-Za-z_][A-Za-z0-9_]*\s*,\s*"([^"]+)"'
+          pathGroup: 1
+
+    - id: cpp_httplib
+      patternId: express_route
+      includeHeaders:
+        - httplib.h
+      confidence: 0.9
+      routeRegexes:
+        - regex: '\b[A-Za-z_][A-Za-z0-9_]*\.(Get|Post|Put|Delete|Patch|Options)\s*\(\s*R?"([^"]+)"\s*,'
+          methodGroup: 1
+          pathGroup: 2
+
+    - id: drogon
+      patternId: express_route
+      includeHeaders:
+        - drogon/drogon.h
+        - drogon/HttpController.h
+        - drogon/HttpSimpleController.h
+      confidence: 0.9
+      routeRegexes:
+        - regex: 'registerHandler\s*\(\s*"([^"]+)"'
+          pathGroup: 1
+        - regex: '(?:ADD_METHOD_TO|METHOD_ADD|ADD_METHOD_VIA_REGEX)\s*\(\s*[^,]+,\s*"([^"]+)"'
+          pathGroup: 1
+
+    - id: pistache
+      patternId: express_route
+      includeHeaders:
+        - pistache/router.h
+        - pistache/endpoint.h
+      confidence: 0.9
+      routeRegexes:
+        - regex: 'Routes::(Get|Post|Put|Delete|Patch|Options)\s*\(\s*[A-Za-z_][A-Za-z0-9_]*\s*,\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+
+    - id: oatpp
+      patternId: express_route
+      includeHeaders:
+        - oatpp/core/macro/codegen.hpp
+        - oatpp/web/server/api/ApiController.hpp
+        - oatpp/codegen/ApiController_define.hpp
+      confidence: 0.9
+      routeRegexes:
+        - regex: 'ENDPOINT\s*\(\s*"([A-Za-z]+)"\s*,\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+
+env_config:
+  envVariable:
+    patternId: env_variable
+    regex: '\b(?:std::)?getenv\s*\(\s*"([^"]+)"'
+    confidence: 0.85
+
+  configFile:
+    patternId: config_file
+    fileNameRegex: '(^|/)(config|configuration|settings)\.(h|hpp|hxx|cpp|cc|cxx)$'
+    name: cpp_config
+    confidence: 0.75
+
+external_apis:
+  httpClients:
+    - id: libcurl
+      patternId: external_api_call
+      clientName: libcurl
+      includeHeaders:
+        - curl/curl.h
+        - curl/easy.h
+      # `curl_easy_init` takes no arguments, so only the option setter can
+      # carry a URL worth attributing to a service.
+      callNames:
+        - curl_easy_setopt
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: cpr
+      patternId: external_api_call
+      clientName: cpr
+      includeHeaders:
+        - cpr/cpr.h
+      callNamePrefixes:
+        - "cpr::"
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: cpp_httplib_client
+      patternId: external_api_call
+      clientName: httplib
+      includeHeaders:
+        - httplib.h
+      callNames:
+        - httplib::Client
+        - httplib::SSLClient
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: poco_http
+      patternId: external_api_call
+      clientName: poco
+      includeHeaders:
+        - Poco/Net/HTTPSClientSession.h
+        - Poco/Net/HTTPClientSession.h
+      callNames:
+        - Poco::Net::HTTPSClientSession
+        - Poco::Net::HTTPClientSession
+        - Poco::URI
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: boost_beast
+      patternId: external_api_call
+      clientName: boost_beast
+      includeHeaders:
+        - boost/beast/http.hpp
+        - boost/beast/core.hpp
+      callNames:
+        - resolver.resolve
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.75

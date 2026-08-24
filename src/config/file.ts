@@ -14,6 +14,11 @@ const fileLanguageEnum = z.enum([
   "yaml",
   "env",
   "python",
+  "cpp",
+  "csharp",
+  "go",
+  "java",
+  "kotlin",
   "terraform",
   "dockerfile",
 ] satisfies [FileLanguage, ...FileLanguage[]]);

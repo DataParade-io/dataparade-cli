@@ -22,13 +22,15 @@ Analyzers typically call `matchPatterns` and then **filter** down to the `patter
 
 When adapting a language, populate:
 
-- `language`: `"typescript"` | `"javascript"` | `"python"` (the engine branches on this)
+- `language`: `"typescript"` | `"javascript"` | `"python"` | `"go"` | `"java"` | `"kotlin"` | `"cpp"` | `"csharp"` (the engine branches on this)
 - `file`: `FileInfo` (must include `path`, `content`, `language`)
 - `imports?`: import-derived tokens for import-based matchers:
   - `{ module: string; names: string[] }`
 - `normalizedPath?`: normalized file path used for route heuristics (Next/React, etc.)
 - `functions?`: function/method entries with decorators (used by some route/auth detectors)
-- `moduleLevelCalls?`: top-level call sites with `{ callee, argumentsSnippet, location }` (used by Python external API matching)
+- `moduleLevelCalls?`: call sites with `{ callee, argumentsSnippet, location }` (used by Python, Go, JVM, C++, and C# external API matching)
+- `types?`: declared types with `{ name, kind?, baseTypes?, decorators?, location }` (used by C# controller/DbContext detection)
+- `strippedContent?`: source with comments blanked out and layout preserved, supplied by the C-family analyzers (Go, Java/Kotlin, C++, C#) so line-based rules never match commented-out code
 
 ### TypeScript/JavaScript external HTTP matching opt-in
 
@@ -47,6 +49,10 @@ The shared engine loads a unified config (via `loadUnifiedPatternConfig()`) that
 - Third-party HTTP line patterns (TS/JS only, opt-in): `cli/patterns/third-party.patterns.yaml`
 - TypeScript/JavaScript routes/db/auth/env/config: `cli/patterns/typescript.patterns.yaml`
 - Python routes/db/auth/env/config/external APIs: `cli/patterns/python.patterns.yaml`
+- Go routes/serverless/db/auth/env/config/external APIs: `cli/patterns/go.patterns.yaml`
+- Java/Kotlin routes/serverless/db/auth/env/config/external APIs: `cli/patterns/jvm.patterns.yaml`
+- C++ routes/db/auth/env/config/external APIs: `cli/patterns/cpp.patterns.yaml`
+- C#/.NET routes/serverless/db/auth/env/config/external APIs: `cli/patterns/csharp.patterns.yaml`
 
 ## Analyzer implementation pattern
 
@@ -56,7 +62,7 @@ Typical analyzer shape:
 2. Call `matchPatterns(ctx)`.
 3. Filter returned findings by the patternIds this analyzer owns.
 4. Let property-detection (`getPropertiesFromFinding`) enrich component properties.
-   (In this repo, both the TypeScript/JavaScript and Python analyzers apply this YAML-driven enrichment step.)
+   (In this repo, the TypeScript/JavaScript, Python, Go, Java/Kotlin, C++, and C# analyzers all apply this YAML-driven enrichment step.)
 
 ## Reference adapters
 

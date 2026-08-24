@@ -1,6 +1,7 @@
 import * as nodePath from "path";
 
 import type { FileInfo, SourceLocation } from "../../core/types/file";
+import { stripCommentsPreservingLayout } from "../shared/strip-comments";
 
 export interface PythonImportEntry {
   module: string;
@@ -24,6 +25,7 @@ export interface PythonModuleLevelCallEntry {
 export interface PythonModuleModel {
   file: FileInfo;
   normalizedPath: string;
+  strippedContent: string;
   imports: PythonImportEntry[];
   functions: PythonFunctionEntry[];
   moduleLevelCalls: PythonModuleLevelCallEntry[];
@@ -43,6 +45,7 @@ export function parsePythonModule(file: FileInfo): PythonModuleModel {
     return {
       file,
       normalizedPath,
+      strippedContent: "",
       imports: [],
       functions: [],
       moduleLevelCalls: [],
@@ -51,6 +54,10 @@ export function parsePythonModule(file: FileInfo): PythonModuleModel {
   }
 
   const content = file.content ?? "";
+  const strippedContent = stripCommentsPreservingLayout(content, {
+    hashComments: true,
+    tripleQuoteStrings: true,
+  });
   if (content.includes("\u0000")) {
     warnings.push(
       `File '${file.path}' appears unreadable (contains null bytes); parser will continue with best-effort analysis.`,
@@ -199,6 +206,7 @@ export function parsePythonModule(file: FileInfo): PythonModuleModel {
   return {
     file,
     normalizedPath,
+    strippedContent,
     imports,
     functions,
     moduleLevelCalls,

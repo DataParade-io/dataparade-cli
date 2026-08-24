@@ -3,7 +3,7 @@
 The **dataPARADE CLI** (`@dataparade/cli`) scans a codebase and produces a **`dataflow.json`** file you can import into the DataParade web app. It runs a structural pipeline (ingest → analyzers → classifier → data-flow detector → graph mapping) and writes a JSON wrapper containing a `DiagramGraphJson` plus scan metadata.
 
 - **Primary command**: `scan <path>`
-- **Supported languages**: TypeScript, JavaScript, Python, Terraform
+- **Supported languages**: TypeScript, JavaScript, Python, Go, Java, Kotlin, C++, C#/.NET, Terraform
 - **License**: GPL-3.0-or-later — see [`LICENSE`](./LICENSE). Source: [DataParade-io/dataparade-cli](https://github.com/DataParade-io/dataparade-cli)
 
 **Full documentation:** [app.dataparade.io/docs/cli-import-and-zip](https://app.dataparade.io/docs/cli-import-and-zip)

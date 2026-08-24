@@ -1,0 +1,429 @@
+# Go pattern config. All entries share: patternId, optional confidence (default 0.8).
+#
+# `importPaths` matches a Go import path exactly, or as a path prefix, so
+# `github.com/jackc/pgx` also matches `github.com/jackc/pgx/v5/pgxpool`.
+# That prefix rule is what makes module major-version suffixes (`/v5`) and
+# sub-packages work without listing every variant.
+
+db_clients:
+  - id: lib_pq
+    patternId: database_connection
+    databaseType: postgres
+    importPaths:
+      - github.com/lib/pq
+    confidence: 0.9
+
+  - id: pgx
+    patternId: database_connection
+    databaseType: postgres
+    importPaths:
+      - github.com/jackc/pgx
+    callNames:
+      - pgx.Connect
+      - pgx.ConnectConfig
+      - pgxpool.New
+      - pgxpool.Connect
+    confidence: 0.9
+
+  - id: go_sql_driver_mysql
+    patternId: database_connection
+    databaseType: mysql
+    importPaths:
+      - github.com/go-sql-driver/mysql
+    confidence: 0.9
+
+  - id: go_sqlite3
+    patternId: database_connection
+    databaseType: sqlite
+    importPaths:
+      - github.com/mattn/go-sqlite3
+      - modernc.org/sqlite
+    confidence: 0.9
+
+  - id: sqlx
+    patternId: database_connection
+    databaseType: sql
+    importPaths:
+      - github.com/jmoiron/sqlx
+    callNames:
+      - sqlx.Connect
+      - sqlx.Open
+      - sqlx.MustConnect
+    confidence: 0.85
+
+  - id: gorm_postgres
+    patternId: database_connection
+    databaseType: postgres
+    importPaths:
+      - gorm.io/driver/postgres
+    confidence: 0.9
+
+  - id: gorm_mysql
+    patternId: database_connection
+    databaseType: mysql
+    importPaths:
+      - gorm.io/driver/mysql
+    confidence: 0.9
+
+  - id: gorm_sqlite
+    patternId: database_connection
+    databaseType: sqlite
+    importPaths:
+      - gorm.io/driver/sqlite
+    confidence: 0.9
+
+  - id: gorm_sqlserver
+    patternId: database_connection
+    databaseType: mssql
+    importPaths:
+      - gorm.io/driver/sqlserver
+    confidence: 0.9
+
+  - id: gorm
+    patternId: database_connection
+    databaseType: sql
+    importPaths:
+      - gorm.io/gorm
+      - github.com/jinzhu/gorm
+    callNames:
+      - gorm.Open
+    confidence: 0.85
+
+  - id: ent
+    patternId: database_connection
+    databaseType: sql
+    importPaths:
+      - entgo.io/ent
+    confidence: 0.85
+
+  - id: mongo_driver
+    patternId: database_connection
+    databaseType: mongodb
+    importPaths:
+      - go.mongodb.org/mongo-driver
+    callNames:
+      - mongo.Connect
+      - mongo.NewClient
+    confidence: 0.9
+
+  - id: go_redis
+    patternId: database_connection
+    databaseType: redis
+    importPaths:
+      - github.com/redis/go-redis
+      - github.com/go-redis/redis
+      - github.com/gomodule/redigo
+    callNames:
+      - redis.NewClient
+      - redis.NewClusterClient
+      - redis.NewFailoverClient
+    confidence: 0.9
+
+  - id: gocql
+    patternId: database_connection
+    databaseType: cassandra
+    importPaths:
+      - github.com/gocql/gocql
+    callNames:
+      - gocql.NewCluster
+    confidence: 0.85
+
+  - id: dynamodb
+    patternId: database_connection
+    databaseType: dynamodb
+    importPaths:
+      - github.com/aws/aws-sdk-go-v2/service/dynamodb
+      - github.com/aws/aws-sdk-go/service/dynamodb
+    confidence: 0.85
+
+  - id: elastic_go
+    patternId: database_connection
+    databaseType: elasticsearch
+    importPaths:
+      - github.com/elastic/go-elasticsearch
+      - github.com/olivere/elastic
+    callNames:
+      - elasticsearch.NewDefaultClient
+      - elasticsearch.NewClient
+      - elastic.NewClient
+      - elastic.NewSimpleClient
+    confidence: 0.85
+
+  - id: clickhouse_go
+    patternId: database_connection
+    databaseType: clickhouse
+    importPaths:
+      - github.com/ClickHouse/clickhouse-go
+    callNames:
+      - clickhouse.Open
+      - clickhouse.OpenDB
+    confidence: 0.85
+
+  - id: gosnowflake
+    patternId: database_connection
+    databaseType: snowflake
+    importPaths:
+      - github.com/snowflakedb/gosnowflake
+    confidence: 0.85
+
+  - id: neo4j_go
+    patternId: database_connection
+    databaseType: neo4j
+    importPaths:
+      - github.com/neo4j/neo4j-go-driver
+    callNames:
+      - neo4j.NewDriverWithContext
+      - neo4j.NewDriver
+    confidence: 0.85
+
+  - id: mariadb_go
+    patternId: database_connection
+    databaseType: mariadb
+    importPaths:
+      - github.com/go-sql-driver/mysql
+    callNames:
+      - sql.Open
+    confidence: 0.75
+
+# Go-specific: `database/sql` is driver-agnostic, and the concrete engine is
+# named as the first argument of sql.Open. Reading it turns a generic "SQL"
+# node into the actual engine.
+sql_open:
+  patternId: database_connection
+  regex: 'sql\.Open(?:DB)?\s*\(\s*"([^"]+)"'
+  name: database_sql
+  confidence: 0.9
+  drivers:
+    postgres: postgres
+    postgresql: postgres
+    pgx: postgres
+    cloudsqlpostgres: postgres
+    mysql: mysql
+    sqlite3: sqlite
+    sqlite: sqlite
+    sqlserver: mssql
+    mssql: mssql
+    oracle: oracle
+    godror: oracle
+    clickhouse: clickhouse
+    snowflake: snowflake
+    mariadb: mariadb
+    neo4j: neo4j
+  defaultDatabaseType: sql
+
+auth:
+  libraries:
+    - id: golang_jwt
+      patternId: auth_middleware
+      importPaths:
+        - github.com/golang-jwt/jwt
+        - github.com/dgrijalva/jwt-go
+        - github.com/lestrrat-go/jwx
+      callNames:
+        - jwt.Parse
+        - jwt.ParseWithClaims
+        - jwt.NewWithClaims
+        - jwt.New
+      strategy: jwt
+      confidence: 0.9
+
+    - id: oauth2
+      patternId: auth_middleware
+      importPaths:
+        - golang.org/x/oauth2
+      callNames:
+        - oauth2.Config
+      strategy: oauth2
+      confidence: 0.85
+
+    - id: casbin
+      patternId: auth_middleware
+      importPaths:
+        - github.com/casbin/casbin
+      strategy: casbin
+      confidence: 0.85
+
+    - id: bearer_token_header
+      patternId: auth_middleware
+      contentRegexes:
+        - '"Authorization"'
+        - 'Header\.Get\(\s*"Authorization"'
+      strategy: bearer_token
+      confidence: 0.7
+
+routes:
+  frameworks:
+    - id: net_http
+      patternId: express_route
+      importPaths:
+        - net/http
+      confidence: 0.85
+      routeRegexes:
+        # Go 1.22+ method-prefixed patterns: HandleFunc("GET /users", h).
+        - regex: '\bHandle(?:Func)?\s*\(\s*"(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)\s+([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+        # Plain patterns. The trailing guard yields lines ending in
+        # `.Methods("GET")` to the gorilla/mux rule so one route is not
+        # reported twice.
+        - regex: '\bHandle(?:Func)?\s*\(\s*"(?!(?:GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)\s)([^"]+)"(?:(?!\.Methods\().)*$'
+          pathGroup: 1
+
+    - id: gorilla_mux
+      patternId: express_route
+      importPaths:
+        - github.com/gorilla/mux
+      confidence: 0.9
+      routeRegexes:
+        - regex: '\bHandleFunc\s*\(\s*"([^"]+)"[^)]*\)\s*\.Methods\(\s*"([A-Z]+)"'
+          pathGroup: 1
+          methodGroup: 2
+
+    - id: chi
+      patternId: express_route
+      importPaths:
+        - github.com/go-chi/chi
+      confidence: 0.9
+      routeRegexes:
+        - regex: '\b[A-Za-z_]\w*\.(Get|Post|Put|Delete|Patch|Head|Options)\s*\(\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+
+    - id: gin
+      patternId: express_route
+      importPaths:
+        - github.com/gin-gonic/gin
+      confidence: 0.9
+      routeRegexes:
+        - regex: '\b[A-Za-z_]\w*\.(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS|Any)\s*\(\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+
+    - id: echo
+      patternId: express_route
+      importPaths:
+        - github.com/labstack/echo
+      confidence: 0.9
+      routeRegexes:
+        - regex: '\b[A-Za-z_]\w*\.(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)\s*\(\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+
+    - id: fiber
+      patternId: express_route
+      importPaths:
+        - github.com/gofiber/fiber
+      confidence: 0.9
+      routeRegexes:
+        - regex: '\b[A-Za-z_]\w*\.(Get|Post|Put|Delete|Patch|Head|Options|All)\s*\(\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+
+    - id: grpc
+      patternId: express_route
+      importPaths:
+        - google.golang.org/grpc
+      confidence: 0.8
+      routeRegexes:
+        - regex: '\bRegister([A-Za-z_]\w*)Server\s*\('
+          pathGroup: 1
+          defaultMethod: RPC
+
+serverless:
+  handlers:
+    - id: aws_lambda_go
+      patternId: lambda_handler
+      importPaths:
+        - github.com/aws/aws-lambda-go/lambda
+      callNames:
+        - lambda.Start
+        - lambda.StartWithOptions
+        - lambda.StartHandler
+      confidence: 0.9
+
+    - id: gcp_functions_go
+      patternId: lambda_handler
+      importPaths:
+        - github.com/GoogleCloudPlatform/functions-framework-go
+      callNames:
+        - functions.HTTP
+        - functions.CloudEvent
+      confidence: 0.9
+
+env_config:
+  envVariable:
+    patternId: env_variable
+    regex: '\bos\.(?:Getenv|LookupEnv)\s*\(\s*"([^"]+)"'
+    confidence: 0.85
+
+  configLoaders:
+    patternId: config_file
+    confidence: 0.85
+    loaders:
+      - id: godotenv
+        importPaths:
+          - github.com/joho/godotenv
+        callNames:
+          - godotenv.Load
+          - godotenv.Overload
+      - id: viper
+        importPaths:
+          - github.com/spf13/viper
+        callNames:
+          - viper.ReadInConfig
+          - viper.SetConfigName
+          - viper.AutomaticEnv
+      - id: envconfig
+        importPaths:
+          - github.com/kelseyhightower/envconfig
+          - github.com/caarlos0/env
+
+  configFile:
+    patternId: config_file
+    fileNameRegex: '(^|/)(config|configuration|settings)\.go$'
+    name: go_config
+    confidence: 0.75
+
+external_apis:
+  httpClients:
+    - id: net_http_client
+      patternId: external_api_call
+      clientName: net_http
+      importPaths:
+        - net/http
+      callNames:
+        - http.Get
+        - http.Post
+        - http.PostForm
+        - http.Head
+        - http.NewRequest
+        - http.NewRequestWithContext
+      callNameSuffixes:
+        - .Do
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: resty
+      patternId: external_api_call
+      clientName: resty
+      importPaths:
+        - github.com/go-resty/resty
+      callNames:
+        - resty.New
+      callNameSuffixes:
+        - .SetBaseURL
+        - .SetHostURL
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: grpc_dial
+      patternId: external_api_call
+      clientName: grpc
+      importPaths:
+        - google.golang.org/grpc
+      callNames:
+        - grpc.Dial
+        - grpc.NewClient
+        - grpc.DialContext
+      urlRegex: '"([^"\s]+)"'
+      confidence: 0.8

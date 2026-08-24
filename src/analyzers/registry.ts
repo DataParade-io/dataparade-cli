@@ -2,6 +2,10 @@ import type { FileInfo, FileLanguage } from "../core/types/file";
 import type { RawFinding } from "../core/types/detection";
 import type { Analyzer } from "./types";
 import { ingestFileSystem } from "../ingest/file-system";
+import { createCppAnalyzer } from "./cpp";
+import { createGoAnalyzer } from "./go";
+import { createJvmAnalyzer } from "./jvm";
+import { createCSharpAnalyzer } from "./csharp";
 import { createPythonAnalyzer } from "./python";
 import { createTerraformAnalyzer } from "./terraform";
 import { createTypeScriptAnalyzer } from "./typescript";
@@ -11,10 +15,21 @@ import type { TerraformModuleCallManifest } from "./terraform/terraform-module-m
 
 const typeScriptAnalyzer = createTypeScriptAnalyzer();
 const pythonAnalyzer = createPythonAnalyzer();
+const cppAnalyzer = createCppAnalyzer();
+const goAnalyzer = createGoAnalyzer();
+const jvmAnalyzer = createJvmAnalyzer();
+const cSharpAnalyzer = createCSharpAnalyzer();
 const terraformAnalyzer = createTerraformAnalyzer();
 
 const registry = new Map<FileLanguage, Analyzer>([
   ["python", pythonAnalyzer],
+  ["go", goAnalyzer],
+  // Java and Kotlin share one analyzer: same package namespace, same
+  // Maven/Gradle coordinates, same Spring/Jakarta annotations, same JDBC.
+  ["java", jvmAnalyzer],
+  ["kotlin", jvmAnalyzer],
+  ["cpp", cppAnalyzer],
+  ["csharp", cSharpAnalyzer],
   ["terraform", terraformAnalyzer],
   ["typescript", typeScriptAnalyzer],
   ["javascript", typeScriptAnalyzer],

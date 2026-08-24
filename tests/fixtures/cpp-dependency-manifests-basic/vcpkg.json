@@ -1,0 +1,9 @@
+{
+  "name": "billing-service",
+  "version": "1.0.0",
+  "dependencies": [
+    "libpqxx",
+    "curl",
+    { "name": "hiredis", "version>=": "1.1.0" }
+  ]
+}

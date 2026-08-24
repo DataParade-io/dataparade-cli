@@ -116,7 +116,7 @@ function createProgram(): Command {
     )
     .option(
       "--language <language...>",
-      "Limit scanning to specific languages (e.g. typescript, javascript)",
+      "Limit scanning to specific languages (e.g. typescript, javascript, python, go, java, kotlin, cpp, csharp, terraform)",
     )
     .option(
       "--project-name <name>",

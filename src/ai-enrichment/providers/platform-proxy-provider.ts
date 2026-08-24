@@ -1,5 +1,10 @@
 import type { AiProposal } from "../types";
 import type { AiProvider, AiProviderRequest, AiProviderResult } from "./types";
+import {
+  isLambdaInitializingError,
+  LAMBDA_INIT_RETRY_DELAYS_MS,
+  toUserFacingLambdaInitError,
+} from "../lambda-init-error";
 
 export type PlatformProxyProviderConfig = {
   apiBaseUrl: string;
@@ -9,6 +14,9 @@ export type PlatformProxyProviderConfig = {
   pollIntervalMs?: number;
   /** Max wait for a single infer task (ms). Default from SCAN_AI_HTTP_TIMEOUT_MS or 180000. */
   pollTimeoutMs?: number;
+  /** Backoff delays when a task fails because the helper Lambda is still INIT. */
+  lambdaInitRetryDelaysMs?: number[];
+  sleep?: (ms: number) => Promise<void>;
 };
 
 type InferTaskStatus = "pending" | "running" | "completed" | "failed";
@@ -67,7 +75,14 @@ export class PlatformProxyProvider implements AiProvider {
     return message;
   }
 
+  private wait(ms: number): Promise<void> {
+    return (this.config.sleep ?? sleep)(ms);
+  }
+
   private throwPlatformError(res: Response, message: string): never {
+    if (isLambdaInitializingError(message)) {
+      throw new Error(message);
+    }
     if (res.status >= 500) {
       const detail =
         message === `Platform AI infer failed (${res.status})`
@@ -81,6 +96,25 @@ export class PlatformProxyProvider implements AiProvider {
   }
 
   async infer(request: AiProviderRequest): Promise<AiProviderResult> {
+    const delays = this.config.lambdaInitRetryDelaysMs ?? [
+      ...LAMBDA_INIT_RETRY_DELAYS_MS,
+    ];
+    let lastErr: unknown;
+    for (let attempt = 0; attempt <= delays.length; attempt += 1) {
+      try {
+        return await this.inferOnce(request);
+      } catch (err) {
+        lastErr = err;
+        if (attempt >= delays.length || !isLambdaInitializingError(err)) {
+          throw toUserFacingLambdaInitError(err);
+        }
+        await this.wait(delays[attempt] ?? 0);
+      }
+    }
+    throw toUserFacingLambdaInitError(lastErr);
+  }
+
+  private async inferOnce(request: AiProviderRequest): Promise<AiProviderResult> {
     const submitRes = await fetch(`${this.apiBase()}/api/scans/cli/ai/infer/tasks`, {
       method: "POST",
       headers: this.authHeaders(),
@@ -162,7 +196,7 @@ export class PlatformProxyProvider implements AiProvider {
         );
       }
 
-      await sleep(pollIntervalMs);
+      await this.wait(pollIntervalMs);
     }
 
     throw new Error(

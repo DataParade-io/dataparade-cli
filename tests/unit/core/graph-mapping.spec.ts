@@ -118,6 +118,19 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
     expect(nodeData.description).toBe("Main application service");
     expect(nodeData.componentType).toBe("asset");
     expect(nodeData.componentSubType).toBe("service");
+    expect(nodeData.scanConfidence).toBe(0.99);
+    expect(nodeData.sourceLocations).toEqual([
+      {
+        filePath: "src/app.ts",
+        startLine: 10,
+        endLine: 20,
+      },
+    ]);
+    expect(nodeData.detectedFrom).toEqual([
+      {
+        pattern: "express_route",
+      },
+    ]);
     expect(nodeData.technologyStack).toEqual(["node", "express"]);
     expect(nodeData.cloudProvider).toBe("AWS");
 
@@ -148,6 +161,70 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
     expect(properties.targetScope).toBe("local");
     expect(properties.targetScopeConfidence).toBe("high");
     expect(properties.targetScopeReason).toBe("same-section-id");
+    expect(properties.sourceLocation).toEqual({
+      filePath: "src/app.ts",
+      startLine: 30,
+      endLine: 40,
+    });
+    expect(properties.confidence).toBe(0.9);
+  });
+
+  it("strips SourceLocation.code and copies scanConfidence onto node data", () => {
+    const scanResult: ScanResult = {
+      components: [
+        {
+          id: "component-1",
+          name: "DB",
+          type: "asset",
+          subType: "database",
+          confidence: 0.87,
+          detectedFrom: [
+            {
+              pattern: "orm_save",
+              sourceLocation: {
+                filePath: "src/db/users.ts",
+                startLine: 88,
+                endLine: 88,
+                code: "await db.insert(users)",
+              },
+            },
+          ],
+          sourceLocations: [
+            {
+              filePath: "src/db/users.ts",
+              startLine: 88,
+              endLine: 88,
+              code: "await db.insert(users)",
+            },
+          ],
+          properties: {},
+        },
+      ],
+      dataFlows: [],
+      filesScanned: 1,
+      filesSkipped: 0,
+      totalLines: 10,
+      scanDurationMs: 1,
+      warnings: [],
+      errors: [],
+    };
+
+    const graph = buildDiagramGraphFromScanResult(scanResult);
+    const nodeData = graph.nodes[0].data as Record<string, unknown>;
+    expect(nodeData.scanConfidence).toBe(0.87);
+    expect(nodeData.sourceLocations).toEqual([
+      { filePath: "src/db/users.ts", startLine: 88, endLine: 88 },
+    ]);
+    expect(nodeData.detectedFrom).toEqual([
+      {
+        pattern: "orm_save",
+        sourceLocation: {
+          filePath: "src/db/users.ts",
+          startLine: 88,
+          endLine: 88,
+        },
+      },
+    ]);
   });
 
   it("sets engineering.protocol to graphql when flow endpoint is a GraphQL URL", () => {

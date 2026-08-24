@@ -7,6 +7,7 @@ import {
   detectDatabaseConnections,
   detectExternalApiCalls,
   detectRoutePatterns,
+  detectServerlessHandlers,
 } from "./typescript-detection";
 import { getPropertiesFromFinding } from "../shared/property-inference";
 import { detectActorsFromFile } from "./actor-detection";
@@ -26,6 +27,7 @@ export function detectPatterns(file: FileInfo): RawFinding[] {
     ...detectExternalApiCalls(file, model),
     ...detectAuthMiddleware(file, model),
     ...detectConfigAndEnvUsage(file, model),
+    ...detectServerlessHandlers(file, model),
     ...detectActorsFromFile(file, model),
   );
 

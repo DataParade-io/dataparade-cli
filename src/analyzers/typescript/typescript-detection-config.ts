@@ -19,6 +19,12 @@ interface RawRouteFrameworkConfig extends RawWithPatternId {
   routeCallRegexes?: string[];
   controllerDecoratorRegexes?: string[];
   routeDecoratorRegexes?: string[];
+  routeRegexes?: Array<{
+    regex: string;
+    methodGroup?: number;
+    pathGroup?: number;
+    defaultMethod?: string;
+  }>;
 }
 
 interface RawDbClientConfig extends RawWithPatternId {
@@ -31,9 +37,32 @@ interface RawDbClientConfig extends RawWithPatternId {
 
 interface RawAuthLibraryConfig extends RawWithPatternId {
   id: string;
-  importFragments: string[];
+  importFragments?: string[];
   /** Regexes that match auth usage (e.g. passport.authenticate("jwt")). */
   regexes?: string[];
+  contentRegexes?: string[];
+  strategy?: string;
+}
+
+interface RawServerlessHandlerConfig extends RawWithPatternId {
+  id: string;
+  importModules?: string[];
+  handlerRegexes?: string[];
+  typeNames?: string[];
+}
+
+interface RawExternalApiClientConfig extends RawWithPatternId {
+  id: string;
+  clientName: string;
+  importFragments?: string[];
+  regexes?: string[];
+}
+
+interface RawConfigLoaderConfig extends RawWithPatternId {
+  id: string;
+  importFragments?: string[];
+  regexes?: string[];
+  name?: string;
 }
 
 interface RawConfigKeyConfig extends RawWithPatternId {
@@ -60,6 +89,13 @@ interface RawTypeScriptPatternConfig {
   auth?: {
     libraries?: RawAuthLibraryConfig[];
   };
+  serverless?: {
+    handlers?: RawServerlessHandlerConfig[];
+  };
+  external_apis?: {
+    httpClients?: RawExternalApiClientConfig[];
+  };
+  config_loaders?: RawConfigLoaderConfig[];
   heuristics?: RawHeuristicsConfig;
   env_variables?: {
     importantKeys?: string[];
@@ -77,12 +113,20 @@ export interface WithPatternId {
 /** Default confidence when not specified in YAML. */
 const DEFAULT_CONFIDENCE = 0.8;
 
+export interface RouteRegexConfig {
+  regex: RegExp;
+  methodGroup?: number;
+  pathGroup?: number;
+  defaultMethod?: string;
+}
+
 export interface RouteFrameworkConfig extends WithPatternId {
   id: string;
   imports: string[];
   routeCallRegexes: RegExp[];
   controllerDecoratorRegexes: RegExp[];
   routeDecoratorRegexes: RegExp[];
+  routeRegexes: RouteRegexConfig[];
   confidence: number;
 }
 
@@ -99,6 +143,32 @@ export interface AuthLibraryConfig extends WithPatternId {
   id: string;
   importFragments: string[];
   callRegexes: RegExp[];
+  contentRegexes: RegExp[];
+  strategy?: string;
+  confidence: number;
+}
+
+export interface ServerlessHandlerConfig extends WithPatternId {
+  id: string;
+  importModules: string[];
+  handlerRegexes: RegExp[];
+  typeNames: string[];
+  confidence: number;
+}
+
+export interface ExternalApiClientConfig extends WithPatternId {
+  id: string;
+  clientName: string;
+  importFragments: string[];
+  callRegexes: RegExp[];
+  confidence: number;
+}
+
+export interface ConfigLoaderConfig extends WithPatternId {
+  id: string;
+  importFragments: string[];
+  callRegexes: RegExp[];
+  name: string;
   confidence: number;
 }
 
@@ -126,6 +196,13 @@ export interface TypeScriptPatternConfig {
   auth: {
     libraries: AuthLibraryConfig[];
   };
+  serverless: {
+    handlers: ServerlessHandlerConfig[];
+  };
+  externalApis: {
+    httpClients: ExternalApiClientConfig[];
+  };
+  configLoaders: ConfigLoaderConfig[];
   heuristics: HeuristicsConfig;
   envVariables: {
     importantKeys: string[];
@@ -179,6 +256,13 @@ function normalizeRawConfig(raw: RawTypeScriptPatternConfig): TypeScriptPatternC
           fw.controllerDecoratorRegexes,
         ),
         routeDecoratorRegexes: compileRegexList(fw.routeDecoratorRegexes),
+        routeRegexes:
+          fw.routeRegexes?.map((entry) => ({
+            regex: compileRegex(entry.regex),
+            methodGroup: entry.methodGroup,
+            pathGroup: entry.pathGroup,
+            defaultMethod: entry.defaultMethod,
+          })) ?? [],
         confidence: fw.confidence ?? DEFAULT_CONFIDENCE,
       };
     }) ?? [];
@@ -210,7 +294,57 @@ function normalizeRawConfig(raw: RawTypeScriptPatternConfig): TypeScriptPatternC
         patternId,
         importFragments: lib.importFragments ?? [],
         callRegexes: compileRegexList(lib.regexes),
+        contentRegexes: compileRegexList(lib.contentRegexes),
+        strategy: lib.strategy,
         confidence: lib.confidence ?? DEFAULT_CONFIDENCE,
+      };
+    }) ?? [];
+
+  const serverlessHandlers: ServerlessHandlerConfig[] =
+    raw.serverless?.handlers?.map((handler) => {
+      const patternId = validatePatternId(
+        handler.patternId,
+        `serverless.handlers entry '${handler.id}'`,
+      );
+      return {
+        id: handler.id,
+        patternId,
+        importModules: handler.importModules ?? [],
+        handlerRegexes: compileRegexList(handler.handlerRegexes),
+        typeNames: handler.typeNames ?? [],
+        confidence: handler.confidence ?? DEFAULT_CONFIDENCE,
+      };
+    }) ?? [];
+
+  const externalHttpClients: ExternalApiClientConfig[] =
+    raw.external_apis?.httpClients?.map((client) => {
+      const patternId = validatePatternId(
+        client.patternId,
+        `external_apis.httpClients entry '${client.id}'`,
+      );
+      return {
+        id: client.id,
+        patternId,
+        clientName: client.clientName,
+        importFragments: client.importFragments ?? [],
+        callRegexes: compileRegexList(client.regexes),
+        confidence: client.confidence ?? DEFAULT_CONFIDENCE,
+      };
+    }) ?? [];
+
+  const configLoaders: ConfigLoaderConfig[] =
+    raw.config_loaders?.map((loader) => {
+      const patternId = validatePatternId(
+        loader.patternId,
+        `config_loaders entry '${loader.id}'`,
+      );
+      return {
+        id: loader.id,
+        patternId,
+        importFragments: loader.importFragments ?? [],
+        callRegexes: compileRegexList(loader.regexes),
+        name: loader.name ?? loader.id,
+        confidence: loader.confidence ?? DEFAULT_CONFIDENCE,
       };
     }) ?? [];
 
@@ -269,6 +403,13 @@ function normalizeRawConfig(raw: RawTypeScriptPatternConfig): TypeScriptPatternC
     auth: {
       libraries: authLibraries,
     },
+    serverless: {
+      handlers: serverlessHandlers,
+    },
+    externalApis: {
+      httpClients: externalHttpClients,
+    },
+    configLoaders,
     heuristics,
     envVariables: {
       importantKeys,

@@ -29,6 +29,113 @@ db_clients:
       usesObjectsAttribute: true
     confidence: 0.85
 
+  - id: pymysql
+    patternId: database_connection
+    databaseType: mysql
+    importModules:
+      - pymysql
+      - aiomysql
+      - MySQLdb
+    callNames:
+      - connect
+    confidence: 0.9
+
+  - id: motor
+    patternId: database_connection
+    databaseType: mongodb
+    importModules:
+      - motor.motor_asyncio
+      - motor.motor_tornado
+      - pymongo
+    callNames:
+      - AsyncIOMotorClient
+      - MongoClient
+    confidence: 0.9
+
+  - id: redis_py
+    patternId: database_connection
+    databaseType: redis
+    importModules:
+      - redis
+      - aioredis
+    callNames:
+      - Redis
+      - StrictRedis
+      - from_url
+      - asyncio.create_redis_pool
+    confidence: 0.9
+
+  - id: aiosqlite
+    patternId: database_connection
+    databaseType: sqlite
+    importModules:
+      - aiosqlite
+      - sqlite3
+    callNames:
+      - connect
+    confidence: 0.85
+
+  - id: cassandra_driver_py
+    patternId: database_connection
+    databaseType: cassandra
+    importModules:
+      - cassandra.cluster
+      - cassandra
+    callNames:
+      - Cluster
+    confidence: 0.85
+
+  - id: boto3_dynamodb
+    patternId: database_connection
+    databaseType: dynamodb
+    importModules:
+      - boto3
+    callNames:
+      - resource
+      - client
+    confidence: 0.8
+
+  - id: elasticsearch_py
+    patternId: database_connection
+    databaseType: elasticsearch
+    importModules:
+      - elasticsearch
+      - elasticsearch_async
+    callNames:
+      - Elasticsearch
+      - AsyncElasticsearch
+    confidence: 0.85
+
+  - id: asyncpg
+    patternId: database_connection
+    databaseType: postgres
+    importModules:
+      - asyncpg
+    callNames:
+      - connect
+      - create_pool
+    confidence: 0.9
+
+  - id: databases_py
+    patternId: database_connection
+    databaseType: sql
+    importModules:
+      - databases
+    callNames:
+      - Database
+    confidence: 0.85
+
+  - id: tortoise_orm
+    patternId: database_connection
+    databaseType: sql
+    importModules:
+      - tortoise
+      - tortoise.contrib
+    callNames:
+      - Tortoise.init
+      - register_tortoise
+    confidence: 0.85
+
 auth:
   jwt:
     patternId: auth_middleware
@@ -51,6 +158,26 @@ auth:
       callNames:
         - IsAuthenticated
       confidence: 0.8
+
+  libraries:
+    - id: bearer_token_header
+      patternId: auth_middleware
+      contentRegexes:
+        - 'Authorization["'']?\s*,?\s*["'']?\s*Bearer'
+        - '"Authorization"'
+        - "Authorization\\s*:\\s*['\"]Bearer"
+      strategy: bearer_token
+      confidence: 0.7
+
+    - id: oauth2
+      patternId: auth_middleware
+      importModules:
+        - oauthlib
+        - authlib
+        - google.oauth2
+        - google_auth_oauthlib
+      strategy: oauth2
+      confidence: 0.85
 
 routes:
   frameworks:
@@ -102,6 +229,43 @@ routes:
         - django.
       urlsFileSuffix: "urls.py"
       pathRegex: "(path|re_path|url)\\(\\s*['\\\"]([^'\\\"]+)['\\\"]"
+      confidence: 0.9
+
+    - id: grpc
+      patternId: express_route
+      importModules:
+        - grpc
+      pathRegex: "\\.add_(?:insecure_)?port\\s*\\(\\s*['\\\"]([^'\\\"]+)['\\\"]"
+      confidence: 0.8
+
+serverless:
+  handlers:
+    - id: aws_lambda
+      patternId: lambda_handler
+      importModules:
+        - boto3
+      functionNameRegexes:
+        - "^def\\s+lambda_handler\\b"
+        - "^def\\s+handler\\b"
+      confidence: 0.9
+
+    - id: azure_functions
+      patternId: lambda_handler
+      importModules:
+        - azure.functions
+      decoratorNames:
+        - FunctionName
+      confidence: 0.9
+
+    - id: gcp_functions
+      patternId: lambda_handler
+      importModules:
+        - functions_framework
+      decoratorNames:
+        - functions_framework.http
+        - functions_framework.cloud_event
+        - http
+        - cloud_event
       confidence: 0.9
 
 env_config:
@@ -157,4 +321,17 @@ external_apis:
       callNames:
         - create_client
       confidence: 0.85
+
+    - id: grpc_dial
+      patternId: external_api_call
+      clientName: grpc
+      importModules:
+        - grpc
+      callNames:
+        - grpc.insecure_channel
+        - grpc.secure_channel
+        - insecure_channel
+        - secure_channel
+      urlRegex: "['\\\"]([^'\\\"]+)['\\\"]"
+      confidence: 0.8
 

@@ -18,6 +18,16 @@ export const DEFAULT_EXCLUDED_DIRS = new Set([
   "coverage",
   ".vscode",
   ".idea",
+  // .NET build output. `bin` is deliberately not excluded: it is a common
+  // source directory outside .NET, and .gitignore already covers it in .NET
+  // repositories.
+  "obj",
+  // CMake out-of-source build trees.
+  "cmake-build-debug",
+  "cmake-build-release",
+  // Maven build output. Gradle's `build` and `out` are already excluded
+  // above, and its `.gradle` cache is skipped as a hidden directory.
+  "target",
 ]);
 
 /**
@@ -64,6 +74,16 @@ export const DEFAULT_EXCLUDED_FILE_GLOBS: readonly string[] = [
   "**/.env.*",
   ".env",
   ".env.*",
+  // Generated C# sources (designer files, source-generator output, assembly
+  // metadata) describe tooling rather than application structure.
+  "**/*.Designer.cs",
+  "*.Designer.cs",
+  "**/*.g.cs",
+  "*.g.cs",
+  "**/*.g.i.cs",
+  "*.g.i.cs",
+  "**/*.AssemblyInfo.cs",
+  "*.AssemblyInfo.cs",
 ];
 
 export function shouldSkipDirectoryName(dirName: string): boolean {

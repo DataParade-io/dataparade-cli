@@ -89,6 +89,11 @@ services:
     importFragments:
       - "@aws-sdk/"
       - boto3
+      # .NET (`AWSSDK.S3`, `using Amazon.S3;`) and C++ (`<aws/s3/S3Client.h>`).
+      - aws-sdk
+      - awssdk
+      - amazon.
+      - aws/
     confidence: 0.85
     url_host_patterns:
       - amazonaws.com

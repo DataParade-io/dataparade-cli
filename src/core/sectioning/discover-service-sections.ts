@@ -163,8 +163,39 @@ async function walkForManifests(
     const isRequirements = lower.startsWith("requirements") && lower.endsWith(".txt");
     const isPyproject = lower === "pyproject.toml";
     const isPipfile = lower === "pipfile";
+    const isDotnetProject =
+      lower.endsWith(".csproj") ||
+      lower.endsWith(".fsproj") ||
+      lower.endsWith(".vbproj");
+    // `CMakeLists.txt` is deliberately excluded: C++ projects place one in
+    // nearly every subdirectory, which would shatter the graph into sections.
+    // go.mod is the canonical Go module root, so it maps exactly onto a
+    // service boundary in a multi-module repository.
+    const isGoModule = lower === "go.mod";
+    // Maven and Gradle both place a build file at each module root, and on the
+    // JVM a module is the deployable unit — unlike `CMakeLists.txt`, one build
+    // file per directory *is* the service boundary. `settings.gradle` marks the
+    // root of a multi-project build rather than a module, so it is not a
+    // marker; the root's own `build.gradle` already covers that directory.
+    const isJvmManifest =
+      lower === "pom.xml" ||
+      lower === "build.gradle" ||
+      lower === "build.gradle.kts";
+    const isCppManifest =
+      lower === "vcpkg.json" ||
+      lower === "conanfile.txt" ||
+      lower === "conanfile.py";
 
-    if (!isTsManifest && !isRequirements && !isPyproject && !isPipfile) {
+    if (
+      !isTsManifest &&
+      !isRequirements &&
+      !isPyproject &&
+      !isPipfile &&
+      !isDotnetProject &&
+      !isGoModule &&
+      !isJvmManifest &&
+      !isCppManifest
+    ) {
       continue;
     }
 

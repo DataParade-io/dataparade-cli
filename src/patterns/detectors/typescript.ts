@@ -10,6 +10,7 @@ import {
   createLocationFromLine,
   findLineMatches,
   inferServiceNameFromUrl,
+  sourceOf,
 } from "./helpers";
 
 export function detectTypeScriptJavaScriptExternalApisFromHttpClients(
@@ -74,9 +75,10 @@ export function detectTypeScriptRoutesFromConfig(
     return [];
   }
 
-  const content = ctx.file.content ?? "";
+  const content = sourceOf(ctx);
   const findings: RawFinding[] = [];
   const tsCfg = config.typescript;
+  const lines = content.split(/\r?\n/);
 
   for (const fw of tsCfg.routes.frameworks) {
     const hasFrameworkImport =
@@ -112,6 +114,7 @@ export function detectTypeScriptRoutesFromConfig(
               framework: "express",
               httpMethods: [upperMethod],
               path,
+              handlerType: "route_handler",
             },
           });
         }
@@ -153,6 +156,42 @@ export function detectTypeScriptRoutesFromConfig(
               framework: "nest",
               httpMethods: [upperMethod],
               path: routePath || "/",
+              handlerType: "controller_action",
+            },
+          });
+        }
+      }
+    }
+
+    if (fw.routeRegexes.length > 0) {
+      for (const routeRegex of fw.routeRegexes) {
+        for (let i = 0; i < lines.length; i += 1) {
+          const text = lines[i]?.trim() ?? "";
+          if (!text) continue;
+
+          const match = routeRegex.regex.exec(text);
+          if (!match) continue;
+
+          const rawMethod =
+            routeRegex.methodGroup != null
+              ? match[routeRegex.methodGroup]
+              : routeRegex.defaultMethod;
+          const method = rawMethod ? rawMethod.toUpperCase() : undefined;
+          const routePath =
+            routeRegex.pathGroup != null ? match[routeRegex.pathGroup] : undefined;
+
+          findings.push({
+            pattern: fw.patternId,
+            name: method
+              ? `${method} ${routePath ?? fw.id}`.trim()
+              : `${fw.id.toUpperCase()} ${routePath ?? "service"}`.trim(),
+            confidence: fw.confidence,
+            location: createLocationFromLine(ctx.file, i + 1, text),
+            properties: {
+              framework: fw.id,
+              httpMethods: method ? [method] : [],
+              ...(routePath ? { path: routePath } : {}),
+              handlerType: "grpc_service",
             },
           });
         }
@@ -199,7 +238,7 @@ export function detectTypeScriptDatabaseFromConfig(
     return [];
   }
 
-  const content = ctx.file.content ?? "";
+  const content = sourceOf(ctx);
   const findings: RawFinding[] = [];
   const tsCfg = config.typescript;
 
@@ -288,11 +327,31 @@ export function detectTypeScriptAuthFromConfig(
     return [];
   }
 
-  const content = ctx.file.content ?? "";
+  const content = sourceOf(ctx);
   const findings: RawFinding[] = [];
   const tsCfg = config.typescript;
 
   for (const lib of tsCfg.auth.libraries) {
+    if (lib.contentRegexes.length > 0) {
+      for (const regex of lib.contentRegexes) {
+        const contentMatches = findLineMatches(content, regex);
+        for (const { line, match } of contentMatches) {
+          findings.push({
+            pattern: lib.patternId,
+            name: lib.id,
+            confidence: lib.confidence,
+            location: createLocationFromLine(ctx.file, line, match[0]),
+            properties: {
+              ...(lib.strategy ? { strategy: lib.strategy } : {}),
+            },
+          });
+        }
+      }
+      if (lib.importFragments.length === 0) {
+        continue;
+      }
+    }
+
     const hasLibraryImport = lib.importFragments.some((frag) =>
       (ctx.imports ?? []).some(
         (imp) =>
@@ -345,6 +404,7 @@ export function detectTypeScriptAuthFromConfig(
           location: createLocationFromLine(ctx.file, 1),
           properties: {
             library: "jsonwebtoken",
+            ...(lib.strategy ? { strategy: lib.strategy } : {}),
           },
         });
       }
@@ -360,6 +420,17 @@ export function detectTypeScriptAuthFromConfig(
           },
         });
       }
+    } else if (lib.id === "oauth2") {
+      findings.push({
+        pattern: lib.patternId,
+        name: lib.id,
+        confidence: lib.confidence,
+        location: createLocationFromLine(ctx.file, 1),
+        properties: {
+          library: lib.id,
+          ...(lib.strategy ? { strategy: lib.strategy } : {}),
+        },
+      });
     }
   }
 
@@ -377,7 +448,7 @@ export function detectTypeScriptEnvAndConfigFromConfig(
     return [];
   }
 
-  const content = ctx.file.content ?? "";
+  const content = sourceOf(ctx);
   const findings: RawFinding[] = [];
   const tsCfg = config.typescript;
 
@@ -418,6 +489,126 @@ export function detectTypeScriptEnvAndConfigFromConfig(
           key,
         },
       });
+    }
+  }
+
+  for (const loader of tsCfg.configLoaders) {
+    const hasLoaderImport = loader.importFragments.some((frag) =>
+      (ctx.imports ?? []).some(
+        (imp) =>
+          imp.module === frag ||
+          imp.module.includes(frag) ||
+          imp.names.some((name) => name === frag || name.includes(frag)),
+      ),
+    );
+    if (!hasLoaderImport) continue;
+
+    const hasCall =
+      loader.callRegexes.length === 0 ||
+      loader.callRegexes.some((regex) => regex.test(content));
+    if (!hasCall) continue;
+
+    findings.push({
+      pattern: loader.patternId,
+      name: loader.name,
+      confidence: loader.confidence,
+      location: createLocationFromLine(ctx.file, 1),
+      properties: {
+        loader: loader.id,
+      },
+    });
+  }
+
+  return findings;
+}
+
+export function detectTypeScriptServerlessHandlersFromConfig(
+  ctx: PatternContext,
+  config: UnifiedPatternConfig,
+): RawFinding[] {
+  if (ctx.language !== "typescript" && ctx.language !== "javascript") {
+    return [];
+  }
+
+  const content = sourceOf(ctx);
+  const findings: RawFinding[] = [];
+
+  for (const handler of config.typescript.serverless.handlers) {
+    const hasImport =
+      handler.importModules.length === 0
+        ? false
+        : handler.importModules.some((mod) =>
+            (ctx.imports ?? []).some(
+              (imp) =>
+                imp.module === mod ||
+                imp.module.includes(mod) ||
+                imp.names.some((name) => name === mod || name.includes(mod)),
+            ),
+          );
+    const hasTypeSignal = handler.typeNames.some((typeName) =>
+      content.includes(typeName),
+    );
+
+    for (const regex of handler.handlerRegexes) {
+      const matches = findLineMatches(content, regex);
+      for (const { line, match } of matches) {
+        if (!hasImport && !hasTypeSignal) continue;
+
+        findings.push({
+          pattern: handler.patternId,
+          name: `${handler.id} handler`,
+          confidence: handler.confidence,
+          location: createLocationFromLine(ctx.file, line, match[0]),
+          properties: {
+            framework: handler.id,
+            handler: "handler",
+            handlerType: "serverless_handler",
+          },
+        });
+      }
+    }
+  }
+
+  return findings;
+}
+
+export function detectTypeScriptExternalApisFromConfig(
+  ctx: PatternContext,
+  config: UnifiedPatternConfig,
+): RawFinding[] {
+  if (ctx.language !== "typescript" && ctx.language !== "javascript") {
+    return [];
+  }
+
+  const content = sourceOf(ctx);
+  const findings: RawFinding[] = [];
+
+  for (const client of config.typescript.externalApis.httpClients) {
+    const hasClientImport =
+      client.importFragments.length === 0 ||
+      client.importFragments.some((frag) =>
+        (ctx.imports ?? []).some(
+          (imp) =>
+            imp.module === frag ||
+            imp.module.includes(frag) ||
+            imp.names.some((name) => name === frag || name.includes(frag)),
+        ),
+      );
+    if (!hasClientImport) continue;
+
+    for (const regex of client.callRegexes) {
+      const matches = findLineMatches(content, regex);
+      for (const { line, match } of matches) {
+        findings.push({
+          pattern: client.patternId,
+          name: `${client.clientName}_call`,
+          confidence: client.confidence,
+          location: createLocationFromLine(ctx.file, line, match[0]),
+          properties: {
+            client: client.clientName,
+          },
+        });
+      }
     }
   }
 

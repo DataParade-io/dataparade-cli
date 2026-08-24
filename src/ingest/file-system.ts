@@ -74,6 +74,40 @@ function getFileLanguage(filePath: string): FileLanguage | undefined {
     return "python";
   }
 
+  if (
+    ext === ".cpp" ||
+    ext === ".cc" ||
+    ext === ".cxx" ||
+    ext === ".c++" ||
+    ext === ".hpp" ||
+    ext === ".hh" ||
+    ext === ".hxx" ||
+    ext === ".ipp" ||
+    ext === ".inl" ||
+    ext === ".h"
+  ) {
+    return "cpp";
+  }
+
+  if (ext === ".cs" || ext === ".cshtml" || ext === ".razor") {
+    return "csharp";
+  }
+
+  if (ext === ".go") {
+    return "go";
+  }
+
+  if (ext === ".java") {
+    return "java";
+  }
+
+  // `.kts` covers Kotlin scripts, including Gradle build scripts — those are
+  // build configuration rather than application code, but they are also where
+  // a Kotlin service declares its dependencies.
+  if (ext === ".kt" || ext === ".kts") {
+    return "kotlin";
+  }
+
   if (ext === ".json") {
     return "json";
   }

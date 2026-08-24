@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: billing
+  datasource:
+    url: jdbc:postgresql://db.internal:5432/billing
+    username: billing_app
+    password: super-secret-value
+  data:
+    mongodb:
+      uri: mongodb://mongo.internal:27017/events

@@ -35,6 +35,24 @@ interface RawPythonPatternConfig {
       callNames?: string[];
       confidence?: number;
     }>;
+    libraries?: Array<{
+      id: string;
+      patternId: string;
+      importModules?: string[];
+      contentRegexes?: string[];
+      strategy?: string;
+      confidence?: number;
+    }>;
+  };
+  serverless?: {
+    handlers?: Array<{
+      id: string;
+      patternId: string;
+      importModules?: string[];
+      functionNameRegexes?: string[];
+      decoratorNames?: string[];
+      confidence?: number;
+    }>;
   };
   routes?: {
     frameworks?: Array<{
@@ -107,6 +125,24 @@ export interface PythonPatternConfig {
       id: string;
       patternId: PatternId;
       callNames: string[];
+      confidence: number;
+    }>;
+    libraries: Array<{
+      id: string;
+      patternId: PatternId;
+      importModules: string[];
+      contentRegexes: RegExp[];
+      strategy?: string;
+      confidence: number;
+    }>;
+  };
+  serverless: {
+    handlers: Array<{
+      id: string;
+      patternId: PatternId;
+      importModules: string[];
+      functionNameRegexes: RegExp[];
+      decoratorNames: string[];
       confidence: number;
     }>;
   };
@@ -223,6 +259,34 @@ function normalizeRawConfig(raw: RawPythonPatternConfig): PythonPatternConfig {
       confidence: d.confidence ?? DEFAULT_CONFIDENCE,
     })) ?? [];
 
+  const authLibraries =
+    raw.auth?.libraries?.map((lib) => ({
+      id: lib.id,
+      patternId: validatePatternId(
+        lib.patternId,
+        `python.auth.libraries['${lib.id}']`,
+      ),
+      contentRegexes: (lib.contentRegexes ?? []).map((p) => new RegExp(p)),
+      importModules: lib.importModules ?? [],
+      strategy: lib.strategy,
+      confidence: lib.confidence ?? DEFAULT_CONFIDENCE,
+    })) ?? [];
+
+  const serverlessHandlers =
+    raw.serverless?.handlers?.map((handler) => ({
+      id: handler.id,
+      patternId: validatePatternId(
+        handler.patternId,
+        `python.serverless.handlers['${handler.id}']`,
+      ),
+      importModules: handler.importModules ?? [],
+      functionNameRegexes: (handler.functionNameRegexes ?? []).map(
+        (p) => new RegExp(p),
+      ),
+      decoratorNames: handler.decoratorNames ?? [],
+      confidence: handler.confidence ?? DEFAULT_CONFIDENCE,
+    })) ?? [];
+
   const routeFrameworks =
     raw.routes?.frameworks?.map((fw) => ({
       id: fw.id,
@@ -302,6 +366,10 @@ function normalizeRawConfig(raw: RawPythonPatternConfig): PythonPatternConfig {
     auth: {
       jwt: authJwt,
       decorators: authDecorators,
+      libraries: authLibraries,
+    },
+    serverless: {
+      handlers: serverlessHandlers,
     },
     routes: {
       frameworks: routeFrameworks,

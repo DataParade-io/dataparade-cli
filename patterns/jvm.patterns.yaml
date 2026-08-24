@@ -1,0 +1,884 @@
+# JVM (Java + Kotlin) pattern config. All entries share: patternId, optional
+# confidence (default 0.8).
+#
+# One config serves both languages: Java and Kotlin share the JVM package
+# namespace, the Maven/Gradle coordinate space, the Spring/Jakarta annotation
+# vocabulary, and JDBC. Rules that are genuinely Kotlin-only (Ktor, Exposed)
+# are gated by their import package like any other framework.
+#
+# Two distinct token spaces, unlike Go:
+#   `importPackages`     — what appears in an `import` statement
+#                          (`org.springframework.web.bind.annotation`).
+#                          Matched exactly or as a package prefix, so
+#                          `org.springframework.data` also covers
+#                          `org.springframework.data.jpa.repository`.
+#   `packageCoordinates` — Maven/Gradle `groupId:artifactId` as written in
+#                          `pom.xml` / `build.gradle`
+#                          (`org.springframework.boot:spring-boot-starter-web`).
+#                          Matched exactly, or by groupId prefix when the
+#                          entry has no `:`.
+# The two rarely coincide on the JVM, which is why both exist — the same
+# split C++ needed for `packageNames` vs. header paths.
+
+db_clients:
+  # --- JDBC drivers -------------------------------------------------------
+  # A driver on the classpath is strong evidence of the engine even when the
+  # connection itself is opened through a pool or an ORM.
+  - id: postgresql_jdbc
+    patternId: database_connection
+    databaseType: postgres
+    importPackages:
+      - org.postgresql
+    packageCoordinates:
+      - org.postgresql:postgresql
+      - org.postgresql:r2dbc-postgresql
+    confidence: 0.9
+
+  - id: mysql_jdbc
+    patternId: database_connection
+    databaseType: mysql
+    importPackages:
+      - com.mysql
+    packageCoordinates:
+      - mysql:mysql-connector-java
+      - com.mysql:mysql-connector-j
+    confidence: 0.9
+
+  - id: mariadb_jdbc
+    patternId: database_connection
+    databaseType: mariadb
+    importPackages:
+      - org.mariadb.jdbc
+    packageCoordinates:
+      - org.mariadb.jdbc:mariadb-java-client
+    confidence: 0.9
+
+  - id: sqlite_jdbc
+    patternId: database_connection
+    databaseType: sqlite
+    importPackages:
+      - org.sqlite
+    packageCoordinates:
+      - org.xerial:sqlite-jdbc
+    confidence: 0.9
+
+  - id: sqlserver_jdbc
+    patternId: database_connection
+    databaseType: mssql
+    importPackages:
+      - com.microsoft.sqlserver
+    packageCoordinates:
+      - com.microsoft.sqlserver:mssql-jdbc
+    confidence: 0.9
+
+  - id: oracle_jdbc
+    patternId: database_connection
+    databaseType: oracle
+    importPackages:
+      - oracle.jdbc
+    packageCoordinates:
+      - com.oracle.database.jdbc
+    confidence: 0.9
+
+  - id: h2_jdbc
+    patternId: database_connection
+    databaseType: h2
+    importPackages:
+      - org.h2
+    packageCoordinates:
+      - com.h2database:h2
+    confidence: 0.85
+
+  - id: clickhouse_jdbc
+    patternId: database_connection
+    databaseType: clickhouse
+    importPackages:
+      - com.clickhouse
+      - ru.yandex.clickhouse
+    packageCoordinates:
+      - com.clickhouse
+    confidence: 0.85
+
+  - id: snowflake_jdbc
+    patternId: database_connection
+    databaseType: snowflake
+    importPackages:
+      - net.snowflake.client
+    packageCoordinates:
+      - net.snowflake:snowflake-jdbc
+    confidence: 0.85
+
+  # --- Connection pools ---------------------------------------------------
+  - id: hikaricp
+    patternId: database_connection
+    databaseType: sql
+    importPackages:
+      - com.zaxxer.hikari
+    packageCoordinates:
+      - com.zaxxer:HikariCP
+    callNames:
+      - HikariConfig
+      - HikariDataSource
+    confidence: 0.8
+
+  # --- ORMs and data-access layers ---------------------------------------
+  - id: spring_data_jpa
+    patternId: database_connection
+    databaseType: sql
+    importPackages:
+      - org.springframework.data.jpa
+      - jakarta.persistence
+      - javax.persistence
+    packageCoordinates:
+      - org.springframework.boot:spring-boot-starter-data-jpa
+      - org.springframework.data:spring-data-jpa
+    annotationNames:
+      - Entity
+      - Table
+      - Repository
+      - EnableJpaRepositories
+    confidence: 0.85
+
+  - id: hibernate
+    patternId: database_connection
+    databaseType: sql
+    importPackages:
+      - org.hibernate
+    packageCoordinates:
+      - org.hibernate
+      - org.hibernate.orm
+    callNames:
+      - Persistence.createEntityManagerFactory
+      - sessionFactory.openSession
+    confidence: 0.85
+
+  - id: spring_jdbc_template
+    patternId: database_connection
+    databaseType: sql
+    importPackages:
+      - org.springframework.jdbc
+    packageCoordinates:
+      - org.springframework.boot:spring-boot-starter-jdbc
+      - org.springframework:spring-jdbc
+    callNames:
+      - JdbcTemplate
+      - NamedParameterJdbcTemplate
+      - JdbcClient.create
+    confidence: 0.85
+
+  - id: jooq
+    patternId: database_connection
+    databaseType: sql
+    importPackages:
+      - org.jooq
+    packageCoordinates:
+      - org.jooq:jooq
+    callNames:
+      - DSL.using
+    confidence: 0.85
+
+  - id: mybatis
+    patternId: database_connection
+    databaseType: sql
+    importPackages:
+      - org.apache.ibatis
+      - org.mybatis
+    packageCoordinates:
+      - org.mybatis
+    annotationNames:
+      - Mapper
+    confidence: 0.85
+
+  - id: exposed
+    patternId: database_connection
+    databaseType: sql
+    importPackages:
+      - org.jetbrains.exposed
+    packageCoordinates:
+      - org.jetbrains.exposed
+    callNames:
+      - Database.connect
+    confidence: 0.9
+
+  - id: r2dbc
+    patternId: database_connection
+    databaseType: sql
+    importPackages:
+      - io.r2dbc
+      - org.springframework.data.r2dbc
+    packageCoordinates:
+      - io.r2dbc
+      - org.springframework.boot:spring-boot-starter-data-r2dbc
+    callNames:
+      - ConnectionFactories.get
+    confidence: 0.85
+
+  # --- Non-relational -----------------------------------------------------
+  - id: mongodb_java
+    patternId: database_connection
+    databaseType: mongodb
+    importPackages:
+      - com.mongodb
+      - org.springframework.data.mongodb
+    packageCoordinates:
+      - org.mongodb
+      - org.springframework.boot:spring-boot-starter-data-mongodb
+    callNames:
+      - MongoClients.create
+      - MongoClient
+    confidence: 0.9
+
+  - id: jedis
+    patternId: database_connection
+    databaseType: redis
+    importPackages:
+      - redis.clients.jedis
+    packageCoordinates:
+      - redis.clients:jedis
+    callNames:
+      - JedisPool
+      - JedisPooled
+      - Jedis
+    confidence: 0.9
+
+  - id: lettuce
+    patternId: database_connection
+    databaseType: redis
+    importPackages:
+      - io.lettuce.core
+    packageCoordinates:
+      - io.lettuce:lettuce-core
+    callNames:
+      - RedisClient.create
+    confidence: 0.9
+
+  - id: spring_data_redis
+    patternId: database_connection
+    databaseType: redis
+    importPackages:
+      - org.springframework.data.redis
+    packageCoordinates:
+      - org.springframework.boot:spring-boot-starter-data-redis
+    callNames:
+      - RedisTemplate
+      - StringRedisTemplate
+    confidence: 0.9
+
+  - id: cassandra_java
+    patternId: database_connection
+    databaseType: cassandra
+    importPackages:
+      - com.datastax.oss.driver
+      - com.datastax.driver
+      - org.springframework.data.cassandra
+    packageCoordinates:
+      - com.datastax.oss
+      - org.springframework.boot:spring-boot-starter-data-cassandra
+    callNames:
+      - CqlSession.builder
+    confidence: 0.85
+
+  - id: elasticsearch_java
+    patternId: database_connection
+    databaseType: elasticsearch
+    importPackages:
+      - co.elastic.clients
+      - org.elasticsearch.client
+      - org.opensearch.client
+    packageCoordinates:
+      - co.elastic.clients:elasticsearch-java
+      - org.elasticsearch.client
+    confidence: 0.85
+
+  - id: dynamodb_java
+    patternId: database_connection
+    databaseType: dynamodb
+    importPackages:
+      - software.amazon.awssdk.services.dynamodb
+      - com.amazonaws.services.dynamodbv2
+    packageCoordinates:
+      - software.amazon.awssdk:dynamodb
+      - software.amazon.awssdk:dynamodb-enhanced
+    confidence: 0.85
+
+  - id: neo4j_java
+    patternId: database_connection
+    databaseType: neo4j
+    importPackages:
+      - org.neo4j.driver
+      - org.springframework.data.neo4j
+    packageCoordinates:
+      - org.neo4j.driver:neo4j-java-driver
+    callNames:
+      - GraphDatabase.driver
+    confidence: 0.85
+
+# JVM-specific: JDBC is engine-agnostic at the API level, and the concrete
+# engine is named in the URL sub-protocol — `jdbc:postgresql://host/db`. This
+# is the JVM analogue of Go's `sql.Open` driver argument: without reading it,
+# every JDBC database collapses into one generic SQL node.
+#
+# The same rule runs over `application.properties` / `application.yml` during
+# manifest scanning, which is where Spring services usually declare the URL.
+jdbc_url:
+  patternId: database_connection
+  regex: 'jdbc:([a-z0-9]+):'
+  name: jdbc
+  confidence: 0.9
+  drivers:
+    postgresql: postgres
+    postgres: postgres
+    mysql: mysql
+    mariadb: mariadb
+    sqlite: sqlite
+    sqlserver: mssql
+    jtds: mssql
+    oracle: oracle
+    h2: h2
+    hsqldb: hsqldb
+    db2: db2
+    clickhouse: clickhouse
+    snowflake: snowflake
+    redshift: redshift
+    presto: presto
+    trino: trino
+    # Not JDBC sub-protocols. Spring declares these engines as plain URIs
+    # (`spring.data.mongodb.uri=mongodb://…`), and the manifest scanner
+    # resolves them against this same table.
+    mongodb: mongodb
+    redis: redis
+    rediss: redis
+    cassandra: cassandra
+    elasticsearch: elasticsearch
+    opensearch: elasticsearch
+    neo4j: neo4j
+    bolt: neo4j
+  defaultDatabaseType: sql
+
+auth:
+  libraries:
+    - id: spring_security
+      patternId: auth_middleware
+      importPackages:
+        - org.springframework.security
+      packageCoordinates:
+        - org.springframework.boot:spring-boot-starter-security
+        - org.springframework.security
+      callNames:
+        - SecurityFilterChain
+        - HttpSecurity
+        - AuthenticationManager
+      strategy: spring_security
+      confidence: 0.9
+
+    - id: jjwt
+      patternId: auth_middleware
+      importPackages:
+        - io.jsonwebtoken
+      packageCoordinates:
+        - io.jsonwebtoken
+      callNames:
+        - Jwts.builder
+        - Jwts.parser
+        - Jwts.parserBuilder
+      strategy: jwt
+      confidence: 0.9
+
+    - id: java_jwt
+      patternId: auth_middleware
+      importPackages:
+        - com.auth0.jwt
+      packageCoordinates:
+        - com.auth0:java-jwt
+      callNames:
+        - JWT.create
+        - JWT.require
+        - JWT.decode
+      strategy: jwt
+      confidence: 0.9
+
+    - id: nimbus_jose_jwt
+      patternId: auth_middleware
+      importPackages:
+        - com.nimbusds.jwt
+        - com.nimbusds.jose
+      packageCoordinates:
+        - com.nimbusds:nimbus-jose-jwt
+      strategy: jwt
+      confidence: 0.85
+
+    - id: spring_oauth2
+      patternId: auth_middleware
+      importPackages:
+        - org.springframework.security.oauth2
+      packageCoordinates:
+        - org.springframework.boot:spring-boot-starter-oauth2-client
+        - org.springframework.boot:spring-boot-starter-oauth2-resource-server
+      strategy: oauth2
+      confidence: 0.9
+
+    - id: keycloak
+      patternId: auth_middleware
+      importPackages:
+        - org.keycloak
+      packageCoordinates:
+        - org.keycloak
+      strategy: keycloak
+      confidence: 0.85
+
+    - id: apache_shiro
+      patternId: auth_middleware
+      importPackages:
+        - org.apache.shiro
+      packageCoordinates:
+        - org.apache.shiro
+      strategy: shiro
+      confidence: 0.85
+
+    - id: pac4j
+      patternId: auth_middleware
+      importPackages:
+        - org.pac4j
+      packageCoordinates:
+        - org.pac4j
+      strategy: pac4j
+      confidence: 0.85
+
+    - id: ktor_auth
+      patternId: auth_middleware
+      importPackages:
+        - io.ktor.server.auth
+      packageCoordinates:
+        - io.ktor:ktor-server-auth
+      strategy: ktor_auth
+      confidence: 0.9
+
+    # Deliberately broad and correspondingly low-confidence: this fires on any
+    # file containing the literal header name. Same trade-off as the Go and
+    # C++ equivalents.
+    - id: bearer_token_header
+      patternId: auth_middleware
+      contentRegexes:
+        - '"Authorization"'
+        - 'HttpHeaders\.AUTHORIZATION'
+      strategy: bearer_token
+      confidence: 0.7
+
+  annotations:
+    - id: spring_method_security
+      patternId: auth_middleware
+      annotationNames:
+        - PreAuthorize
+        - PostAuthorize
+        - Secured
+        - EnableWebSecurity
+        - EnableMethodSecurity
+        - EnableGlobalMethodSecurity
+      strategy: spring_security
+      confidence: 0.9
+
+    - id: jakarta_role_security
+      patternId: auth_middleware
+      annotationNames:
+        - RolesAllowed
+        - PermitAll
+        - DenyAll
+      strategy: jakarta_security
+      confidence: 0.85
+
+    - id: micronaut_security
+      patternId: auth_middleware
+      annotationNames:
+        - Secured
+        - Authenticated
+      strategy: micronaut_security
+      confidence: 0.85
+
+routes:
+  frameworks:
+    # Spring MVC / WebFlux annotated controllers. The class-level
+    # @RequestMapping supplies a prefix that the method-level mapping is
+    # appended to, exactly like ASP.NET's [Route] + [HttpGet].
+    - id: spring_mvc
+      patternId: express_route
+      importPackages:
+        - org.springframework.web.bind.annotation
+        - org.springframework.stereotype
+      confidence: 0.9
+      controllerAnnotations:
+        - RestController
+        - Controller
+      controllerRouteAnnotations:
+        - RequestMapping
+      annotationRoutes:
+        - annotation: GetMapping
+          method: GET
+        - annotation: PostMapping
+          method: POST
+        - annotation: PutMapping
+          method: PUT
+        - annotation: DeleteMapping
+          method: DELETE
+        - annotation: PatchMapping
+          method: PATCH
+        # Method-level @RequestMapping carries its verb in a named argument
+        # (`method = RequestMethod.GET`); the detector reads it from the
+        # annotation text and falls back to ANY.
+        - annotation: RequestMapping
+          method: ANY
+
+    # Spring WebFlux functional routing: RouterFunctions.route().GET("/x", h).
+    - id: spring_webflux_functional
+      patternId: express_route
+      importPackages:
+        - org.springframework.web.reactive.function.server
+      confidence: 0.85
+      routeRegexes:
+        - regex: '\.(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)\s*\(\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+
+    # JAX-RS (Jakarta REST): Jersey, RESTEasy, Quarkus. Unlike Spring, the
+    # verb and the path are separate annotations — @GET plus @Path("/{id}") —
+    # so `pathAnnotations` tells the detector where to read the sub-path from.
+    - id: jaxrs
+      patternId: express_route
+      importPackages:
+        - jakarta.ws.rs
+        - javax.ws.rs
+      confidence: 0.9
+      controllerRouteAnnotations:
+        - Path
+      pathAnnotations:
+        - Path
+      annotationRoutes:
+        - annotation: GET
+          method: GET
+        - annotation: POST
+          method: POST
+        - annotation: PUT
+          method: PUT
+        - annotation: DELETE
+          method: DELETE
+        - annotation: PATCH
+          method: PATCH
+        - annotation: HEAD
+          method: HEAD
+        - annotation: OPTIONS
+          method: OPTIONS
+
+    - id: micronaut
+      patternId: express_route
+      importPackages:
+        - io.micronaut.http.annotation
+      confidence: 0.9
+      controllerAnnotations:
+        - Controller
+      controllerRouteAnnotations:
+        - Controller
+      annotationRoutes:
+        - annotation: Get
+          method: GET
+        - annotation: Post
+          method: POST
+        - annotation: Put
+          method: PUT
+        - annotation: Delete
+          method: DELETE
+        - annotation: Patch
+          method: PATCH
+        - annotation: Head
+          method: HEAD
+        - annotation: Options
+          method: OPTIONS
+
+    # Ktor's routing DSL. The `(?:^|[^.\w])` guard keeps this off the Ktor
+    # *client*, whose calls are receiver-qualified (`client.get("https://…")`)
+    # while server routes are not (`get("/users") { … }`).
+    - id: ktor
+      patternId: express_route
+      importPackages:
+        - io.ktor.server.routing
+        - io.ktor.server.application
+        - io.ktor.routing
+      confidence: 0.9
+      routeRegexes:
+        - regex: '(?:^|[^.\w])(get|post|put|delete|patch|head|options)\s*\(\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+        - regex: '(?:^|[^.\w])route\s*\(\s*"([^"]+)"'
+          pathGroup: 1
+
+    - id: javalin
+      patternId: express_route
+      importPackages:
+        - io.javalin
+      confidence: 0.9
+      routeRegexes:
+        - regex: '\b\w+\.(get|post|put|delete|patch|head|options)\s*\(\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+
+    - id: vertx_web
+      patternId: express_route
+      importPackages:
+        - io.vertx.ext.web
+      confidence: 0.85
+      routeRegexes:
+        - regex: '\b\w+\.(get|post|put|delete|patch|head|options)\s*\(\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+        - regex: '\brouter\.route\s*\(\s*"([^"]+)"'
+          pathGroup: 1
+
+    - id: spark_java
+      patternId: express_route
+      importPackages:
+        - spark.Spark
+        - spark.Service
+      confidence: 0.85
+      routeRegexes:
+        - regex: '(?:^|[^.\w])(get|post|put|delete|patch|head|options)\s*\(\s*"([^"]+)"'
+          methodGroup: 1
+          pathGroup: 2
+
+    - id: grpc_jvm
+      patternId: express_route
+      importPackages:
+        - io.grpc
+      confidence: 0.8
+      routeRegexes:
+        - regex: '\baddService\s*\(\s*new\s+([A-Za-z_]\w*)'
+          pathGroup: 1
+          defaultMethod: RPC
+        - regex: '\bextends\s+([A-Za-z_]\w*)ImplBase\b'
+          pathGroup: 1
+          defaultMethod: RPC
+
+serverless:
+  handlers:
+    - id: aws_lambda_java
+      patternId: lambda_handler
+      importPackages:
+        - com.amazonaws.services.lambda.runtime
+      packageCoordinates:
+        - com.amazonaws:aws-lambda-java-core
+      baseTypes:
+        - RequestHandler
+        - RequestStreamHandler
+      typeNames:
+        - Context
+      confidence: 0.9
+
+    - id: azure_functions_java
+      patternId: lambda_handler
+      importPackages:
+        - com.microsoft.azure.functions
+      packageCoordinates:
+        - com.microsoft.azure.functions
+      annotationNames:
+        - FunctionName
+      confidence: 0.9
+
+    - id: gcp_functions_java
+      patternId: lambda_handler
+      importPackages:
+        - com.google.cloud.functions
+      packageCoordinates:
+        - com.google.cloud.functions:functions-framework-api
+      baseTypes:
+        - HttpFunction
+        - BackgroundFunction
+        - CloudEventsFunction
+        - RawBackgroundFunction
+      confidence: 0.9
+
+    - id: spring_cloud_function
+      patternId: lambda_handler
+      importPackages:
+        - org.springframework.cloud.function
+      packageCoordinates:
+        - org.springframework.cloud:spring-cloud-function-adapter-aws
+        - org.springframework.cloud:spring-cloud-starter-function-web
+      confidence: 0.8
+
+env_config:
+  envVariable:
+    patternId: env_variable
+    regex: '\bSystem\.getenv\s*\(\s*"([^"]+)"'
+    confidence: 0.85
+
+  # Spring's property placeholders. @Value("${db.url}") and
+  # Environment.getProperty("db.url") are the JVM equivalent of process.env:
+  # they name a key without disclosing its value.
+  propertyKeys:
+    patternId: config_file
+    confidence: 0.85
+    regexes:
+      - '@Value\s*\(\s*"\$\{([^:}"]+)'
+      - '\bgetProperty\s*\(\s*"([^"]+)"'
+      - '@ConfigurationProperties\s*\((?:\s*prefix\s*=\s*)?"([^"]+)"'
+      - '@ConfigProperty\s*\(\s*name\s*=\s*"([^"]+)"'
+
+  configLoaders:
+    patternId: config_file
+    confidence: 0.85
+    loaders:
+      - id: dotenv_java
+        importPackages:
+          - io.github.cdimascio.dotenv
+        packageCoordinates:
+          - io.github.cdimascio:dotenv-java
+          - io.github.cdimascio:dotenv-kotlin
+        callNames:
+          - Dotenv.load
+          - Dotenv.configure
+      - id: typesafe_config
+        importPackages:
+          - com.typesafe.config
+        packageCoordinates:
+          - com.typesafe:config
+        callNames:
+          - ConfigFactory.load
+          - ConfigFactory.parseFile
+      - id: micronaut_context
+        importPackages:
+          - io.micronaut.context.annotation
+        packageCoordinates:
+          - io.micronaut:micronaut-context
+
+  configFile:
+    patternId: config_file
+    fileNameRegex: '(^|/)[a-z0-9_]*config(uration)?\.(java|kt)$'
+    name: jvm_config
+    confidence: 0.75
+
+external_apis:
+  httpClients:
+    - id: java_net_http
+      patternId: external_api_call
+      clientName: java_net_http
+      importPackages:
+        - java.net.http
+      callNames:
+        - HttpRequest.newBuilder
+      callNameSuffixes:
+        - .uri
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      requireUrlMatch: true
+      confidence: 0.85
+
+    - id: okhttp
+      patternId: external_api_call
+      clientName: okhttp
+      importPackages:
+        - okhttp3
+      callNames:
+        - Request.Builder
+        - OkHttpClient.Builder
+      callNameSuffixes:
+        - .url
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      requireUrlMatch: true
+      confidence: 0.85
+
+    - id: retrofit
+      patternId: external_api_call
+      clientName: retrofit
+      importPackages:
+        - retrofit2
+      callNames:
+        - Retrofit.Builder
+      callNameSuffixes:
+        - .baseUrl
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      requireUrlMatch: true
+      confidence: 0.9
+
+    - id: apache_httpclient
+      patternId: external_api_call
+      clientName: apache_httpclient
+      importPackages:
+        - org.apache.http
+        - org.apache.hc
+      callNames:
+        - HttpGet
+        - HttpPost
+        - HttpPut
+        - HttpDelete
+        - HttpPatch
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      requireUrlMatch: true
+      confidence: 0.85
+
+    - id: spring_rest_template
+      patternId: external_api_call
+      clientName: spring_rest_template
+      importPackages:
+        - org.springframework.web.client
+      callNames:
+        - RestTemplate
+      callNameSuffixes:
+        - .getForObject
+        - .getForEntity
+        - .postForObject
+        - .postForEntity
+        - .exchange
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: spring_webclient
+      patternId: external_api_call
+      clientName: spring_webclient
+      importPackages:
+        - org.springframework.web.reactive.function.client
+      callNames:
+        - WebClient.create
+      callNameSuffixes:
+        - .baseUrl
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.85
+
+    - id: feign
+      patternId: external_api_call
+      clientName: feign
+      importPackages:
+        - feign
+        - org.springframework.cloud.openfeign
+      callNames:
+        - Feign.builder
+      callNameSuffixes:
+        - .target
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      confidence: 0.8
+
+    # Gated on `io.ktor.client`, and required to carry a literal URL, so the
+    # Ktor server routing DSL (same verb names) cannot reach it.
+    - id: ktor_client
+      patternId: external_api_call
+      clientName: ktor_client
+      importPackages:
+        - io.ktor.client
+      callNames:
+        - HttpClient
+      callNameSuffixes:
+        - .get
+        - .post
+        - .put
+        - .delete
+        - .patch
+      urlRegex: '"(https?:\/\/[^\s"]+)"'
+      requireUrlMatch: true
+      confidence: 0.85
+
+    - id: grpc_jvm_client
+      patternId: external_api_call
+      clientName: grpc
+      importPackages:
+        - io.grpc
+      callNames:
+        - ManagedChannelBuilder.forAddress
+        - ManagedChannelBuilder.forTarget
+        - Grpc.newChannelBuilder
+      urlRegex: '"([^"\s]+)"'
+      confidence: 0.8

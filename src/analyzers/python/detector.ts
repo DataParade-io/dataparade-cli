@@ -9,6 +9,7 @@ import {
   detectPythonDatabaseConnections,
   detectPythonExternalApiCalls,
   detectPythonRoutePatterns,
+  detectPythonServerlessHandlers,
 } from "./patterns";
 
 export function detectPythonPatterns(file: FileInfo): RawFinding[] {
@@ -26,6 +27,7 @@ export function detectPythonPatterns(file: FileInfo): RawFinding[] {
     ...detectPythonExternalApiCalls(moduleModel),
     ...detectPythonAuthPatterns(moduleModel),
     ...detectPythonConfigAndEnvUsage(moduleModel),
+    ...detectPythonServerlessHandlers(moduleModel),
   );
 
   // Merge pattern-matched component properties (from YAML) into each finding.

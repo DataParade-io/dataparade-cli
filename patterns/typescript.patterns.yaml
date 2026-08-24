@@ -21,6 +21,18 @@ routes:
         - "@(Get|Post|Put|Delete|Patch|Options|Head)\\(\\s*[\"'`]([^\"'`]*)[\"'`]? "
       confidence: 0.85
 
+    - id: grpc
+      patternId: express_route
+      imports:
+        - "@grpc/grpc-js"
+        - grpc
+      routeRegexes:
+        - regex: "\\.addService\\b"
+          defaultMethod: RPC
+        - regex: "\\.bindAsync\\b"
+          defaultMethod: RPC
+      confidence: 0.8
+
 db_clients:
   - id: pg
     patternId: database_connection
@@ -72,6 +84,78 @@ db_clients:
       - "\\bcreateClient\\s*\\("
     confidence: 0.9
 
+  - id: better_sqlite3
+    patternId: database_connection
+    databaseType: sqlite
+    importModules:
+      - better-sqlite3
+      - bun:sqlite
+    regexes:
+      - "\\bnew\\s+Database\\s*\\("
+    confidence: 0.9
+
+  - id: cassandra_driver
+    patternId: database_connection
+    databaseType: cassandra
+    importModules:
+      - cassandra-driver
+    regexes:
+      - "\\bnew\\s+Client\\s*\\("
+    confidence: 0.85
+
+  - id: mssql
+    patternId: database_connection
+    databaseType: mssql
+    importModules:
+      - mssql
+      - tedious
+    regexes:
+      - "\\bsql\\.connect\\s*\\("
+      - "\\bnew\\s+Connection\\s*\\("
+      - "\\bconnectionPool\\.connect\\s*\\("
+    confidence: 0.85
+
+  - id: dynamodb
+    patternId: database_connection
+    databaseType: dynamodb
+    importModules:
+      - "@aws-sdk/client-dynamodb"
+      - "@aws-sdk/lib-dynamodb"
+    regexes:
+      - "\\bnew\\s+DynamoDBClient\\s*\\("
+      - "\\bnew\\s+DynamoDB\\s*\\("
+      - "\\bnew\\s+DynamoDBDocumentClient\\s*\\("
+    confidence: 0.9
+
+  - id: knex
+    patternId: database_connection
+    databaseType: sql
+    importModules:
+      - knex
+    regexes:
+      - "\\bknex\\s*\\("
+    confidence: 0.85
+
+  - id: typeorm
+    patternId: database_connection
+    databaseType: sql
+    importModules:
+      - typeorm
+    regexes:
+      - "\\bnew\\s+DataSource\\s*\\("
+      - "\\bcreateConnection\\s*\\("
+      - "\\bcreateDataSource\\s*\\("
+    confidence: 0.85
+
+  - id: elasticsearch_js
+    patternId: database_connection
+    databaseType: elasticsearch
+    importModules:
+      - "@elastic/elasticsearch"
+    regexes:
+      - "\\bnew\\s+Client\\s*\\("
+    confidence: 0.85
+
 auth:
   libraries:
     - id: passport
@@ -85,12 +169,133 @@ auth:
       patternId: auth_middleware
       importFragments:
         - jsonwebtoken
+        - jose
+      strategy: jwt
       confidence: 0.8
     - id: nest_auth
       patternId: auth_middleware
       importFragments:
         - "@nestjs/passport"
       confidence: 0.85
+
+    - id: bearer_token_header
+      patternId: auth_middleware
+      contentRegexes:
+        - 'Authorization["'']?\s*,?\s*["'']?\s*Bearer'
+        - '"Authorization"'
+        - "Authorization\\s*:\\s*['\"]Bearer"
+      strategy: bearer_token
+      confidence: 0.7
+
+    - id: oauth2
+      patternId: auth_middleware
+      importFragments:
+        - oauth2
+        - google-auth-library
+        - openid-client
+        - google-auth-oauth
+      strategy: oauth2
+      confidence: 0.85
+
+serverless:
+  handlers:
+    - id: aws_lambda
+      patternId: lambda_handler
+      importModules:
+        - aws-lambda
+        - "@types/aws-lambda"
+      handlerRegexes:
+        - "\\bexport\\s+(?:async\\s+)?function\\s+handler\\b"
+        - "\\bexport\\s+const\\s+handler\\b"
+        - "\\bexports\\.handler\\s*="
+      typeNames:
+        - APIGatewayProxyEvent
+        - APIGatewayProxyHandler
+      confidence: 0.9
+
+    - id: azure_functions
+      patternId: lambda_handler
+      importModules:
+        - "@azure/functions"
+      handlerRegexes:
+        - "\\bapp\\.(?:http|timer|storage|queue|serviceBusQueue)\\b"
+      confidence: 0.9
+
+    - id: gcp_functions
+      patternId: lambda_handler
+      importModules:
+        - "@google-cloud/functions-framework"
+        - functions-framework
+      handlerRegexes:
+        - "\\bfunctions\\.http\\b"
+        - "\\bfunctions\\.cloudEvent\\b"
+        - "\\bhttp\\s*\\("
+      confidence: 0.9
+
+external_apis:
+  httpClients:
+    - id: grpc_client
+      patternId: external_api_call
+      clientName: grpc
+      importFragments:
+        - "@grpc/grpc-js"
+        - grpc
+      regexes:
+        - "\\bcredentials\\.createInsecure\\b"
+        - "\\bmakeGenericClientConstructor\\b"
+        - "\\bnew\\s+[A-Za-z_][\\w.]*Client\\s*\\("
+      confidence: 0.8
+
+    - id: axios
+      patternId: external_api_call
+      clientName: axios
+      importFragments:
+        - axios
+      regexes:
+        - "\\baxios\\.(get|post|put|delete|patch|request)\\s*\\("
+        - "\\baxios\\.create\\s*\\("
+      confidence: 0.85
+
+    - id: node_fetch
+      patternId: external_api_call
+      clientName: fetch
+      importFragments:
+        - node-fetch
+        - cross-fetch
+        - undici
+      regexes:
+        - "\\bfetch\\s*\\("
+      confidence: 0.8
+
+    - id: got
+      patternId: external_api_call
+      clientName: got
+      importFragments:
+        - got
+      regexes:
+        - "\\bgot\\.(get|post|put|delete|patch)\\s*\\("
+        - "\\bgot\\.extend\\s*\\("
+      confidence: 0.85
+
+    - id: ky
+      patternId: external_api_call
+      clientName: ky
+      importFragments:
+        - ky
+      regexes:
+        - "\\bky\\.(get|post|put|delete|patch)\\s*\\("
+        - "\\bky\\.create\\s*\\("
+      confidence: 0.8
+
+config_loaders:
+  - id: dotenv
+    patternId: config_file
+    importFragments:
+      - dotenv
+    regexes:
+      - "\\b(?:dotenv\\.)?config\\s*\\("
+    name: dotenv_config
+    confidence: 0.85
 
 # Heuristics: all generic detection regexes (process.env, raw SQL, route handlers, config.key).
 heuristics:
@@ -113,6 +318,23 @@ env_variables:
     - DATABASE_URL
     - DB_URL
     - API_KEY
+    - SECRET_KEY
+    - JWT_SECRET
+    - JWT_SECRET_KEY
+    - REDIS_URL
+    - MONGO_URI
+    - MONGODB_URI
+    - ELASTICSEARCH_URL
+    - STRIPE_SECRET_KEY
+    - SENDGRID_API_KEY
+    - TWILIO_AUTH_TOKEN
+    - OPENAI_API_KEY
+    - ANTHROPIC_API_KEY
+    - AWS_SECRET_ACCESS_KEY
+    - AWS_ACCESS_KEY_ID
+    - GITHUB_TOKEN
+    - GOOGLE_CLIENT_SECRET
+    - AUTH0_CLIENT_SECRET
 
 config_keys:
   keys:
