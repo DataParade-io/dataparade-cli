@@ -66,10 +66,17 @@
       "text": "Curation added a sixth active review packet: Ory Kratos password credential (Apache-2.0/Go, 21 lines), filling the password-hash/verifier gap. Both records are proposed only.",
       "created_at": "2026-08-26T22:39:08.434522Z",
       "comment_type": "default"
+    },
+    {
+      "id": "c25f9185-9e85-4ff4-aedd-56ff65fc8b4f",
+      "author": "ryan",
+      "text": "Healthcare candidate triage: OpenMRS PatientIdentifier is semantically strong (medical-record/SSN/driver-license identifiers) but MPL-2.0, so it remains a license-decision candidate rather than an active packet. No labels or metrics were added from it.",
+      "created_at": "2026-08-26T22:39:54.766118Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.314318Z",
-  "updated_at": "2026-08-26T22:39:08.434522Z",
+  "updated_at": "2026-08-26T22:39:54.766118Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",
