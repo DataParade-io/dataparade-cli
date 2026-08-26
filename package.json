@@ -55,6 +55,7 @@
     "test": "jest",
     "eval:components": "jest tests/eval/layers/components/eval.test.ts",
     "scan": "node dist/bin/cli.js scan",
+    "eval:components": "jest tests/eval/layers/components/eval.test.ts",
     "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js",
     "benchmark:materialize": "node tests/benchmark/scripts/materialize-repo.mjs"
   },

@@ -1,60 +1,45 @@
-import type { DetectedComponent } from "../../../../src/core/types/component";
-import type { EvidenceRef, ReportedFinding, ScoredFileCoverage } from "../../types";
+import path from "path";
 
-function evidenceFromSourceLocation(
-  sourceLocation: {
-    filePath: string;
-    startLine: number;
-    endLine: number;
-  },
-): EvidenceRef {
+import {
+  createDefaultScanConfiguration,
+  scan,
+} from "../../../../src/core/pipeline/orchestrator";
+import type { DetectedComponent } from "../../../../src/core/types/component";
+import type { FixtureScanResult, LayerFinding } from "../../types";
+
+const FIXTURES_ROOT = path.join(__dirname, "../../../fixtures");
+
+/** Component identity aligned with tests/benchmark subject keys: `type:name` lowercase */
+export function componentIdentity(component: DetectedComponent): string {
+  return `${component.type}:${component.name.toLowerCase()}`;
+}
+
+function toLayerFinding(component: DetectedComponent): LayerFinding {
+  const labels: string[] = [component.type];
+  if (component.subType) {
+    labels.push(component.subType);
+  }
+
   return {
-    filePath: sourceLocation.filePath,
-    startLine: sourceLocation.startLine,
-    endLine: sourceLocation.endLine,
+    key: componentIdentity(component),
+    labels,
+    sourceFilePaths: component.sourceLocations.map((location) => location.filePath),
+    sourceLines: component.sourceLocations.map((location) => ({
+      file_path: location.filePath,
+      start_line: location.startLine,
+      end_line: location.endLine,
+    })),
   };
 }
 
-function collectEvidence(component: DetectedComponent): EvidenceRef[] {
-  const evidence: EvidenceRef[] = [];
+export async function scanFixtureComponents(fixture: string): Promise<FixtureScanResult> {
+  const root = path.join(FIXTURES_ROOT, fixture);
+  const config = createDefaultScanConfiguration({ enableAiInference: false });
+  const { scanResult, files } = await scan(root, config);
 
-  for (const sourceLocation of component.sourceLocations) {
-    evidence.push(evidenceFromSourceLocation(sourceLocation));
-  }
-
-  for (const detectedFrom of component.detectedFrom) {
-    if (detectedFrom.sourceLocation) {
-      evidence.push(evidenceFromSourceLocation(detectedFrom.sourceLocation));
-    }
-  }
-
-  return evidence;
-}
-
-export function componentsToFindings(
-  components: DetectedComponent[],
-): ReportedFinding[] {
-  return components.map((component) => {
-    const labels = component.subType
-      ? [component.type, component.subType]
-      : [component.type];
-
-    return {
-      identity: `${component.type}:${component.name.toLowerCase()}`,
-      name: component.name,
-      labels,
-      evidence: collectEvidence(component),
-    };
-  });
-}
-
-export function buildScannedFileCoverage(
-  filesScanned: string[],
-  allFilePaths: string[],
-): ScoredFileCoverage[] {
-  const scannedSet = new Set(filesScanned);
-  return allFilePaths.map((filePath) => ({
-    filePath,
-    scanned: scannedSet.has(filePath),
-  }));
+  return {
+    fixture,
+    findings: scanResult.components.map(toLayerFinding),
+    scannedFiles: files.map((file) => file.path),
+  };
 }

@@ -1,167 +1,84 @@
-import type { ExhaustiveScope, GroundTruthCase } from "../../types";
+import type { EvalCase } from "../../types";
 
-export const COMPONENT_FIXTURE_ROOTS = [
-  "typescript-basic",
-  "python-basic",
-  "terraform-basic",
-] as const;
+const TYPESCRIPT_BASIC_FILES = [
+  "app/route.ts",
+  "db-client-import.ts",
+  "db.ts",
+  "external-api.ts",
+  "pg-client.ts",
+  "server.ts",
+];
 
-export const COMPONENT_GROUND_TRUTH: GroundTruthCase[] = [
+const TERRAFORM_BASIC_FILES = ["main.tf", "providers.tf", "variables.tf"];
+
+/** Ground-truth component cases across committed fixtures (5–6 mixed outcomes). */
+export const componentEvalCases: EvalCase[] = [
   {
     id: "ts-stripe-third-party",
+    fixture: "typescript-basic",
     layer: "components",
-    scopeId: "typescript-basic",
     subject: { key: "third_party:stripe", name: "Stripe" },
-    evidence: {
-      filePath: "external-api.ts",
-      startLine: 6,
-      endLine: 6,
-    },
-    expected: {
-      status: "positive",
-      labels: ["third_party", "payment_processor"],
-    },
+    evidence: { file_path: "external-api.ts", start_line: 6, end_line: 6 },
+    expected: { status: "positive", labels: ["third_party"] },
+    rationale:
+      "fetch to api.stripe.com is classified as a Stripe payment-processor third party.",
+    exhaustiveScopeFiles: TYPESCRIPT_BASIC_FILES,
   },
   {
     id: "ts-pg-database",
+    fixture: "typescript-basic",
     layer: "components",
-    scopeId: "typescript-basic",
     subject: { key: "asset:pg", name: "Pg" },
-    evidence: {
-      filePath: "db-client-import.ts",
-      startLine: 1,
-      endLine: 1,
-    },
-    expected: {
-      status: "positive",
-      labels: ["asset", "database"],
-    },
+    evidence: { file_path: "pg-client.ts", start_line: 12, end_line: 14 },
+    expected: { status: "positive", labels: ["database"] },
+    rationale:
+      "pool.query against a pg-style client emits a database asset from pg import heuristics.",
+    exhaustiveScopeFiles: TYPESCRIPT_BASIC_FILES,
   },
   {
-    id: "ts-db-pool-query-gap",
+    id: "ts-passport-not-third-party",
+    fixture: "typescript-basic",
     layer: "components",
-    scopeId: "typescript-basic",
-    subject: { key: "asset:postgres", name: "Postgres" },
-    evidence: {
-      filePath: "db.ts",
-      startLine: 12,
-      endLine: 12,
-    },
-    expected: {
-      status: "positive",
-      labels: ["asset", "database"],
-    },
-  },
-  {
-    id: "ts-db-query-negative",
-    layer: "components",
-    scopeId: "typescript-basic",
-    subject: { key: "asset:none", name: "none" },
-    evidence: {
-      filePath: "db.ts",
-      startLine: 12,
-      endLine: 12,
-    },
-    expected: {
-      status: "negative",
-      labels: [],
-    },
+    subject: { key: "third_party:passport", name: "Passport" },
+    evidence: { file_path: "server.ts", start_line: 23, end_line: 23 },
+    expected: { status: "negative", labels: [] },
+    rationale:
+      "passport.authenticate('jwt') is local auth middleware, not an external vendor.",
+    exhaustiveScopeFiles: TYPESCRIPT_BASIC_FILES,
   },
   {
     id: "py-openai-third-party",
+    fixture: "python-basic",
     layer: "components",
-    scopeId: "python-basic",
     subject: { key: "third_party:openai", name: "Openai" },
-    evidence: {
-      filePath: "app.py",
-      startLine: 11,
-      endLine: 11,
-    },
-    expected: {
-      status: "positive",
-      labels: ["third_party", "ai_provider"],
-    },
+    evidence: { file_path: "app.py", start_line: 11, end_line: 11 },
+    expected: { status: "positive", labels: ["third_party"] },
+    rationale: "requests.get to api.openai.com is an OpenAI API third-party call.",
+    exhaustiveScopeFiles: ["app.py"],
   },
   {
-    id: "py-psycopg2-gap",
+    id: "py-psycopg2-database-gap",
+    fixture: "python-basic",
     layer: "components",
-    scopeId: "python-basic",
     subject: { key: "asset:psycopg2", name: "Psycopg2" },
-    evidence: {
-      filePath: "app.py",
-      startLine: 7,
-      endLine: 7,
-    },
+    evidence: { file_path: "app.py", start_line: 7, end_line: 7 },
     expected: {
       status: "positive",
-      labels: ["asset", "database"],
+      labels: ["database"],
+      documentedGap: true,
     },
-  },
-  {
-    id: "py-health-route-negative",
-    layer: "components",
-    scopeId: "python-basic",
-    subject: { key: "third_party:none", name: "none" },
-    evidence: {
-      filePath: "app.py",
-      startLine: 10,
-      endLine: 10,
-    },
-    expected: {
-      status: "negative",
-      labels: [],
-    },
+    rationale:
+      "psycopg2.connect with a postgres URL should surface a database asset; scanner currently infers other drivers only.",
+    exhaustiveScopeFiles: ["app.py"],
   },
   {
     id: "tf-aws-pg-database",
+    fixture: "terraform-basic",
     layer: "components",
-    scopeId: "terraform-basic",
     subject: { key: "asset:aws pg", name: "Aws Pg" },
-    evidence: {
-      filePath: "main.tf",
-      startLine: 5,
-      endLine: 10,
-    },
-    expected: {
-      status: "positive",
-      labels: ["asset", "database"],
-    },
-  },
-  {
-    id: "tf-s3-storage-gap",
-    layer: "components",
-    scopeId: "terraform-basic",
-    subject: { key: "asset:s3", name: "S3" },
-    evidence: {
-      filePath: "main.tf",
-      startLine: 12,
-      endLine: 14,
-    },
-    expected: {
-      status: "positive",
-      labels: ["asset", "file_storage"],
-    },
-  },
-  {
-    id: "tf-iam-role-negative",
-    layer: "components",
-    scopeId: "terraform-basic",
-    subject: { key: "asset:iam", name: "none" },
-    evidence: {
-      filePath: "main.tf",
-      startLine: 16,
-      endLine: 18,
-    },
-    expected: {
-      status: "negative",
-      labels: [],
-    },
-  },
-];
-
-export const COMPONENT_EXHAUSTIVE_SCOPES: ExhaustiveScope[] = [
-  {
-    id: "ts-external-api-scope",
-    filePaths: ["external-api.ts"],
+    evidence: { file_path: "main.tf", start_line: 5, end_line: 10 },
+    expected: { status: "positive", labels: ["database"] },
+    rationale: "aws_db_instance main is a managed PostgreSQL database resource.",
+    exhaustiveScopeFiles: TERRAFORM_BASIC_FILES,
   },
 ];

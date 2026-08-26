@@ -1,61 +1,95 @@
-export interface EvidenceRef {
-  filePath: string;
-  startLine: number;
-  endLine: number;
+/** Fixture evaluation types — aligns with tests/benchmark/schema.ts and ground-truth-schema.md */
+
+export type EvalCaseStatus = "positive" | "negative" | "ambiguous";
+
+export type EvalLayer = "components";
+
+export interface EvalSubject {
+  /** Layer identity, e.g. `asset:database` or `third_party:stripe` */
+  key: string;
+  name?: string;
 }
 
-export interface ReportedFinding {
-  identity: string;
-  name: string;
+export interface EvalEvidence {
+  file_path: string;
+  start_line: number;
+  end_line: number;
+}
+
+export interface EvalExpected {
+  status: EvalCaseStatus;
   labels: string[];
-  evidence: EvidenceRef[];
+  /**
+   * Positive ground truth excluded from recall denominators until the scanner
+   * is expected to pass. Documented gaps still appear in reports.
+   */
+  documentedGap?: boolean;
 }
 
-export type GroundTruthStatus = "positive" | "negative" | "ambiguous";
-
-export interface GroundTruthCase {
+export interface EvalCase {
   id: string;
-  layer: string;
-  subject: {
-    key: string;
-    name?: string;
-  };
-  evidence: EvidenceRef;
-  expected: {
-    status: GroundTruthStatus;
-    labels: string[];
-  };
-  scopeId?: string;
+  fixture: string;
+  layer: EvalLayer;
+  subject: EvalSubject;
+  evidence: EvalEvidence;
+  expected: EvalExpected;
+  rationale: string;
+  /**
+   * Files exhaustively reviewed for this fixture. When set, scanner findings
+   * with source locations in these files contribute to precision.
+   */
+  exhaustiveScopeFiles?: string[];
 }
 
-export interface ExhaustiveScope {
-  id: string;
-  filePaths: string[];
+export interface LayerFinding {
+  key: string;
+  labels: string[];
+  sourceFilePaths: string[];
+  sourceLines: Array<{
+    file_path: string;
+    start_line: number;
+    end_line: number;
+  }>;
 }
 
-export interface ScoredFileCoverage {
-  filePath: string;
-  scanned: boolean;
+export interface FixtureScanResult {
+  fixture: string;
+  findings: LayerFinding[];
+  scannedFiles: string[];
 }
 
-export interface LayerScoreCounts {
-  TP: number;
-  FP: number;
-  FN: number;
-  TN: number;
-  matchedPositives: number;
-  labelMatches: number;
+export interface EvalScoreDenominators {
   evaluablePositives: number;
+  matchedPositives: number;
+  matchedWithCorrectLabels: number;
   negativeCases: number;
-  negativePasses: number;
+  negativeCasesPassed: number;
+  exhaustiveScopedFindings: number;
+  exhaustiveScopedMatches: number;
 }
 
-export interface LayerScoreResult {
-  recall: number | null;
-  labelAccuracy: number | null;
-  correctLabelRecall: number | null;
+export interface EvalScores {
+  recall: number;
+  labelAccuracy: number;
+  correctLabelRecall: number;
+  /** Null when no exhaustive scope produced scoped findings */
   precision: number | null;
-  negativeCasePassRate: number | null;
+  negativeCasePassRate: number;
   unreadCount: number;
-  counts: LayerScoreCounts;
+  denominators: EvalScoreDenominators;
+}
+
+export interface EvalCaseResult {
+  caseId: string;
+  fixture: string;
+  unread: boolean;
+  matched: boolean;
+  labelsCorrect: boolean;
+  negativeClean: boolean;
+  documentedGap: boolean;
+}
+
+export interface EvalScoreReport {
+  scores: EvalScores;
+  caseResults: EvalCaseResult[];
 }

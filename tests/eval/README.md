@@ -1,36 +1,44 @@
-# Scanner evaluation harness
+# Fixture evaluation harness
 
-Shared contracts and scoring for measuring structural scanner output against committed ground truth. Layer adapters translate scan results into normalized findings; the scoring engine computes separate metrics without averaging them.
+Deterministic evaluation against committed `tests/fixtures/*` trees. Ground truth lives beside layer adapters under `tests/eval/layers/`; shared scoring lives in `tests/eval/score.ts`.
 
-## Running component eval
+## Layout
 
-```bash
-pnpm eval:components
+```text
+tests/eval/
+  types.ts              # Eval case and score report types
+  score.ts              # Shared recall / label / precision metrics
+  layers/
+    components/
+      adapter.ts        # scan() bridge with component identity
+      cases.ts            # Ground-truth cases
+      eval.test.ts        # Jest evaluation
 ```
 
-Or the full eval test tree:
+Additional layers (for example `data_flows`, `pii_signals`) should follow the same pattern when ground truth exists. Do not add empty layer stubs.
+
+## Component identity
+
+Subject keys use `${type}:${name.toLowerCase()}`, aligned with `tests/benchmark` annotations (for example `asset:aws pg`, `third_party:stripe`).
+
+## Metrics (`score.ts`)
+
+| Metric | Definition |
+|--------|------------|
+| `recall` | Matched evaluable positives ÷ all evaluable positives |
+| `labelAccuracy` | Correctly labelled matches ÷ matched positives |
+| `correctLabelRecall` | Correctly labelled matches ÷ evaluable positives |
+| `precision` | Accepted positive matches ÷ scoped scanner findings (exhaustive scopes only) |
+| `negativeCasePassRate` | Clean explicit negatives ÷ negative cases (not precision) |
+| `unreadCount` | Cases whose evidence file was not scanned |
+
+Positives marked `documentedGap` are excluded from recall denominators until the scanner is expected to pass.
+
+## Running
 
 ```bash
 pnpm test tests/eval/
+pnpm run eval:components
 ```
 
-Fixtures live under `tests/fixtures/`. Component cases are defined in `tests/eval/layers/components/cases.ts` and run with AI inference disabled.
-
-## Metrics
-
-Each metric is reported independently. Do not average them into a single score.
-
-| Metric | Definition |
-| --- | --- |
-| **Recall** | Matched positive cases / evaluable positive cases. Ambiguous cases are excluded from the denominator. |
-| **Label accuracy** | Among matched positives, how many have labels that exactly match expected labels. Null when no positives were matched. |
-| **Correct-label recall** | Matched positives with correct labels / evaluable positives. |
-| **Negative-case pass rate** | Negative cases with no overlapping scanner finding / total negative cases. This is not precision. |
-| **Precision** | Only computed within declared exhaustive scopes: true positives / (true positives + false positives) for findings in scoped files. Null when no scope is declared or the denominator is zero. |
-| **Unread** | Ground truth cases whose evidence file was not scanned (`scanned: false` in file coverage). |
-
-**Recall vs precision:** Recall measures coverage of known positives. Precision (when exhaustive scopes exist) measures false positives within fully reviewed files. Negative-case pass rate measures whether explicitly negative evidence lines stay clean.
-
-## Relationship to benchmark corpus
-
-Committed fixtures here are a smoke subset for CI. The broader evaluation corpus (pinned repos, exhaustive scopes, human-reviewed annotations) follows the ground-truth schema in `.agents/skills/curate-scanner-evaluation-corpus/references/ground-truth-schema.md`. Cases in `cases.ts` use the same record shape (`subject.key`, evidence pointers, expected status/labels) so they can migrate into the full corpus without schema changes.
+Scans use `createDefaultScanConfiguration({ enableAiInference: false })` — the same deterministic path as `tests/unit/core/orchestrator.spec.ts`.
