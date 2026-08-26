@@ -3,7 +3,7 @@
   "title": "Recover stale or abandoned benchmark materialization state",
   "description": "The atomic staging and per-target lock implementation at commit 50ee194 addresses the live concurrent-clone race recorded by the original DATAP-19ad97 issue on the curation branch, but stale and abandoned states still wait until the 15-minute timeout. Correct the concurrency state machine so waiting is justified only by a live fresh lock, waiters re-evaluate when the lock disappears, stale locks are removed safely, abandoned staging directories cannot block progress, and incomplete legacy targets are repaired without racing an active owner. Add behavior-level process concurrency tests covering peer success, peer failure, stale lock, partial target without a lock, and recovery without a 15-minute wait.",
   "type": "bug",
-  "status": "open",
+  "status": "in_progress",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -17,10 +17,17 @@
       "text": "Re-audit of 73222e9: focused tests, TypeScript, and scoped ESLint pass, but concurrency is still unsafe. runMaterializeOrchestration calls cleanupAbandonedStaging before inspecting or acquiring the lock, so a follower can delete a live leader staging directory. removeStaleOrDeadLock removes an aged lock even when the owner PID is alive, while releaseLock removes whatever lock exists without verifying ownership; a slow live clone can lose its lock and later delete a replacement owner's lock. The process test named follower-waits-for-leader starts the follower first and does not assert follower action=used-existing, so it does not prove the intended ordering. Required repair: start the leader first, wait until its lock and staging path are observable, then start the follower; prove the active staging directory survives and the follower returns used-existing. Clean staging only after exclusive lock ownership. Make lock release conditional on an ownership token or equivalent, and do not break a live owner's lock without a safe lease/heartbeat protocol.",
       "created_at": "2026-08-26T22:34:37.422571Z",
       "comment_type": "default"
+    },
+    {
+      "id": "3ec478a7-aa21-4c70-ae5f-6532707dab24",
+      "author": "ryan",
+      "text": "Manager re-audit at 3a47c4b passes. The process test now starts the leader, waits for its lock and staging directory, then starts the follower and proves leader=materialized, follower=used-existing, and the live staging marker survives. Cleanup occurs after exclusive acquisition; live locks are not removed by age; release is ownership-token-gated. Independent verification: 9 suites/73 tests, TypeScript, and scoped ESLint pass. Technically resolved pending implementation PR merge.",
+      "created_at": "2026-08-26T23:28:41.949302Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T22:09:15.966247Z",
-  "updated_at": "2026-08-26T22:34:37.422571Z",
+  "updated_at": "2026-08-26T23:28:41.949302Z",
   "closed_at": null,
   "custom": {}
 }

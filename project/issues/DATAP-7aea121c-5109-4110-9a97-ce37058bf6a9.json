@@ -3,7 +3,7 @@
   "title": "Validate pinned materialization before benchmark scoring",
   "description": "run-benchmark.ts currently treats any existing cache directory as materialized. Before scanning or scoring, verify that the cache is a valid Git checkout at the manifest commit, that every declared scope path exists with the expected file or directory kind, and that sparse-checkout state satisfies the manifest. Reuse the shared materialization validation contract rather than duplicating weaker checks. Fail with a clear remediation command when validation fails. Add tests for wrong HEAD, non-Git directory, missing included path, incomplete sparse patterns, and a valid pinned checkout. Metrics must never be produced from an unverified or partial cache.",
   "type": "bug",
-  "status": "open",
+  "status": "in_progress",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -20,7 +20,7 @@
     }
   ],
   "created_at": "2026-08-26T21:53:55.322147Z",
-  "updated_at": "2026-08-26T22:34:37.449067Z",
+  "updated_at": "2026-08-26T23:28:41.937198Z",
   "closed_at": null,
   "custom": {}
 }
