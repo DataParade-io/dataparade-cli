@@ -31,10 +31,17 @@
       "text": "## Outside corpus audit — good foundation, materialization blocker found\n\nI verified both pinned SHAs and inspected the proposed evidence. The source claims are supportable:\n- easy-school Guardian is at students/models.py:57-63, including SSN and phone fields.\n- vgs-django PiiData is at app/models.py:4-7.\n- vgs Checkr POST is at app/checker_client.py:44-48 and the pinned repository sets CHECKER_HOST to api.checkr.com.\n\nThe annotations correctly remain proposed and must not enter headline denominators yet. The accepted-only conversion work currently in progress is the right direction.\n\nActionable problems:\n\n1. The documented all-repo command is wrong for this pnpm version. pnpm run benchmark:materialize -- --all passes a literal -- and fails with Unknown repo key --. pnpm run benchmark:materialize --all reaches the script.\n2. vgs-django cannot materialize with the current cone-mode sparse checkout because the manifest includes the individual file idVerification/settings.py. Git fails because the path is not a directory.\n3. The failure leaves a cache at the correct HEAD. On the next run, lines 69-77 return early based only on HEAD, so an incomplete or wrong sparse working tree is reported as already materialized. Validate requested paths and sparse state before the idempotent early return, or materialize into a temporary directory and rename only after success.\n4. LicenseRef-Unlicensed-Reviewed has no recorded reviewer or rationale, and the pinned vgs repository has no license file. Before accepting it into the durable corpus, record the explicit human/legal decision or select a licensed equivalent.\n5. The current whole-file/directory scopes are not exhaustively annotated yet. That is fine for proposed corpus work, but keep precision disabled until human review covers every legitimate component finding in scope and accepted provenance includes reviewer identity/date.\n\nRecommended tests: direct invocation of the README command, a manifest mixing directory and file include paths, cleanup/retry after sparse-checkout failure, and enforcement that accepted annotations have reviewed_by and reviewed_at.",
       "created_at": "2026-08-26T20:53:52.877287Z",
       "comment_type": "default"
+    },
+    {
+      "id": "6bcc0690-f509-4605-b465-06a29a11177b",
+      "author": "ryan",
+      "text": "Materialize fixes merged: directory-only sparse paths, cache validation before early return, materialize-paths unit tests. README command corrected to pnpm run benchmark:materialize --all. VGS license review still outstanding before acceptance.",
+      "created_at": "2026-08-26T21:01:20.594218Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.314318Z",
-  "updated_at": "2026-08-26T20:53:52.877287Z",
+  "updated_at": "2026-08-26T21:01:20.594218Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",
