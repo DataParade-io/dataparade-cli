@@ -17,10 +17,17 @@
       "text": "Parallel start: this task begins now alongside DATAP-c7dd46 (evaluator foundation), not after DATAP-9179d1. Curation skill from DATAP-9179d1 is already complete and applied here. Once benchmark cases are available, they supply real evaluation inputs to DATAP-d61496 and DATAP-f3feec — a dotted dependency only; those adapters can start after c7dd46 without waiting on this benchmark.",
       "created_at": "2026-08-26T20:31:22.263731Z",
       "comment_type": "default"
+    },
+    {
+      "id": "72a75142-a51e-42c5-8b07-60d253a4a44c",
+      "author": "ryan",
+      "text": "Corpus foundation landed: tests/benchmark/ with schema, manifest loader, 2 starter repos (vgs-django, easy-school) in proposed review state, materialize script (local only, not CI). tests/unit/benchmark/ passes. Human review needed before annotations move to accepted.",
+      "created_at": "2026-08-26T20:51:20.800249Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.314318Z",
-  "updated_at": "2026-08-26T20:31:22.263731Z",
+  "updated_at": "2026-08-26T20:51:20.800249Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",

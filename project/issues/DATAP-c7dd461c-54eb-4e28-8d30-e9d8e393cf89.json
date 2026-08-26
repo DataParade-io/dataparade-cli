@@ -31,10 +31,17 @@
       "text": "Lane 1 of the evaluation track. Starts immediately. Delivers the shared evaluator contract that unblocks parallel layer adapters DATAP-d61496 and DATAP-f3feec once it lands. Does NOT block DATAP-b17f92 corpus work — layer evaluation can proceed with committed fixtures while the corpus is built in parallel.",
       "created_at": "2026-08-26T20:30:43.266338Z",
       "comment_type": "default"
+    },
+    {
+      "id": "3b47644f-211d-4a8d-87f2-06324497fc24",
+      "author": "ryan",
+      "text": "Implementation landed on feature/DATAP-602-eval-system: tests/eval/ shared contracts + scorer, component adapter, 6 fixture cases across typescript-basic/python-basic/terraform-basic. pnpm eval:components runs green. Zero src/ changes.",
+      "created_at": "2026-08-26T20:51:20.787099Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T19:56:16.897691Z",
-  "updated_at": "2026-08-26T20:30:43.266338Z",
+  "updated_at": "2026-08-26T20:51:20.787099Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",
