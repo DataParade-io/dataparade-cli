@@ -128,6 +128,13 @@ describe("benchmark corpus manifests", () => {
       license: "Apache-2.0",
       minimumRecords: 15,
     },
+    {
+      key: "yjdh-employee",
+      repository: "City-of-Helsinki/yjdh",
+      commit: "b148e187b43dbaab7e6b9c6c4a394fe9e9ab7ee8",
+      license: "MIT",
+      minimumRecords: 18,
+    },
   ]) {
     describe(`${packet.key} data-item packet`, () => {
       it("loads a pinned, complete scope with proposed labels", () => {

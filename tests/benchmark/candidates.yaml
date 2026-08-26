@@ -77,8 +77,8 @@ candidates:
     license_status: detected_at_pin
     disposition: reserve
     coverage: { languages: [python], domains: [government, identity], layers: [data_items] }
-    scope: [backend/kesaseteli/applications/models.py]
-    rationale: Encrypted Finnish identity-field semantics provide a useful later hard case.
+    scope: [backend/benefit/applications/api/v1/serializers/employee.py]
+    rationale: Compact Django REST employee serializer validates a Finnish national identifier alongside name, email, birth date, and employment data.
 
   - key: patient-kiosk
     repository: TiyaBelay/Patient-Kiosk-and-Appointment-List

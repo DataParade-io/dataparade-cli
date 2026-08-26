@@ -52,10 +52,17 @@
       "text": "Curation update: Gitea (MIT/Go, 307 lines) and Saleor (BSD-3-Clause/Python, 481 lines) now have proposed, materialized source-only packets. Both remain outside denominators until human review. A dedicated Saleor subtask was filed for auditability.",
       "created_at": "2026-08-26T22:14:23.750186Z",
       "comment_type": "default"
+    },
+    {
+      "id": "11ded1cb-4c59-4975-97a4-b317d7ff00b1",
+      "author": "ryan",
+      "text": "Curation added a fifth active review packet: YJDH employee serializer (MIT/Python, 93 lines), covering Finnish national identifier validation plus employment/compensation data. This replaces the previously oversized YJDH scope; all 19 labels are proposed pending human review.",
+      "created_at": "2026-08-26T22:38:06.154196Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.314318Z",
-  "updated_at": "2026-08-26T22:14:23.750186Z",
+  "updated_at": "2026-08-26T22:38:06.154196Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",
