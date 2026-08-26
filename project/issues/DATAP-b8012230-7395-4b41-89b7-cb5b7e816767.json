@@ -10,9 +10,17 @@
   "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
   "labels": [],
   "dependencies": [],
-  "comments": [],
+  "comments": [
+    {
+      "id": "d43940c4-5820-4ae8-9380-be3d0582d0bf",
+      "author": "ryan",
+      "text": "Re-audit of 73222e9: focused tests, TypeScript, and scoped ESLint pass, but concurrency is still unsafe. runMaterializeOrchestration calls cleanupAbandonedStaging before inspecting or acquiring the lock, so a follower can delete a live leader staging directory. removeStaleOrDeadLock removes an aged lock even when the owner PID is alive, while releaseLock removes whatever lock exists without verifying ownership; a slow live clone can lose its lock and later delete a replacement owner's lock. The process test named follower-waits-for-leader starts the follower first and does not assert follower action=used-existing, so it does not prove the intended ordering. Required repair: start the leader first, wait until its lock and staging path are observable, then start the follower; prove the active staging directory survives and the follower returns used-existing. Clean staging only after exclusive lock ownership. Make lock release conditional on an ownership token or equivalent, and do not break a live owner's lock without a safe lease/heartbeat protocol.",
+      "created_at": "2026-08-26T22:34:37.422571Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-26T22:09:15.966247Z",
-  "updated_at": "2026-08-26T22:09:15.966247Z",
+  "updated_at": "2026-08-26T22:34:37.422571Z",
   "closed_at": null,
   "custom": {}
 }

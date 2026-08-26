@@ -10,9 +10,17 @@
   "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
   "labels": [],
   "dependencies": [],
-  "comments": [],
+  "comments": [
+    {
+      "id": "96d7b489-0a09-48e2-8cb5-c34e62c5dc08",
+      "author": "ryan",
+      "text": "Re-audit of 73222e9: cache validation now rejects missing, non-Git, wrong-HEAD, missing-scope, and incomplete-sparse caches before runBenchmarkRepo scans or scores. Focused runner tests pass. This blocker is technically resolved; keep open until the implementation PR lands.",
+      "created_at": "2026-08-26T22:34:37.449067Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-26T21:53:55.322147Z",
-  "updated_at": "2026-08-26T21:53:55.322147Z",
+  "updated_at": "2026-08-26T22:34:37.449067Z",
   "closed_at": null,
   "custom": {}
 }
