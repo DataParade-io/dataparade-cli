@@ -1,0 +1,40 @@
+annotations:
+  - id: vgs-django-database-pii
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: app/models.py
+      start_line: 4
+      end_line: 6
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      PiiData Django model persists social_security_number and driver_license_number
+      fields via models.CharField, representing a database-backed PII store.
+    provenance:
+      proposed_by: corpus-curation-agent
+      proposed_at: 2026-08-26
+      review_state: proposed
+
+  - id: vgs-django-third-party-checkr
+    layer: components
+    subject:
+      key: third_party:checkr
+      name: Checkr
+    evidence:
+      file_path: app/checker_client.py
+      start_line: 44
+      end_line: 48
+    expected:
+      status: positive
+      labels: [third_party]
+    rationale: >-
+      CheckerClient posts candidate data to Checkr REST endpoints configured via
+      CHECKER_HOST (api.checkr.com) for background-check processing.
+    provenance:
+      proposed_by: corpus-curation-agent
+      proposed_at: 2026-08-26
+      review_state: proposed
