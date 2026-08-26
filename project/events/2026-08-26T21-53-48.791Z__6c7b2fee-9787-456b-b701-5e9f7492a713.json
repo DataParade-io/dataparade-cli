@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "6c7b2fee-9787-456b-b701-5e9f7492a713",
+  "issue_id": "DATAP-19ad97",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-26T21:53:48.791Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "The atomic staging and per-target lock implementation at commit 50ee194 still waits indefinitely until the 15-minute timeout when a partial target exists without a live peer, when a lock is stale, or when a peer exits and releases its lock without publishing a target. Stale-lock detection currently does not perform stale-lock recovery. Correct the concurrency state machine so waiting is justified only by a live fresh lock, waiters re-evaluate when the lock disappears, stale locks are removed safely, abandoned staging directories cannot block progress, and incomplete legacy targets are repaired without racing an active owner. Add behavior-level process concurrency tests covering successful simultaneous materialization, peer failure, stale lock, partial target without a lock, and recovery without a 15-minute wait. Preserve staging validation and atomic publish.",
+    "issue_type": "bug",
+    "labels": [],
+    "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+    "priority": 1,
+    "status": "open",
+    "title": "Recover stale or abandoned benchmark materialization state"
+  }
+}

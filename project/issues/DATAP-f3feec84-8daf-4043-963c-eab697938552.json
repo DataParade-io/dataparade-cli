@@ -3,7 +3,7 @@
   "title": "Eval system: deterministic PII signal matching",
   "description": "Add deterministic evaluation of PII signal rules after the shared evaluator lands.\n\nBlocked only on DATAP-c7dd46 shared evaluator contract. Once c7dd46 lands, proceeds in PARALLEL with DATAP-d61496. Real benchmark cases from DATAP-b17f92 supplement committed smoke fixtures and the versioned third-party benchmark when available (optional enrichment, not a start blocker).\n\nFirst extract existing lexical rule matching into a pure reusable deterministic function with explicit hit identity, category, matched evidence, file path, and line range. The evaluation may call that matcher directly with AI disabled.\n\nDo not automatically place PII hits into default scan output. Exposing a new output collection or running the pass by default changes product behavior, schema, runtime, and false-positive surface; track that as a separate product decision.\n\nEvaluate recall, conditional label accuracy, correct-label recall, true precision within exhaustively annotated scopes, negative-case pass rate, and per-file unread counts. Use both committed smoke fixtures and the versioned third-party benchmark.",
   "type": "task",
-  "status": "open",
+  "status": "in_progress",
   "priority": 2,
   "assignee": null,
   "creator": null,
@@ -36,10 +36,17 @@
       "text": "After the DATAP-c7dd46 shared contract stabilizes, PII matcher and Layer 3 adapter work proceeds in parallel with DATAP-d61496 — not as a waterfall after Layer 2.",
       "created_at": "2026-08-26T20:30:52.825560Z",
       "comment_type": "default"
+    },
+    {
+      "id": "fd5d1687-3ed8-4d29-a84b-ec6c9977f9aa",
+      "author": "ryan",
+      "text": "Implementation integrated at c2817b9 on feature/DATAP-602-impl-lane. Manager verification: PII matcher unit and eval suites pass within a 9-suite, 64-test focused run; TypeScript and scoped ESLint are clean. The matcher remains evaluation-only and does not alter default scan output. Keep open until the implementation PR lands.",
+      "created_at": "2026-08-26T21:54:08.280924Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T19:56:16.918353Z",
-  "updated_at": "2026-08-26T20:30:52.825560Z",
+  "updated_at": "2026-08-26T21:54:08.280924Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",

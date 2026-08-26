@@ -3,7 +3,7 @@
   "title": "Eval system: data flow detection",
   "description": "Add Layer 2 evaluation for deterministic data-flow output after the shared evaluator lands.\n\nBlocked only on DATAP-c7dd46 shared evaluator contract. Once c7dd46 lands, proceeds in PARALLEL with DATAP-f3feec — not sequential after f3feec. Real benchmark cases from DATAP-b17f92 supplement committed smoke fixtures when available (optional enrichment, not a start blocker).\n\nThe adapter receives both components and dataFlows. Resolve sourceComponentId and targetComponentId through the component index, create a canonical edge identity, and normalize sourceLocation plus sourceLocations into evidence. The current type does not expose sourceComponentName, targetComponentName, or evidence fields.\n\nEvaluate source, target, flow type, and location. Use flow.type as the deterministic label unless a separately verified deterministic stage populates dataCategories. Do not claim data-category label accuracy from fields that are only optional or AI-enriched.\n\nUse committed smoke fixtures for CI and exhaustively annotated benchmark scopes for true precision. Preserve exact per-file unread handling. Zero scanner changes unless current output proves insufficient and that scope change is separately approved.",
   "type": "task",
-  "status": "open",
+  "status": "in_progress",
   "priority": 2,
   "assignee": null,
   "creator": null,
@@ -36,10 +36,17 @@
       "text": "After the DATAP-c7dd46 shared contract stabilizes, Layer 2 adapter work proceeds in parallel with DATAP-f3feec — not as a waterfall after Layer 3.",
       "created_at": "2026-08-26T20:30:52.806660Z",
       "comment_type": "default"
+    },
+    {
+      "id": "013576e0-eb58-42f6-afd1-595127cad46c",
+      "author": "ryan",
+      "text": "Implementation integrated at 8070105 on feature/DATAP-602-impl-lane. Manager verification: data-flow eval suite passes within a 9-suite, 64-test focused run; TypeScript and scoped ESLint are clean. Keep open until the implementation PR lands.",
+      "created_at": "2026-08-26T21:54:08.269090Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T19:56:16.908201Z",
-  "updated_at": "2026-08-26T20:30:52.806660Z",
+  "updated_at": "2026-08-26T21:54:08.269090Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",
