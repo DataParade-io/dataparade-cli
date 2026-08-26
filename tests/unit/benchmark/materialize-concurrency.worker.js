@@ -2,12 +2,13 @@ const fs = require("fs");
 const path = require("path");
 
 const {
-  acquireLock,
   createNodeMaterializeDeps,
-  releaseLock,
   runMaterializeOrchestration,
 } = require("../../../dist/tests/benchmark/materialize-orchestrator");
-const { lockFilePath } = require("../../../dist/tests/benchmark/materialize-paths");
+const {
+  lockFilePath,
+  stagingDirectoryName,
+} = require("../../../dist/tests/benchmark/materialize-paths");
 
 const config = JSON.parse(process.env.MATERIALIZE_WORKER_CONFIG ?? "{}");
 const { role, cacheRoot, targetDir, commit } = config;
@@ -48,29 +49,51 @@ function runFollower() {
 }
 
 function runLeader() {
-  const lockPath = lockFilePath(targetDir);
-  fs.mkdirSync(cacheRoot, { recursive: true });
+  let stagingDirUsed = null;
+  let stagingRemovedDuringMaterialize = false;
 
-  if (!acquireLock(lockPath, process.pid, deps, Date.now())) {
-    throw new Error("leader could not acquire lock");
-  }
+  const result = runMaterializeOrchestration({
+    cacheRoot,
+    targetDir,
+    commit,
+    includePaths: [],
+    currentPid: process.pid,
+    waitPollMs: 50,
+    deps,
+    materializeToStaging: (stagingDir) => {
+      stagingDirUsed = stagingDir;
+      fs.mkdirSync(stagingDir, { recursive: true });
+      fs.writeFileSync(path.join(stagingDir, ".leader-staging-marker"), "1", "utf8");
+      sleep(500);
+      if (!fs.existsSync(path.join(stagingDir, ".leader-staging-marker"))) {
+        stagingRemovedDuringMaterialize = true;
+      }
+      writeCompleteTarget(stagingDir, commit);
+    },
+  });
 
-  try {
-    sleep(400);
-    const stagingDir = `${targetDir}.staging-leader`;
-    writeCompleteTarget(stagingDir, commit);
-    fs.rmSync(targetDir, { recursive: true, force: true });
-    fs.renameSync(stagingDir, targetDir);
-    console.log(JSON.stringify({ role: "leader", result: { action: "materialized" } }));
-  } finally {
-    releaseLock(lockPath, deps);
-  }
+  console.log(
+    JSON.stringify({
+      role: "leader",
+      result,
+      stagingDirUsed,
+      stagingRemovedDuringMaterialize,
+    }),
+  );
 }
 
 function runPeerFailure() {
   const lockPath = lockFilePath(targetDir);
   fs.mkdirSync(cacheRoot, { recursive: true });
-  acquireLock(lockPath, 999_999, deps, Date.now() - 1_000);
+  fs.writeFileSync(
+    lockPath,
+    JSON.stringify({
+      pid: 999_999,
+      startedAtMs: Date.now() - 1_000,
+      token: "dead-peer",
+    }),
+    "utf8",
+  );
 
   const startedAt = Date.now();
   const result = runMaterializeOrchestration({

@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 
 import {
-  isLockStale,
   isMaterializationComplete,
   lockFilePath,
   planMaterializeConcurrency,
@@ -15,6 +14,8 @@ import {
 export interface LockMetadata {
   pid: number;
   startedAtMs: number;
+  token: string;
+  stagingDir?: string;
 }
 
 export interface MaterializationStatus {
@@ -37,7 +38,6 @@ export interface MaterializeOrchestratorDeps {
   sleep: (ms: number) => void;
 }
 
-export const DEFAULT_LOCK_MAX_AGE_MS = 15 * 60 * 1000;
 export const DEFAULT_WAIT_POLL_MS = 500;
 export const DEFAULT_WAIT_TIMEOUT_MS = 15 * 60 * 1000;
 
@@ -83,16 +83,45 @@ export function readLockMetadata(
     const parsed = JSON.parse(readFile(lockPath, "utf8")) as {
       pid?: unknown;
       startedAtMs?: unknown;
+      token?: unknown;
+      stagingDir?: unknown;
     };
     const startedAtMs = Number(parsed.startedAtMs ?? 0);
     const pid = Number(parsed.pid ?? 0);
-    if (!startedAtMs) {
+    const token = typeof parsed.token === "string" ? parsed.token.trim() : "";
+    if (!startedAtMs || !token) {
       return null;
     }
-    return { pid, startedAtMs };
+
+    const stagingDir =
+      typeof parsed.stagingDir === "string" && parsed.stagingDir.trim().length > 0
+        ? parsed.stagingDir.trim()
+        : undefined;
+
+    return { pid, startedAtMs, token, stagingDir };
   } catch {
     return null;
   }
+}
+
+export function writeLockMetadata(
+  lockPath: string,
+  metadata: LockMetadata,
+  deps: Pick<MaterializeOrchestratorDeps, "writeFile">,
+): void {
+  deps.writeFile(lockPath, JSON.stringify(metadata));
+}
+
+export function isLockHeldByLivePeer(
+  lockMeta: LockMetadata | null,
+  currentPid: number,
+  isProcessAliveFn: (pid: number) => boolean,
+): boolean {
+  return (
+    lockMeta !== null &&
+    lockMeta.pid !== currentPid &&
+    isProcessAliveFn(lockMeta.pid)
+  );
 }
 
 export function readSparseCheckoutContent(
@@ -168,26 +197,23 @@ export interface PlanConcurrencyInput {
   commit: string;
   includePaths: string[];
   currentPid: number;
-  lockMaxAgeMs?: number;
   deps: MaterializeOrchestratorDeps;
 }
 
-export function removeStaleOrDeadLock(
+export function removeDeadPeerLock(
   lockPath: string,
   lockMeta: LockMetadata | null,
   deps: MaterializeOrchestratorDeps,
   currentPid: number,
-  lockMaxAgeMs: number = DEFAULT_LOCK_MAX_AGE_MS,
 ): boolean {
   if (!lockMeta) {
     return false;
   }
 
-  const stale = isLockStale(deps.now() - lockMeta.startedAtMs, lockMaxAgeMs);
   const heldByOther = lockMeta.pid !== currentPid;
   const peerAlive = heldByOther && deps.isProcessAlive(lockMeta.pid);
 
-  if (stale || (heldByOther && !peerAlive)) {
+  if (heldByOther && !peerAlive) {
     deps.remove(lockPath, { force: true });
     return true;
   }
@@ -196,11 +222,10 @@ export function removeStaleOrDeadLock(
 }
 
 export function planConcurrencyState(input: PlanConcurrencyInput): ConcurrencySnapshot {
-  const lockMaxAgeMs = input.lockMaxAgeMs ?? DEFAULT_LOCK_MAX_AGE_MS;
   const { deps, targetDir, lockPath, commit, includePaths, currentPid } = input;
 
   let lockMeta = readLockMetadata(lockPath, deps.readFile, deps.exists);
-  removeStaleOrDeadLock(lockPath, lockMeta, deps, currentPid, lockMaxAgeMs);
+  removeDeadPeerLock(lockPath, lockMeta, deps, currentPid);
   lockMeta = readLockMetadata(lockPath, deps.readFile, deps.exists);
 
   const targetExists = deps.exists(targetDir);
@@ -211,21 +236,15 @@ export function planConcurrencyState(input: PlanConcurrencyInput): ConcurrencySn
     ? evaluateMaterializationAtPath(targetDir, commit, includePaths, deps)
     : { complete: false };
 
-  const lockAgeMs = lockMeta ? deps.now() - lockMeta.startedAtMs : 0;
-  const lockStale = lockMeta !== null && isLockStale(lockAgeMs, lockMaxAgeMs);
-  const lockLive =
-    lockMeta !== null &&
-    !lockStale &&
-    lockMeta.pid !== currentPid &&
-    deps.isProcessAlive(lockMeta.pid);
+  const lockLive = isLockHeldByLivePeer(lockMeta, currentPid, deps.isProcessAlive);
   const lockHeldByPeer = lockMeta !== null && lockMeta.pid !== currentPid;
 
   const action = planMaterializeConcurrency({
     targetExists,
     headRead,
     materialization,
-    lockHeldByPeer: lockHeldByPeer && lockLive,
-    lockStale,
+    lockHeldByPeer: lockLive,
+    lockStale: false,
   });
 
   return {
@@ -234,14 +253,28 @@ export function planConcurrencyState(input: PlanConcurrencyInput): ConcurrencySn
     headRead,
     materialization,
     lockHeldByPeer,
-    lockStale,
+    lockStale: false,
     lockLive,
   };
+}
+
+export function listProtectedStagingDirs(
+  lockPath: string,
+  currentPid: number,
+  deps: Pick<MaterializeOrchestratorDeps, "readFile" | "exists" | "isProcessAlive">,
+): Set<string> {
+  const lockMeta = readLockMetadata(lockPath, deps.readFile, deps.exists);
+  if (!isLockHeldByLivePeer(lockMeta, currentPid, deps.isProcessAlive)) {
+    return new Set();
+  }
+
+  return lockMeta?.stagingDir ? new Set([lockMeta.stagingDir]) : new Set();
 }
 
 export function cleanupAbandonedStaging(
   cacheRoot: string,
   targetDir: string,
+  protectedDirs: Set<string>,
   deps: Pick<MaterializeOrchestratorDeps, "readdir" | "exists" | "remove">,
 ): void {
   for (const stagingDir of listAbandonedStagingDirs(
@@ -250,20 +283,24 @@ export function cleanupAbandonedStaging(
     deps.readdir,
     deps.exists,
   )) {
+    if (protectedDirs.has(stagingDir)) {
+      continue;
+    }
     deps.remove(stagingDir, { recursive: true, force: true });
   }
 }
 
-export function acquireLock(
+export function tryAcquireLock(
   lockPath: string,
   currentPid: number,
   deps: Pick<MaterializeOrchestratorDeps, "writeFile">,
   now: number,
-): boolean {
-  const payload = JSON.stringify({ pid: currentPid, startedAtMs: now });
+): { acquired: boolean; token: string } {
+  const token = `${currentPid}-${now}-${Math.random().toString(36).slice(2, 10)}`;
+  const payload = JSON.stringify({ pid: currentPid, startedAtMs: now, token });
   try {
     deps.writeFile(lockPath, payload, { flag: "wx" });
-    return true;
+    return { acquired: true, token };
   } catch (error) {
     if (
       error &&
@@ -271,7 +308,7 @@ export function acquireLock(
       "code" in error &&
       (error as NodeJS.ErrnoException).code === "EEXIST"
     ) {
-      return false;
+      return { acquired: false, token };
     }
     throw error;
   }
@@ -279,9 +316,11 @@ export function acquireLock(
 
 export function releaseLock(
   lockPath: string,
-  deps: Pick<MaterializeOrchestratorDeps, "exists" | "remove">,
+  lockToken: string,
+  deps: Pick<MaterializeOrchestratorDeps, "exists" | "remove" | "readFile">,
 ): void {
-  if (deps.exists(lockPath)) {
+  const lockMeta = readLockMetadata(lockPath, deps.readFile, deps.exists);
+  if (lockMeta?.token === lockToken && deps.exists(lockPath)) {
     deps.remove(lockPath, { force: true });
   }
 }
@@ -292,7 +331,6 @@ export interface WaitForPeerOptions {
   commit: string;
   includePaths: string[];
   currentPid: number;
-  lockMaxAgeMs?: number;
   waitPollMs?: number;
   waitTimeoutMs?: number;
   deps: MaterializeOrchestratorDeps;
@@ -301,7 +339,6 @@ export interface WaitForPeerOptions {
 export function waitForPeerMaterialization(options: WaitForPeerOptions): void {
   const waitPollMs = options.waitPollMs ?? DEFAULT_WAIT_POLL_MS;
   const waitTimeoutMs = options.waitTimeoutMs ?? DEFAULT_WAIT_TIMEOUT_MS;
-  const lockMaxAgeMs = options.lockMaxAgeMs ?? DEFAULT_LOCK_MAX_AGE_MS;
   const deadline = options.deps.now() + waitTimeoutMs;
 
   while (options.deps.now() < deadline) {
@@ -324,16 +361,9 @@ export function waitForPeerMaterialization(options: WaitForPeerOptions): void {
       return;
     }
 
-    const lockStale = isLockStale(options.deps.now() - lockMeta.startedAtMs, lockMaxAgeMs);
     const peerAlive = options.deps.isProcessAlive(lockMeta.pid);
-    if (lockStale || !peerAlive) {
-      removeStaleOrDeadLock(
-        options.lockPath,
-        lockMeta,
-        options.deps,
-        options.currentPid,
-        lockMaxAgeMs,
-      );
+    if (!peerAlive) {
+      removeDeadPeerLock(options.lockPath, lockMeta, options.deps, options.currentPid);
       return;
     }
 
@@ -351,7 +381,6 @@ export interface MaterializeOrchestrationInput {
   commit: string;
   includePaths: string[];
   currentPid: number;
-  lockMaxAgeMs?: number;
   waitPollMs?: number;
   waitTimeoutMs?: number;
   deps: MaterializeOrchestratorDeps;
@@ -367,9 +396,6 @@ export function runMaterializeOrchestration(
   input: MaterializeOrchestrationInput,
 ): MaterializeOrchestrationResult {
   const lockPath = lockFilePath(input.targetDir);
-  const lockMaxAgeMs = input.lockMaxAgeMs ?? DEFAULT_LOCK_MAX_AGE_MS;
-
-  cleanupAbandonedStaging(input.cacheRoot, input.targetDir, input.deps);
 
   let snapshot = planConcurrencyState({
     targetDir: input.targetDir,
@@ -377,7 +403,6 @@ export function runMaterializeOrchestration(
     commit: input.commit,
     includePaths: input.includePaths,
     currentPid: input.currentPid,
-    lockMaxAgeMs,
     deps: input.deps,
   });
 
@@ -388,7 +413,6 @@ export function runMaterializeOrchestration(
       commit: input.commit,
       includePaths: input.includePaths,
       currentPid: input.currentPid,
-      lockMaxAgeMs,
       waitPollMs: input.waitPollMs,
       waitTimeoutMs: input.waitTimeoutMs,
       deps: input.deps,
@@ -399,7 +423,6 @@ export function runMaterializeOrchestration(
       commit: input.commit,
       includePaths: input.includePaths,
       currentPid: input.currentPid,
-      lockMaxAgeMs,
       deps: input.deps,
     });
   }
@@ -414,14 +437,20 @@ export function runMaterializeOrchestration(
 
   input.deps.mkdir(input.cacheRoot, { recursive: true });
 
-  if (!acquireLock(lockPath, input.currentPid, input.deps, input.deps.now())) {
+  let lockToken = "";
+  let acquired = tryAcquireLock(
+    lockPath,
+    input.currentPid,
+    input.deps,
+    input.deps.now(),
+  );
+  if (!acquired.acquired) {
     waitForPeerMaterialization({
       targetDir: input.targetDir,
       lockPath,
       commit: input.commit,
       includePaths: input.includePaths,
       currentPid: input.currentPid,
-      lockMaxAgeMs,
       waitPollMs: input.waitPollMs,
       waitTimeoutMs: input.waitTimeoutMs,
       deps: input.deps,
@@ -433,20 +462,41 @@ export function runMaterializeOrchestration(
       commit: input.commit,
       includePaths: input.includePaths,
       currentPid: input.currentPid,
-      lockMaxAgeMs,
       deps: input.deps,
     });
     if (afterWait.action === "use-complete") {
       return { action: "used-existing", targetDir: input.targetDir };
     }
-    if (!acquireLock(lockPath, input.currentPid, input.deps, input.deps.now())) {
+
+    acquired = tryAcquireLock(lockPath, input.currentPid, input.deps, input.deps.now());
+    if (!acquired.acquired) {
       throw new Error(`Could not acquire materialization lock for ${input.targetDir}`);
     }
   }
+  lockToken = acquired.token;
 
-  const stagingDir = stagingDirectoryName(
+  const protectedStaging = listProtectedStagingDirs(
+    lockPath,
+    input.currentPid,
+    input.deps,
+  );
+  cleanupAbandonedStaging(
+    input.cacheRoot,
     input.targetDir,
-    `${input.currentPid}-${input.deps.now()}`,
+    protectedStaging,
+    input.deps,
+  );
+
+  const stagingDir = stagingDirectoryName(input.targetDir, lockToken);
+  writeLockMetadata(
+    lockPath,
+    {
+      pid: input.currentPid,
+      startedAtMs: input.deps.now(),
+      token: lockToken,
+      stagingDir,
+    },
+    input.deps,
   );
 
   try {
@@ -472,7 +522,7 @@ export function runMaterializeOrchestration(
     input.deps.remove(stagingDir, { recursive: true, force: true });
     throw error;
   } finally {
-    releaseLock(lockPath, input.deps);
+    releaseLock(lockPath, lockToken, input.deps);
   }
 }
 
@@ -507,3 +557,7 @@ export function createNodeMaterializeDeps(
     },
   };
 }
+
+// Backward-compatible aliases for callers/tests that still import the old names.
+export const acquireLock = tryAcquireLock;
+export const removeStaleOrDeadLock = removeDeadPeerLock;

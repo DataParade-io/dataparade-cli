@@ -10,6 +10,7 @@ import {
 import {
   createNodeMaterializeDeps,
   evaluateMaterializationAtPath,
+  releaseLock,
   runMaterializeOrchestration,
   type MaterializeOrchestratorDeps,
 } from "../../benchmark/materialize-orchestrator";
@@ -64,6 +65,41 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+async function waitForLeaderLockAndStaging(
+  lockPath: string,
+  cacheRoot: string,
+  targetDir: string,
+): Promise<{ stagingDir: string }> {
+  const stagingPrefix = `${path.basename(targetDir)}.staging-`;
+  const deadline = Date.now() + 10_000;
+
+  while (Date.now() < deadline) {
+    if (fs.existsSync(lockPath)) {
+      try {
+        const lock = JSON.parse(fs.readFileSync(lockPath, "utf8")) as {
+          stagingDir?: string;
+        };
+        if (lock.stagingDir && fs.existsSync(lock.stagingDir)) {
+          return { stagingDir: lock.stagingDir };
+        }
+      } catch {
+        // keep polling until leader publishes lock metadata
+      }
+
+      const stagingEntry = fs
+        .readdirSync(cacheRoot)
+        .find((entry) => entry.startsWith(stagingPrefix));
+      if (stagingEntry) {
+        return { stagingDir: path.join(cacheRoot, stagingEntry) };
+      }
+    }
+
+    await sleep(50);
+  }
+
+  throw new Error("leader did not publish lock and staging directory in time");
+}
+
 describe("materialize orchestrator process concurrency", () => {
   let tempRoot: string;
   let cacheRoot: string;
@@ -81,13 +117,7 @@ describe("materialize orchestrator process concurrency", () => {
   });
 
   it("lets a follower process wait for a live leader and reuse the published target", async () => {
-    const followerPromise = runWorker({
-      role: "follower",
-      cacheRoot,
-      targetDir,
-      commit: COMMIT,
-    });
-    await sleep(100);
+    const lockPath = lockFilePath(targetDir);
     const leaderPromise = runWorker({
       role: "leader",
       cacheRoot,
@@ -95,9 +125,29 @@ describe("materialize orchestrator process concurrency", () => {
       commit: COMMIT,
     });
 
-    const [follower, leader] = await Promise.all([followerPromise, leaderPromise]);
-    expect(follower.code).toBe(0);
+    const { stagingDir } = await waitForLeaderLockAndStaging(
+      lockPath,
+      cacheRoot,
+      targetDir,
+    );
+
+    const followerPromise = runWorker({
+      role: "follower",
+      cacheRoot,
+      targetDir,
+      commit: COMMIT,
+    });
+
+    const [leader, follower] = await Promise.all([leaderPromise, followerPromise]);
     expect(leader.code).toBe(0);
+    expect(follower.code).toBe(0);
+
+    const leaderPayload = JSON.parse(leader.stdout.trim());
+    const followerPayload = JSON.parse(follower.stdout.trim());
+    expect(leaderPayload.result.action).toBe("materialized");
+    expect(followerPayload.result.action).toBe("used-existing");
+    expect(leaderPayload.stagingRemovedDuringMaterialize).toBe(false);
+    expect(fs.existsSync(stagingDir)).toBe(false);
     expect(
       evaluateMaterializationAtPath(targetDir, COMMIT, [], createTestDeps()),
     ).toEqual({ complete: true });
@@ -120,11 +170,15 @@ describe("materialize orchestrator process concurrency", () => {
     ).toEqual({ complete: true });
   }, 30_000);
 
-  it("removes a stale lock and materializes without waiting 15 minutes", () => {
+  it("removes a dead-peer lock and materializes without waiting 15 minutes", () => {
     const lockPath = lockFilePath(targetDir);
     fs.writeFileSync(
       lockPath,
-      JSON.stringify({ pid: 999_999, startedAtMs: Date.now() - 20 * 60 * 1000 }),
+      JSON.stringify({
+        pid: 999_999,
+        startedAtMs: Date.now() - 20 * 60 * 1000,
+        token: "dead-peer",
+      }),
       "utf8",
     );
 
@@ -144,6 +198,45 @@ describe("materialize orchestrator process concurrency", () => {
     expect(result.action).toBe("materialized");
     expect(Date.now() - startedAt).toBeLessThan(5_000);
     expect(fs.existsSync(lockPath)).toBe(false);
+  });
+
+  it("does not remove a live peer lock based on age alone", () => {
+    const lockPath = lockFilePath(targetDir);
+    const peerPid = 424_242;
+    fs.writeFileSync(
+      lockPath,
+      JSON.stringify({
+        pid: peerPid,
+        startedAtMs: Date.now() - 20 * 60 * 1000,
+        token: "live-old-peer",
+        stagingDir: stagingDirectoryName(targetDir, "live-old-peer"),
+      }),
+      "utf8",
+    );
+
+    const deps = createTestDeps({
+      isProcessAlive: (pid) => pid === peerPid,
+    });
+
+    const startedAt = Date.now();
+    expect(() =>
+      runMaterializeOrchestration({
+        cacheRoot,
+        targetDir,
+        commit: COMMIT,
+        includePaths: [],
+        currentPid: process.pid,
+        waitPollMs: 50,
+        waitTimeoutMs: 500,
+        deps,
+        materializeToStaging: () => {
+          throw new Error("should not materialize while live peer holds lock");
+        },
+      }),
+    ).toThrow(/Timed out waiting for concurrent materialization/);
+
+    expect(Date.now() - startedAt).toBeLessThan(2_000);
+    expect(fs.existsSync(lockPath)).toBe(true);
   });
 
   it("removes a partial target without a lock instead of waiting for a peer", () => {
@@ -170,7 +263,7 @@ describe("materialize orchestrator process concurrency", () => {
     ).toEqual({ complete: true });
   });
 
-  it("cleans abandoned staging directories before materializing", () => {
+  it("cleans abandoned staging directories only after acquiring the lock", () => {
     const abandoned = stagingDirectoryName(targetDir, "dead-peer");
     fs.mkdirSync(abandoned, { recursive: true });
     fs.writeFileSync(path.join(abandoned, "stale.txt"), "x", "utf8");
@@ -193,11 +286,35 @@ describe("materialize orchestrator process concurrency", () => {
     ).toEqual({ complete: true });
   });
 
+  it("releaseLock only removes the caller-owned lock token", () => {
+    const lockPath = lockFilePath(targetDir);
+    const deps = createTestDeps();
+    fs.writeFileSync(
+      lockPath,
+      JSON.stringify({
+        pid: process.pid,
+        startedAtMs: Date.now(),
+        token: "owner-a",
+      }),
+      "utf8",
+    );
+
+    releaseLock(lockPath, "owner-b", deps);
+    expect(fs.existsSync(lockPath)).toBe(true);
+
+    releaseLock(lockPath, "owner-a", deps);
+    expect(fs.existsSync(lockPath)).toBe(false);
+  });
+
   it("removes a dead-peer lock during in-process orchestration", () => {
     const lockPath = lockFilePath(targetDir);
     fs.writeFileSync(
       lockPath,
-      JSON.stringify({ pid: 999_999, startedAtMs: Date.now() }),
+      JSON.stringify({
+        pid: 999_999,
+        startedAtMs: Date.now(),
+        token: "dead-peer",
+      }),
       "utf8",
     );
 
