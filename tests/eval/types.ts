@@ -2,7 +2,7 @@
 
 export type EvalCaseStatus = "positive" | "negative" | "ambiguous";
 
-export type EvalLayer = "components";
+export type EvalLayer = "components" | "data-flows";
 
 export interface EvalSubject {
   /** Layer identity, e.g. `asset:database` or `third_party:stripe` */
