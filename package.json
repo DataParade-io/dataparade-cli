@@ -53,6 +53,7 @@
     "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
     "pretest": "pnpm run build",
     "test": "jest",
+    "eval:components": "jest tests/eval/layers/components/eval.test.ts",
     "scan": "node dist/bin/cli.js scan",
     "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js",
     "benchmark:materialize": "node tests/benchmark/scripts/materialize-repo.mjs"
