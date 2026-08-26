@@ -142,6 +142,13 @@ describe("benchmark corpus manifests", () => {
       license: "Apache-2.0",
       minimumRecords: 2,
     },
+    {
+      key: "medusa-customer",
+      repository: "medusajs/medusa",
+      commit: "847612908fdd1c11a4df09ccc2e8ab44d338bb04",
+      license: "MIT (community paths only)",
+      minimumRecords: 19,
+    },
   ]) {
     describe(`${packet.key} data-item packet`, () => {
       it("loads a pinned, complete scope with proposed labels", () => {

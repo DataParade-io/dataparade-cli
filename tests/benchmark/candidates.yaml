@@ -243,12 +243,12 @@ candidates:
   - key: medusa
     repository: medusajs/medusa
     commit: 847612908fdd1c11a4df09ccc2e8ab44d338bb04
-    license: LICENSE_present_unclassified
-    license_status: needs_license_identification
-    disposition: conditional
+    license: MIT
+    license_status: detected_at_pin_community_paths_only
+    disposition: first_packet
     coverage: { languages: [typescript], domains: [commerce, identity], layers: [data_items] }
     scope: [packages/modules/user/src/models/user.ts, packages/modules/user/src/models/invite.ts, packages/modules/customer/src/models/customer.ts]
-    rationale: TypeScript commerce identities pending license review.
+    rationale: Compact non-enterprise TypeScript commerce models; pinned root license grants MIT for paths outside enterprise directories.
 
   - key: pretix
     repository: pretix/pretix

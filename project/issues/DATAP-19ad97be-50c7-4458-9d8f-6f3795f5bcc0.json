@@ -17,10 +17,17 @@
       "text": "Additional independent reproduction while materializing Keycloak: clone target was created, but after the materialize command returned it still had no resolvable HEAD (`git rev-parse HEAD` exits 128). This confirms partial-target recovery is required in addition to concurrency protection.",
       "created_at": "2026-08-26T22:16:17.851373Z",
       "comment_type": "default"
+    },
+    {
+      "id": "a731ccb9-ce66-4343-a8f8-872787db71e4",
+      "author": "ryan",
+      "text": "Third independent reproduction during Medusa materialization: target clone directory exists but `git rev-parse HEAD` exits 128 after the materializer invocation. This is consistent with the partial-target recovery defect, not a corpus failure.",
+      "created_at": "2026-08-26T23:31:02.239122Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T21:45:32.681040Z",
-  "updated_at": "2026-08-26T22:16:17.851373Z",
+  "updated_at": "2026-08-26T23:31:02.239122Z",
   "closed_at": null,
   "custom": {}
 }
