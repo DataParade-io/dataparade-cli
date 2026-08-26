@@ -1,12 +1,13 @@
 # compiled output
 dist/
 outputs/
+node_modules/
 
 # Local default scan outputs (regenerated on every scan; use --output or outputs/)
 dataflow.json
 scan-frontend-summary.json
-
 # Local secrets (use .env.example as template)
 .env
 .env.example
 .env.*.example
+project/.overlay/
