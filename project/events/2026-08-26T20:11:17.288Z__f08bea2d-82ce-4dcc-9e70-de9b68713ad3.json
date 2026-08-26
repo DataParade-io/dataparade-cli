@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "event_id": "f08bea2d-82ce-4dcc-9e70-de9b68713ad3",
+  "issue_id": "DATAP-d6149641-459b-47a4-b6be-fc6b9dcaf965",
+  "event_type": "field_updated",
+  "occurred_at": "2026-08-26T20:11:17.288Z",
+  "actor_id": "ryan",
+  "payload": {
+    "changes": {
+      "description": {
+        "from": "",
+        "to": "Add Layer 2 evaluation for deterministic data-flow output after the shared evaluator lands.\n\nThe adapter receives both components and dataFlows. Resolve sourceComponentId and targetComponentId through the component index, create a canonical edge identity, and normalize sourceLocation plus sourceLocations into evidence. The current type does not expose sourceComponentName, targetComponentName, or evidence fields.\n\nEvaluate source, target, flow type, and location. Use flow.type as the deterministic label unless a separately verified deterministic stage populates dataCategories. Do not claim data-category label accuracy from fields that are only optional or AI-enriched.\n\nUse committed smoke fixtures for CI and exhaustively annotated benchmark scopes for true precision. Preserve exact per-file unread handling. Zero scanner changes unless current output proves insufficient and that scope change is separately approved."
+      }
+    }
+  }
+}

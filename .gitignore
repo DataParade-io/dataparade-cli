@@ -1,3 +1,6 @@
+# Managed local worktrees
+worktrees/
+
 # compiled output
 dist/
 outputs/
@@ -6,8 +9,15 @@ node_modules/
 # Local default scan outputs (regenerated on every scan; use --output or outputs/)
 dataflow.json
 scan-frontend-summary.json
+
 # Local secrets (use .env.example as template)
 .env
 .env.example
 .env.*.example
+
+# Kanbus caches (issues/events under project/ are tracked)
 project/.overlay/
+project/.cache/
+
+# Local agent desk notes (Jira sync, host-specific)
+AGENTS.local.md

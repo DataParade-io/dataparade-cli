@@ -1,14 +1,14 @@
 {
   "files.exclude": {
-    "**/project/issues/**": true,
-    "**/project/events/**": true
+    "**/project/events/**": true,
+    "**/project/issues/**": true
   },
   "files.watcherExclude": {
-    "**/project/issues/**": true,
-    "**/project/events/**": true
+    "**/project/events/**": true,
+    "**/project/issues/**": true
   },
   "search.exclude": {
-    "**/project/issues/**": true,
-    "**/project/events/**": true
+    "**/project/events/**": true,
+    "**/project/issues/**": true
   }
 }

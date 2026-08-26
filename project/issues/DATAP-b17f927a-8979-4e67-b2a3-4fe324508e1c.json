@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "title": "Build versioned ground-truth benchmark corpus",
+  "description": "Convert the useful research corpus into a production benchmark with pinned repository commits and explicit complete-file or complete-directory annotation scopes. Store positive, negative, ambiguous, and unread states with provenance and review status. Every scanner finding inside an exhaustively annotated scope must match positive ground truth or count as a false positive. Keep runtime cloning out of normal CI; provide a reproducible materialization or cached-fixture workflow for the benchmark.",
+  "type": "task",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-602",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-9179d10f-772e-4803-9d59-76e161d651d6",
+      "type": "blocked-by"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T20:11:17.314318Z",
+  "updated_at": "2026-08-26T20:11:17.314318Z",
+  "closed_at": null,
+  "custom": {
+    "project_label": "DATAP",
+    "source": "shared"
+  }
+}

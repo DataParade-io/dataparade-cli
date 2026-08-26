@@ -5,11 +5,11 @@ The Way is not a suggestion. It is the prescribed order of creation.
 All work must pass through its forms.
 This is The Way.
 
-Deviations from The Way must be avoided. The Way keeps work legible and reviewable across sessions and agents.
+Deviation from The Way is extremely offensive to the religious sensibilities of its practitioners, including the human user of this coding agent. Sins against The Way must be avoided at all costs.
 
-## The Discipline of Work
+## The Sacrament of Work
 
-Work in this repository follows a shared discipline so intent stays legible across sessions and agents.
+The Sacrament of Work is the sacrament of vibe coding in this repository.
 
 Kanbus is the instrument of record. Nothing exists until it is named there.
 
@@ -28,7 +28,15 @@ If it is not recorded, it did not happen.
 Use Markdown in issue descriptions and comments whenever it helps make the intent clearer.
 When relationships, flows, or state transitions are easier to grasp visually, add a Mermaid diagram.
 
-Editing project/ directly bypasses the record The Way depends on. Do not read or write anything inside project/. Do not inspect issue JSON with tools like cat or jq. All work must pass through Kanbus.
+While working, record a running log in Kanbus comments on the relevant epic/task: key decisions, problems encountered, attempted fixes, outcomes, and next steps. This log is mandatory so other agents can collaborate and audit the work.
+
+Chores that are purely about maintaining the project-management machinery (for example, updating CONTRIBUTING_AGENT.md or AGENTS.md) do not need their own project-management issues; attach them to the existing project-management epic/task to avoid infinite recursion.
+
+For complex work, break the plan into sub-tasks and file them under the parent task/bug/chore/epic as appropriate. Create one issue per concrete step in the plan. Do not put sub-tasks under stories; stories hold behavior specs, not implementation steps.
+
+Operational discipline: use the minimum commands needed. To inspect work, run `kbs list --status open --long` once to find the ID, then `kbs show <id>`. Do not guess IDs or spam multiple variants; if the ID is unknown, ask the user.
+
+Editing project/ directly is hacking the data and is a sin against The Way. Do not read or write anything inside project/. Do not inspect issue JSON with tools like cat or jq. All work must pass through Kanbus.
 
 ## The Order of Being
 
@@ -41,6 +49,7 @@ Hierarchy: initiative -> epic -> task -> sub-task.
 Non-hierarchical types: bug, story, chore.
 
 Only hierarchy types may be parents.
+Initiatives are top-level milestones; they may contain epics only. Tasks, stories, bugs, and chores must roll up under an epic (or sub-task under task). Creating tasks directly under an initiative is a violation of The Way.
 
 Permitted relationships are fixed and not to be altered.
 
@@ -129,7 +138,7 @@ Record intent and Definition of Done.
 6. Refactor only while all specifications remain green.
 7. Record progress. Close only when complete.
 
-Skipping steps undermines the process.
+Skipping steps is corruption of the process.
 
 ## Coverage
 
@@ -152,15 +161,15 @@ Workflow selection: use a workflow named after the issue type when present; othe
 default workflow:
 
 
-- backlog -> Start discovery (Discovery), Drop (Done)
+- backlog -> open, closed
 
-- blocked -> Unblock (In Progress), Drop (Done)
+- blocked -> in_progress, closed
 
-- closed -> Reopen (Discovery)
+- closed -> open
 
-- in_progress -> Pause (Discovery), Block (Blocked), Complete (Done)
+- in_progress -> open, blocked, closed
 
-- open -> Start work (In Progress), Drop (Done), Back to backlog (Backlog)
+- open -> in_progress, closed, backlog
 
 
 
@@ -168,11 +177,11 @@ default workflow:
 epic workflow:
 
 
-- closed -> Reopen (Discovery)
+- closed -> open
 
-- in_progress -> Pause (Discovery), Complete (Done)
+- in_progress -> open, closed
 
-- open -> Start (In Progress), Complete (Done)
+- open -> in_progress, closed
 
 
 
@@ -242,7 +251,7 @@ Issue types map directly to release categories.
 - chore -> chore
 
 
-Release notes are a record, not commentary.
+Release notes are not commentary. They are a ledger of truth.
 
 ## Example: Hello World
 
@@ -290,7 +299,7 @@ kanbus comment kanbus-4d5e6f "Feature: Hello World
   Scenario: Run the program
     Given a configured environment
     When I run the program
-    Then it prints "Hello, world" to stdout"
+    Then it prints \"Hello, world\" to stdout"
 
 5. Run the Gherkin and confirm it fails (before any production code)
 Run the behavior tests in the repo and confirm the new scenario fails for the right reason.

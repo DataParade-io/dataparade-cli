@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "c2f20d8e-87ed-4443-a6f7-d06947924c18",
+  "issue_id": "DATAP-9179d10f-772e-4803-9d59-76e161d651d6",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-26T20:11:17.306Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "Create and apply a reusable agent skill for selecting pinned third-party repositories, defining exhaustive annotation scopes, preparing human review worksheets, adjudicating ambiguous cases, and governing ground-truth corrections. Repository selection must be based on the data and techniques present, not current scanner success. Human approval is required for new or changed ground truth. Record corpus deltas separately from scanner deltas.",
+    "issue_type": "task",
+    "labels": [],
+    "parent": "DATAP-602",
+    "priority": 1,
+    "status": "open",
+    "title": "Curate evaluation repositories and annotation workflow"
+  }
+}

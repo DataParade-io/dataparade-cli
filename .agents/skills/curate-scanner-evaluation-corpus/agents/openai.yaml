@@ -1,0 +1,4 @@
+interface:
+  display_name: "Curate Scanner Evaluation Corpus"
+  short_description: "Select repositories and govern ground truth"
+  default_prompt: "Use $curate-scanner-evaluation-corpus to select evaluation repositories and prepare a human-reviewed ground-truth corpus."
