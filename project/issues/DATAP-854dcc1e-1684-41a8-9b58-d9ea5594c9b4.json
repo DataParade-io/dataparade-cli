@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-854dcc1e-1684-41a8-9b58-d9ea5594c9b4",
+  "title": "Resolve VGS corpus license or replace candidate",
+  "description": "Resolve the LicenseRef-Unlicensed-Reviewed status for vgs-samples/vgs-django-sample-id-verification at commit 46acdb3290d677081e1b0889f3b736635a4e0847 before any annotation is accepted. Obtain and record an explicit authorized human decision with reviewer, date, rationale, and permitted benchmark use, or replace VGS with a licensed repository that supplies equivalent component and third-party-service coverage. If replaced, update the candidate manifest and proposed annotations without losing history. This task does not authorize an agent to make the license decision.",
+  "type": "sub-task",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-ce7eaaa4-9cfe-4228-a97b-0a371f4bb589",
+      "type": "relates-to"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T21:14:35.673313Z",
+  "updated_at": "2026-08-26T21:14:35.673313Z",
+  "closed_at": null,
+  "custom": {
+    "source": "shared",
+    "project_label": "DATAP"
+  }
+}

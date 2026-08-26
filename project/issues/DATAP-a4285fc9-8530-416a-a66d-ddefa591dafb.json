@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-a4285fc9-8530-416a-a66d-ddefa591dafb",
+  "title": "Prepare Hyperswitch card-vault annotation packet",
+  "description": "Evaluate juspay/hyperswitch-card-vault at pinned commit abfca8e078039582460335be73341699ee826615 as a Rust PCI and cardholder-data candidate. Verify repository identity and license, define a manageable complete scope around src/routes/data/types.rs or a justified enclosing directory, inventory all included source and exclusions, and prepare scanner-independent proposed annotations for applicable layers. Include positive, negative, ambiguous, evidence, rationale, and provenance records. Unsupported Rust scanning must later report unread rather than a clean negative. Keep all annotations proposed pending human review.",
+  "type": "sub-task",
+  "status": "open",
+  "priority": 2,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-ce7eaaa4-9cfe-4228-a97b-0a371f4bb589",
+      "type": "relates-to"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T21:14:37.997775Z",
+  "updated_at": "2026-08-26T21:14:37.997775Z",
+  "closed_at": null,
+  "custom": {
+    "source": "shared",
+    "project_label": "DATAP"
+  }
+}

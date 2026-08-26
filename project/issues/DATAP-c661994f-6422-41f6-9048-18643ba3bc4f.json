@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-c661994f-6422-41f6-9048-18643ba3bc4f",
+  "title": "Human adjudication of first exhaustive corpus scope",
+  "description": "A human reviewer must adjudicate the completed easy-school packet without seeing current scanner output during the initial decision. For every record, inspect pinned source context, apply the written taxonomy, and approve, correct, reject, mark ambiguous, or request more context. Confirm that every scanner-relevant component declaration in the declared scope was reviewed and that exclusions are justified. Record reviewer identity and date on every accepted or changed record. Preserve proposed and correction history. Only after exhaustive coverage is confirmed may the scope participate in precision; ambiguous records remain outside headline denominators. Agents may facilitate the worksheet but may not perform the human acceptance.",
+  "type": "sub-task",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-e64aa801-8926-40dd-b051-ba2774ca8aae",
+      "type": "blocked-by"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T21:14:40.255716Z",
+  "updated_at": "2026-08-26T21:14:40.255716Z",
+  "closed_at": null,
+  "custom": {
+    "source": "shared",
+    "project_label": "DATAP"
+  }
+}

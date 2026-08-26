@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-53a1e459-b9fe-4b03-aa91-384d19f70df8",
+  "title": "Build materialized-repository benchmark runner",
+  "description": "Add an opt-in benchmark execution path that scans tests/benchmark/.cache/repos/<key>@<commit> rather than resolving repository cases under tests/fixtures. Load accepted annotations by default, convert them through the shared evaluator contract, scan the exact materialized pinned root, preserve repository-relative evidence paths, capture the exact scanned-file inventory, and report unread when required files were not scanned. Keep network cloning and large repository scans out of normal pnpm test and CI unless an explicit deterministic artifact strategy is added. Add tests for root resolution, accepted-only filtering, missing materialization, path normalization, and unread behavior. Document the materialize-and-run commands.",
+  "type": "sub-task",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-c7dd461c-54eb-4e28-8d30-e9d8e393cf89",
+      "type": "blocked-by"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T21:14:39.520743Z",
+  "updated_at": "2026-08-26T21:14:39.520743Z",
+  "closed_at": null,
+  "custom": {
+    "source": "shared",
+    "project_label": "DATAP"
+  }
+}

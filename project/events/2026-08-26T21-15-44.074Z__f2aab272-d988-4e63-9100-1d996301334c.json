@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "event_id": "f2aab272-d988-4e63-9100-1d996301334c",
+  "issue_id": "DATAP-e64aa801-8926-40dd-b051-ba2774ca8aae",
+  "event_type": "dependency_added",
+  "occurred_at": "2026-08-26T21:15:44.074Z",
+  "actor_id": "ryan",
+  "payload": {
+    "dependency_type": "relates-to",
+    "target_id": "DATAP-ce7eaaa4-9cfe-4228-a97b-0a371f4bb589"
+  }
+}

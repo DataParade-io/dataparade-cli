@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "event_id": "ba84447b-fbe7-439e-9b28-1beec11c3396",
+  "issue_id": "DATAP-a2cb0b96-25d4-4cb0-b70d-ac7e0ce5f8e9",
+  "event_type": "dependency_removed",
+  "occurred_at": "2026-08-26T21:15:45.915Z",
+  "actor_id": "ryan",
+  "payload": {
+    "dependency_type": "relates-to",
+    "target_id": "DATAP-ce7eaa"
+  }
+}
