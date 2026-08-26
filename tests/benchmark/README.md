@@ -37,6 +37,25 @@ Component subject keys use the evaluator identity convention: `type:name` with a
 
 These YAML files are the human-review source of truth during corpus curation. Final runtime serialization will align with `tests/eval/types.ts` once DATAP-c7dd46 lands. Until then, `schema.ts` and `manifest.ts` define the committed corpus contract.
 
+## Eval integration
+
+`to-eval-cases.ts` converts loaded `AnnotationRecord[]` values into `EvalCase[]` for the evaluator in `tests/eval/types.ts`.
+
+- Maps `subject.key`, evidence line pointers, and `expected.status` / `expected.labels` directly.
+- Skips `rejected` annotations; includes `accepted` by default.
+- Proposed (and `needs_adjudication`) annotations are omitted unless `includeProposed: true` is passed.
+- Benchmark annotations do not set `documentedGap` on eval cases.
+
+Example:
+
+```typescript
+import { loadAnnotations } from "./manifest";
+import { annotationsToEvalCases } from "./to-eval-cases";
+
+const annotations = loadAnnotations(repoDir, "components");
+const evalCases = annotationsToEvalCases(annotations, "vgs-django");
+```
+
 ## Local materialization (optional)
 
 Clone pinned repositories for local benchmark development:
