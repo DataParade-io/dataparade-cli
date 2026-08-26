@@ -1,9 +1,9 @@
 {
   "id": "DATAP-9179d10f-772e-4803-9d59-76e161d651d6",
   "title": "Curate evaluation repositories and annotation workflow",
-  "description": "Create and apply a reusable agent skill for selecting pinned third-party repositories, defining exhaustive annotation scopes, preparing human review worksheets, adjudicating ambiguous cases, and governing ground-truth corrections. Repository selection must be based on the data and techniques present, not current scanner success. Human approval is required for new or changed ground truth. Record corpus deltas separately from scanner deltas.",
+  "description": "Create and validate the reusable agent skill at `.agents/skills/curate-scanner-evaluation-corpus/`.\n\nDocument the workflow:\n- Independent repository selection (based on data and techniques present, not current scanner success)\n- Exhaustive annotation scopes\n- Blind-first human review\n- Ambiguity adjudication\n- Correction governance (human approval required for new or changed ground truth)\n- Separate scanner vs corpus deltas\n\nBuilding the production benchmark corpus is OUT OF SCOPE here — that is DATAP-b17f92.",
   "type": "task",
-  "status": "open",
+  "status": "closed",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -15,12 +15,20 @@
       "id": "e84d4656-821a-4268-8355-12c9ffc5d263",
       "author": "ryan",
       "text": "Created and structurally validated the repository-owned skill at .agents/skills/curate-scanner-evaluation-corpus/. It covers independent repository selection, exhaustive annotation scopes, blind-first human review, ambiguity, correction governance, and separate scanner versus corpus deltas. Applying it to the first production benchmark remains future work.",
-      "created_at": "2026-08-26T20:14:26.185828Z"
+      "created_at": "2026-08-26T20:14:26.185828Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "761e8212-d017-4207-9a36-5dea2be6813d",
+      "author": "ryan",
+      "text": "Closing: skill created and structurally validated at `.agents/skills/curate-scanner-evaluation-corpus/`.\n\nOverlap with DATAP-b17f92 resolved: this task is the workflow/skill; DATAP-b17f92 is applying it to build the benchmark.\n\nDATAP-b17f92 can begin immediately in parallel with DATAP-c7dd46.",
+      "created_at": "2026-08-26T20:30:45.084619Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.306142Z",
-  "updated_at": "2026-08-26T20:14:26.185828Z",
-  "closed_at": null,
+  "updated_at": "2026-08-26T20:30:50.528662Z",
+  "closed_at": "2026-08-26T20:30:50.528662Z",
   "custom": {
     "project_label": "DATAP",
     "source": "shared"
