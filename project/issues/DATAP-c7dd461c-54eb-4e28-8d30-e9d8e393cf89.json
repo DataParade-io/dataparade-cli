@@ -52,10 +52,17 @@
       "text": "Audit fixes merged at 7e230f2+: scorer contract tests in tests/unit/eval/score.spec.ts (8 cases). Evidence overlap required. Unread excluded from denominators. documentedGap stays in measured recall; CI gates separately. Fixture precision disabled until exhaustive scopes exist. d61496/f3feec still blocked until this lands in main.",
       "created_at": "2026-08-26T21:01:20.578612Z",
       "comment_type": "default"
+    },
+    {
+      "id": "0e7f9a20-5b98-4ee2-a338-c1d080f929ee",
+      "author": "ryan",
+      "text": "Implementation complete at 531c461. Full local CI: tsc green, eslint 0 errors (35 pre-existing warnings), jest 838/841 pass. Two cli.spec.ts failures scan ../frontend which is absent in worktree layout—not eval regressions. Ready to open PR onto chore/add-kanbus for landing. DATAP-d61496 and DATAP-f3feec remain blocked until merge.",
+      "created_at": "2026-08-26T21:09:33.624895Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T19:56:16.897691Z",
-  "updated_at": "2026-08-26T21:01:20.578612Z",
+  "updated_at": "2026-08-26T21:09:33.624895Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",
