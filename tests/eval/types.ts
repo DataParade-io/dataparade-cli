@@ -20,8 +20,8 @@ export interface EvalExpected {
   status: EvalCaseStatus;
   labels: string[];
   /**
-   * Positive ground truth excluded from recall denominators until the scanner
-   * is expected to pass. Documented gaps still appear in reports.
+   * Marks a known scanner miss for reporting. Still counted in recall metrics;
+   * CI gating excludes documented gaps separately.
    */
   documentedGap?: boolean;
 }
@@ -69,12 +69,16 @@ export interface EvalScoreDenominators {
 }
 
 export interface EvalScores {
-  recall: number;
-  labelAccuracy: number;
-  correctLabelRecall: number;
+  /** Null when there are no evaluable (read) positive cases */
+  recall: number | null;
+  /** Null when no positives matched */
+  labelAccuracy: number | null;
+  /** Null when there are no evaluable (read) positive cases */
+  correctLabelRecall: number | null;
   /** Null when no exhaustive scope produced scoped findings */
   precision: number | null;
-  negativeCasePassRate: number;
+  /** Null when there are no evaluable (read) negative cases */
+  negativeCasePassRate: number | null;
   unreadCount: number;
   denominators: EvalScoreDenominators;
 }

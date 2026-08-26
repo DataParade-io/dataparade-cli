@@ -1,14 +1,11 @@
 import type {
   EvalCase,
   EvalCaseResult,
+  EvalEvidence,
   EvalScoreReport,
   FixtureScanResult,
   LayerFinding,
 } from "./types";
-
-function isEvaluablePositive(caseRecord: EvalCase): boolean {
-  return caseRecord.expected.status === "positive" && !caseRecord.expected.documentedGap;
-}
 
 function isNegativeCase(caseRecord: EvalCase): boolean {
   return caseRecord.expected.status === "negative";
@@ -18,8 +15,35 @@ function isUnread(caseRecord: EvalCase, scannedFiles: string[]): boolean {
   return !scannedFiles.includes(caseRecord.evidence.file_path);
 }
 
-function findFinding(findings: LayerFinding[], key: string): LayerFinding | undefined {
-  return findings.find((finding) => finding.key === key);
+function lineRangesOverlap(
+  a: { start_line: number; end_line: number },
+  b: { start_line: number; end_line: number },
+): boolean {
+  return a.start_line <= b.end_line && b.start_line <= a.end_line;
+}
+
+function evidenceOverlaps(
+  evidence: EvalEvidence,
+  sourceLine: { file_path: string; start_line: number; end_line: number },
+): boolean {
+  return (
+    evidence.file_path === sourceLine.file_path &&
+    lineRangesOverlap(evidence, sourceLine)
+  );
+}
+
+function findingMatchesCase(finding: LayerFinding, caseRecord: EvalCase): boolean {
+  if (finding.key !== caseRecord.subject.key) {
+    return false;
+  }
+  return finding.sourceLines.some((line) => evidenceOverlaps(caseRecord.evidence, line));
+}
+
+function findMatchingFinding(
+  findings: LayerFinding[],
+  caseRecord: EvalCase,
+): LayerFinding | undefined {
+  return findings.find((finding) => findingMatchesCase(finding, caseRecord));
 }
 
 function labelsMatch(finding: LayerFinding, expectedLabels: string[]): boolean {
@@ -48,11 +72,32 @@ function collectExhaustiveScopes(cases: EvalCase[]): Map<string, string[]> {
   return scopes;
 }
 
+function positiveCasesByFixture(cases: EvalCase[]): Map<string, EvalCase[]> {
+  const byFixture = new Map<string, EvalCase[]>();
+  for (const caseRecord of cases) {
+    if (caseRecord.expected.status !== "positive") {
+      continue;
+    }
+    const fixtureCases = byFixture.get(caseRecord.fixture) ?? [];
+    fixtureCases.push(caseRecord);
+    byFixture.set(caseRecord.fixture, fixtureCases);
+  }
+  return byFixture;
+}
+
+function findingMatchesAnyPositiveInFixture(
+  finding: LayerFinding,
+  fixturePositives: EvalCase[],
+): boolean {
+  return fixturePositives.some((caseRecord) => findingMatchesCase(finding, caseRecord));
+}
+
 export function scoreEvalCases(
   cases: EvalCase[],
   scanResults: FixtureScanResult[],
 ): EvalScoreReport {
   const byFixture = new Map(scanResults.map((result) => [result.fixture, result]));
+  const positivesByFixture = positiveCasesByFixture(cases);
 
   const caseResults: EvalCaseResult[] = [];
   let evaluablePositives = 0;
@@ -71,23 +116,27 @@ export function scoreEvalCases(
       unreadCount += 1;
     }
 
-    const finding = findFinding(findings, caseRecord.subject.key);
+    const finding = findMatchingFinding(findings, caseRecord);
     const matched = Boolean(finding);
     const labelsCorrect = matched && labelsMatch(finding!, caseRecord.expected.labels);
     const documentedGap = Boolean(caseRecord.expected.documentedGap);
 
     let negativeClean = true;
     if (isNegativeCase(caseRecord)) {
-      negativeCases += 1;
-      negativeClean = !matched;
-      if (negativeClean) {
-        negativeCasesPassed += 1;
+      if (unread) {
+        negativeClean = false;
+      } else {
+        negativeCases += 1;
+        negativeClean = !matched;
+        if (negativeClean) {
+          negativeCasesPassed += 1;
+        }
       }
     }
 
-    if (isEvaluablePositive(caseRecord)) {
+    if (caseRecord.expected.status === "positive" && !unread) {
       evaluablePositives += 1;
-      if (!unread && matched) {
+      if (matched) {
         matchedPositives += 1;
         if (labelsCorrect) {
           matchedWithCorrectLabels += 1;
@@ -107,23 +156,13 @@ export function scoreEvalCases(
   }
 
   const recall =
-    evaluablePositives === 0 ? 1 : matchedPositives / evaluablePositives;
+    evaluablePositives === 0 ? null : matchedPositives / evaluablePositives;
   const labelAccuracy =
-    matchedPositives === 0 ? 1 : matchedWithCorrectLabels / matchedPositives;
+    matchedPositives === 0 ? null : matchedWithCorrectLabels / matchedPositives;
   const correctLabelRecall =
-    evaluablePositives === 0 ? 1 : matchedWithCorrectLabels / evaluablePositives;
+    evaluablePositives === 0 ? null : matchedWithCorrectLabels / evaluablePositives;
   const negativeCasePassRate =
-    negativeCases === 0 ? 1 : negativeCasesPassed / negativeCases;
-
-  const acceptedPositiveKeys = new Set(
-    cases
-      .filter(
-        (caseRecord) =>
-          caseRecord.expected.status === "positive" &&
-          !caseRecord.expected.documentedGap,
-      )
-      .map((caseRecord) => caseRecord.subject.key),
-  );
+    negativeCases === 0 ? null : negativeCasesPassed / negativeCases;
 
   let exhaustiveScopedFindings = 0;
   let exhaustiveScopedMatches = 0;
@@ -133,12 +172,13 @@ export function scoreEvalCases(
     if (!scan) {
       continue;
     }
+    const fixturePositives = positivesByFixture.get(fixture) ?? [];
     for (const finding of scan.findings) {
       if (!findingInScope(finding, scopeFiles)) {
         continue;
       }
       exhaustiveScopedFindings += 1;
-      if (acceptedPositiveKeys.has(finding.key)) {
+      if (findingMatchesAnyPositiveInFixture(finding, fixturePositives)) {
         exhaustiveScopedMatches += 1;
       }
     }

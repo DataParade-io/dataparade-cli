@@ -32,7 +32,7 @@ Subject keys use `${type}:${name.toLowerCase()}`, aligned with `tests/benchmark`
 | `negativeCasePassRate` | Clean explicit negatives ÷ negative cases (not precision) |
 | `unreadCount` | Cases whose evidence file was not scanned |
 
-Positives marked `documentedGap` are excluded from recall denominators until the scanner is expected to pass.
+Positives marked `documentedGap` remain in recall denominators as measured misses; CI gates may exclude them when asserting pass/fail. Metrics with empty denominators return `null`, not `1`.
 
 ## Running
 
