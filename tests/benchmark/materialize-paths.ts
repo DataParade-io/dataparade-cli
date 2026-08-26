@@ -170,13 +170,6 @@ export function planMaterializeConcurrency(
     return "wait-for-peer";
   }
 
-  if (
-    input.targetExists &&
-    (input.headRead.status === "error" || input.headRead.status === "missing")
-  ) {
-    return "wait-for-peer";
-  }
-
   if (input.targetExists) {
     return "remove-incomplete";
   }

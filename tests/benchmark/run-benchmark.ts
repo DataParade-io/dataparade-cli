@@ -6,6 +6,10 @@ import { scoreEvalCases } from "../eval/score";
 import { loadAnnotations, loadBenchmarkManifest } from "./manifest";
 import { annotationsToEvalCases, type ToEvalCasesOptions } from "./to-eval-cases";
 import { normalizeRepoRelativePath, scanRepoComponents } from "./scan-repo";
+import {
+  MaterializationInvalidError,
+  validateMaterializedRepo,
+} from "./validate-materialization";
 
 const DEFAULT_BENCHMARK_ROOT = path.join(__dirname);
 
@@ -54,11 +58,17 @@ export class MaterializationMissingError extends Error {
   }
 }
 
+export { MaterializationInvalidError } from "./validate-materialization";
+
 export function assertMaterialized(repoKey: string, benchmarkRoot?: string): string {
   const materializedPath = resolveMaterializedRepoPath(repoKey, benchmarkRoot);
   if (!fs.existsSync(materializedPath)) {
     throw new MaterializationMissingError(repoKey, materializedPath);
   }
+
+  const repoDir = path.join(getReposMetadataRoot(benchmarkRoot), repoKey);
+  const manifest = loadBenchmarkManifest(repoDir);
+  validateMaterializedRepo(repoKey, materializedPath, manifest);
   return materializedPath;
 }
 

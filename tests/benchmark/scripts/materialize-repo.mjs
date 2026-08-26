@@ -13,36 +13,22 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { execSync } from "child_process";
 import YAML from "yaml";
+import { sparseConeDirectories } from "../materialize-paths.ts";
 import {
-  isLockStale,
-  isMaterializationComplete,
-  lockFilePath,
-  planMaterializeConcurrency,
-  readHeadSafely,
-  sparseConeDirectories,
-  stagingDirectoryName,
-} from "../materialize-paths.ts";
+  createNodeMaterializeDeps,
+  runMaterializeOrchestration,
+} from "../materialize-orchestrator.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const benchmarkRoot = path.resolve(__dirname, "..");
 const reposRoot = path.join(benchmarkRoot, "repos");
 const cacheRoot = path.join(benchmarkRoot, ".cache", "repos");
-const LOCK_MAX_AGE_MS = 15 * 60 * 1000;
-const WAIT_POLL_MS = 500;
-const WAIT_TIMEOUT_MS = 15 * 60 * 1000;
 
 function usage() {
   console.log(
     "Usage: node tests/benchmark/scripts/materialize-repo.mjs <repo-key> | --all",
   );
   console.log("Example: pnpm run benchmark:materialize vgs-django");
-}
-
-function sleep(ms) {
-  const deadline = Date.now() + ms;
-  while (Date.now() < deadline) {
-    // busy-wait for short peer-materialization polls
-  }
 }
 
 function listRepoKeys() {
@@ -65,104 +51,11 @@ function loadManifest(repoKey) {
   return parsed;
 }
 
-function readSparseCheckoutContent(targetDir) {
-  const sparseCheckoutPath = path.join(targetDir, ".git", "info", "sparse-checkout");
-  if (!fs.existsSync(sparseCheckoutPath)) {
-    return null;
-  }
-  return fs.readFileSync(sparseCheckoutPath, "utf8");
-}
-
 function readHeadFromDir(targetDir) {
   return execSync("git rev-parse HEAD", {
     cwd: targetDir,
     encoding: "utf8",
   });
-}
-
-function evaluateMaterialization(targetDir, commit, include) {
-  const headRead = readHeadSafely(() => readHeadFromDir(targetDir));
-  if (headRead.status !== "ok") {
-    return { complete: false, reason: "repository head not available" };
-  }
-
-  return isMaterializationComplete({
-    head: headRead.head,
-    commit,
-    includePaths: include,
-    exists: (relativePath) => fs.existsSync(path.join(targetDir, relativePath)),
-    isDirectory: (relativePath) =>
-      fs.statSync(path.join(targetDir, relativePath)).isDirectory(),
-    sparseCheckoutContent:
-      include.length > 0 ? readSparseCheckoutContent(targetDir) : null,
-  });
-}
-
-function readLockMetadata(lockPath) {
-  if (!fs.existsSync(lockPath)) {
-    return null;
-  }
-  try {
-    const raw = fs.readFileSync(lockPath, "utf8");
-    const parsed = JSON.parse(raw);
-    const startedAt = Number(parsed.startedAtMs ?? 0);
-    const pid = Number(parsed.pid ?? 0);
-    if (!startedAt) {
-      return null;
-    }
-    return { pid, startedAtMs: startedAt };
-  } catch {
-    return null;
-  }
-}
-
-function acquireLock(lockPath) {
-  const payload = JSON.stringify({
-    pid: process.pid,
-    startedAtMs: Date.now(),
-  });
-  try {
-    fs.writeFileSync(lockPath, payload, { flag: "wx" });
-    return true;
-  } catch (error) {
-    if (error && typeof error === "object" && "code" in error && error.code === "EEXIST") {
-      return false;
-    }
-    throw error;
-  }
-}
-
-function releaseLock(lockPath) {
-  if (fs.existsSync(lockPath)) {
-    fs.rmSync(lockPath, { force: true });
-  }
-}
-
-function waitForPeerMaterialization(targetDir, commit, include) {
-  const deadline = Date.now() + WAIT_TIMEOUT_MS;
-  while (Date.now() < deadline) {
-    if (!fs.existsSync(targetDir)) {
-      sleep(WAIT_POLL_MS);
-      continue;
-    }
-
-    const status = evaluateMaterialization(targetDir, commit, include);
-    if (status.complete) {
-      return;
-    }
-
-    sleep(WAIT_POLL_MS);
-  }
-
-  throw new Error(
-    `Timed out waiting for concurrent materialization of ${targetDir}`,
-  );
-}
-
-function removeIfExists(dirPath) {
-  if (fs.existsSync(dirPath)) {
-    fs.rmSync(dirPath, { recursive: true, force: true });
-  }
 }
 
 function cloneAndConfigure(targetDir, cloneUrl, commit, include) {
@@ -192,93 +85,29 @@ function materializeRepo(repoKey) {
   }
 
   const targetDir = path.join(cacheRoot, `${repoKey}@${commit}`);
-  const lockPath = lockFilePath(targetDir);
   const cloneUrl = `https://github.com/${repository}.git`;
+  const deps = createNodeMaterializeDeps(readHeadFromDir);
 
-  const planOnce = () => {
-    const targetExists = fs.existsSync(targetDir);
-    const headRead = targetExists
-      ? readHeadSafely(() => readHeadFromDir(targetDir))
-      : { status: "missing" };
-    const materialization = targetExists
-      ? evaluateMaterialization(targetDir, commit, include)
-      : { complete: false };
-    const lockMeta = readLockMetadata(lockPath);
-    const lockHeldByPeer = lockMeta !== null && lockMeta.pid !== process.pid;
-    const lockStale =
-      lockMeta !== null && isLockStale(Date.now() - lockMeta.startedAtMs, LOCK_MAX_AGE_MS);
-
-    return planMaterializeConcurrency({
-      targetExists,
-      headRead,
-      materialization,
-      lockHeldByPeer,
-      lockStale,
-    });
-  };
-
-  let plan = planOnce();
-  while (plan === "wait-for-peer") {
-    waitForPeerMaterialization(targetDir, commit, include);
-    plan = planOnce();
-  }
-
-  if (plan === "use-complete") {
-    console.log(`Already materialized: ${targetDir}`);
-    printInstructions(repoKey, targetDir, manifest);
-    return;
-  }
-
-  if (plan === "remove-incomplete") {
-    const status = evaluateMaterialization(targetDir, commit, include);
-    console.log(
-      `Removing incomplete clone at ${targetDir} (${status.reason ?? "incomplete materialization"})`,
-    );
-    removeIfExists(targetDir);
-  }
-
-  fs.mkdirSync(cacheRoot, { recursive: true });
-
-  if (!acquireLock(lockPath)) {
-    waitForPeerMaterialization(targetDir, commit, include);
-    if (planOnce() === "use-complete") {
-      console.log(`Already materialized: ${targetDir}`);
-      printInstructions(repoKey, targetDir, manifest);
-      return;
-    }
-    if (!acquireLock(lockPath)) {
-      throw new Error(`Could not acquire materialization lock for ${repoKey}`);
-    }
-  }
-
-  const stagingDir = stagingDirectoryName(
+  const result = runMaterializeOrchestration({
+    cacheRoot,
     targetDir,
-    `${process.pid}-${Date.now()}`,
-  );
+    commit,
+    includePaths: include,
+    currentPid: process.pid,
+    deps,
+    materializeToStaging: (stagingDir) => {
+      console.log(`Cloning ${repository} at ${commit} ...`);
+      cloneAndConfigure(stagingDir, cloneUrl, commit, include);
+    },
+  });
 
-  try {
-    removeIfExists(stagingDir);
-    console.log(`Cloning ${repository} at ${commit} ...`);
-    cloneAndConfigure(stagingDir, cloneUrl, commit, include);
-
-    const finalStatus = evaluateMaterialization(stagingDir, commit, include);
-    if (!finalStatus.complete) {
-      throw new Error(
-        `Materialization for '${repoKey}' failed validation: ${finalStatus.reason ?? "unknown error"}`,
-      );
-    }
-
-    removeIfExists(targetDir);
-    fs.renameSync(stagingDir, targetDir);
-
+  if (result.action === "used-existing") {
+    console.log(`Already materialized: ${targetDir}`);
+  } else {
     console.log(`Materialized ${repoKey} -> ${targetDir}`);
-    printInstructions(repoKey, targetDir, manifest);
-  } catch (error) {
-    removeIfExists(stagingDir);
-    throw error;
-  } finally {
-    releaseLock(lockPath);
   }
+
+  printInstructions(repoKey, targetDir, manifest);
 }
 
 function printInstructions(repoKey, targetDir, manifest) {

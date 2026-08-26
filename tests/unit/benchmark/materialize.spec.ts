@@ -240,13 +240,25 @@ describe("materialize path helpers", () => {
       ).toBe("wait-for-peer");
     });
 
-    it("waits when the target exists but HEAD is not yet available", () => {
+    it("removes a partial target when HEAD is not available and no live lock is held", () => {
       expect(
         planMaterializeConcurrency({
           targetExists: true,
           headRead: { status: "error" },
           materialization: { complete: false },
           lockHeldByPeer: false,
+          lockStale: false,
+        }),
+      ).toBe("remove-incomplete");
+    });
+
+    it("waits only when a peer holds a live fresh lock on a partial target", () => {
+      expect(
+        planMaterializeConcurrency({
+          targetExists: true,
+          headRead: { status: "error" },
+          materialization: { complete: false },
+          lockHeldByPeer: true,
           lockStale: false,
         }),
       ).toBe("wait-for-peer");
