@@ -70,6 +70,26 @@ Clones land in `tests/benchmark/.cache/repos/<key>@<commit>/`. The script is ide
 
 **This script is not part of `pnpm test`.** CI validates committed YAML only; it does not clone upstream repositories.
 
+## Running the benchmark (opt-in)
+
+After materializing one or more repositories locally, run the component-layer benchmark against pinned clones:
+
+```bash
+pnpm run benchmark:materialize vgs-django
+pnpm run benchmark:run vgs-django
+
+# all materialized starter repos
+pnpm run benchmark:materialize --all
+pnpm run benchmark:run
+
+# include proposed annotations (not headline denominators)
+pnpm run benchmark:run --include-proposed vgs-django
+```
+
+`benchmark:run` scans `tests/benchmark/.cache/repos/<key>@<commit>/`, loads **accepted** annotations by default, and scores via `tests/eval/score.ts`. It reports recall, label accuracy, precision (when exhaustive scopes exist), negative pass rate, and unread evidence files.
+
+**This script is not part of `pnpm test`.** Unit tests mock scans and use temporary fixtures — no network or git clones in CI.
+
 ## Adding a repository
 
 1. Create `repos/<key>/manifest.yaml` per [ground-truth-schema.md](../../.agents/skills/curate-scanner-evaluation-corpus/references/ground-truth-schema.md).
