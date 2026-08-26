@@ -1,0 +1,30 @@
+{
+  "id": "DATAP-3a2d5153-90a1-49be-a7eb-007a4dd49ab6",
+  "title": "Establish first accepted third-party benchmark baseline",
+  "description": "After the materialized-repository runner exists and the first exhaustive scope has human-accepted annotations, run the scanner against the exact pinned checkout and publish the initial component benchmark report. Report recall, label accuracy, correct-label recall, precision only for the accepted exhaustive scope, negative-case pass rate, unread count, denominators, pinned commit, and scanned-file inventory. Route every unmatched finding inside the exhaustive scope to adjudication before publishing final precision. Separate scanner-driven results from any corpus corrections. Add a reproducible command and record the verified baseline in DATAP-b17f92.",
+  "type": "sub-task",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-53a1e459-b9fe-4b03-aa91-384d19f70df8",
+      "type": "blocked-by"
+    },
+    {
+      "target": "DATAP-c661994f-6422-41f6-9048-18643ba3bc4f",
+      "type": "blocked-by"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T21:14:41.050708Z",
+  "updated_at": "2026-08-26T21:14:41.050708Z",
+  "closed_at": null,
+  "custom": {
+    "source": "shared",
+    "project_label": "DATAP"
+  }
+}

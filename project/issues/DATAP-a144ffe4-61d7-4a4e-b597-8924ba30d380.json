@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-a144ffe4-61d7-4a4e-b597-8924ba30d380",
+  "title": "Prepare Open edX annotation packet",
+  "description": "Evaluate openedx/openedx-platform at pinned commit 555917c7616c57cd644f772c1bb4a999eb15ccbc as a Python education-record corpus candidate. Verify repository identity and license, select a manageable complete scope around the previously identified enrollment, user, and grades models, inventory every included file and exclusion, and prepare scanner-independent proposed annotations for applicable layers. Include positives, realistic negatives, ambiguities, source context, rationale, and provenance. Keep all records proposed pending human review and document the distinct education-domain coverage.",
+  "type": "sub-task",
+  "status": "open",
+  "priority": 2,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-ce7eaaa4-9cfe-4228-a97b-0a371f4bb589",
+      "type": "relates-to"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T21:14:37.105326Z",
+  "updated_at": "2026-08-26T21:14:37.105326Z",
+  "closed_at": null,
+  "custom": {
+    "source": "shared",
+    "project_label": "DATAP"
+  }
+}

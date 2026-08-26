@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "event_id": "8fef0087-9aab-4434-a329-b1abfc0371a7",
+  "issue_id": "DATAP-d6149641-459b-47a4-b6be-fc6b9dcaf965",
+  "event_type": "field_updated",
+  "occurred_at": "2026-08-26T20:30:42.352Z",
+  "actor_id": "ryan",
+  "payload": {
+    "changes": {
+      "description": {
+        "from": "Add Layer 2 evaluation for deterministic data-flow output after the shared evaluator lands.\n\nThe adapter receives both components and dataFlows. Resolve sourceComponentId and targetComponentId through the component index, create a canonical edge identity, and normalize sourceLocation plus sourceLocations into evidence. The current type does not expose sourceComponentName, targetComponentName, or evidence fields.\n\nEvaluate source, target, flow type, and location. Use flow.type as the deterministic label unless a separately verified deterministic stage populates dataCategories. Do not claim data-category label accuracy from fields that are only optional or AI-enriched.\n\nUse committed smoke fixtures for CI and exhaustively annotated benchmark scopes for true precision. Preserve exact per-file unread handling. Zero scanner changes unless current output proves insufficient and that scope change is separately approved.",
+        "to": "Add Layer 2 evaluation for deterministic data-flow output after the shared evaluator lands.\n\nBlocked only on DATAP-c7dd46 shared evaluator contract. Once c7dd46 lands, proceeds in PARALLEL with DATAP-f3feec — not sequential after f3feec. Real benchmark cases from DATAP-b17f92 supplement committed smoke fixtures when available (optional enrichment, not a start blocker).\n\nThe adapter receives both components and dataFlows. Resolve sourceComponentId and targetComponentId through the component index, create a canonical edge identity, and normalize sourceLocation plus sourceLocations into evidence. The current type does not expose sourceComponentName, targetComponentName, or evidence fields.\n\nEvaluate source, target, flow type, and location. Use flow.type as the deterministic label unless a separately verified deterministic stage populates dataCategories. Do not claim data-category label accuracy from fields that are only optional or AI-enriched.\n\nUse committed smoke fixtures for CI and exhaustively annotated benchmark scopes for true precision. Preserve exact per-file unread handling. Zero scanner changes unless current output proves insufficient and that scope change is separately approved."
+      }
+    }
+  }
+}

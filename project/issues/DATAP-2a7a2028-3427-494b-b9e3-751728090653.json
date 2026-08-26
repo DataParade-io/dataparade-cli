@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-2a7a2028-3427-494b-b9e3-751728090653",
+  "title": "Prepare Gitea annotation packet",
+  "description": "Evaluate go-gitea/gitea at pinned commit 0b1067484fcdc497dc34d9113c467182231e6ea9 as a Go identity, user-profile, and access-token corpus candidate. Verify repository identity and license, choose a manageable complete scope around models/auth/access_token.go and modules/structs/user.go, inventory every included file and exclusion, and prepare scanner-independent proposed annotations for applicable layers. Include positives, realistic negatives, ambiguities, evidence context, rationale, and provenance. Unsupported Go scanning must later report unread rather than a clean negative. Keep all annotations proposed pending human review.",
+  "type": "sub-task",
+  "status": "open",
+  "priority": 2,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-ce7eaaa4-9cfe-4228-a97b-0a371f4bb589",
+      "type": "relates-to"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T21:14:38.792535Z",
+  "updated_at": "2026-08-26T21:14:38.792535Z",
+  "closed_at": null,
+  "custom": {
+    "source": "shared",
+    "project_label": "DATAP"
+  }
+}

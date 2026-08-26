@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "event_id": "bcd864e7-86a2-4dea-994a-359744dd4533",
+  "issue_id": "DATAP-9179d10f-772e-4803-9d59-76e161d651d6",
+  "event_type": "field_updated",
+  "occurred_at": "2026-08-26T20:30:34.308Z",
+  "actor_id": "ryan",
+  "payload": {
+    "changes": {
+      "description": {
+        "from": "Create and apply a reusable agent skill for selecting pinned third-party repositories, defining exhaustive annotation scopes, preparing human review worksheets, adjudicating ambiguous cases, and governing ground-truth corrections. Repository selection must be based on the data and techniques present, not current scanner success. Human approval is required for new or changed ground truth. Record corpus deltas separately from scanner deltas.",
+        "to": "Create and validate the reusable agent skill at `.agents/skills/curate-scanner-evaluation-corpus/`.\n\nDocument the workflow:\n- Independent repository selection (based on data and techniques present, not current scanner success)\n- Exhaustive annotation scopes\n- Blind-first human review\n- Ambiguity adjudication\n- Correction governance (human approval required for new or changed ground truth)\n- Separate scanner vs corpus deltas\n\nBuilding the production benchmark corpus is OUT OF SCOPE here — that is DATAP-b17f92."
+      }
+    }
+  }
+}

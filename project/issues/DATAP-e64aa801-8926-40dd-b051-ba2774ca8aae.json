@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-e64aa801-8926-40dd-b051-ba2774ca8aae",
+  "title": "Prepare exhaustive easy-school component annotation packet",
+  "description": "Materialize ZeroCoolHacker/easy-school at pinned commit 69ad989f7930d77d54145aae422cc2a7cb4c4dd2. Confirm license suitability. Define a manageable complete-file or complete-directory component scope, inventory every source file inside it, and record every exclusion with a reason. Prepare human-review records for every scanner-relevant component declaration in scope, including positive, valuable negative, and ambiguous cases with stable subject identity, exact evidence, proposed labels, rationale, and proposed provenance. Do not show current scanner output during initial packet preparation and do not mark any annotation accepted. Verify all evidence against the pinned checkout.",
+  "type": "sub-task",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-ce7eaaa4-9cfe-4228-a97b-0a371f4bb589",
+      "type": "relates-to"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T21:14:34.949409Z",
+  "updated_at": "2026-08-26T21:14:34.949409Z",
+  "closed_at": null,
+  "custom": {
+    "source": "shared",
+    "project_label": "DATAP"
+  }
+}

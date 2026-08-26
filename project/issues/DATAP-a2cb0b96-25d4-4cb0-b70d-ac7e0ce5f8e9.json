@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-a2cb0b96-25d4-4cb0-b70d-ac7e0ce5f8e9",
+  "title": "Prepare ERPNext annotation packet",
+  "description": "Evaluate frappe/erpnext at pinned commit 5fa68dd06835f77a60ccefa033d7955d83294d3b as a Python financial and employment-data corpus candidate. Verify repository identity and license, choose a manageable complete scope around the previously identified bank-account and employee model files, inventory all files and exclusions, and prepare scanner-independent proposed annotations for the applicable evaluation layers. Include positives, realistic confusing negatives, ambiguities, evidence context, rationale, and provenance. Keep every record proposed pending human review and document what coverage ERPNext adds beyond the existing corpus.",
+  "type": "sub-task",
+  "status": "open",
+  "priority": 2,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [
+    {
+      "target": "DATAP-ce7eaaa4-9cfe-4228-a97b-0a371f4bb589",
+      "type": "relates-to"
+    }
+  ],
+  "comments": [],
+  "created_at": "2026-08-26T21:14:36.398906Z",
+  "updated_at": "2026-08-26T21:14:36.398906Z",
+  "closed_at": null,
+  "custom": {
+    "source": "shared",
+    "project_label": "DATAP"
+  }
+}
