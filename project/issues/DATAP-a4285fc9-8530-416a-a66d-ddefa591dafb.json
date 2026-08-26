@@ -3,7 +3,7 @@
   "title": "Prepare Hyperswitch card-vault annotation packet",
   "description": "Evaluate juspay/hyperswitch-card-vault at pinned commit abfca8e078039582460335be73341699ee826615 as a Rust PCI and cardholder-data candidate. Verify repository identity and license, define a manageable complete scope around src/routes/data/types.rs or a justified enclosing directory, inventory all included source and exclusions, and prepare scanner-independent proposed annotations for applicable layers. Include positive, negative, ambiguous, evidence, rationale, and provenance records. Unsupported Rust scanning must later report unread rather than a clean negative. Keep all annotations proposed pending human review.",
   "type": "sub-task",
-  "status": "open",
+  "status": "in_progress",
   "priority": 2,
   "assignee": null,
   "creator": null,
@@ -15,12 +15,20 @@
       "type": "relates-to"
     }
   ],
-  "comments": [],
+  "comments": [
+    {
+      "id": "c765440b-6f93-43bb-b3d8-dcf8a8148a36",
+      "author": "ryan",
+      "text": "Outside-consultant corpus session has started this packet after independently verifying the exact pin and Apache-2.0 license. Work is source-only and scanner-blind: materialize the declared complete Rust file, inventory every relevant declaration, prepare proposed annotations, then present human-review decisions. No agent may mark a record accepted.",
+      "created_at": "2026-08-26T21:45:56.341086Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-26T21:14:37.997775Z",
-  "updated_at": "2026-08-26T21:14:37.997775Z",
+  "updated_at": "2026-08-26T21:45:56.341086Z",
   "closed_at": null,
   "custom": {
-    "source": "shared",
-    "project_label": "DATAP"
+    "project_label": "DATAP",
+    "source": "shared"
   }
 }

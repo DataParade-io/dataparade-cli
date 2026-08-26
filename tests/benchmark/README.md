@@ -68,6 +68,13 @@ pnpm run benchmark:materialize --all
 
 Clones land in `tests/benchmark/.cache/repos/<key>@<commit>/`. The script is idempotent and uses sparse checkout when scope paths are listed in the manifest.
 
+## Candidate inventory
+
+`candidates.yaml` preserves the repository research queue separately from executable
+benchmark ground truth. A pinned commit and observed license do not make a candidate
+accepted: each candidate still needs a manageable exhaustive scope, scanner-blind
+proposed annotations, and human review before it may enter evaluation denominators.
+
 **This script is not part of `pnpm test`.** CI validates committed YAML only; it does not clone upstream repositories.
 
 ## Adding a repository

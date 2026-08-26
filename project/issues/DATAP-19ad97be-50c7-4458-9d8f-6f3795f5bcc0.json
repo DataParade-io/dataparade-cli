@@ -1,0 +1,18 @@
+{
+  "id": "DATAP-19ad97be-50c7-4458-9d8f-6f3795f5bcc0",
+  "title": "Fix concurrent benchmark materialization race",
+  "description": "Concurrent corpus preparation exposes a materializer race. When one process creates tests/benchmark/.cache/repos/<key>@<commit> and is still cloning or checking out, a second pnpm run benchmark:materialize <key> sees the directory, immediately runs git rev-parse HEAD, and exits 128 because HEAD is not yet resolvable. It neither waits nor recovers, despite the cache eventually becoming valid.\n\nReproduced during parallel easy-school packet preparation in the separate corpus-curation worktree. The current existing-directory validation assumes a completed Git checkout; it must safely handle a partially created target.\n\nAcceptance criteria:\n- Concurrent invocations for the same repo key do not fail or corrupt the cache.\n- Use a per-key lock or materialize into a temporary sibling directory and atomically rename only after complete validation.\n- An empty, partial, or non-Git target is treated as incomplete and recovered or reported with an actionable non-crashing result.\n- Add a deterministic test covering the partial-target or concurrent path.\n- Keep materialization opt-in and outside normal CI.",
+  "type": "bug",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-26T21:45:32.681040Z",
+  "updated_at": "2026-08-26T21:45:32.681040Z",
+  "closed_at": null,
+  "custom": {}
+}

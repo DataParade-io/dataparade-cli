@@ -3,16 +3,31 @@
   "title": "Import and rank prior repository candidate inventory",
   "description": "Reuse the repository research preserved on DATAP-602-BDD and related notes. Create a versioned candidate inventory covering every previously identified repository, including repository name, immutable commit, verified license status, languages, frameworks, data domains, candidate evaluation layers, proposed complete-file or complete-directory scope, independent selection rationale, and disposition. Verify current source and license rather than copying claims blindly. Rank candidates by missing corpus coverage, not by current scanner findings. Account explicitly for all prior candidates and shortlist the next four to six repositories for annotation. Do not convert proposed labels into accepted ground truth in this task.",
   "type": "sub-task",
-  "status": "open",
+  "status": "in_progress",
   "priority": 1,
   "assignee": null,
   "creator": null,
   "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
   "labels": [],
   "dependencies": [],
-  "comments": [],
+  "comments": [
+    {
+      "id": "4e537fd6-3969-4240-9041-04796fabb6f7",
+      "author": "ryan",
+      "text": "Corpus curation is now owned in the outside-consultant session, separate from the implementation team. Work starts by recovering the DATAP-602-BDD candidate set, independently verifying repository identity and license, classifying language/domain/layer coverage, and ranking candidates without consulting current scanner output. The first deliverable is the versioned inventory and a four-to-six repository shortlist; annotation packets and human acceptance remain separate gates.",
+      "created_at": "2026-08-26T21:39:17.012580Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "7458d7f7-00a2-4a34-a8fb-9653fa3272e5",
+      "author": "ryan",
+      "text": "Candidate inventory completed in tests/benchmark/candidates.yaml. It accounts for all 25 DATAP-602-BDD research candidates, verifies the pinned commit set, records the observed license state at each pin, and separates source eligibility from human-approved ground truth. First packet shortlist: Apache-2.0 Hyperswitch Card Vault, then MIT Gitea; OpenMRS, ZITADEL, ERPNext, and Open edX remain ranked next steps. easy-school is blocked on its GLWT license; VGS and Patient Kiosk have no license at the pins. No scanner output or accepted labels were used.",
+      "created_at": "2026-08-26T21:48:07.901863Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-26T21:14:34.273906Z",
-  "updated_at": "2026-08-26T21:14:34.273906Z",
+  "updated_at": "2026-08-26T21:48:07.901863Z",
   "closed_at": null,
   "custom": {}
 }
