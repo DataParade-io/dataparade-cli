@@ -123,6 +123,79 @@ export interface MaterializationCheck {
   sparseCheckoutContent: string | null;
 }
 
+export type SafeHeadReadResult =
+  | { status: "ok"; head: string }
+  | { status: "missing" }
+  | { status: "error" };
+
+/** Read HEAD without throwing when the target is a partial clone. */
+export function readHeadSafely(readHead: () => string): SafeHeadReadResult {
+  try {
+    const head = readHead().trim();
+    if (!head) {
+      return { status: "missing" };
+    }
+    return { status: "ok", head };
+  } catch {
+    return { status: "error" };
+  }
+}
+
+export type MaterializeConcurrencyAction =
+  | "use-complete"
+  | "wait-for-peer"
+  | "remove-incomplete"
+  | "materialize-staging";
+
+export interface MaterializeConcurrencyInput {
+  targetExists: boolean;
+  headRead: SafeHeadReadResult;
+  materialization: { complete: boolean };
+  lockHeldByPeer: boolean;
+  lockStale: boolean;
+}
+
+/**
+ * Decide how to handle a cache target when another process may be materializing.
+ * Deterministic and unit-testable without spawning processes.
+ */
+export function planMaterializeConcurrency(
+  input: MaterializeConcurrencyInput,
+): MaterializeConcurrencyAction {
+  if (input.targetExists && input.materialization.complete) {
+    return "use-complete";
+  }
+
+  if (input.lockHeldByPeer && !input.lockStale) {
+    return "wait-for-peer";
+  }
+
+  if (
+    input.targetExists &&
+    (input.headRead.status === "error" || input.headRead.status === "missing")
+  ) {
+    return "wait-for-peer";
+  }
+
+  if (input.targetExists) {
+    return "remove-incomplete";
+  }
+
+  return "materialize-staging";
+}
+
+export function stagingDirectoryName(targetDir: string, token: string): string {
+  return `${targetDir}.staging-${token}`;
+}
+
+export function lockFilePath(targetDir: string): string {
+  return `${targetDir}.lock`;
+}
+
+export function isLockStale(lockAgeMs: number, maxAgeMs: number): boolean {
+  return lockAgeMs > maxAgeMs;
+}
+
 export function isMaterializationComplete(
   check: MaterializationCheck,
 ): { complete: boolean; reason?: string } {

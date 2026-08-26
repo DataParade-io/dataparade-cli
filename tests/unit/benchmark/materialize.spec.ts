@@ -2,11 +2,16 @@ import {
   classifyIncludePath,
   expectedConeSparsePatterns,
   findMissingScopePaths,
+  isLockStale,
   isMaterializationComplete,
   isSparseCheckoutSatisfied,
+  lockFilePath,
   parseConeSparseCheckoutPatterns,
+  planMaterializeConcurrency,
+  readHeadSafely,
   requiredScopePaths,
   sparseConeDirectories,
+  stagingDirectoryName,
 } from "../../benchmark/materialize-paths";
 
 describe("materialize path helpers", () => {
@@ -188,6 +193,104 @@ describe("materialize path helpers", () => {
         complete: false,
         reason: "sparse checkout not configured",
       });
+    });
+  });
+
+  describe("readHeadSafely", () => {
+    it("returns ok when HEAD is readable", () => {
+      expect(readHeadSafely(() => "abc123\n")).toEqual({
+        status: "ok",
+        head: "abc123",
+      });
+    });
+
+    it("returns error when HEAD read throws (partial clone race)", () => {
+      expect(
+        readHeadSafely(() => {
+          throw new Error("fatal: not a git repository");
+        }),
+      ).toEqual({ status: "error" });
+    });
+  });
+
+  describe("planMaterializeConcurrency", () => {
+    const commit = "46acdb3290d677081e1b0889f3b736635a4e0847";
+
+    it("uses a complete target without waiting", () => {
+      expect(
+        planMaterializeConcurrency({
+          targetExists: true,
+          headRead: { status: "ok", head: commit },
+          materialization: { complete: true },
+          lockHeldByPeer: false,
+          lockStale: false,
+        }),
+      ).toBe("use-complete");
+    });
+
+    it("waits when a peer holds a fresh lock", () => {
+      expect(
+        planMaterializeConcurrency({
+          targetExists: false,
+          headRead: { status: "missing" },
+          materialization: { complete: false },
+          lockHeldByPeer: true,
+          lockStale: false,
+        }),
+      ).toBe("wait-for-peer");
+    });
+
+    it("waits when the target exists but HEAD is not yet available", () => {
+      expect(
+        planMaterializeConcurrency({
+          targetExists: true,
+          headRead: { status: "error" },
+          materialization: { complete: false },
+          lockHeldByPeer: false,
+          lockStale: false,
+        }),
+      ).toBe("wait-for-peer");
+    });
+
+    it("removes an incomplete target with a readable HEAD", () => {
+      expect(
+        planMaterializeConcurrency({
+          targetExists: true,
+          headRead: { status: "ok", head: "0000000000000000000000000000000000000000" },
+          materialization: { complete: false },
+          lockHeldByPeer: false,
+          lockStale: false,
+        }),
+      ).toBe("remove-incomplete");
+    });
+
+    it("materializes into staging when no target exists", () => {
+      expect(
+        planMaterializeConcurrency({
+          targetExists: false,
+          headRead: { status: "missing" },
+          materialization: { complete: false },
+          lockHeldByPeer: false,
+          lockStale: false,
+        }),
+      ).toBe("materialize-staging");
+    });
+  });
+
+  describe("staging and lock helpers", () => {
+    it("builds a unique staging directory beside the target", () => {
+      expect(stagingDirectoryName("/cache/repos/foo@abc", "42-1")).toBe(
+        "/cache/repos/foo@abc.staging-42-1",
+      );
+    });
+
+    it("places the lock file beside the target directory", () => {
+      expect(lockFilePath("/cache/repos/foo@abc")).toBe("/cache/repos/foo@abc.lock");
+    });
+
+    it("treats old locks as stale", () => {
+      expect(isLockStale(16 * 60 * 1000, 15 * 60 * 1000)).toBe(true);
+      expect(isLockStale(60 * 1000, 15 * 60 * 1000)).toBe(false);
     });
   });
 });
