@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "event_id": "7f5ccf64-3dfb-4073-8bf4-c87c37957597",
+  "issue_id": "DATAP-f3feec84-8daf-4043-963c-eab697938552",
+  "event_type": "field_updated",
+  "occurred_at": "2026-08-26T20:11:17.298Z",
+  "actor_id": "ryan",
+  "payload": {
+    "changes": {
+      "description": {
+        "from": "",
+        "to": "Add deterministic evaluation of PII signal rules after the shared evaluator lands.\n\nFirst extract existing lexical rule matching into a pure reusable deterministic function with explicit hit identity, category, matched evidence, file path, and line range. The evaluation may call that matcher directly with AI disabled.\n\nDo not automatically place PII hits into default scan output. Exposing a new output collection or running the pass by default changes product behavior, schema, runtime, and false-positive surface; track that as a separate product decision.\n\nEvaluate recall, conditional label accuracy, correct-label recall, true precision within exhaustively annotated scopes, negative-case pass rate, and per-file unread counts. Use both committed smoke fixtures and the versioned third-party benchmark."
+      },
+      "title": {
+        "from": "Eval system: PII signal matching",
+        "to": "Eval system: deterministic PII signal matching"
+      }
+    }
+  }
+}

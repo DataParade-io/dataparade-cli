@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./project/issues/**)",
+      "Edit(./project/issues/**)",
+      "Read(./project/events/**)",
+      "Edit(./project/events/**)"
+    ]
+  }
+}

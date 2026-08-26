@@ -1,0 +1,14 @@
+{
+  "files.exclude": {
+    "**/project/events/**": true,
+    "**/project/issues/**": true
+  },
+  "files.watcherExclude": {
+    "**/project/events/**": true,
+    "**/project/issues/**": true
+  },
+  "search.exclude": {
+    "**/project/events/**": true,
+    "**/project/issues/**": true
+  }
+}

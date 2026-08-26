@@ -1,0 +1,36 @@
+{
+  "id": "DATAP-c7dd461c-54eb-4e28-8d30-e9d8e393cf89",
+  "title": "Eval foundation and component detection",
+  "description": "Deliver the shared evaluation contracts, scoring engine, documentation, unit tests, and Layer 1 component adapter.\n\nThe finding contract must include canonical layer-specific identity, labels, normalized evidence, and exact scanned-file coverage. A location-only match is insufficient when multiple findings overlap one line.\n\nReport recall, conditional label accuracy, correct-label recall, true precision only for exhaustively annotated scopes, negative-case pass rate, and unread counts separately. Do not average metrics.\n\nUse a few committed fixtures to prove the machinery and component adapter. Known scanner misses may appear as benchmark data, but the Jest suite itself must pass. Assert expected results or regression thresholds rather than committing intentionally failing tests.\n\nThe component adapter reads scanResult.components with AI disabled and makes zero src changes. This PR proves the harness; it does not claim representative scanner quality. Do not create empty layer stubs.",
+  "type": "task",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-602",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "24632a00-1127-41e5-ba28-533baf2783f2",
+      "author": "ryan",
+      "text": "Superseded by the current issue description and correction comment [f78e7e]. The earlier proposed contract, metric definitions, intentional-failure wording, corpus exclusions, and empty layer stubs are no longer authoritative.",
+      "created_at": "2026-08-26T19:56:29.452353Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "f78e7e97-8e44-4539-8110-51143807659f",
+      "author": "ryan",
+      "text": "Correction: the current issue description supersedes the earlier detailed comment. In particular, negative-case pass rate is not precision, label accuracy is conditional on matched positives, unread is determined per file, and benchmark misses are data rather than failing Jest tests.",
+      "created_at": "2026-08-26T20:14:26.148825Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-26T19:56:16.897691Z",
+  "updated_at": "2026-08-26T20:18:29.631127Z",
+  "closed_at": null,
+  "custom": {
+    "project_label": "DATAP",
+    "source": "shared"
+  }
+}
