@@ -13,17 +13,19 @@ tests/benchmark/
       manifest.yaml   # pinned commit, scope, coverage metadata
       annotations/
         components.yaml
+        data_items.yaml
   scripts/
     materialize-repo.mjs   # optional local clone helper (not run in CI)
   .cache/               # materialized clones (gitignored)
 ```
 
-## Starter repositories
+## Current proposed repositories
 
-| Key | Repository | Focus |
-|-----|------------|-------|
-| `vgs-django` | `vgs-samples/vgs-django-sample-id-verification` | Django PII models + Checkr third-party API |
-| `easy-school` | `ZeroCoolHacker/easy-school` | Plain Django SSN field without vendor wrappers |
+| Key | Repository | Status | Focus |
+|-----|------------|--------|-------|
+| `hyperswitch-vault` | `juspay/hyperswitch-card-vault` | Active proposed packet | Rust card-vault data items; one complete source file |
+| `vgs-django` | `vgs-samples/vgs-django-sample-id-verification` | Blocked: license decision | Django PII models + Checkr third-party API |
+| `easy-school` | `ZeroCoolHacker/easy-school` | Blocked: GLWT license decision | Plain Django SSN field without vendor wrappers |
 
 ## Annotation workflow
 
@@ -61,8 +63,7 @@ const evalCases = annotationsToEvalCases(annotations, "vgs-django");
 Clone pinned repositories for local benchmark development:
 
 ```bash
-pnpm run benchmark:materialize vgs-django
-pnpm run benchmark:materialize easy-school
+pnpm run benchmark:materialize hyperswitch-vault
 pnpm run benchmark:materialize --all
 ```
 
