@@ -91,4 +91,57 @@ describe("benchmark corpus manifests", () => {
       }
     });
   });
+
+  describe("gitea data-item packet", () => {
+    const repoDir = path.join(reposRoot, "gitea");
+
+    it("loads a pinned complete Go scope with proposed source-only labels", () => {
+      const manifest = loadBenchmarkManifest(repoDir);
+      const annotations = loadAnnotations(repoDir, "data_items");
+
+      expect(manifest.repository).toBe("go-gitea/gitea");
+      expect(manifest.commit).toBe("0b1067484fcdc497dc34d9113c467182231e6ea9");
+      expect(manifest.license).toBe("MIT");
+      expect(manifest.scope.include).toEqual([
+        "models/auth/access_token.go",
+        "modules/structs/user.go",
+      ]);
+      expect(annotations.length).toBeGreaterThanOrEqual(25);
+      expect(new Set(annotations.map((record) => record.id)).size).toBe(annotations.length);
+      expect(annotations.every((record) => record.layer === "data_items")).toBe(true);
+      expect(annotations.every((record) => record.provenance.review_state === "proposed")).toBe(true);
+    });
+  });
+
+  for (const packet of [
+    {
+      key: "saleor",
+      repository: "saleor/saleor",
+      commit: "030c1676145d63154687fa394d1a4abb224b1ac2",
+      license: "BSD-3-Clause",
+      minimumRecords: 20,
+    },
+    {
+      key: "keycloak",
+      repository: "keycloak/keycloak",
+      commit: "b9b70f95f7e092ebadf898378948bab0971e015b",
+      license: "Apache-2.0",
+      minimumRecords: 15,
+    },
+  ]) {
+    describe(`${packet.key} data-item packet`, () => {
+      it("loads a pinned, complete scope with proposed labels", () => {
+        const repoDir = path.join(reposRoot, packet.key);
+        const manifest = loadBenchmarkManifest(repoDir);
+        const annotations = loadAnnotations(repoDir, "data_items");
+
+        expect(manifest.repository).toBe(packet.repository);
+        expect(manifest.commit).toBe(packet.commit);
+        expect(manifest.license).toBe(packet.license);
+        expect(manifest.scope.include.length).toBeGreaterThan(0);
+        expect(annotations.length).toBeGreaterThanOrEqual(packet.minimumRecords);
+        expect(annotations.every((record) => record.provenance.review_state === "proposed")).toBe(true);
+      });
+    });
+  }
 });

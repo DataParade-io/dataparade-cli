@@ -10,9 +10,17 @@
   "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
   "labels": [],
   "dependencies": [],
-  "comments": [],
+  "comments": [
+    {
+      "id": "350b247b-999a-4a20-bdab-f70d8704cf10",
+      "author": "ryan",
+      "text": "Additional independent reproduction while materializing Keycloak: clone target was created, but after the materialize command returned it still had no resolvable HEAD (`git rev-parse HEAD` exits 128). This confirms partial-target recovery is required in addition to concurrency protection.",
+      "created_at": "2026-08-26T22:16:17.851373Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-26T21:45:32.681040Z",
-  "updated_at": "2026-08-26T21:45:32.681040Z",
+  "updated_at": "2026-08-26T22:16:17.851373Z",
   "closed_at": null,
   "custom": {}
 }
