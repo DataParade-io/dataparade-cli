@@ -59,10 +59,17 @@
       "text": "Curation added a fifth active review packet: YJDH employee serializer (MIT/Python, 93 lines), covering Finnish national identifier validation plus employment/compensation data. This replaces the previously oversized YJDH scope; all 19 labels are proposed pending human review.",
       "created_at": "2026-08-26T22:38:06.154196Z",
       "comment_type": "default"
+    },
+    {
+      "id": "7d1afce8-8f12-483c-92f7-61f380f0a499",
+      "author": "ryan",
+      "text": "Curation added a sixth active review packet: Ory Kratos password credential (Apache-2.0/Go, 21 lines), filling the password-hash/verifier gap. Both records are proposed only.",
+      "created_at": "2026-08-26T22:39:08.434522Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.314318Z",
-  "updated_at": "2026-08-26T22:38:06.154196Z",
+  "updated_at": "2026-08-26T22:39:08.434522Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",

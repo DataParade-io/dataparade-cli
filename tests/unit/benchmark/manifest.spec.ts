@@ -135,6 +135,13 @@ describe("benchmark corpus manifests", () => {
       license: "MIT",
       minimumRecords: 18,
     },
+    {
+      key: "ory-kratos-password",
+      repository: "ory/kratos",
+      commit: "b86338da04a040247a07f46100a86dcfb3875909",
+      license: "Apache-2.0",
+      minimumRecords: 2,
+    },
   ]) {
     describe(`${packet.key} data-item packet`, () => {
       it("loads a pinned, complete scope with proposed labels", () => {
