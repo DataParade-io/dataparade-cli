@@ -56,7 +56,7 @@
     "eval:components": "jest tests/eval/layers/components/eval.test.ts",
     "scan": "node dist/bin/cli.js scan",
     "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js",
-    "benchmark:materialize": "node tests/benchmark/scripts/materialize-repo.mjs"
+    "benchmark:materialize": "node --experimental-strip-types tests/benchmark/scripts/materialize-repo.mjs"
   },
   "dependencies": {
     "@sentry/node": "^10.38.0",

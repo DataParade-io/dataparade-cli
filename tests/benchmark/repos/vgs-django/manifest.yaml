@@ -4,7 +4,7 @@ license: LicenseRef-Unlicensed-Reviewed
 scope:
   include:
     - app/
-    - idVerification/settings.py
+    - idVerification/
   exclude:
     - path: app/migrations/
       reason: generated migrations

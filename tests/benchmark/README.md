@@ -63,7 +63,7 @@ Clone pinned repositories for local benchmark development:
 ```bash
 pnpm run benchmark:materialize vgs-django
 pnpm run benchmark:materialize easy-school
-pnpm run benchmark:materialize -- --all
+pnpm run benchmark:materialize --all
 ```
 
 Clones land in `tests/benchmark/.cache/repos/<key>@<commit>/`. The script is idempotent and uses sparse checkout when scope paths are listed in the manifest.
