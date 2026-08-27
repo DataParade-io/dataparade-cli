@@ -25,7 +25,7 @@ async function main(): Promise<void> {
     throw new Error("--root is required");
   }
 
-  const { findings, warnings, errors } = await collectEvalFindings(rootPath);
+  const { findings, filesScanned, warnings, errors } = await collectEvalFindings(rootPath);
 
   for (const warning of warnings) {
     console.error(warning);
@@ -34,7 +34,7 @@ async function main(): Promise<void> {
     console.error(error);
   }
 
-  const payload: EvalFindingsPayload = { findings };
+  const payload: EvalFindingsPayload = { findings, filesScanned };
   process.stdout.write(`${JSON.stringify(payload)}\n`);
 }
 
