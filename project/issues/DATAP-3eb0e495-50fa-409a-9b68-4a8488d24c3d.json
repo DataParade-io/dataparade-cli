@@ -10,9 +10,17 @@
   "parent": "DATAP-602",
   "labels": [],
   "dependencies": [],
-  "comments": [],
+  "comments": [
+    {
+      "id": "f78ba7c7-8593-450f-827e-6b95bf2f5d94",
+      "author": "ryan",
+      "text": "PRs #3–#5 are on develop, including the Hyperswitch proposed packet. This bug still stands: ingest skips .rs, so those 10 types.rs spans stay SKIPPED/unread rather than scored. Do not close until filesystem ingest includes Rust.",
+      "created_at": "2026-08-27T19:00:37.178445Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-27T13:34:58.775162Z",
-  "updated_at": "2026-08-27T13:34:58.775162Z",
+  "updated_at": "2026-08-27T19:00:37.178445Z",
   "closed_at": null,
   "custom": {}
 }

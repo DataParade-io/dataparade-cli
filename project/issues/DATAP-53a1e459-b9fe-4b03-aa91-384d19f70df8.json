@@ -3,7 +3,7 @@
   "title": "Build materialized-repository benchmark runner",
   "description": "Add an opt-in benchmark execution path that scans tests/benchmark/.cache/repos/<key>@<commit> rather than resolving repository cases under tests/fixtures. Load accepted annotations by default, convert them through the shared evaluator contract, scan the exact materialized pinned root, preserve repository-relative evidence paths, capture the exact scanned-file inventory, and report unread when required files were not scanned. Keep network cloning and large repository scans out of normal pnpm test and CI unless an explicit deterministic artifact strategy is added. Add tests for root resolution, accepted-only filtering, missing materialization, path normalization, and unread behavior. Document the materialize-and-run commands.",
   "type": "sub-task",
-  "status": "in_progress",
+  "status": "closed",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -55,11 +55,18 @@
       "text": "## Status vs PRs (2026-08-27)\n\nImplemented on [#3](https://github.com/DataParade-io/dataparade-cli/pull/3) (`feature/DATAP-602-impl-lane`). Keep this issue **open until #3 merges**, per the keep-until-merge policy.\n\nStacked follow-ups (do not close this issue for them):\n- [#4](https://github.com/DataParade-io/dataparade-cli/pull/4) — `data_items` layer + review-state selector (DATAP-87ebe8)\n- [#5](https://github.com/DataParade-io/dataparade-cli/pull/5) — curated corpus (owned on corpus lane)\n",
       "created_at": "2026-08-27T13:33:28.565740Z",
       "comment_type": "default"
+    },
+    {
+      "id": "761aa367-d3ea-4033-9f7d-76f4e1f001e4",
+      "author": "ryan",
+      "text": "MERGED to develop as https://github.com/DataParade-io/dataparade-cli/pull/3. scripts/benchmark/run.ts, eval:pii-signals, eval:data-flows, and tests/benchmark/ are on origin/develop. Closing this story.",
+      "created_at": "2026-08-27T18:57:26.325841Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T21:14:39.520743Z",
-  "updated_at": "2026-08-27T13:33:28.565740Z",
-  "closed_at": null,
+  "updated_at": "2026-08-27T18:57:48.911508Z",
+  "closed_at": "2026-08-27T18:57:48.911508Z",
   "custom": {
     "project_label": "DATAP",
     "source": "shared"

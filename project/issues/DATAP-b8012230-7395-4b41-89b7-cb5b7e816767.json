@@ -3,7 +3,7 @@
   "title": "Recover stale or abandoned benchmark materialization state",
   "description": "The atomic staging and per-target lock implementation at commit 50ee194 addresses the live concurrent-clone race recorded by the original DATAP-19ad97 issue on the curation branch, but stale and abandoned states still wait until the 15-minute timeout. Correct the concurrency state machine so waiting is justified only by a live fresh lock, waiters re-evaluate when the lock disappears, stale locks are removed safely, abandoned staging directories cannot block progress, and incomplete legacy targets are repaired without racing an active owner. Add behavior-level process concurrency tests covering peer success, peer failure, stale lock, partial target without a lock, and recovery without a 15-minute wait.",
   "type": "bug",
-  "status": "in_progress",
+  "status": "closed",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -31,10 +31,24 @@
       "text": "## Status vs PR #3 (2026-08-27)\n\nLock ownership tokens + stale/abandoned recovery are on [#3](https://github.com/DataParade-io/dataparade-cli/pull/3). Keep **open until #3 merges**.\n\nRelated corpus-lane issue DATAP-19ad97 tracked the original concurrent-materialize race. Treat 19ad97 as a duplicate of this family when closing after merge; do not leave both open on `main`.\n",
       "created_at": "2026-08-27T13:33:28.603566Z",
       "comment_type": "default"
+    },
+    {
+      "id": "3edc57ae-218f-4e89-9801-fe1de47efe6d",
+      "author": "ryan",
+      "text": "PR #3 merged to develop (2026-08-27). Stale/abandoned lock recovery and ownership-token release are on origin/develop. This is not the human-accepted-gold ticket — that remains DATAP-c66199 / DATAP-3a2d51. Closing this bug on the merge that was already named as the landing gate.",
+      "created_at": "2026-08-27T18:57:26.437508Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "00c46119-1f7b-4995-9fc8-af1de309f74a",
+      "author": "ryan",
+      "text": "Closing: the #3 landing gate named in the prior comment is merged to develop. DATAP-19ad97 is the same family and is closed as a duplicate of this fix.",
+      "created_at": "2026-08-27T19:00:37.078944Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T22:09:15.966247Z",
-  "updated_at": "2026-08-27T13:33:28.603566Z",
-  "closed_at": null,
+  "updated_at": "2026-08-27T19:00:37.096336Z",
+  "closed_at": "2026-08-27T19:00:37.096336Z",
   "custom": {}
 }
