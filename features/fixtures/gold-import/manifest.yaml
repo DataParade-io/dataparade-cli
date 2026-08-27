@@ -1,0 +1,13 @@
+repository: dataparade/gold-import-fixture
+commit: 0123456789abcdef0123456789abcdef01234567
+license: LicenseRef-Test-Fixture
+scope:
+  include:
+    - src/
+coverage:
+  layers: [components]
+  languages: [typescript]
+  domains: [testing]
+selection_rationale: >-
+  Minimal one-annotation fixture for gold import feature tests.
+annotation_version: 1
