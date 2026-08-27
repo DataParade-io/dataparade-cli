@@ -48,10 +48,17 @@
       "text": "Actual documented-command smoke test on PR #3 at 30ec0d2 failed before scanning: pnpm run benchmark:run --include-proposed vgs-django easy-school searches under dist/tests/benchmark/repos and cannot find source YAML manifests. Filed DATAP-7c57f9 as a PR landing blocker. Unit tests inject benchmarkRoot and therefore did not exercise this compiled CLI path.",
       "created_at": "2026-08-27T00:13:50.370805Z",
       "comment_type": "default"
+    },
+    {
+      "id": "db5d3482-ad78-4689-833a-6dbee779dbfe",
+      "author": "ryan",
+      "text": "## Status vs PRs (2026-08-27)\n\nImplemented on [#3](https://github.com/DataParade-io/dataparade-cli/pull/3) (`feature/DATAP-602-impl-lane`). Keep this issue **open until #3 merges**, per the keep-until-merge policy.\n\nStacked follow-ups (do not close this issue for them):\n- [#4](https://github.com/DataParade-io/dataparade-cli/pull/4) — `data_items` layer + review-state selector (DATAP-87ebe8)\n- [#5](https://github.com/DataParade-io/dataparade-cli/pull/5) — curated corpus (owned on corpus lane)\n",
+      "created_at": "2026-08-27T13:33:28.565740Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T21:14:39.520743Z",
-  "updated_at": "2026-08-27T00:13:50.370805Z",
+  "updated_at": "2026-08-27T13:33:28.565740Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",
