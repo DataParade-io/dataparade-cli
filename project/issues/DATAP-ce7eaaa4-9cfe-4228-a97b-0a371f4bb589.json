@@ -3,7 +3,7 @@
   "title": "Import and rank prior repository candidate inventory",
   "description": "Reuse the repository research preserved on DATAP-602-BDD and related notes. Create a versioned candidate inventory covering every previously identified repository, including repository name, immutable commit, verified license status, languages, frameworks, data domains, candidate evaluation layers, proposed complete-file or complete-directory scope, independent selection rationale, and disposition. Verify current source and license rather than copying claims blindly. Rank candidates by missing corpus coverage, not by current scanner findings. Account explicitly for all prior candidates and shortlist the next four to six repositories for annotation. Do not convert proposed labels into accepted ground truth in this task.",
   "type": "sub-task",
-  "status": "in_progress",
+  "status": "closed",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -31,10 +31,17 @@
       "text": "## Scope vs title (2026-08-27)\n\nWork expanded past \"import and rank inventory\" into full packet curation. Packets + `candidates.yaml` are on [#5](https://github.com/DataParade-io/dataparade-cli/pull/5).\n\nKeep open until #5 merges. Title still understates shipped work; do not rename unless a human wants a broader title.\n\nT0 provisional eval used this corpus with the PR #4 scanner (local combined branch only).\n",
       "created_at": "2026-08-27T13:33:43.798546Z",
       "comment_type": "default"
+    },
+    {
+      "id": "5a74b4ad-6075-4ffb-8adf-d80dccadc139",
+      "author": "ryan",
+      "text": "MERGED to develop as https://github.com/DataParade-io/dataparade-cli/pull/5 (2026-08-27). Corpus is on origin/develop: 150 annotations, 10 repos, all review_state proposed. The 10 Hyperswitch types.rs files remain unreviewed. Closing this story; human-acceptance work stays on DATAP-602 / DATAP-7aea12 / DATAP-b80122.",
+      "created_at": "2026-08-27T18:57:26.304356Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T21:14:34.273906Z",
-  "updated_at": "2026-08-27T13:33:43.798546Z",
-  "closed_at": null,
+  "updated_at": "2026-08-27T18:57:48.897322Z",
+  "closed_at": "2026-08-27T18:57:48.897322Z",
   "custom": {}
 }

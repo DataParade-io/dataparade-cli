@@ -16,6 +16,8 @@ The one hit is vgs-django Checkr (`app/checker_client.py`, components layer). Ev
 
 Gold labels are still `review_state: proposed`. Precision is a separate initiative. `--baseline` is not implemented.
 
+The 150-annotation corpus (10 repos) is on `develop` via PRs #3–#5. Human acceptance is still DATAP-c66199.
+
 ## Operator path
 
 Implementation is on `develop`.
@@ -27,4 +29,4 @@ Implementation is on `develop`.
 
 ## Lands on develop
 
-dataparade-cli: PRs #6–#11. Plexus: PRs #612–#613.
+dataparade-cli: PRs #3–#11 (benchmark runner, data_items, 150-annotation proposed corpus, Cucumber, gold import, scan-findings, fixture + corpus evaluate accuracy). Plexus: PRs #612–#613.

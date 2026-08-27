@@ -3,7 +3,7 @@
   "title": "Eval system: data flow detection",
   "description": "Add Layer 2 evaluation for deterministic data-flow output after the shared evaluator lands.\n\nBlocked only on DATAP-c7dd46 shared evaluator contract. Once c7dd46 lands, proceeds in PARALLEL with DATAP-f3feec — not sequential after f3feec. Real benchmark cases from DATAP-b17f92 supplement committed smoke fixtures when available (optional enrichment, not a start blocker).\n\nThe adapter receives both components and dataFlows. Resolve sourceComponentId and targetComponentId through the component index, create a canonical edge identity, and normalize sourceLocation plus sourceLocations into evidence. The current type does not expose sourceComponentName, targetComponentName, or evidence fields.\n\nEvaluate source, target, flow type, and location. Use flow.type as the deterministic label unless a separately verified deterministic stage populates dataCategories. Do not claim data-category label accuracy from fields that are only optional or AI-enriched.\n\nUse committed smoke fixtures for CI and exhaustively annotated benchmark scopes for true precision. Preserve exact per-file unread handling. Zero scanner changes unless current output proves insufficient and that scope change is separately approved.",
   "type": "task",
-  "status": "in_progress",
+  "status": "closed",
   "priority": 2,
   "assignee": null,
   "creator": null,
@@ -50,11 +50,18 @@
       "text": "## Status vs PR #3 (2026-08-27)\n\nData-flow eval adapter/plumbing is on [#3](https://github.com/DataParade-io/dataparade-cli/pull/3). Keep **open until #3 merges**.\n",
       "created_at": "2026-08-27T13:33:28.613145Z",
       "comment_type": "default"
+    },
+    {
+      "id": "782373ba-fcf8-4e0a-9396-b641ff135f24",
+      "author": "ryan",
+      "text": "MERGED to develop as https://github.com/DataParade-io/dataparade-cli/pull/3. The data-flow Gherkin (tests/features/eval/data-flow-eval.feature) and layer are on origin/develop. Closing this story.",
+      "created_at": "2026-08-27T18:57:26.346435Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T19:56:16.908201Z",
-  "updated_at": "2026-08-27T13:33:28.613145Z",
-  "closed_at": null,
+  "updated_at": "2026-08-27T18:57:48.924961Z",
+  "closed_at": "2026-08-27T18:57:48.924961Z",
   "custom": {
     "project_label": "DATAP",
     "source": "shared"

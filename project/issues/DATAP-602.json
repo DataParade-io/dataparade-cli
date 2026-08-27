@@ -59,10 +59,17 @@
       "text": "Plexus recall evaluations for the scanner are initiative DATAP-bd3b69. Precision remains DATAP-d73a91. Do not implement until those plans are massaged.\n",
       "created_at": "2026-08-27T14:16:12.453444Z",
       "comment_type": "default"
+    },
+    {
+      "id": "acc1c502-3085-461c-a9ea-8df3d8cae4e0",
+      "author": "ryan",
+      "text": "PRs #3, #4, and #5 merged to develop (2026-08-27), along with the later eval stack (#6–#12).\n\nOn develop: benchmark runner, data-flow / PII / data_items layers, 150-annotation proposed corpus, Cucumber, gold YAML import, scan-findings, fixture + corpus evaluate accuracy.\n\nClosed on that landing: DATAP-53a1e4, DATAP-87ebe8, DATAP-ce7eaa, DATAP-d61496, DATAP-f3feec, plus runner bugs DATAP-7aea12, DATAP-b80122, DATAP-7c57f9, DATAP-19ad97, and the proposed-packet sub-tasks whose YAML is in tests/benchmark/repos/.\n\nDATAP-b17f92 stays open for adjudication and remaining packets. Still open under this epic: DATAP-3eb0e4 (Rust ingest), DATAP-c66199 (human adjudication), DATAP-af2f48 (--baseline), DATAP-25e8b2 (concurrent Items), DATAP-6bd634 / DATAP-d8833a.",
+      "created_at": "2026-08-27T18:57:26.450834Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-24T16:04:36.019Z",
-  "updated_at": "2026-08-27T14:16:12.453444Z",
+  "updated_at": "2026-08-27T19:00:37.019972Z",
   "closed_at": null,
   "custom": {
     "jira_key": "DATAP-602",

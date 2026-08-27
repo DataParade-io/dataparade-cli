@@ -3,7 +3,7 @@
   "title": "Validate pinned materialization before benchmark scoring",
   "description": "run-benchmark.ts currently treats any existing cache directory as materialized. Before scanning or scoring, verify that the cache is a valid Git checkout at the manifest commit, that every declared scope path exists with the expected file or directory kind, and that sparse-checkout state satisfies the manifest. Reuse the shared materialization validation contract rather than duplicating weaker checks. Fail with a clear remediation command when validation fails. Add tests for wrong HEAD, non-Git directory, missing included path, incomplete sparse patterns, and a valid pinned checkout. Metrics must never be produced from an unverified or partial cache.",
   "type": "bug",
-  "status": "in_progress",
+  "status": "closed",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -24,10 +24,24 @@
       "text": "## Status vs PR #3 (2026-08-27)\n\nCache validation before scoring is on [#3](https://github.com/DataParade-io/dataparade-cli/pull/3). Keep **open until #3 merges**.\n",
       "created_at": "2026-08-27T13:33:28.594662Z",
       "comment_type": "default"
+    },
+    {
+      "id": "9d7a4140-602a-4d5e-8073-9ff4d662e77c",
+      "author": "ryan",
+      "text": "PR #3 merged to develop (2026-08-27). Cache validation before scoring is on origin/develop: `assertMaterialized` rejects missing, non-Git, wrong-HEAD, missing-scope, and incomplete-sparse caches. This is not the Rust ingest bug — that remains DATAP-3eb0e4. Closing this bug on the merge that was already named as the landing gate.",
+      "created_at": "2026-08-27T18:57:26.424965Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "61c430c4-ddd0-43b2-ab52-05c208ca5e00",
+      "author": "ryan",
+      "text": "Closing: the #3 landing gate named in the prior comment is merged to develop.",
+      "created_at": "2026-08-27T19:00:37.049799Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T21:53:55.322147Z",
-  "updated_at": "2026-08-27T13:33:28.594662Z",
-  "closed_at": null,
+  "updated_at": "2026-08-27T19:00:37.063787Z",
+  "closed_at": "2026-08-27T19:00:37.063787Z",
   "custom": {}
 }

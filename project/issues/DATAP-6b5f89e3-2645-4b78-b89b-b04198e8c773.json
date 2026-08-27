@@ -3,7 +3,7 @@
   "title": "Find a compact credential-payload corpus packet",
   "description": "Find and pin a compact permissively licensed complete source scope for password or credential-payload semantics distinct from Gitea access tokens and Keycloak credential entities. Use scanner-blind proposed annotations and a human review worksheet; do not accept labels without review.",
   "type": "sub-task",
-  "status": "in_progress",
+  "status": "closed",
   "priority": 2,
   "assignee": null,
   "creator": null,
@@ -17,10 +17,17 @@
       "text": "Prepared and materialized a compact Ory Kratos password-credential packet: complete 21-line Apache-2.0 Go type, with one proposed password-verifier decision and one migration-control negative. This deliberately complements rather than repeats Gitea bearer tokens and Keycloak generic credential payloads. Manifest tests pass; no record is accepted.",
       "created_at": "2026-08-26T22:39:08.424379Z",
       "comment_type": "default"
+    },
+    {
+      "id": "12cf5fe6-bd40-4d7d-abd6-61f6dd5b1f53",
+      "author": "ryan",
+      "text": "Proposed Ory Kratos password packet is on develop via PR #5 (tests/benchmark/repos/ory-kratos-password/). Closing this find-and-prepare sub-task. Acceptance remains DATAP-c66199.",
+      "created_at": "2026-08-27T19:00:37.324402Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T22:38:20.536638Z",
-  "updated_at": "2026-08-26T22:39:08.424379Z",
-  "closed_at": null,
+  "updated_at": "2026-08-27T19:00:37.342086Z",
+  "closed_at": "2026-08-27T19:00:37.342086Z",
   "custom": {}
 }

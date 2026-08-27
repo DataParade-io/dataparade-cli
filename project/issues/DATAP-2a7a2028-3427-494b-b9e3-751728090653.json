@@ -3,7 +3,7 @@
   "title": "Prepare Gitea annotation packet",
   "description": "Evaluate go-gitea/gitea at pinned commit 0b1067484fcdc497dc34d9113c467182231e6ea9 as a Go identity, user-profile, and access-token corpus candidate. Verify repository identity and license, choose a manageable complete scope around models/auth/access_token.go and modules/structs/user.go, inventory every included file and exclusion, and prepare scanner-independent proposed annotations for applicable layers. Include positives, realistic negatives, ambiguities, evidence context, rationale, and provenance. Unsupported Go scanning must later report unread rather than a clean negative. Keep all annotations proposed pending human review.",
   "type": "sub-task",
-  "status": "in_progress",
+  "status": "closed",
   "priority": 2,
   "assignee": null,
   "creator": null,
@@ -29,11 +29,18 @@
       "text": "Prepared and materialized the scanner-blind Gitea packet. Complete scope: models/auth/access_token.go and modules/structs/user.go (307 lines total), 26 proposed data-item decisions. The worksheet separates direct token/account identity positives from verifier metadata negatives and link/free-text/image ambiguities. Manifest test passes; no label is accepted or counted.",
       "created_at": "2026-08-26T22:12:35.259550Z",
       "comment_type": "default"
+    },
+    {
+      "id": "50cc9fa9-f7fe-401b-bcce-d36274456ef7",
+      "author": "ryan",
+      "text": "Proposed Gitea packet is on develop via PR #5 (tests/benchmark/repos/gitea/). Closing this preparation sub-task. Acceptance remains DATAP-c66199.",
+      "created_at": "2026-08-27T19:00:37.265531Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T21:14:38.792535Z",
-  "updated_at": "2026-08-26T22:12:35.259550Z",
-  "closed_at": null,
+  "updated_at": "2026-08-27T19:00:37.281306Z",
+  "closed_at": "2026-08-27T19:00:37.281306Z",
   "custom": {
     "project_label": "DATAP",
     "source": "shared"

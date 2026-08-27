@@ -15,12 +15,20 @@
       "type": "blocked-by"
     }
   ],
-  "comments": [],
+  "comments": [
+    {
+      "id": "5b2316e3-6871-4ab8-b1f9-1a94a6de8247",
+      "author": "ryan",
+      "text": "PR #5 merged the 150-annotation proposed corpus to develop. This human-adjudication gate is unchanged: agents must not mark records accepted. First exhaustive scope is still easy-school (DATAP-e64aa8, license-blocked) or whichever packet a human actually reviews next.",
+      "created_at": "2026-08-27T19:00:37.195103Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-26T21:14:40.255716Z",
-  "updated_at": "2026-08-26T21:14:40.255716Z",
+  "updated_at": "2026-08-27T19:00:37.195103Z",
   "closed_at": null,
   "custom": {
-    "source": "shared",
-    "project_label": "DATAP"
+    "project_label": "DATAP",
+    "source": "shared"
   }
 }

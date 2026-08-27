@@ -3,7 +3,7 @@
   "title": "Fix concurrent benchmark materialization race",
   "description": "Concurrent corpus preparation exposes a materializer race. When one process creates tests/benchmark/.cache/repos/<key>@<commit> and is still cloning or checking out, a second pnpm run benchmark:materialize <key> sees the directory, immediately runs git rev-parse HEAD, and exits 128 because HEAD is not yet resolvable. It neither waits nor recovers, despite the cache eventually becoming valid.\n\nReproduced during parallel easy-school packet preparation in the separate corpus-curation worktree. The current existing-directory validation assumes a completed Git checkout; it must safely handle a partially created target.\n\nAcceptance criteria:\n- Concurrent invocations for the same repo key do not fail or corrupt the cache.\n- Use a per-key lock or materialize into a temporary sibling directory and atomically rename only after complete validation.\n- An empty, partial, or non-Git target is treated as incomplete and recovered or reported with an actionable non-crashing result.\n- Add a deterministic test covering the partial-target or concurrent path.\n- Keep materialization opt-in and outside normal CI.",
   "type": "bug",
-  "status": "open",
+  "status": "closed",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -24,10 +24,17 @@
       "text": "Third independent reproduction during Medusa materialization: target clone directory exists but `git rev-parse HEAD` exits 128 after the materializer invocation. This is consistent with the partial-target recovery defect, not a corpus failure.",
       "created_at": "2026-08-26T23:31:02.239122Z",
       "comment_type": "default"
+    },
+    {
+      "id": "7fad16a7-234e-4df3-8964-c23fd86c6334",
+      "author": "ryan",
+      "text": "Fixed on develop via PR #3 (materialize orchestrator: per-key lock, ownership token, used-existing follower, stale/abandoned recovery). Duplicate of the DATAP-b80122 family. Closing.",
+      "created_at": "2026-08-27T19:00:37.144628Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T21:45:32.681040Z",
-  "updated_at": "2026-08-26T23:31:02.239122Z",
-  "closed_at": null,
+  "updated_at": "2026-08-27T19:00:37.163317Z",
+  "closed_at": "2026-08-27T19:00:37.163317Z",
   "custom": {}
 }

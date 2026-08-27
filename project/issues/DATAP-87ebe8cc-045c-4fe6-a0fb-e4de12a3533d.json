@@ -3,7 +3,7 @@
   "title": "Run provisional benchmark cases by review state",
   "description": "Support diagnostic evaluation of proposed corpus records without accepting them as ground truth. Replace the coarse includeProposed behavior with an explicit repeatable review-state selector supporting accepted-only default, proposed-only, needs-adjudication-only, and intentional combinations. Keep rejected records excluded unless explicitly requested for debugging. Every run containing non-accepted records must print a PROVISIONAL banner, counts by review state, and per-case outcomes including matched, missed, wrong-label, negative-clean, and unread with expected versus observed labels and evidence. Do not publish provisional results as headline benchmark metrics or precision. Preserve accepted-only behavior for normal runs and keep includeProposed as a compatible alias if practical. Extend the benchmark bridge and repository scanner to support the data_items layer used by the Hyperswitch packet. Reading an absent scanResult.dataItems collection may produce an explicit zero-finding baseline, but must not change default product scan output. Unsupported exact files remain unread rather than clean misses. Add tests for state filtering, mixed states, provisional labeling, rejected exclusion, data-item conversion, and missing data-item output.",
   "type": "sub-task",
-  "status": "open",
+  "status": "closed",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -22,11 +22,18 @@
       "text": "## Implemented on PR #4 (2026-08-27)\n\nCode is on [#4](https://github.com/DataParade-io/dataparade-cli/pull/4) (`feature/DATAP-87ebe8`):\n\n- `data_items` in `EvalLayer` / `to-eval-cases`\n- `scanRepoDataItems` + `scanRepoByManifestLayers`\n- `reviewStates` selector replacing coarse `includeProposed`\n- PROVISIONAL banner when non-accepted states are included\n- `materialize-repo.cjs` for post-`tsc` materialization\n\nKeep **open until #4 merges**. Full 150-record corpus is PR #5, not this issue.\n\nA local combined run (`dev/datap-602-local-eval`, not pushed) executed `--review-states=proposed` against the 150 proposed records. That is T0 evidence for DATAP-3a2d51, not an accepted baseline.\n",
       "created_at": "2026-08-27T13:33:28.575898Z",
       "comment_type": "default"
+    },
+    {
+      "id": "f74e1764-7700-430c-828a-59a732ea8c3b",
+      "author": "ryan",
+      "text": "MERGED to develop as https://github.com/DataParade-io/dataparade-cli/pull/4. data_items layer, data-item-eval.feature, and --review-state selector are on origin/develop. Closing this story.",
+      "created_at": "2026-08-27T18:57:26.385413Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T22:09:32.878653Z",
-  "updated_at": "2026-08-27T13:33:28.575898Z",
-  "closed_at": null,
+  "updated_at": "2026-08-27T18:57:48.957271Z",
+  "closed_at": "2026-08-27T18:57:48.957271Z",
   "custom": {
     "project_label": "DATAP",
     "source": "shared"
