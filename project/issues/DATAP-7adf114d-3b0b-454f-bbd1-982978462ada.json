@@ -1,0 +1,47 @@
+{
+  "id": "DATAP-7adf114d-3b0b-454f-bbd1-982978462ada",
+  "title": "Add a Gherkin runner without converting existing Jest tests",
+  "description": "Add a Gherkin runner in dataparade-cli for this initiative. Do not migrate existing Jest tests.\n\nRecommended: cucumber-js with `features/` (or `tests/features/`) and a `pnpm test:features` script. jest-cucumber is acceptable if we must stay inside Jest, but Gherkin files should remain the source of truth.\n\nOut of scope:\n- Rewriting `tests/eval/layers/**/eval.test.ts`\n- Rewriting scanner unit specs\n- Implementing Plexus, Virtuus, or the detector Score\n\nPairs with Plexus behave features on plx-765ff0 / plx-3f0d47 for repo-local behavior. End-to-end operator scenarios live here and may shell out to `plexus` and the local GraphQL process.",
+  "type": "chore",
+  "status": "closed",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-64f1279d-c956-4207-b9a4-43ac1e7b797e",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "87e3e4ba-4e1b-4a59-bef9-984216acb596",
+      "author": "ryan",
+      "text": "Wave 1 started: Coding Agent on feature/DATAP-64f127 from origin/main. Scope is cucumber-js runner only.",
+      "created_at": "2026-08-27T15:10:53.044986Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "20804c67-6487-44cd-a9a9-56ce6ba5631b",
+      "author": "ryan",
+      "text": "Accepted after revision: tsconfig no longer compiles features into dist; test:features passes 2 scenarios. PR forthcoming on feature/DATAP-64f127. Not merged to main.",
+      "created_at": "2026-08-27T15:18:34.529735Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "ad23b689-35fe-47be-9275-339835c11f81",
+      "author": "ryan",
+      "text": "PR: https://github.com/DataParade-io/dataparade-cli/pull/6 against main. Not merged.",
+      "created_at": "2026-08-27T15:18:55.516951Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "4795de1c-8153-4cd6-a370-571ffb292526",
+      "author": "ryan",
+      "text": "Landed on develop via https://github.com/DataParade-io/dataparade-cli/pull/6",
+      "created_at": "2026-08-27T17:36:39.231951Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-27T14:51:55.815698Z",
+  "updated_at": "2026-08-27T17:36:39.243931Z",
+  "closed_at": "2026-08-27T17:36:39.243931Z",
+  "custom": {}
+}

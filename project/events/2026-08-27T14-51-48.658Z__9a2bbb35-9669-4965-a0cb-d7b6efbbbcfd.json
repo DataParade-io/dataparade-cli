@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "9a2bbb35-9669-4965-a0cb-d7b6efbbbcfd",
+  "issue_id": "DATAP-64f1279d-c956-4207-b9a4-43ac1e7b797e",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T14:51:48.658Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "Purpose: New behavior for evaluating the scanner through local Plexus is specified as executable Gherkin. Production code exists only to make those scenarios pass.\n\nExisting Jest (`tests/unit/**/*.spec.ts` and `tests/eval/**/*.test.ts`) stays for the current scanner and fixture-eval harness. This epic does not convert that suite. It adds a Gherkin runner and holds the chore to wire it.\n\nPlexus and Virtuus already treat `.feature` files as the spec. DataParade should do the same for this initiative.\n\nDefinition of Done:\n- A Gherkin runner exists in this repo\n- Stories under DATAP-bd3b69 have matching `.feature` files before implementation\n- `pnpm test` still runs Jest; features have their own command",
+    "issue_type": "epic",
+    "labels": [],
+    "parent": "DATAP-bd3b6935-d456-4619-8045-e6bbde4b0bd3",
+    "priority": 1,
+    "status": "open",
+    "title": "Prove Plexus-backed eval with executable Gherkin"
+  }
+}

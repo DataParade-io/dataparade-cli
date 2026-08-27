@@ -3,7 +3,7 @@
   "title": "Build materialized-repository benchmark runner",
   "description": "Add an opt-in benchmark execution path that scans tests/benchmark/.cache/repos/<key>@<commit> rather than resolving repository cases under tests/fixtures. Load accepted annotations by default, convert them through the shared evaluator contract, scan the exact materialized pinned root, preserve repository-relative evidence paths, capture the exact scanned-file inventory, and report unread when required files were not scanned. Keep network cloning and large repository scans out of normal pnpm test and CI unless an explicit deterministic artifact strategy is added. Add tests for root resolution, accepted-only filtering, missing materialization, path normalization, and unread behavior. Document the materialize-and-run commands.",
   "type": "sub-task",
-  "status": "open",
+  "status": "in_progress",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -13,14 +13,55 @@
     {
       "target": "DATAP-c7dd461c-54eb-4e28-8d30-e9d8e393cf89",
       "type": "blocked-by"
+    },
+    {
+      "target": "DATAP-7aea121c-5109-4110-9a97-ce37058bf6a9",
+      "type": "blocked-by"
+    },
+    {
+      "target": "DATAP-b8012230-7395-4b41-89b7-cb5b7e816767",
+      "type": "blocked-by"
+    },
+    {
+      "target": "DATAP-7c57f962-8679-4a40-aac1-8edfc359b879",
+      "type": "blocked-by"
     }
   ],
-  "comments": [],
+  "comments": [
+    {
+      "id": "927604c1-36d3-4910-8794-e08aefc8711d",
+      "author": "ryan",
+      "text": "Implementation integrated at 4164fc3 on feature/DATAP-602-impl-lane. Focused verification passes, but manager audit found that assertMaterialized only checks directory existence and can score a wrong, non-Git, or partial cache. DATAP-7aea12 is a landing blocker. The follow-up concurrency fix at 50ee194 also remains blocked by DATAP-19ad97 until stale and abandoned state recovery is correct. Keep this issue open until both bugs are fixed and the implementation PR lands.",
+      "created_at": "2026-08-26T21:54:08.257382Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "807b629f-d2f9-4af8-9416-8fa0728b4d00",
+      "author": "ryan",
+      "text": "Manager re-audit approves implementation PR creation at 3a47c4b. DATAP-7aea12 and DATAP-b80122 are technically resolved with independent focused verification. Keep runner and bugs open until the PR lands. DATAP-87ebe8 remains a separate follow-up for provisional review-state selection and data-item diagnostic runs.",
+      "created_at": "2026-08-26T23:28:41.962059Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "3a5a307e-5fc3-419f-88fc-89b0cba8eaed",
+      "author": "ryan",
+      "text": "Actual documented-command smoke test on PR #3 at 30ec0d2 failed before scanning: pnpm run benchmark:run --include-proposed vgs-django easy-school searches under dist/tests/benchmark/repos and cannot find source YAML manifests. Filed DATAP-7c57f9 as a PR landing blocker. Unit tests inject benchmarkRoot and therefore did not exercise this compiled CLI path.",
+      "created_at": "2026-08-27T00:13:50.370805Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "db5d3482-ad78-4689-833a-6dbee779dbfe",
+      "author": "ryan",
+      "text": "## Status vs PRs (2026-08-27)\n\nImplemented on [#3](https://github.com/DataParade-io/dataparade-cli/pull/3) (`feature/DATAP-602-impl-lane`). Keep this issue **open until #3 merges**, per the keep-until-merge policy.\n\nStacked follow-ups (do not close this issue for them):\n- [#4](https://github.com/DataParade-io/dataparade-cli/pull/4) — `data_items` layer + review-state selector (DATAP-87ebe8)\n- [#5](https://github.com/DataParade-io/dataparade-cli/pull/5) — curated corpus (owned on corpus lane)\n",
+      "created_at": "2026-08-27T13:33:28.565740Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-26T21:14:39.520743Z",
-  "updated_at": "2026-08-26T21:14:39.520743Z",
+  "updated_at": "2026-08-27T13:33:28.565740Z",
   "closed_at": null,
   "custom": {
-    "source": "shared",
-    "project_label": "DATAP"
+    "project_label": "DATAP",
+    "source": "shared"
   }
 }

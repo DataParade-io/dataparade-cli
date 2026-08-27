@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-219d0fd7-2665-4c6b-8165-c774f4dbd597",
+  "title": "Benchmark runner writes a versioned JSON report",
+  "description": "As a scanner engineer, I want each benchmark run written to a versioned JSON file, so that T0/T1/T2 metrics are replayable instead of vanishing from stdout.",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-602",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "8a586913-7e8d-4d3e-ac47-2701b1964e27",
+      "author": "ryan",
+      "text": "Feature: Versioned benchmark JSON report\n\n  Scenario: Write report when --output is provided\n    Given a materialized benchmark repository with scored eval cases\n    When I run benchmark:run with --output reports/run.json\n    Then reports/run.json exists\n    And the file has schemaVersion, gitSha, reviewStates, aggregates, and repos\n\n  Scenario: Stdout remains when --output is omitted\n    Given a materialized benchmark repository\n    When I run benchmark:run without --output\n    Then metrics still print to stdout\n    And no report file is required\n",
+      "created_at": "2026-08-27T13:35:17.246742Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-27T13:34:58.783736Z",
+  "updated_at": "2026-08-27T13:35:17.246742Z",
+  "closed_at": null,
+  "custom": {}
+}

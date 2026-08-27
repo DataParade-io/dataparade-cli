@@ -1,0 +1,18 @@
+{
+  "id": "DATAP-3eb0e495-50fa-409a-9b68-4a8488d24c3d",
+  "title": "Ingest Rust sources in filesystem ingest",
+  "description": "Purpose: Hyperswitch-vault T0 is 29/29 unread because ingestFileSystem has no Rust language and skips .rs files. Unread is not a detector miss.\n\nExclusions:\n- Payment-card detector families (those wait for T1)\n- Changing Hyperswitch annotations\n\nDefinition of Done:\n- .rs files appear in scannedFiles\n- Hyperswitch proposed cases are evaluable (hit/miss/wrong-label), not unread\n- Focused ingest tests pass",
+  "type": "bug",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-602",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-27T13:34:58.775162Z",
+  "updated_at": "2026-08-27T13:34:58.775162Z",
+  "closed_at": null,
+  "custom": {}
+}
