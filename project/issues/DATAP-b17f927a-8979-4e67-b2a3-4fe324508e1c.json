@@ -87,10 +87,17 @@
       "text": "Curation added a seventh active packet: PostHog analytics user (MIT community path/Python, 706 lines, 13 proposed records), adding analytics identity and account-security semantics. No labels are accepted.",
       "created_at": "2026-08-27T00:00:52.239151Z",
       "comment_type": "default"
+    },
+    {
+      "id": "95948277-aec1-44c3-b0f7-a4b6d2f0d564",
+      "author": "ryan",
+      "text": "## PR #5 and T0 provisional run (2026-08-27)\n\nCurated packets are on [#5](https://github.com/DataParade-io/dataparade-cli/pull/5) (`codex/DATAP-ce7eaa-corpus-curation`): 150 annotations across 10 repos (3 components, 147 data_items), all `proposed`.\n\nStacked with [#3](https://github.com/DataParade-io/dataparade-cli/pull/3) (runner) and [#4](https://github.com/DataParade-io/dataparade-cli/pull/4) (`data_items` scanner). Do not merge this corpus before the runner can load `data_items`.\n\n### T0 provisional metrics (not accepted; stdout only)\n\nRun: `--review-states=proposed` on local combined branch `dev/datap-602-local-eval` (not pushed).\n\n- 150 cases, 65 evaluable positives, 24 matched, 0 correct labels, 41 misses, 29 unread\n- Recall ~36.9%, label accuracy 0.0%\n- Hyperswitch-vault: 29/29 unread (`.rs` not ingested)\n- Label mismatch: scanner `user_email`/`first_name` vs corpus `email_address`/`person_name`\n\nThis is **not** DATAP-3a2d51 (first accepted baseline). Record only so T0 is not folklore.\n",
+      "created_at": "2026-08-27T13:33:43.777961Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.314318Z",
-  "updated_at": "2026-08-27T00:00:52.239151Z",
+  "updated_at": "2026-08-27T13:33:43.777961Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",

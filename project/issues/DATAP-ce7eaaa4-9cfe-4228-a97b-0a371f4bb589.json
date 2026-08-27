@@ -24,10 +24,17 @@
       "text": "Candidate inventory completed in tests/benchmark/candidates.yaml. It accounts for all 25 DATAP-602-BDD research candidates, verifies the pinned commit set, records the observed license state at each pin, and separates source eligibility from human-approved ground truth. First packet shortlist: Apache-2.0 Hyperswitch Card Vault, then MIT Gitea; OpenMRS, ZITADEL, ERPNext, and Open edX remain ranked next steps. easy-school is blocked on its GLWT license; VGS and Patient Kiosk have no license at the pins. No scanner output or accepted labels were used.",
       "created_at": "2026-08-26T21:48:07.901863Z",
       "comment_type": "default"
+    },
+    {
+      "id": "9aba932e-9184-4fef-b786-95c10f792143",
+      "author": "ryan",
+      "text": "## Scope vs title (2026-08-27)\n\nWork expanded past \"import and rank inventory\" into full packet curation. Packets + `candidates.yaml` are on [#5](https://github.com/DataParade-io/dataparade-cli/pull/5).\n\nKeep open until #5 merges. Title still understates shipped work; do not rename unless a human wants a broader title.\n\nT0 provisional eval used this corpus with the PR #4 scanner (local combined branch only).\n",
+      "created_at": "2026-08-27T13:33:43.798546Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T21:14:34.273906Z",
-  "updated_at": "2026-08-26T21:48:07.901863Z",
+  "updated_at": "2026-08-27T13:33:43.798546Z",
   "closed_at": null,
   "custom": {}
 }
