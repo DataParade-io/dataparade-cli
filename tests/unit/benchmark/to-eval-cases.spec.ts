@@ -74,6 +74,78 @@ describe("benchmark to eval cases", () => {
     });
   });
 
+  describe("reviewStates selector", () => {
+    const fixture = "vgs-django";
+    const repoDir = path.join(reposRoot, fixture);
+    let annotations: AnnotationRecord[];
+
+    beforeAll(() => {
+      annotations = loadAnnotations(repoDir, "components");
+    });
+
+    it("includes only accepted by default", () => {
+      expect(annotationsToEvalCases(annotations, fixture)).toEqual([]);
+    });
+
+    it("includes proposed when reviewStates includes proposed", () => {
+      const cases = annotationsToEvalCases(annotations, fixture, {
+        reviewStates: ["proposed"],
+      });
+      expect(cases).toHaveLength(2);
+    });
+
+    it("reviewStates overrides includeProposed", () => {
+      const cases = annotationsToEvalCases(annotations, fixture, {
+        includeProposed: true,
+        reviewStates: ["accepted"],
+      });
+      expect(cases).toEqual([]);
+    });
+
+    it("includes both accepted and proposed when both are specified", () => {
+      const proposed = annotations.map((a) => ({
+        ...a,
+        provenance: { ...a.provenance, review_state: "accepted" as const },
+      }));
+      const cases = annotationsToEvalCases(proposed, fixture, {
+        reviewStates: ["accepted", "proposed"],
+      });
+      expect(cases).toHaveLength(2);
+    });
+  });
+
+  describe("data_items layer", () => {
+    it("converts data_items annotations to data-items eval cases", () => {
+      const dataItemAnnotation: AnnotationRecord = {
+        id: "test-data-item",
+        layer: "data_items",
+        subject: { key: "data_item:email", name: "email" },
+        evidence: { file_path: "models/user.ts", start_line: 8, end_line: 8 },
+        expected: { status: "positive", labels: ["email_address"] },
+        rationale: "User email field",
+        provenance: {
+          proposed_by: "test",
+          proposed_at: "2026-08-26",
+          review_state: "proposed",
+        },
+      };
+
+      const evalCase = annotationToEvalCase(dataItemAnnotation, "test-repo", {
+        reviewStates: ["proposed"],
+      });
+
+      expect(evalCase).toEqual({
+        id: "test-data-item",
+        fixture: "test-repo",
+        layer: "data-items",
+        subject: { key: "data_item:email", name: "email" },
+        evidence: { file_path: "models/user.ts", start_line: 8, end_line: 8 },
+        expected: { status: "positive", labels: ["email_address"] },
+        rationale: "User email field",
+      });
+    });
+  });
+
   describe("easy-school", () => {
     const fixture = "easy-school";
     const repoDir = path.join(reposRoot, fixture);

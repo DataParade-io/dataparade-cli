@@ -4,8 +4,9 @@ import path from "path";
 import type { EvalCase, EvalScoreReport, FixtureScanResult } from "../eval/types";
 import { scoreEvalCases } from "../eval/score";
 import { loadAnnotations, loadBenchmarkManifest } from "./manifest";
+import type { ReviewState } from "./schema";
 import { annotationsToEvalCases, type ToEvalCasesOptions } from "./to-eval-cases";
-import { normalizeRepoRelativePath, scanRepoComponents } from "./scan-repo";
+import { normalizeRepoRelativePath, scanRepoByManifestLayers } from "./scan-repo";
 import { resolveDefaultBenchmarkRoot } from "./paths";
 import {
   MaterializationInvalidError,
@@ -114,9 +115,15 @@ export async function runBenchmarkRepo(
   const materializedPath = assertMaterialized(repoKey, options.benchmarkRoot);
   const evalCases = loadEvalCasesForRepo(repoKey, options.benchmarkRoot, {
     includeProposed: options.includeProposed,
+    reviewStates: options.reviewStates,
   });
 
-  const scanFn = options.scanRepo ?? scanRepoComponents;
+  const repoDir = path.join(getReposMetadataRoot(options.benchmarkRoot), repoKey);
+  const manifest = loadBenchmarkManifest(repoDir);
+  const scanFn =
+    options.scanRepo ??
+    ((key: string, root: string) =>
+      scanRepoByManifestLayers(key, root, manifest.coverage.layers));
   const scanResult = await scanFn(repoKey, materializedPath);
   const score = scoreEvalCases(evalCases, [scanResult]);
 
@@ -172,15 +179,52 @@ function printRepoResult(result: BenchmarkRepoResult): void {
   }
 }
 
+function parseReviewStates(args: string[]): {
+  reviewStates?: ReviewState[];
+  includeProposed?: boolean;
+} {
+  const reviewStatesArg = args.find((arg) => arg.startsWith("--review-states="));
+  if (reviewStatesArg) {
+    const value = reviewStatesArg.slice("--review-states=".length);
+    const states = value
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean) as ReviewState[];
+    if (states.length > 0) {
+      return { reviewStates: states };
+    }
+  }
+  const includeProposed = args.includes("--include-proposed");
+  return { includeProposed };
+}
+
+function isProvisionalRun(options: ToEvalCasesOptions): boolean {
+  const states = options.reviewStates ?? (options.includeProposed ? ["proposed", "needs_adjudication", "accepted"] : ["accepted"]);
+  return !states.every((s) => s === "accepted");
+}
+
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
-  const includeProposed = args.includes("--include-proposed");
-  const repoKeys = args.filter((arg) => !arg.startsWith("--"));
+  const { reviewStates, includeProposed } = parseReviewStates(args);
+  const repoKeys = args.filter(
+    (arg) => !arg.startsWith("--"),
+  );
 
-  const results = await runBenchmark({
+  const options: RunBenchmarkOptions = {
     repoKeys: repoKeys.length > 0 ? repoKeys : undefined,
     includeProposed,
-  });
+    reviewStates,
+  };
+
+  if (isProvisionalRun(options)) {
+    console.log(
+      "\n*** PROVISIONAL BENCHMARK RUN ***\n" +
+        "Metrics include non-accepted annotations. Do not cite as headline metrics.\n" +
+        "Accept annotations before reporting final scores.\n",
+    );
+  }
+
+  const results = await runBenchmark(options);
 
   for (const result of results) {
     printRepoResult(result);

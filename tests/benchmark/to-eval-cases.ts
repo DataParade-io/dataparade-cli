@@ -1,29 +1,51 @@
 import type { EvalCase, EvalLayer } from "../eval/types";
-import type { AnnotationRecord } from "./schema";
+import type { AnnotationRecord, ReviewState } from "./schema";
 
 export interface ToEvalCasesOptions {
-  /** When true, include `proposed` and `needs_adjudication` annotations. Default false. */
+  /**
+   * When true, include `proposed` and `needs_adjudication` annotations.
+   * Default false. Mutually exclusive with `reviewStates`.
+   */
   includeProposed?: boolean;
+  /**
+   * Explicit set of review states to include. Default `["accepted"]`.
+   * When set, overrides `includeProposed`.
+   */
+  reviewStates?: ReviewState[];
+}
+
+const DEFAULT_REVIEW_STATES: ReviewState[] = ["accepted"];
+
+function resolveReviewStates(options: ToEvalCasesOptions): ReviewState[] {
+  if (options.reviewStates) {
+    return options.reviewStates;
+  }
+  if (options.includeProposed) {
+    return ["accepted", "proposed", "needs_adjudication"];
+  }
+  return DEFAULT_REVIEW_STATES;
 }
 
 function isIncludedReviewState(
   reviewState: AnnotationRecord["provenance"]["review_state"],
-  includeProposed: boolean,
+  allowedStates: ReviewState[],
 ): boolean {
-  if (reviewState === "rejected") {
-    return false;
-  }
-  if (reviewState === "accepted") {
-    return true;
-  }
-  return includeProposed;
+  return allowedStates.includes(reviewState);
 }
 
+const LAYER_MAP: Record<AnnotationRecord["layer"], EvalLayer> = {
+  components: "components",
+  data_flows: "data-flows",
+  pii_signals: "pii-signals",
+  data_items: "data-items",
+};
+
 function toEvalLayer(layer: AnnotationRecord["layer"]): EvalLayer {
-  if (layer !== "components") {
+  const mapped = LAYER_MAP[layer];
+  if (!mapped) {
     throw new Error(`Unsupported annotation layer '${layer}' for eval conversion`);
   }
-  return layer;
+  return mapped;
 }
 
 /**
@@ -34,8 +56,8 @@ export function annotationToEvalCase(
   fixture: string,
   options: ToEvalCasesOptions = {},
 ): EvalCase | null {
-  const includeProposed = options.includeProposed ?? false;
-  if (!isIncludedReviewState(annotation.provenance.review_state, includeProposed)) {
+  const allowedStates = resolveReviewStates(options);
+  if (!isIncludedReviewState(annotation.provenance.review_state, allowedStates)) {
     return null;
   }
 
