@@ -15,9 +15,17 @@
       "type": "blocked-by"
     }
   ],
-  "comments": [],
+  "comments": [
+    {
+      "id": "87edea6d-6d3d-475a-9d70-cd7e6216d8cc",
+      "author": "ryan",
+      "text": "## Implemented on PR #4 (2026-08-27)\n\nCode is on [#4](https://github.com/DataParade-io/dataparade-cli/pull/4) (`feature/DATAP-87ebe8`):\n\n- `data_items` in `EvalLayer` / `to-eval-cases`\n- `scanRepoDataItems` + `scanRepoByManifestLayers`\n- `reviewStates` selector replacing coarse `includeProposed`\n- PROVISIONAL banner when non-accepted states are included\n- `materialize-repo.cjs` for post-`tsc` materialization\n\nKeep **open until #4 merges**. Full 150-record corpus is PR #5, not this issue.\n\nA local combined run (`dev/datap-602-local-eval`, not pushed) executed `--review-states=proposed` against the 150 proposed records. That is T0 evidence for DATAP-3a2d51, not an accepted baseline.\n",
+      "created_at": "2026-08-27T13:33:28.575898Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-26T22:09:32.878653Z",
-  "updated_at": "2026-08-26T22:09:32.878653Z",
+  "updated_at": "2026-08-27T13:33:28.575898Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",

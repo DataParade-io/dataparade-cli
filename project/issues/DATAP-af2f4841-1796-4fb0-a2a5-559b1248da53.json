@@ -1,0 +1,40 @@
+{
+  "id": "DATAP-af2f4841-1796-4fb0-a2a5-559b1248da53",
+  "title": "Recall evaluation via plexus evaluate accuracy CLI",
+  "description": "As a scanner engineer, I want to run plexus evaluate accuracy against the local GraphQL server with the detector score, so that I can compare recall to a previous evaluation with --baseline.\n\nFeature: Scanner recall evaluation\n\n  Scenario: Evaluate gold detections\n    Given a local Plexus GraphQL process with file storage\n    And gold annotations loaded as Items labeled Yes\n    And the detector Score is on the scorecard\n    When I run plexus evaluate accuracy for that score\n    Then an Evaluation record is stored\n    And the headline metric is recall of detections\n\n  Scenario: Compare to a prior run\n    Given a previous Evaluation id\n    When I run plexus evaluate accuracy --baseline that id\n    Then the new Evaluation is comparable to the baseline\n\nImplementation of GraphQL storage is Plexus plx-765ff0. Score class is plx-41fcbe. This story is the DataParade operator path.",
+  "type": "story",
+  "status": "in_progress",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-e323656c-bdfd-4b9a-b5de-21c20a82a091",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "2a05d1e2-8e26-4d54-aec1-228be254f0fe",
+      "author": "ryan",
+      "text": "Wave 6 started on feature/DATAP-af2f48. Tiny fixture only. Combined Plexus checkout: Virtuus store + SourceSpanOverlapScore at Plexus_worktrees/eval-local. Operator path is plexus evaluate accuracy --yaml against local GraphQL.",
+      "created_at": "2026-08-27T16:04:59.534845Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "7d09bfec-3878-4ab1-8556-e376e402bc6b",
+      "author": "ryan",
+      "text": "Direct review accepted. Independent: `PLEXUS_ROOT=<eval-local> npm run test:features` — 10 scenarios, 42 steps.\n\nOperator path uses `plexus evaluate accuracy --yaml --dataset-file` against local GraphQL. Unread files omit from recall via SKIPPED. Ingested non-overlap is a miss. `--baseline` not implemented.\n\nPlexus SKIPPED wiring is on `feature/plx-611fbe-span-overlap-score` (PR 613). Combined local checkout: `feature/plx-eval-local`.\n",
+      "created_at": "2026-08-27T16:36:06.113418Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "fb954dc4-72bc-49a2-9174-da2589fe39b3",
+      "author": "ryan",
+      "text": "Fixture operator path is done (PR #10). Real corpus run is DATAP-c65881 / Evaluation `e43756be-58f1-4d9b-b1d4-7a221b3b0521` (recall 1.54%).\n\nRemaining on this story: `plexus evaluate accuracy --baseline`. Do not close until that scenario exists.",
+      "created_at": "2026-08-27T17:33:56.857207Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-27T14:15:54.278266Z",
+  "updated_at": "2026-08-27T17:33:56.857207Z",
+  "closed_at": null,
+  "custom": {}
+}

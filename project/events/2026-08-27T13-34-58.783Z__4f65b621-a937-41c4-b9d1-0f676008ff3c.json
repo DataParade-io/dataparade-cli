@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "4f65b621-a937-41c4-b9d1-0f676008ff3c",
+  "issue_id": "DATAP-219d0fd7-2665-4c6b-8165-c774f4dbd597",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T13:34:58.783Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "As a scanner engineer, I want each benchmark run written to a versioned JSON file, so that T0/T1/T2 metrics are replayable instead of vanishing from stdout.",
+    "issue_type": "story",
+    "labels": [],
+    "parent": "DATAP-602",
+    "priority": 1,
+    "status": "open",
+    "title": "Benchmark runner writes a versioned JSON report"
+  }
+}

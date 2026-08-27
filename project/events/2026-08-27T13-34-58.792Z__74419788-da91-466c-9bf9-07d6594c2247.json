@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "74419788-da91-466c-9bf9-07d6594c2247",
+  "issue_id": "DATAP-21a733f3-c7c1-4b69-a369-9126b6ed0d56",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T13:34:58.792Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "As a corpus reviewer, I want email_address and person_name annotations to score as label-correct against scanner user_email and first_name findings, so that label accuracy measures taxonomy alignment rather than string equality.",
+    "issue_type": "story",
+    "labels": [],
+    "parent": "DATAP-602",
+    "priority": 1,
+    "status": "open",
+    "title": "data_items eval matches privacy-taxonomy labels to scanner labels"
+  }
+}

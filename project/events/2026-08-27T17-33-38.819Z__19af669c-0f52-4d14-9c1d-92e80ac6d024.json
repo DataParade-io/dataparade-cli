@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "19af669c-0f52-4d14-9c1d-92e80ac6d024",
+  "issue_id": "DATAP-c6588133-5ce1-40f4-b9b1-04e2a28ab4d7",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T17:33:38.819Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "As a scanner engineer, I want to run plexus evaluate accuracy against the curated gold corpus (not a fixture) so that Plexus stores a real Evaluation with recall.\n\nFeature: Corpus recall evaluation\n\n  Scenario: Evaluate the curated gold corpus\n    Given the curated gold annotations loaded as Plexus Items labeled Yes\n    And materialized repository scope on disk\n    And the detector Score is on the scorecard\n    When I run plexus evaluate accuracy for that score\n    Then an Evaluation record is stored in local GraphQL\n    And the headline metric is recall of detections\n    And unread files are omitted from the recall denominator\n\nOut of scope: --baseline, precision, human-accepted labels (corpus is still proposed).",
+    "issue_type": "story",
+    "labels": [],
+    "parent": "DATAP-e323656c-bdfd-4b9a-b5de-21c20a82a091",
+    "priority": 1,
+    "status": "open",
+    "title": "Run plexus evaluate accuracy on the curated corpus"
+  }
+}

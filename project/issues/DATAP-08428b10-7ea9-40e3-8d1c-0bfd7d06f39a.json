@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-08428b10-7ea9-40e3-8d1c-0bfd7d06f39a",
+  "title": "data_items eval matches findings by file and line overlap",
+  "description": "As a corpus reviewer, I want a data_items finding on the same file and overlapping lines as an annotation to count as a location match even when subject keys differ (rule id vs field name), so that recall is not zeroed by identity mismatch.",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-602",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "701d85f1-df08-4d94-96f5-468c204dcff4",
+      "author": "ryan",
+      "text": "Feature: data_items location-first identity\n\n  Scenario: Overlapping lines match when keys differ\n    Given a positive data_items case with subject.key data_item:phone\n    And a finding key data_item:phone_number on the same file and overlapping lines\n    When I score the eval cases\n    Then the case is matched\n\n  Scenario: components still require key equality\n    Given a components case with subject.key asset:db\n    And a finding key asset:other on overlapping lines\n    When I score the eval cases\n    Then the case is not matched\n",
+      "created_at": "2026-08-27T13:35:17.267870Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-27T13:34:58.800528Z",
+  "updated_at": "2026-08-27T13:35:17.267870Z",
+  "closed_at": null,
+  "custom": {}
+}
