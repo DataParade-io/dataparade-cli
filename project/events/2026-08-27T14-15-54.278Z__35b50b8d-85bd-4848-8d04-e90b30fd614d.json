@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "35b50b8d-85bd-4848-8d04-e90b30fd614d",
+  "issue_id": "DATAP-af2f4841-1796-4fb0-a2a5-559b1248da53",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T14:15:54.278Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "As a scanner engineer, I want to run plexus evaluate accuracy against the local GraphQL server with the detector score, so that I can compare recall to a previous evaluation with --baseline.\n\nGherkin (draft):\n\nFeature: Scanner recall evaluation\n\n  Scenario: Evaluate gold detections\n    Given a local Plexus GraphQL server\n    And gold annotations loaded as Items labeled Yes\n    And the detector Score is on the scorecard\n    When I run plexus evaluate accuracy for that score\n    Then an Evaluation record is stored\n    And the headline metric is recall of detections\n\n  Scenario: Compare to a prior run\n    Given a previous Evaluation id\n    When I run plexus evaluate accuracy --baseline that id\n    Then the new Evaluation is comparable to the baseline",
+    "issue_type": "story",
+    "labels": [],
+    "parent": "DATAP-bd3b6935-d456-4619-8045-e6bbde4b0bd3",
+    "priority": 1,
+    "status": "open",
+    "title": "Recall evaluation via plexus evaluate accuracy CLI"
+  }
+}

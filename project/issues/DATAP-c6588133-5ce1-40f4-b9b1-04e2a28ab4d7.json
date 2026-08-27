@@ -1,0 +1,33 @@
+{
+  "id": "DATAP-c6588133-5ce1-40f4-b9b1-04e2a28ab4d7",
+  "title": "Run plexus evaluate accuracy on the curated corpus",
+  "description": "As a scanner engineer, I want to run plexus evaluate accuracy against the curated gold corpus (not a fixture) so that Plexus stores a real Evaluation with recall.\n\nFeature: Corpus recall evaluation\n\n  Scenario: Evaluate the curated gold corpus\n    Given the curated gold annotations loaded as Plexus Items labeled Yes\n    And materialized repository scope on disk\n    And the detector Score is on the scorecard\n    When I run plexus evaluate accuracy for that score\n    Then an Evaluation record is stored in local GraphQL\n    And the headline metric is recall of detections\n    And unread files are omitted from the recall denominator\n\nOut of scope: --baseline, precision, human-accepted labels (corpus is still proposed).",
+  "type": "story",
+  "status": "closed",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-e323656c-bdfd-4b9a-b5de-21c20a82a091",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "6c818c27-6226-4f81-be3c-4a46e4018408",
+      "author": "ryan",
+      "text": "Ran the curated corpus through local Plexus (Virtuus GraphQL + SourceSpanOverlapScore).\n\nEvaluation id: `e43756be-58f1-4d9b-b1d4-7a221b3b0521`\nStatus: COMPLETED\nGraphQL: `http://127.0.0.1:8000/graphql` (local Virtuus, not AWS)\n\nCorpus: 150 proposed annotations, 75 positive gold Items imported.\nUnread: 10 Hyperswitch Rust spans skipped (scanner does not ingest `.rs`); omitted from recall denominator.\nScored: 65. Hits: 1 (vgs-django Checkr component). Misses: 64.\nRecall: 1.54%. Confusion matrix: `[[0, 0], [64, 1]]` labels `[no, yes]`.\n\nOperator path: `scripts/run-corpus-eval.ts` (scan inventory includes `filesScanned` so unread vs miss is real). Gold YAML remains canonical. Labels are still `proposed`. `--baseline` is not in this story.",
+      "created_at": "2026-08-27T17:33:56.833939Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "1eafed8a-8d33-42c1-bef6-337c1c661bb0",
+      "author": "ryan",
+      "text": "First corpus Evaluation e43756be-58f1-4d9b-b1d4-7a221b3b0521 stored in local Plexus. Recall 1.54%. Runner landed on develop via https://github.com/DataParade-io/dataparade-cli/pull/11",
+      "created_at": "2026-08-27T17:36:39.421851Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-27T17:33:38.818676Z",
+  "updated_at": "2026-08-27T17:36:39.430463Z",
+  "closed_at": "2026-08-27T17:36:39.430463Z",
+  "custom": {}
+}

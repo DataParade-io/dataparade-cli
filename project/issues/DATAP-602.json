@@ -38,10 +38,31 @@
       "text": "## Observe/Orient decisions (2026-08-27)\n\nRecorded after the board/Plexus/detector discussion. These are the defaults from the approved plan.\n\n### Plexus depth: A then B\n\n- **A now (warehouse):** CLI writes a versioned benchmark JSON; Plexus stores one Evaluation per run with custom `metrics` (recall, label accuracy, unread, per-repo). No Item-per-annotation yet.\n- **B next (first-class detector eval):** annotations as Items, scanner builds as ScoreVersions, outcomes `hit` / `miss` / `unread` / `wrong_label`. Separate PLX epic.\n- **Not C:** do not wrap the scanner as a Yes/No classifier.\n\n### Taxonomy owner: alias in the scorer\n\n- Corpus remains the privacy taxonomy (`email_address`, `person_name`, `user_identifier`).\n- Production scanner labels stay as-is (`user_email`, `first_name`, …) so we do not change the enrichment API in this slice.\n- The eval scorer canonicalizes labels for comparison. T0→T1 is a `taxonomy_change` in scoring, not a corpus rewrite.\n\n### Identity: location-first for `data_items`\n\n- `components` / `pii-signals` keep key equality + line overlap.\n- `data_items` match on file + line overlap first; `subject.key` is a hint plus an alias table (`phone` → `phone_number`, `ssn` → `ssn`, …).\n- This is required because annotations key by field name and findings key by rule id.\n\n### Gate\n\n- Persist **T0** (current mismatch) then **T1** (same 15 rules, new scoring contract).\n- No new detector-family PRs until T1 is stored and comparable.\n- Git YAML remains canonical ground truth. Plexus stores **runs**, not the corpus.\n\n### Sequence\n\nKanbus reconverge → JSON report + Plexus A ingest → scoring contract T1 → Rust ingest → detector families ranked against T1.\n",
       "created_at": "2026-08-27T13:33:04.521459Z",
       "comment_type": "default"
+    },
+    {
+      "id": "ab10071e-226d-4155-8aed-53118ea10f60",
+      "author": "ryan",
+      "text": "## Named next work (2026-08-27)\n\nFiled on `feature/DATAP-eval-next` (not the local-eval dump branch):\n\n- DATAP-6bd634 / DATAP-219d0f — persist JSON reports + Plexus warehouse ingest (A)\n- DATAP-d8833a / DATAP-21a733 / DATAP-08428b — T1 scoring contract (aliases + location identity)\n- DATAP-3eb0e4 — Rust ingest (unread Hyperswitch). Implement after T1 is stored.\n- Detector-family stories: **not filed**. Rank against T1 after the contract re-run.\n\nPlexus product work is named on the PLX board (precomputed evaluation ingest). Keep DATAP and PLX boards separate; git YAML stays canonical ground truth.\n",
+      "created_at": "2026-08-27T13:35:17.281573Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "56f93151-b6b4-420b-aa86-2f8b3b04a11b",
+      "author": "ryan",
+      "text": "Precision for scanner evaluations is a separate planning initiative: DATAP-d73a91 (backlog). Do not implement precision on the first Plexus recall scorecard. Collect design there.\n",
+      "created_at": "2026-08-27T14:11:35.201309Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "c2d317ee-75b1-44ae-9793-ccbeef557d3b",
+      "author": "ryan",
+      "text": "Plexus recall evaluations for the scanner are initiative DATAP-bd3b69. Precision remains DATAP-d73a91. Do not implement until those plans are massaged.\n",
+      "created_at": "2026-08-27T14:16:12.453444Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-24T16:04:36.019Z",
-  "updated_at": "2026-08-27T13:33:04.521459Z",
+  "updated_at": "2026-08-27T14:16:12.453444Z",
   "closed_at": null,
   "custom": {
     "jira_key": "DATAP-602",

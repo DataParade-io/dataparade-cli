@@ -24,3 +24,6 @@ AGENTS.local.md
 
 # Benchmark corpus materialized clones (local development only)
 tests/benchmark/.cache/
+
+# Local Plexus corpus evaluation workspace
+.plexus-corpus-eval/

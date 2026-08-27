@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "eebad9f4-18b0-43b8-8a7b-e37a01c6a65e",
+  "issue_id": "DATAP-3f72cfed-6743-4350-9e66-5432708abb75",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T14:52:10.523Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "Document and script starting the local GraphQL process (one uvicorn worker, data dir, API key). No Compose, no Postgres. Behavior is the host-process story under this epic.\n\nPlexus implementation: plx-765ff0 / plx-6d41d0. Virtuus changes are not expected.",
+    "issue_type": "task",
+    "labels": [],
+    "parent": "DATAP-e323656c-bdfd-4b9a-b5de-21c20a82a091",
+    "priority": 1,
+    "status": "open",
+    "title": "Script host-process GraphQL startup for eval"
+  }
+}

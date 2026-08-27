@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "294ace05-b537-4d9b-a476-866e8afa99ce",
+  "issue_id": "DATAP-df9e28c0-e97e-49bd-bb7a-5e7f0ef23f14",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T14:52:10.512Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "Expose the scanner so a Python Score can obtain findings for a materialized repo/commit without a maze of CLI subprocesses. Observable behavior is the Yes/No stories under this epic.\n\nPlexus Score subclass and registry live on plx-41fcbe / plx-3f0d47. This task is the DataParade callable surface those classes will use.",
+    "issue_type": "task",
+    "labels": [],
+    "parent": "DATAP-95d3395a-9deb-440f-8048-423cbc4e3e7c",
+    "priority": 1,
+    "status": "open",
+    "title": "Expose scanner for a Python detector Score"
+  }
+}
