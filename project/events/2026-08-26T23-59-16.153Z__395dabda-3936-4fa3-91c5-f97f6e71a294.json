@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "395dabda-3936-4fa3-91c5-f97f6e71a294",
+  "issue_id": "DATAP-dab2e852-cd1f-474e-9e44-a1dc8c26bc37",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-26T23:59:16.153Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "Evaluate PostHog/posthog at pinned commit a2f78ff63a1c7e1db33c623be83488a651bf4251 using posthog/models/user.py as a complete authored Python analytics identity scope. Confirm the MIT community-path license boundary, inventory the full file, and prepare scanner-blind proposed data-item labels plus a human review worksheet. Do not accept labels without review.",
+    "issue_type": "sub-task",
+    "labels": [],
+    "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+    "priority": 2,
+    "status": "open",
+    "title": "Prepare PostHog analytics-user annotation packet"
+  }
+}

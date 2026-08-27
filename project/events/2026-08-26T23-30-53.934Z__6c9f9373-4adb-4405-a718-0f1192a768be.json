@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "event_id": "6c9f9373-4adb-4405-a718-0f1192a768be",
+  "issue_id": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "event_type": "comment_added",
+  "occurred_at": "2026-08-26T23:30:53.934Z",
+  "actor_id": "ryan",
+  "payload": {
+    "comment_author": "ryan",
+    "comment_id": "413c3a7c-f225-436e-b27c-c1fdfd3c121e"
+  }
+}

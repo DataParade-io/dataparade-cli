@@ -1,0 +1,16 @@
+repository: go-gitea/gitea
+commit: 0b1067484fcdc497dc34d9113c467182231e6ea9
+license: MIT
+scope:
+  include:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+coverage:
+  layers: [data_items]
+  languages: [go]
+  domains: [identity, credentials, api]
+selection_rationale: >-
+  Two compact authored Go files cover account identity, profile information, and
+  personal-access-token storage. The scope intentionally contains direct
+  credentials alongside hashes, salts, identifiers, URLs, and free text.
+annotation_version: 1

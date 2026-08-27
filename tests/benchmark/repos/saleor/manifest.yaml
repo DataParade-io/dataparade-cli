@@ -1,0 +1,14 @@
+repository: saleor/saleor
+commit: 030c1676145d63154687fa394d1a4abb224b1ac2
+license: BSD-3-Clause
+scope:
+  include: [saleor/account/models.py]
+coverage:
+  layers: [data_items]
+  languages: [python]
+  domains: [commerce, identity, address]
+selection_rationale: >-
+  A complete, authored Django account model with names, full postal addresses,
+  phones, account email, profile image, authentication key, free-text notes,
+  and realistic operational metadata in one 481-line scope.
+annotation_version: 1

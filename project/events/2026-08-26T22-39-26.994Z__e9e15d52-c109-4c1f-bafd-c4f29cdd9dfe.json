@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "e9e15d52-c109-4c1f-bafd-c4f29cdd9dfe",
+  "issue_id": "DATAP-69cd217b-7edc-4a33-9cc0-36e67e55b902",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-26T22:39:26.994Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "Find and pin a compact, complete, permissively licensed healthcare source scope with patient/person/address or clinical-record semantics distinct from current identity and commerce packets. Prepare scanner-blind proposed annotations and a human review worksheet; do not accept labels without review.",
+    "issue_type": "sub-task",
+    "labels": [],
+    "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+    "priority": 2,
+    "status": "open",
+    "title": "Find a compact healthcare-record corpus packet"
+  }
+}

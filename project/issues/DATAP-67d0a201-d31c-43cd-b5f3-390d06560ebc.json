@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-67d0a201-d31c-43cd-b5f3-390d06560ebc",
+  "title": "Prepare Saleor account and address annotation packet",
+  "description": "Evaluate saleor/saleor at pinned commit 030c1676145d63154687fa394d1a4abb224b1ac2 as a Python commerce, account, address, phone, and email corpus candidate. Preserve the complete saleor/account/models.py scope; maintain scanner-blind proposed labels and a human review worksheet. Do not accept any annotation until human review.",
+  "type": "sub-task",
+  "status": "in_progress",
+  "priority": 2,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "7bdd2b44-f78f-4492-bebd-df6d380504a8",
+      "author": "ryan",
+      "text": "Prepared and materialized the Saleor proposed packet: complete 481-line Django account model at the pinned BSD-3-Clause commit, with 23 source-only data-item decisions. Address/contact positives, plus free-text/image/JSON ambiguity, are ready for human review; no record counts yet.",
+      "created_at": "2026-08-26T22:16:17.878363Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-26T22:14:23.739690Z",
+  "updated_at": "2026-08-26T22:16:17.878363Z",
+  "closed_at": null,
+  "custom": {}
+}

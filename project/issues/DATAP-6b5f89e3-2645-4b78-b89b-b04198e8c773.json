@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-6b5f89e3-2645-4b78-b89b-b04198e8c773",
+  "title": "Find a compact credential-payload corpus packet",
+  "description": "Find and pin a compact permissively licensed complete source scope for password or credential-payload semantics distinct from Gitea access tokens and Keycloak credential entities. Use scanner-blind proposed annotations and a human review worksheet; do not accept labels without review.",
+  "type": "sub-task",
+  "status": "in_progress",
+  "priority": 2,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "a88a103a-248d-4bbe-9ba4-920119bf37b5",
+      "author": "ryan",
+      "text": "Prepared and materialized a compact Ory Kratos password-credential packet: complete 21-line Apache-2.0 Go type, with one proposed password-verifier decision and one migration-control negative. This deliberately complements rather than repeats Gitea bearer tokens and Keycloak generic credential payloads. Manifest tests pass; no record is accepted.",
+      "created_at": "2026-08-26T22:39:08.424379Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-26T22:38:20.536638Z",
+  "updated_at": "2026-08-26T22:39:08.424379Z",
+  "closed_at": null,
+  "custom": {}
+}

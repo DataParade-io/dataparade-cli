@@ -1,0 +1,33 @@
+{
+  "id": "DATAP-19ad97be-50c7-4458-9d8f-6f3795f5bcc0",
+  "title": "Fix concurrent benchmark materialization race",
+  "description": "Concurrent corpus preparation exposes a materializer race. When one process creates tests/benchmark/.cache/repos/<key>@<commit> and is still cloning or checking out, a second pnpm run benchmark:materialize <key> sees the directory, immediately runs git rev-parse HEAD, and exits 128 because HEAD is not yet resolvable. It neither waits nor recovers, despite the cache eventually becoming valid.\n\nReproduced during parallel easy-school packet preparation in the separate corpus-curation worktree. The current existing-directory validation assumes a completed Git checkout; it must safely handle a partially created target.\n\nAcceptance criteria:\n- Concurrent invocations for the same repo key do not fail or corrupt the cache.\n- Use a per-key lock or materialize into a temporary sibling directory and atomically rename only after complete validation.\n- An empty, partial, or non-Git target is treated as incomplete and recovered or reported with an actionable non-crashing result.\n- Add a deterministic test covering the partial-target or concurrent path.\n- Keep materialization opt-in and outside normal CI.",
+  "type": "bug",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "350b247b-999a-4a20-bdab-f70d8704cf10",
+      "author": "ryan",
+      "text": "Additional independent reproduction while materializing Keycloak: clone target was created, but after the materialize command returned it still had no resolvable HEAD (`git rev-parse HEAD` exits 128). This confirms partial-target recovery is required in addition to concurrency protection.",
+      "created_at": "2026-08-26T22:16:17.851373Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "a731ccb9-ce66-4343-a8f8-872787db71e4",
+      "author": "ryan",
+      "text": "Third independent reproduction during Medusa materialization: target clone directory exists but `git rev-parse HEAD` exits 128 after the materializer invocation. This is consistent with the partial-target recovery defect, not a corpus failure.",
+      "created_at": "2026-08-26T23:31:02.239122Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-26T21:45:32.681040Z",
+  "updated_at": "2026-08-26T23:31:02.239122Z",
+  "closed_at": null,
+  "custom": {}
+}
