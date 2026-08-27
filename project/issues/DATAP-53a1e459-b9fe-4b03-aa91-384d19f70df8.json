@@ -21,6 +21,10 @@
     {
       "target": "DATAP-b8012230-7395-4b41-89b7-cb5b7e816767",
       "type": "blocked-by"
+    },
+    {
+      "target": "DATAP-7c57f962-8679-4a40-aac1-8edfc359b879",
+      "type": "blocked-by"
     }
   ],
   "comments": [
@@ -37,10 +41,17 @@
       "text": "Manager re-audit approves implementation PR creation at 3a47c4b. DATAP-7aea12 and DATAP-b80122 are technically resolved with independent focused verification. Keep runner and bugs open until the PR lands. DATAP-87ebe8 remains a separate follow-up for provisional review-state selection and data-item diagnostic runs.",
       "created_at": "2026-08-26T23:28:41.962059Z",
       "comment_type": "default"
+    },
+    {
+      "id": "3a5a307e-5fc3-419f-88fc-89b0cba8eaed",
+      "author": "ryan",
+      "text": "Actual documented-command smoke test on PR #3 at 30ec0d2 failed before scanning: pnpm run benchmark:run --include-proposed vgs-django easy-school searches under dist/tests/benchmark/repos and cannot find source YAML manifests. Filed DATAP-7c57f9 as a PR landing blocker. Unit tests inject benchmarkRoot and therefore did not exercise this compiled CLI path.",
+      "created_at": "2026-08-27T00:13:50.370805Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T21:14:39.520743Z",
-  "updated_at": "2026-08-26T23:28:41.962059Z",
+  "updated_at": "2026-08-27T00:13:50.370805Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",

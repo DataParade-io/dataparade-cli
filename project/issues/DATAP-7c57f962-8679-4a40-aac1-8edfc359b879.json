@@ -1,0 +1,18 @@
+{
+  "id": "DATAP-7c57f962-8679-4a40-aac1-8edfc359b879",
+  "title": "Resolve benchmark metadata root after TypeScript build",
+  "description": "The documented pnpm run benchmark:run command builds TypeScript and executes dist/tests/benchmark/run-benchmark.js. DEFAULT_BENCHMARK_ROOT currently derives from __dirname, so the compiled runner searches for manifests under dist/tests/benchmark/repos/, but the YAML manifests and annotations remain under tests/benchmark/repos/ and are not copied by the build. Reproduction on PR #3 at 30ec0d2: pnpm run benchmark:run --include-proposed vgs-django easy-school exits with Missing manifest at .../dist/tests/benchmark/repos/vgs-django/manifest.yaml before scanning. Resolve the runtime metadata root robustly from the repository/project root or deliberately copy corpus assets as part of the build. Add a process-level or command-level test exercising the actual built CLI path without an injected benchmarkRoot, and prove benchmark:run reaches scanning with a materialized fixture. Keep execution independent of the caller working directory where practical.",
+  "type": "bug",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-27T00:13:39.134420Z",
+  "updated_at": "2026-08-27T00:13:39.134420Z",
+  "closed_at": null,
+  "custom": {}
+}
