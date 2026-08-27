@@ -149,6 +149,13 @@ describe("benchmark corpus manifests", () => {
       license: "MIT (community paths only)",
       minimumRecords: 19,
     },
+    {
+      key: "posthog-user",
+      repository: "PostHog/posthog",
+      commit: "a2f78ff63a1c7e1db33c623be83488a651bf4251",
+      license: "MIT (community paths only)",
+      minimumRecords: 13,
+    },
   ]) {
     describe(`${packet.key} data-item packet`, () => {
       it("loads a pinned, complete scope with proposed labels", () => {

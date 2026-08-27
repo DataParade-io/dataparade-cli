@@ -113,12 +113,12 @@ candidates:
   - key: posthog
     repository: PostHog/posthog
     commit: a2f78ff63a1c7e1db33c623be83488a651bf4251
-    license: LICENSE_present_unclassified
-    license_status: needs_license_identification
-    disposition: conditional
+    license: MIT (community paths only)
+    license_status: detected_at_pin_community_paths_only
+    disposition: first_packet
     coverage: { languages: [python], domains: [analytics, identity], layers: [data_items] }
     scope: [posthog/models/user.py, posthog/models/person/person.py]
-    rationale: Useful analytics-person data semantics pending license review.
+    rationale: Analytics user model is outside the ee/ tree and covered by PostHog's pinned MIT community-path grant.
 
   - key: medplum
     repository: medplum/medplum

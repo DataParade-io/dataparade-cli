@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-dab2e852-cd1f-474e-9e44-a1dc8c26bc37",
+  "title": "Prepare PostHog analytics-user annotation packet",
+  "description": "Evaluate PostHog/posthog at pinned commit a2f78ff63a1c7e1db33c623be83488a651bf4251 using posthog/models/user.py as a complete authored Python analytics identity scope. Confirm the MIT community-path license boundary, inventory the full file, and prepare scanner-blind proposed data-item labels plus a human review worksheet. Do not accept labels without review.",
+  "type": "sub-task",
+  "status": "in_progress",
+  "priority": 2,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-b17f927a-8979-4e67-b2a3-4fe324508e1c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "74bef285-6906-4967-a44f-54e99fb94bcf",
+      "author": "ryan",
+      "text": "Prepared the PostHog analytics-user packet: complete 706-line Python model outside `ee/`, with the pinned root license granting MIT for this community path and 13 scanner-blind proposed decisions. Manifest tests pass; source/pin were independently verified. Materializer clone may still be completing under the known partial-target race.",
+      "created_at": "2026-08-27T00:00:52.228507Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-26T23:59:16.152611Z",
+  "updated_at": "2026-08-27T00:00:52.228507Z",
+  "closed_at": null,
+  "custom": {}
+}

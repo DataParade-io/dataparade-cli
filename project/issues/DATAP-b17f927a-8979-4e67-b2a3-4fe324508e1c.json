@@ -80,10 +80,17 @@
       "text": "Curation added the first TypeScript packet: Medusa customer/user/invite models (MIT community paths, 77 lines, 19 proposed records). This closes the TypeScript coverage gap while preserving the root license enterprise exclusion in the manifest and review worksheet.",
       "created_at": "2026-08-26T23:30:53.933581Z",
       "comment_type": "default"
+    },
+    {
+      "id": "15273e90-04bf-4f77-98f5-0876d12d03fa",
+      "author": "ryan",
+      "text": "Curation added a seventh active packet: PostHog analytics user (MIT community path/Python, 706 lines, 13 proposed records), adding analytics identity and account-security semantics. No labels are accepted.",
+      "created_at": "2026-08-27T00:00:52.239151Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.314318Z",
-  "updated_at": "2026-08-26T23:30:53.933581Z",
+  "updated_at": "2026-08-27T00:00:52.239151Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",
