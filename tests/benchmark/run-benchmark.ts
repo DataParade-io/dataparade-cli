@@ -6,12 +6,13 @@ import { scoreEvalCases } from "../eval/score";
 import { loadAnnotations, loadBenchmarkManifest } from "./manifest";
 import { annotationsToEvalCases, type ToEvalCasesOptions } from "./to-eval-cases";
 import { normalizeRepoRelativePath, scanRepoComponents } from "./scan-repo";
+import { resolveDefaultBenchmarkRoot } from "./paths";
 import {
   MaterializationInvalidError,
   validateMaterializedRepo,
 } from "./validate-materialization";
 
-const DEFAULT_BENCHMARK_ROOT = path.join(__dirname);
+const DEFAULT_BENCHMARK_ROOT = resolveDefaultBenchmarkRoot();
 
 export function getBenchmarkRoot(benchmarkRoot?: string): string {
   return benchmarkRoot ?? DEFAULT_BENCHMARK_ROOT;
