@@ -108,10 +108,17 @@
       "text": "Reopened after a premature close. PRs #3/#4/#5 put the runner, data_items layer, and 150 proposed annotations on develop, but this task is not done: human adjudication (DATAP-c66199), first accepted baseline (DATAP-3a2d51), VGS license (DATAP-854dcc), easy-school license block (DATAP-e64aa8), and remaining packet searches (Open edX, ERPNext, healthcare) are still open. Closed children are only the work that actually landed.",
       "created_at": "2026-08-27T19:00:36.968987Z",
       "comment_type": "default"
+    },
+    {
+      "id": "02fcfcd5-1110-4506-83a7-2ca7bc7922f6",
+      "author": "ryan",
+      "text": "Provisional CLI benchmark on proposed gold completed: 24/65 recall (36.9%), 29 Hyperswitch unread, 0% label accuracy. Details on DATAP-3a2d51. Still not an accepted baseline.",
+      "created_at": "2026-08-27T21:25:27.633797Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.314318Z",
-  "updated_at": "2026-08-27T19:00:36.968987Z",
+  "updated_at": "2026-08-27T21:25:27.633797Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",
