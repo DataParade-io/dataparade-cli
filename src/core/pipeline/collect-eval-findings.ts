@@ -9,6 +9,7 @@ export interface EvalFinding {
 
 export interface EvalFindingsPayload {
   findings: EvalFinding[];
+  filesScanned: string[];
 }
 
 export interface CollectEvalFindingsResult extends EvalFindingsPayload {
@@ -38,7 +39,7 @@ function compareEvalFindings(a: EvalFinding, b: EvalFinding): number {
 export async function collectEvalFindings(
   rootPath: string,
 ): Promise<CollectEvalFindingsResult> {
-  const { findings, scanResult } = await runStructuralScan(rootPath);
+  const { findings, scanResult, files } = await runStructuralScan(rootPath);
 
   const spans = new Map<string, EvalFinding>();
 
@@ -58,9 +59,11 @@ export async function collectEvalFindings(
   }
 
   const dedupedFindings = [...spans.values()].sort(compareEvalFindings);
+  const filesScanned = [...new Set(files.map((file) => file.path))].sort();
 
   return {
     findings: dedupedFindings,
+    filesScanned,
     warnings: scanResult.warnings ?? [],
     errors: scanResult.errors ?? [],
   };
