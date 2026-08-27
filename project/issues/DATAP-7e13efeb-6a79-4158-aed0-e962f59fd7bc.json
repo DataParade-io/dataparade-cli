@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-7e13efeb-6a79-4158-aed0-e962f59fd7bc",
+  "title": "Gold annotations as Plexus Items and an evaluation dataset",
+  "description": "Purpose: Each corpus annotation is one Plexus Item with ground truth that the detection happened (Yes). Dataset rows feed plexus evaluate accuracy.\n\nOpen design:\n- How YAML under tests/benchmark/repos becomes Items (import command, files on the file-backed store, or dataset-curate analog)\n- Item.text is the snippet for humans; detection uses metadata, not isolated regex on the snippet\n- Review states: first runs may use proposed; accepted is the headline later\n- Git YAML remains canonical ground truth; Plexus stores Items/runs for comparison\n\nDo not mint a second competing corpus.",
+  "type": "epic",
+  "status": "closed",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-bd3b6935-d456-4619-8045-e6bbde4b0bd3",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "c2a84edb-6fb9-46a4-bc17-0b2756020cf1",
+      "author": "ryan",
+      "text": "Gold YAML import and metadata-based detection are on develop (#8, #11).",
+      "created_at": "2026-08-27T17:36:39.457980Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-27T14:15:54.268173Z",
+  "updated_at": "2026-08-27T17:36:39.466910Z",
+  "closed_at": "2026-08-27T17:36:39.466910Z",
+  "custom": {}
+}

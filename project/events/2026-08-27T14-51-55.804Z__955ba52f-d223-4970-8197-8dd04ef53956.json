@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "955ba52f-d223-4970-8197-8dd04ef53956",
+  "issue_id": "DATAP-2b845adf-f4aa-421c-9096-03291eb49cce",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T14:51:55.804Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "As a scanner engineer, I want new Plexus-eval behavior specified in Gherkin and executed by a runner, so that we prove observable outcomes instead of adding more Jest units for this path.\n\nFeature: Executable Gherkin for Plexus-backed evaluation\n\n  Scenario: Feature files are the eval specs\n    Given Gherkin files for local Plexus evaluation\n    When I run the feature test command\n    Then each scenario is reported from those files\n    And existing Jest unit and fixture-eval tests still run on their own command\n\n  Scenario: Missing behavior fails the spec\n    Given a feature scenario that is not implemented\n    When I run the feature test command\n    Then that scenario fails\n    And no production code is required for the failure to be a missing step or a failing Then",
+    "issue_type": "story",
+    "labels": [],
+    "parent": "DATAP-64f1279d-c956-4207-b9a4-43ac1e7b797e",
+    "priority": 1,
+    "status": "open",
+    "title": "New Plexus-eval behaviors run from Gherkin feature files"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "30c278ac-17dd-4d8c-886d-9088ae71bc94",
+  "issue_id": "DATAP-08428b10-7ea9-40e3-8d1c-0bfd7d06f39a",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T13:34:58.800Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "As a corpus reviewer, I want a data_items finding on the same file and overlapping lines as an annotation to count as a location match even when subject keys differ (rule id vs field name), so that recall is not zeroed by identity mismatch.",
+    "issue_type": "story",
+    "labels": [],
+    "parent": "DATAP-602",
+    "priority": 1,
+    "status": "open",
+    "title": "data_items eval matches findings by file and line overlap"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "7571eed7-f9aa-473f-9c2d-48c54b42fd6a",
+  "issue_id": "DATAP-d8833a04-4ff0-4a7b-b1a9-b900eb4121f4",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T13:34:58.766Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "Purpose: T0 label accuracy is 0% because the scorer requires exact label strings and exact subject keys. T1 keeps the same 15 PII rules and the same corpus, but makes the metric mean what we think it means.\n\nDecisions:\n- Scorer aliases: production scanner labels unchanged; corpus privacy taxonomy unchanged\n- data_items identity: file + line overlap first; subject.key is a hint plus aliases\n- components and pii-signals keep key equality + overlap\n\nExclusions:\n- New detector families\n- Rewriting 150 annotations\n- Changing thirdPartyDataFlow emitted labels\n\nDefinition of Done:\n- Executable specs for alias matching and location-first data_items identity\n- Existing pii-signals and components evals still pass\n- Re-run proposed corpus; store T1 JSON; compare to T0",
+    "issue_type": "task",
+    "labels": [],
+    "parent": "DATAP-602",
+    "priority": 1,
+    "status": "open",
+    "title": "Align data_items scoring contract (label aliases and location identity)"
+  }
+}

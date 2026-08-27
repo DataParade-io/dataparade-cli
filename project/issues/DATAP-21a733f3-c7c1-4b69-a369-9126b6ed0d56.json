@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-21a733f3-c7c1-4b69-a369-9126b6ed0d56",
+  "title": "data_items eval matches privacy-taxonomy labels to scanner labels",
+  "description": "As a corpus reviewer, I want email_address and person_name annotations to score as label-correct against scanner user_email and first_name findings, so that label accuracy measures taxonomy alignment rather than string equality.",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-602",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "0e4917fd-d649-4607-a4dd-2c5ef0ce8879",
+      "author": "ryan",
+      "text": "Feature: data_items label aliases\n\n  Scenario: Privacy taxonomy matches scanner enrichment labels\n    Given a positive data_items case labeled email_address on app.ts line 10\n    And a finding data_item:email with labels [user_email] on the same line\n    When I score the eval cases\n    Then the case is matched\n    And labelsCorrect is true\n\n  Scenario: person_name matches first_name\n    Given a positive data_items case labeled person_name\n    And a finding with labels [first_name] on overlapping lines\n    When I score the eval cases\n    Then labelsCorrect is true\n\n  Scenario: components still require exact labels\n    Given a components case labeled database\n    And a finding with labels [sql]\n    When I score the eval cases\n    Then labelsCorrect is false\n",
+      "created_at": "2026-08-27T13:35:17.257078Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-27T13:34:58.792088Z",
+  "updated_at": "2026-08-27T13:35:17.257078Z",
+  "closed_at": null,
+  "custom": {}
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "e5c2f177-81bf-477a-bd3b-66a29e34c53e",
+  "issue_id": "DATAP-3ab1981f-d571-424d-945b-610cab553b53",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T14:51:55.859Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "As a scanner engineer, I want unread evidence omitted from recall, so that missing language ingest does not look like a miss.\n\nFeature: Unread evidence is not a miss\n\n  Scenario: Unread file is omitted from recall\n    Given a gold Item whose evidence file the scanner did not ingest\n    When I run plexus evaluate accuracy\n    Then that Item is not counted as a No\n    And that Item is not in the recall denominator\n\n  Scenario: Ingested miss still counts\n    Given a gold Item whose evidence file the scanner ingested\n    And no overlapping finding\n    When I run plexus evaluate accuracy\n    Then that Item counts as a miss",
+    "issue_type": "story",
+    "labels": [],
+    "parent": "DATAP-95d3395a-9deb-440f-8048-423cbc4e3e7c",
+    "priority": 1,
+    "status": "open",
+    "title": "Unread evidence is omitted from recall not counted as a miss"
+  }
+}

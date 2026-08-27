@@ -1,0 +1,26 @@
+{
+  "id": "DATAP-ac6c8499-aa3a-4de5-90d0-e38d34fbd76b",
+  "title": "Overlapping scanner finding predicts Yes",
+  "description": "As a scanner engineer, I want the detector Score to return Yes when a finding overlaps a gold span, so that recall counts true detections.\n\nFeature: Overlap is a detection\n\n  Scenario: Overlapping finding is Yes\n    Given a gold Item for a file and line span labeled Yes\n    And the scanner emits a finding on that file with overlapping lines\n    When I evaluate that Item\n    Then the prediction is Yes\n\n  Scenario: No overlapping finding is No\n    Given a gold Item for a file the scanner did ingest\n    And the scanner emits no finding overlapping that span\n    When I evaluate that Item\n    Then the prediction is No\n    And the Item counts in the recall denominator",
+  "type": "story",
+  "status": "closed",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "DATAP-95d3395a-9deb-440f-8048-423cbc4e3e7c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "0d7a78f0-1a5d-482a-b88a-039748a00ce2",
+      "author": "ryan",
+      "text": "Yes/No from file+line overlap. Landed with Plexus #613 and dataparade-cli #10/#11.",
+      "created_at": "2026-08-27T17:36:39.384617Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-27T14:51:55.848979Z",
+  "updated_at": "2026-08-27T17:36:39.394107Z",
+  "closed_at": "2026-08-27T17:36:39.394107Z",
+  "custom": {}
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "99c7d612-9a88-4a2d-8f22-de633007bf03",
+  "issue_id": "DATAP-25e8b2b6-32b7-4182-b817-b0e1db7264a6",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T14:51:55.870Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "As a scanner engineer, I want concurrent evaluation of many Items in one repository to stay correct, so that evaluate accuracy worker concurrency does not corrupt results.\n\nFeature: Concurrent items in one repository\n\n  Scenario: Concurrent evaluation of one repo\n    Given many gold Items in the same repository\n    And evaluate accuracy runs those Items concurrently\n    When the evaluation finishes\n    Then each Item has a Yes or No consistent with overlap against one scan of that repository\n    And no Item fails because of a race on that scan",
+    "issue_type": "story",
+    "labels": [],
+    "parent": "DATAP-95d3395a-9deb-440f-8048-423cbc4e3e7c",
+    "priority": 1,
+    "status": "open",
+    "title": "Concurrent Items in one repository evaluate correctly"
+  }
+}

@@ -3,7 +3,7 @@
   "title": "Eval foundation and component detection",
   "description": "Deliver the shared evaluation contracts, scoring engine, documentation, unit tests, and Layer 1 component adapter.\n\nThe finding contract must include canonical layer-specific identity, labels, normalized evidence, and exact scanned-file coverage. A location-only match is insufficient when multiple findings overlap one line.\n\nReport recall, conditional label accuracy, correct-label recall, true precision only for exhaustively annotated scopes, negative-case pass rate, and unread counts separately. Do not average metrics.\n\nUse a few committed fixtures to prove the machinery and component adapter. Known scanner misses may appear as benchmark data, but the Jest suite itself must pass. Assert expected results or regression thresholds rather than committing intentionally failing tests.\n\nThe component adapter reads scanResult.components with AI disabled and makes zero src changes. This PR proves the harness; it does not claim representative scanner quality. Do not create empty layer stubs.",
   "type": "task",
-  "status": "open",
+  "status": "closed",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -69,8 +69,8 @@
     }
   ],
   "created_at": "2026-08-26T19:56:16.897691Z",
-  "updated_at": "2026-08-26T21:31:11.252007Z",
-  "closed_at": null,
+  "updated_at": "2026-08-26T21:49:15.557941Z",
+  "closed_at": "2026-08-26T21:49:15.557941Z",
   "custom": {
     "project_label": "DATAP",
     "source": "shared"

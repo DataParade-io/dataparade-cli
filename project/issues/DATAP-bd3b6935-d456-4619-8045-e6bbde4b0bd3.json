@@ -1,0 +1,47 @@
+{
+  "id": "DATAP-bd3b6935-d456-4619-8045-e6bbde4b0bd3",
+  "title": "Evaluate the scanner through local Plexus",
+  "description": "Purpose: Run DataParade scanner evaluations through a local Plexus control plane so recall is comparable across runs. Transport is the Plexus CLI, not MCP. GraphQL is the local FastAPI server. Each gold annotation is a Plexus Item. One scorecard with one Python Score subclass calls the scanner just-in-time per repo, caches the scan on the score instance, and returns Yes/No detected.\n\nAgreed direction (2026-08-27), still to be massaged before implementation:\n- No AWS / AppSync / Cognito for this project\n- CLI golden path: plexus evaluate accuracy, then --baseline for comparison\n- Tactus is not the score implementation\n- Precision is a separate initiative: DATAP-d73a91\n- Storage backend for local GraphQL is still being designed (file-backed FastAPI, no database server)\n\nExclusions:\n- Implementing precision in the first recall scorecard\n- MCP as the evaluation transport\n- Dumping a JSON blob via evaluations create / evaluation.ingest\n\nDefinition of Done for planning:\n- Child epics cover the Score class, Item/dataset mapping, and CLI run path\n- Storage backend decision recorded (Plexus-side)\n- No implementation until the plan is massaged and accepted",
+  "type": "initiative",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": null,
+  "labels": [],
+  "dependencies": [],
+  "comments": [
+    {
+      "id": "e1f9ef85-295a-49ec-93b7-03558d1007b4",
+      "author": "ryan",
+      "text": "## Recorded plan (2026-08-27) — massage before coding\n\n```mermaid\nflowchart TD\n  yaml[Git YAML annotations] --> items[Plexus Items]\n  items --> evalRun[plexus evaluate accuracy]\n  evalRun --> predict[Python Score.predict]\n  predict --> jit[JIT scan per repo plus lock]\n  jit --> scanner[DataParade scanner]\n  predict --> yesNo[Yes or No detected]\n  yesNo --> evaluation[Evaluation recall]\n  evaluation --> baseline[Compare via --baseline]\n```\n\nChildren:\n- DATAP-95d339 Python detector Score, JIT per-repo scan\n- DATAP-7e13ef Gold annotations as Items\n- DATAP-af2f48 CLI evaluate accuracy story\n\nPrecision: DATAP-d73a91 (backlog), not this initiative.\n\nStorage: local FastAPI should not require Postgres for DataParade. File-backed store is Plexus-side; record there and link here when filed.\n\nSupersedes warehouse-ingest thinking (DATAP-6bd634 / evaluation.ingest). Agreed path is evaluate accuracy, not createEvaluation dumps.\n",
+      "created_at": "2026-08-27T14:16:12.444050Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "05c4db34-0af7-468b-baec-2e14bf78b23b",
+      "author": "ryan",
+      "text": "Plexus-side records now linked:\n\n- Scoring/runtime: plx-3f0d47 (Python Score on local GraphQL), child epic plx-41fcbe\n- File-backed store (FastAPI only, no database server): plx-765ff0, child epic plx-6d41d0\n- Precomputed ingest path parked: plx-8a9cd6\n\nCLI story DATAP-af2f48 now sits under DATAP-e32365. Precision remains DATAP-d73a91 (backlog). DATAP-6bd634 remains superseded as the Plexus store.\n\nStill planning: massage before any Score class, file store, or detector work.\n",
+      "created_at": "2026-08-27T14:22:33.646340Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "c2e9caf5-da4e-4f91-ad70-641a62ccd0f7",
+      "author": "ryan",
+      "text": "## Concrete plan (2026-08-27) — stories and tasks, still no product code\n\nJest today is `tests/unit/**/*.spec.ts` plus `tests/eval/**/*.test.ts`. That is not Gherkin. New work under this initiative is specified as `.feature` files and executed by a runner. Existing Jest stays; we do not convert it.\n\n```mermaid\nflowchart TB\n  init[DATAP-bd3b69]\n  init --> bdd[DATAP-64f127 Gherkin runner]\n  init --> items[DATAP-7e13ef gold Items]\n  init --> score[DATAP-95d339 detector Score]\n  init --> cli[DATAP-e32365 evaluate accuracy]\n  bdd --> featStory[DATAP-2b845a]\n  bdd --> featChore[DATAP-7adf11 cucumber-js]\n  items --> s9709a7[DATAP-9709a7 import Items]\n  items --> sa52935[DATAP-a52935 metadata not snippet]\n  items --> tImport[DATAP-e6a247]\n  score --> sac6c84[DATAP-ac6c84 overlap Yes]\n  score --> s3ab198[DATAP-3ab198 unread omitted]\n  score --> s25e8b2[DATAP-25e8b2 concurrent repo]\n  score --> tScan[DATAP-df9e28]\n  cli --> saf2f48[DATAP-af2f48]\n  cli --> se1d873[DATAP-e1d873 host process]\n  cli --> tStart[DATAP-3f72cf]\n```\n\nOther repos (implementation, not the product map):\n\n- Plexus file store: plx-765ff0 / plx-6d41d0 / story plx-f04111 / task plx-e789ff\n- Plexus Score registry: plx-3f0d47 / plx-41fcbe / story plx-611fbe / task plx-872e54\n- Virtuus: no change expected; if a gap appears, file it there and link here\n- Precision stays DATAP-d73a91\n\nSuggested first Act (outside-in): DATAP-7adf11 then failing features for DATAP-2b845a / DATAP-e1d873 / DATAP-9709a7. Do not write the Score class or Virtuus adapter until those specs fail for the right reason.\n\nTonight means write and run Gherkin, not more Jest units.\n",
+      "created_at": "2026-08-27T14:52:55.136088Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "6b167422-e3e2-40d5-a04c-7b03ad35c815",
+      "author": "ryan",
+      "text": "First real corpus recall Evaluation is stored in local Plexus.\n\n- Evaluation `e43756be-58f1-4d9b-b1d4-7a221b3b0521` COMPLETED, recall 1.54% (1/65 scored; 10 Rust unread skipped).\n- Implementation PRs: dataparade-cli #6–#10 plus DATAP-c65881 runner; Plexus #612 (Virtuus store) and #613 (span-overlap Score). Landing on `develop`.\n- Still open on this initiative: `--baseline` (DATAP-af2f48 second scenario), precision (DATAP-d73a91), human acceptance of gold.",
+      "created_at": "2026-08-27T17:33:56.845138Z",
+      "comment_type": "default"
+    }
+  ],
+  "created_at": "2026-08-27T14:15:36.864944Z",
+  "updated_at": "2026-08-27T17:33:56.845138Z",
+  "closed_at": null,
+  "custom": {}
+}

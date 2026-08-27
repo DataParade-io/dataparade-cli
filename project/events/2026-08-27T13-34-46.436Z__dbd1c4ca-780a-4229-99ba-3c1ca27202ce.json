@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "event_id": "dbd1c4ca-780a-4229-99ba-3c1ca27202ce",
+  "issue_id": "DATAP-6bd634a0-b685-4228-b6a8-0bb6425860fe",
+  "event_type": "issue_created",
+  "occurred_at": "2026-08-27T13:34:46.436Z",
+  "actor_id": "ryan",
+  "payload": {
+    "assignee": null,
+    "description": "Purpose: `benchmark:run` currently prints metrics to stdout only. Persist a versioned JSON report (scanner git sha, corpus annotation version, review states, per-repo and aggregate scores, per-case outcomes) and ingest that record into Plexus as an Evaluation with custom metrics (warehouse slice A).\n\nExclusions:\n- Item-per-annotation first-class detector eval (Plexus slice B)\n- Changing ground-truth YAML\n- New detector families\n\nDefinition of Done:\n- `benchmark:run --output <path>` writes a schema-versioned JSON report\n- Unit tests cover report shape and aggregation\n- A Plexus Evaluation can be created from that JSON without calling Score.predict()\n- T0 (current mismatch) is stored as a replayable run",
+    "issue_type": "task",
+    "labels": [],
+    "parent": "DATAP-602",
+    "priority": 1,
+    "status": "open",
+    "title": "Persist benchmark run reports for comparable T0/T1/T2"
+  }
+}

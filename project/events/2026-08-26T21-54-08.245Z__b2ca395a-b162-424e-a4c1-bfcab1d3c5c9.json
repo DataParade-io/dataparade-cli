@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "event_id": "b2ca395a-b162-424e-a4c1-bfcab1d3c5c9",
+  "issue_id": "DATAP-f3feec84-8daf-4043-963c-eab697938552",
+  "event_type": "state_transition",
+  "occurred_at": "2026-08-26T21:54:08.245Z",
+  "actor_id": "ryan",
+  "payload": {
+    "from_status": "open",
+    "to_status": "in_progress"
+  }
+}
