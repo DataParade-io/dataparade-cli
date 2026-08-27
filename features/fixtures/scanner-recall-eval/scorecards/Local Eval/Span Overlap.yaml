@@ -1,0 +1,4 @@
+name: Span Overlap
+id: local-eval-span-overlap
+key: span-overlap
+class: SourceSpanOverlapScore
