@@ -55,9 +55,12 @@
     "test": "jest",
     "test:features": "cucumber-js",
     "eval:components": "jest tests/eval/layers/components/eval.test.ts",
+    "eval:pii-signals": "jest tests/eval/layers/pii-signals/eval.test.ts",
+    "eval:data-flows": "jest tests/eval/layers/data-flows/eval.test.ts",
     "scan": "node dist/bin/cli.js scan",
     "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js",
-    "benchmark:materialize": "node --experimental-strip-types tests/benchmark/scripts/materialize-repo.mjs"
+    "benchmark:materialize": "node --experimental-strip-types tests/benchmark/scripts/materialize-repo.mjs",
+    "benchmark:run": "pnpm run build && node dist/tests/benchmark/run-benchmark.js"
   },
   "dependencies": {
     "@sentry/node": "^10.38.0",

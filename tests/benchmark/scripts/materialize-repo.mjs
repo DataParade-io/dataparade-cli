@@ -13,10 +13,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { execSync } from "child_process";
 import YAML from "yaml";
+import { sparseConeDirectories } from "../materialize-paths.ts";
 import {
-  isMaterializationComplete,
-  sparseConeDirectories,
-} from "../materialize-paths.ts";
+  createNodeMaterializeDeps,
+  runMaterializeOrchestration,
+} from "../materialize-orchestrator.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const benchmarkRoot = path.resolve(__dirname, "..");
@@ -50,30 +51,27 @@ function loadManifest(repoKey) {
   return parsed;
 }
 
-function readSparseCheckoutContent(targetDir) {
-  const sparseCheckoutPath = path.join(targetDir, ".git", "info", "sparse-checkout");
-  if (!fs.existsSync(sparseCheckoutPath)) {
-    return null;
-  }
-  return fs.readFileSync(sparseCheckoutPath, "utf8");
-}
-
-function evaluateMaterialization(targetDir, commit, include) {
-  const head = execSync("git rev-parse HEAD", {
+function readHeadFromDir(targetDir) {
+  return execSync("git rev-parse HEAD", {
     cwd: targetDir,
     encoding: "utf8",
-  }).trim();
-
-  return isMaterializationComplete({
-    head,
-    commit,
-    includePaths: include,
-    exists: (relativePath) => fs.existsSync(path.join(targetDir, relativePath)),
-    isDirectory: (relativePath) =>
-      fs.statSync(path.join(targetDir, relativePath)).isDirectory(),
-    sparseCheckoutContent:
-      include.length > 0 ? readSparseCheckoutContent(targetDir) : null,
   });
+}
+
+function cloneAndConfigure(targetDir, cloneUrl, commit, include) {
+  execSync(`git clone --no-checkout ${cloneUrl} ${targetDir}`, {
+    stdio: "inherit",
+  });
+  execSync(`git checkout ${commit}`, { cwd: targetDir, stdio: "inherit" });
+
+  if (include.length > 0) {
+    const sparsePaths = sparseConeDirectories(include);
+    execSync("git sparse-checkout init --cone", { cwd: targetDir, stdio: "inherit" });
+    execSync(`git sparse-checkout set ${sparsePaths.map((p) => JSON.stringify(p)).join(" ")}`, {
+      cwd: targetDir,
+      stdio: "inherit",
+    });
+  }
 }
 
 function materializeRepo(repoKey) {
@@ -88,54 +86,27 @@ function materializeRepo(repoKey) {
 
   const targetDir = path.join(cacheRoot, `${repoKey}@${commit}`);
   const cloneUrl = `https://github.com/${repository}.git`;
+  const deps = createNodeMaterializeDeps(readHeadFromDir);
 
-  if (fs.existsSync(targetDir)) {
-    const status = evaluateMaterialization(targetDir, commit, include);
-    if (status.complete) {
-      console.log(`Already materialized: ${targetDir}`);
-      printInstructions(repoKey, targetDir, manifest);
-      return;
-    }
-
-    const head = execSync("git rev-parse HEAD", {
-      cwd: targetDir,
-      encoding: "utf8",
-    }).trim();
-    const reason = status.reason ?? "incomplete materialization";
-    if (head === commit) {
-      console.log(`Removing incomplete clone at ${targetDir} (${reason})`);
-    } else {
-      console.log(`Removing stale clone at ${targetDir} (HEAD ${head} != ${commit})`);
-    }
-    fs.rmSync(targetDir, { recursive: true, force: true });
-  }
-
-  fs.mkdirSync(cacheRoot, { recursive: true });
-
-  console.log(`Cloning ${repository} at ${commit} ...`);
-  execSync(`git clone --no-checkout ${cloneUrl} ${targetDir}`, {
-    stdio: "inherit",
+  const result = runMaterializeOrchestration({
+    cacheRoot,
+    targetDir,
+    commit,
+    includePaths: include,
+    currentPid: process.pid,
+    deps,
+    materializeToStaging: (stagingDir) => {
+      console.log(`Cloning ${repository} at ${commit} ...`);
+      cloneAndConfigure(stagingDir, cloneUrl, commit, include);
+    },
   });
-  execSync(`git checkout ${commit}`, { cwd: targetDir, stdio: "inherit" });
 
-  if (include.length > 0) {
-    const sparsePaths = sparseConeDirectories(include);
-    execSync("git sparse-checkout init --cone", { cwd: targetDir, stdio: "inherit" });
-    execSync(`git sparse-checkout set ${sparsePaths.map((p) => JSON.stringify(p)).join(" ")}`, {
-      cwd: targetDir,
-      stdio: "inherit",
-    });
+  if (result.action === "used-existing") {
+    console.log(`Already materialized: ${targetDir}`);
+  } else {
+    console.log(`Materialized ${repoKey} -> ${targetDir}`);
   }
 
-  const finalStatus = evaluateMaterialization(targetDir, commit, include);
-  if (!finalStatus.complete) {
-    fs.rmSync(targetDir, { recursive: true, force: true });
-    throw new Error(
-      `Materialization for '${repoKey}' failed validation: ${finalStatus.reason ?? "unknown error"}`,
-    );
-  }
-
-  console.log(`Materialized ${repoKey} -> ${targetDir}`);
   printInstructions(repoKey, targetDir, manifest);
 }
 
