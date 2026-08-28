@@ -6,6 +6,7 @@ import {
   createDefaultScanConfiguration,
   scan,
 } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 import { discoverServiceSections } from "../../../src/core/sectioning/discover-service-sections";
 import { ingestFileSystem } from "../../../src/ingest/file-system";
 
@@ -21,7 +22,7 @@ function write(filePath: string, content: string): void {
 describe("structural scan - JVM repositories", () => {
   it("produces components, flows, and parser stats for a Spring service", async () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult, files, findings } = await scan(
+    const { scanResult, files, findings } = await runScanPipeline(
       fixturePath("java-basic"),
       config,
     );
@@ -70,7 +71,7 @@ describe("structural scan - JVM repositories", () => {
 
   it("scans a Kotlin service through the same analyzer", async () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult, files, findings } = await scan(
+    const { scanResult, files, findings } = await runScanPipeline(
       fixturePath("kotlin-basic"),
       config,
     );

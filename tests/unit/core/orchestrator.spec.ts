@@ -4,8 +4,8 @@ import os from "os";
 
 import {
   createDefaultScanConfiguration,
-  scan,
 } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 
 describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
   it("runs the full structural pipeline for the typescript-basic fixture", async () => {
@@ -19,7 +19,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
 
     const config = createDefaultScanConfiguration({ enableAiInference: false });
 
-    const { scanResult } = await scan(fixturesRoot, config);
+    const { scanResult } = await runScanPipeline(fixturesRoot, config);
 
     expect(scanResult.components.length).toBeGreaterThan(0);
     expect(scanResult.dataFlows.length).toBeGreaterThan(0);
@@ -48,12 +48,12 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     );
 
     const baselineConfig = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult: baseline } = await scan(fixturesRoot, baselineConfig);
+    const { scanResult: baseline } = await runScanPipeline(fixturesRoot, baselineConfig);
 
     const configWithExcludes = createDefaultScanConfiguration({
       excludePaths: ["**/db.ts"],
     });
-    const { scanResult: withExcludes } = await scan(
+    const { scanResult: withExcludes } = await runScanPipeline(
       fixturesRoot,
       configWithExcludes,
     );
@@ -73,12 +73,12 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     );
 
     const baselineConfig = createDefaultScanConfiguration({ enableAiInference: false });
-    const { files: baselineFiles } = await scan(fixturesRoot, baselineConfig);
+    const { files: baselineFiles } = await runScanPipeline(fixturesRoot, baselineConfig);
 
     const configWithQuestionGlob = createDefaultScanConfiguration({
       excludePaths: ["d?.ts"],
     });
-    const { files: withQuestionGlob } = await scan(
+    const { files: withQuestionGlob } = await runScanPipeline(
       fixturesRoot,
       configWithQuestionGlob,
     );
@@ -102,13 +102,13 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     );
 
     const baselineConfig = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult: baseline } = await scan(fixturesRoot, baselineConfig);
+    const { scanResult: baseline } = await runScanPipeline(fixturesRoot, baselineConfig);
 
     const configLanguagesOnlyTs = createDefaultScanConfiguration({
       languages: ["typescript"],
     });
 
-    const { scanResult: tsOnly } = await scan(
+    const { scanResult: tsOnly } = await runScanPipeline(
       fixturesRoot,
       configLanguagesOnlyTs,
     );
@@ -128,7 +128,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     const baselineConfig = createDefaultScanConfiguration({
       minimumConfidence: 0,
     });
-    const { scanResult: baseline, findings: baselineFindings } = await scan(
+    const { scanResult: baseline, findings: baselineFindings } = await runScanPipeline(
       fixturesRoot,
       baselineConfig,
     );
@@ -136,7 +136,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     const strictConfig = createDefaultScanConfiguration({
       minimumConfidence: 0.95,
     });
-    const { scanResult: strict, findings: strictFindings } = await scan(
+    const { scanResult: strict, findings: strictFindings } = await runScanPipeline(
       fixturesRoot,
       strictConfig,
     );
@@ -164,7 +164,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     );
 
     const baselineConfig = createDefaultScanConfiguration({ enableAiInference: false });
-    const { findings: baselineFindings } = await scan(
+    const { findings: baselineFindings } = await runScanPipeline(
       fixturesRoot,
       baselineConfig,
     );
@@ -172,7 +172,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     const apiDisabledConfig = createDefaultScanConfiguration({
       enableAPIDetection: false,
     });
-    const { findings: apiDisabledFindings } = await scan(
+    const { findings: apiDisabledFindings } = await runScanPipeline(
       fixturesRoot,
       apiDisabledConfig,
     );
@@ -180,7 +180,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     const dbDisabledConfig = createDefaultScanConfiguration({
       enableDatabaseDetection: false,
     });
-    const { findings: dbDisabledFindings } = await scan(
+    const { findings: dbDisabledFindings } = await runScanPipeline(
       fixturesRoot,
       dbDisabledConfig,
     );
@@ -211,7 +211,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
     const phases: string[] = [];
 
-    await scan(fixturesRoot, config, (progress) => {
+    await runScanPipeline(fixturesRoot, config, (progress) => {
       phases.push(progress.phase);
       expect(progress.progress).toBeGreaterThanOrEqual(0);
       expect(progress.progress).toBeLessThanOrEqual(1);
@@ -245,7 +245,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     );
 
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult } = await scan(fixturesRoot, config);
+    const { scanResult } = await runScanPipeline(fixturesRoot, config);
 
     const thirdParties = scanResult.components.filter(
       (c) => c.type === "third_party",
@@ -271,7 +271,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     );
 
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult } = await scan(fixturesRoot, config);
+    const { scanResult } = await runScanPipeline(fixturesRoot, config);
 
     const thirdParties = scanResult.components.filter(
       (c) => c.type === "third_party",
@@ -316,13 +316,13 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
       const baselineConfig = createDefaultScanConfiguration({
         minimumConfidence: 0,
       });
-      const { scanResult: baseline } = await scan(root, baselineConfig);
+      const { scanResult: baseline } = await runScanPipeline(root, baselineConfig);
 
       const excludedConfig = createDefaultScanConfiguration({
         minimumConfidence: 0,
         excludePaths: ["sandbox-a/**", "sandbox-b/**"],
       });
-      const { scanResult: excluded } = await scan(root, excludedConfig);
+      const { scanResult: excluded } = await runScanPipeline(root, excludedConfig);
 
       const sectionIdsBaseline = baseline.components
         .map((c) => c.properties?.section_id)
@@ -364,7 +364,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
         "utf8",
       );
 
-      const { files } = await scan(root, createDefaultScanConfiguration({ enableAiInference: false }));
+      const { files } = await runScanPipeline(root, createDefaultScanConfiguration({ enableAiInference: false }));
       const paths = files.map((f) => f.path);
 
       expect(paths.some((p) => p.endsWith("app.spec.ts"))).toBe(false);
@@ -385,7 +385,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
     );
 
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult, files, findings } = await scan(fixturesRoot, config);
+    const { scanResult, files, findings } = await runScanPipeline(fixturesRoot, config);
 
     const scannedLanguages = new Set(files.map((file) => file.language));
     expect(scannedLanguages.has("typescript")).toBe(true);
@@ -448,7 +448,7 @@ describe("core/pipeline/orchestrator - DP-P0-CLI-401", () => {
       );
 
       const config = createDefaultScanConfiguration({ enableAiInference: false });
-      const { scanResult } = await scan(root, config);
+      const { scanResult } = await runScanPipeline(root, config);
 
       const postgresTargets = scanResult.components.filter(
         (c) =>

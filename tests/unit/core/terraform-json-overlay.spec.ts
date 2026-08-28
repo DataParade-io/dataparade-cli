@@ -1,7 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-import { createDefaultScanConfiguration, scan } from "../../../src/core/pipeline/orchestrator";
+import { createDefaultScanConfiguration } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 import { buildDataflowWrapper } from "../../../src/output/json";
 import { buildDiagramGraphFromScanResult } from "../../../src/core/pipeline/graph-mapping";
 
@@ -29,7 +30,7 @@ describe("terraform JSON overlay in scan pipeline", () => {
         terraformJsonPath: "show-overlay.json",
       });
 
-      const { scanResult } = await scan(fixturesRoot, config);
+      const { scanResult } = await runScanPipeline(fixturesRoot, config);
 
       expect(scanResult.terraformScanSummary).toBeDefined();
       expect(scanResult.terraformScanSummary?.mode).toBe("json_overlay");

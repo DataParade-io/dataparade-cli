@@ -8,6 +8,7 @@ import {
   createDefaultScanConfiguration,
   scan,
 } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 
 function tempRootForTest(): string {
   return path.join(
@@ -48,7 +49,7 @@ describe("parsing error handling - non-fatal", () => {
         enableDataFlowDetection: false,
       });
 
-      const { scanResult } = await scan(root, config);
+      const { scanResult } = await runScanPipeline(root, config);
 
       expect(Array.isArray(scanResult.errors)).toBe(true);
       expect(scanResult.errors).toHaveLength(0);

@@ -4,8 +4,8 @@ import type { RawFinding } from "../../../src/core/types/detection";
 import type { ScanConfiguration } from "../../../src/core/types";
 import {
   createDefaultScanConfiguration,
-  scan,
 } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 
 import {
   detectPythonPatternsFromDependencyManifests,
@@ -113,7 +113,7 @@ describe("dependency-manifest toggles - APIDetection/DBDetection/minConfidence",
     );
 
     const config = createDefaultScanConfiguration(configOverrides);
-    return scan(fixturesRoot, config);
+    return runScanPipeline(fixturesRoot, config);
   }
 
   it("enableAPIDetection=false removes express_route/auth_middleware components", async () => {

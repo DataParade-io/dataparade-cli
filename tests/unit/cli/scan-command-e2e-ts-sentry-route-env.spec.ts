@@ -1,6 +1,7 @@
 import path from "path";
 
-import { scan, createDefaultScanConfiguration } from "../../../src/core/pipeline/orchestrator";
+import { createDefaultScanConfiguration } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 
 describe("cli scan - DP-P0-CLI regression: sentry/route/env", () => {
   it("detects Sentry third_party, Express route, and API_KEY env_variable", async () => {
@@ -16,7 +17,7 @@ describe("cli scan - DP-P0-CLI regression: sentry/route/env", () => {
       projectName: "SentryRouteEnvApp",
     });
 
-    const { scanResult, findings } = await scan(
+    const { scanResult, findings } = await runScanPipeline(
       fixturesRoot,
       config,
       undefined,

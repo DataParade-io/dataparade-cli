@@ -6,6 +6,7 @@ import {
   createDefaultScanConfiguration,
   scan,
 } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 import { discoverServiceSections } from "../../../src/core/sectioning/discover-service-sections";
 import { ingestFileSystem } from "../../../src/ingest/file-system";
 
@@ -21,7 +22,7 @@ function write(filePath: string, content: string): void {
 describe("structural scan - Go repositories", () => {
   it("produces components, flows, and parser stats for a Go service", async () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult, files, findings } = await scan(
+    const { scanResult, files, findings } = await runScanPipeline(
       fixturePath("go-basic"),
       config,
     );
@@ -67,7 +68,7 @@ describe("structural scan - Go repositories", () => {
 
   it("honours the language filter for Go", async () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { files } = await scan(fixturePath("go-basic"), {
+    const { files } = await runScanPipeline(fixturePath("go-basic"), {
       ...config,
       languages: ["python"],
     });

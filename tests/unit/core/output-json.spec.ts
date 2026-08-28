@@ -7,6 +7,7 @@ import {
   createDefaultScanConfiguration,
   scan,
 } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 import { validateDataflowJson } from "../../../src/core/schema/dataflow-wrapper.schema";
 import { buildDataflowWrapper, writeDataflowJson } from "../../../src/output/json";
 
@@ -21,7 +22,7 @@ describe("output/json - DP-P0-CLI-403", () => {
     );
 
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult } = await scan(fixturesRoot, config);
+    const { scanResult } = await runScanPipeline(fixturesRoot, config);
 
     const graph = buildDiagramGraphFromScanResult(scanResult);
 
@@ -79,7 +80,7 @@ describe("output/json - DP-P0-CLI-403", () => {
     );
 
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult } = await scan(fixturesRoot, config);
+    const { scanResult } = await runScanPipeline(fixturesRoot, config);
 
     const graph = buildDiagramGraphFromScanResult(scanResult);
 

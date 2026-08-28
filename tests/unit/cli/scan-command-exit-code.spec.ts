@@ -2,6 +2,22 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 
+jest.mock("../../../src/core/pipeline/scan-pipeline", () => ({
+  runScanPipeline: jest.fn(async () => ({
+    scanResult: {
+      components: [],
+      dataFlows: [],
+      filesScanned: 0,
+      filesSkipped: 0,
+      totalLines: 0,
+      scanDurationMs: 0,
+      warnings: [],
+      errors: [],
+      languageStats: undefined,
+    },
+  })),
+}));
+
 jest.mock("../../../src/core/pipeline/orchestrator", () => ({
   createDefaultScanConfiguration: jest.fn((overrides) => ({
     ...overrides,
@@ -15,21 +31,6 @@ jest.mock("../../../src/core/pipeline/orchestrator", () => ({
       overrides?.enableDataFlowDetection ?? true,
     languages: overrides?.languages,
     deepAnalysis: overrides?.deepAnalysis ?? false,
-  })),
-  scan: jest.fn(async () => ({
-    scanResult: {
-      components: [],
-      dataFlows: [],
-      filesScanned: 0,
-      filesSkipped: 0,
-      totalLines: 0,
-      scanDurationMs: 0,
-      warnings: [],
-      errors: ["mock-error"],
-      languageStats: undefined,
-    },
-    files: [],
-    findings: [],
   })),
 }));
 
@@ -86,14 +87,14 @@ describe("cli scan command - exit codes", () => {
 
   it("sets exitCode=1 when scanResult.errors is non-empty", async () => {
     const { run } = require("../../../src/cli") as typeof import("../../../src/cli");
-    const orchestrator = require("../../../src/core/pipeline/orchestrator");
+    const scanPipeline = require("../../../src/core/pipeline/scan-pipeline");
     const graphMapping = require("../../../src/core/pipeline/graph-mapping");
     const outputJson = require("../../../src/output/json");
 
     // Reset before running.
     process.exitCode = undefined;
 
-    orchestrator.scan.mockResolvedValueOnce({
+    scanPipeline.runScanPipeline.mockResolvedValueOnce({
       scanResult: {
         components: [],
         dataFlows: [],
@@ -130,13 +131,13 @@ describe("cli scan command - exit codes", () => {
 
   it("sets exitCode=1 when diagram graph building fails", async () => {
     const { run } = require("../../../src/cli") as typeof import("../../../src/cli");
-    const orchestrator = require("../../../src/core/pipeline/orchestrator");
+    const scanPipeline = require("../../../src/core/pipeline/scan-pipeline");
     const graphMapping = require("../../../src/core/pipeline/graph-mapping");
     const outputJson = require("../../../src/output/json");
 
     process.exitCode = undefined;
 
-    orchestrator.scan.mockResolvedValueOnce({
+    scanPipeline.runScanPipeline.mockResolvedValueOnce({
       scanResult: {
         components: [],
         dataFlows: [],

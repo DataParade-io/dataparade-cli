@@ -1,7 +1,6 @@
 import type { ScanConfiguration, ScanProgress } from "../types";
 import { DEFAULT_EXCLUDED_FILE_GLOBS } from "../../patterns/scan-exclusions";
-import { traceDataparadeScan } from "../../tracing/langsmith-tracing";
-import { runScanPipeline } from "./scan-pipeline";
+import { runDeterministicScan } from "./deterministic-scan";
 import type { OrchestratorScanResult } from "./orchestrator-result";
 
 export type { OrchestratorScanResult } from "./orchestrator-result";
@@ -66,24 +65,16 @@ export function createDefaultScanConfiguration(
 }
 
 /**
- * Run the full structural scan pipeline for a given project root.
+ * Run the deterministic structural scan for a project root.
  *
- * This is the primary entrypoint for code that wants to scan a project:
- * the CLI, tests, and any future programmatic consumers should call `scan`
- * rather than reaching into individual ingest/analyzer/classifier modules.
- *
- * When LangSmith tracing is enabled (see `tracing/langsmith-tracing.ts`), the
- * full run is recorded as a root trace; AI inference is a nested trace.
+ * Ingest → analyzers → classifier → data-flow detection, without AI enrichment
+ * or LangSmith tracing. The CLI applies structural enrichment and optional LLM
+ * inference afterward via {@link runScanPipeline}.
  */
 export async function scan(
   rootPath: string,
   config: ScanConfiguration,
   onProgress?: (progress: ScanProgress) => void,
 ): Promise<OrchestratorScanResult> {
-  return traceDataparadeScan({
-    rootPath: rootPath.toString(),
-    projectName: config.projectName,
-    enableAiInference: config.enableAiInference,
-    run: () => runScanPipeline(rootPath, config, onProgress),
-  });
+  return runDeterministicScan(rootPath, config, onProgress);
 }

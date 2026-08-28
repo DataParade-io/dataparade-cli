@@ -278,9 +278,10 @@ function createProgram(): Command {
             return;
           }
 
-          const [{ scan, createDefaultScanConfiguration }, { buildDiagramGraphFromScanResult }] =
+          const [{ createDefaultScanConfiguration }, { runScanPipeline }, { buildDiagramGraphFromScanResult }] =
             await Promise.all([
               import("./core/pipeline/orchestrator"),
+              import("./core/pipeline/scan-pipeline"),
               import("./core/pipeline/graph-mapping"),
             ]);
 
@@ -473,7 +474,7 @@ function createProgram(): Command {
             );
           }
 
-          const { scanResult } = await scan(
+          const { scanResult } = await runScanPipeline(
             resolvedScanRoot,
             config,
             (progress) => {

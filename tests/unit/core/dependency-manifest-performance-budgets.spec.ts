@@ -2,7 +2,8 @@ import fs from "fs/promises";
 import path from "path";
 import os from "os";
 
-import { createDefaultScanConfiguration, scan } from "../../../src/core/pipeline/orchestrator";
+import { createDefaultScanConfiguration } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 
 // Keep the test focused on manifest-scanning budgets.
 jest.mock("../../../src/analyzers/registry", () => ({
@@ -79,7 +80,7 @@ describe("dependency-manifest performance budgets (non-fatal)", () => {
         deepAnalysis: false,
       });
 
-      const { scanResult } = await scan(root, config);
+      const { scanResult } = await runScanPipeline(root, config);
 
       expect(Array.isArray(scanResult.components)).toBe(true);
       expect(Array.isArray(scanResult.warnings)).toBe(true);

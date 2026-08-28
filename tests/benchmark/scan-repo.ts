@@ -1,9 +1,7 @@
 import path from "path";
 
-import {
-  createDefaultScanConfiguration,
-  scan,
-} from "../../src/core/pipeline/orchestrator";
+import { createDefaultScanConfiguration } from "../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../src/core/pipeline/scan-pipeline";
 import { ingestFileSystem } from "../../src/ingest/file-system";
 import {
   matchPiiSignalsInFiles,
@@ -63,7 +61,7 @@ export async function scanRepoComponents(
   repoRoot: string,
 ): Promise<FixtureScanResult> {
   const config = createDefaultScanConfiguration({ enableAiInference: false });
-  const { scanResult, files } = await scan(repoRoot, config);
+  const { scanResult, files } = await runScanPipeline(repoRoot, config);
 
   return {
     fixture: repoKey,

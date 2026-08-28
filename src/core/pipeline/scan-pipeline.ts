@@ -1,57 +1,30 @@
-import path from "path";
-
 import type {
   AiInferenceProposalDetail,
   AiInferenceSummary,
   DetectedDataFlow,
   ScanConfiguration,
-  ScanPhase,
   ScanProgress,
-  ScanResult,
   StructuralEnrichmentSummary,
 } from "../types";
 import { buildAgentOrchestratorOptions } from "./ai-orchestrator-options";
-import { validateScanResult } from "../schema/scan-result.schema";
-import { runStructuralScanPhase } from "./structural-scan";
-import { runClassifierPhase } from "./classifier-phase";
-import { runDataFlowPhase } from "./dataflow-phase";
 import {
-  sortComponentsDeterministically,
-  sortDataFlowsDeterministically,
-} from "./sorting";
+  emitScanProgress,
+  finalizeDeterministicScanResult,
+  runDeterministicScanPhases,
+  type DeterministicScanWork,
+} from "./deterministic-scan";
 import { runInferencePipeline } from "../../ai-enrichment/pipeline";
 import { applyDeterministicInferenceFallbacks } from "../../ai-enrichment/fallbacks";
-import { dropCrossSectionServiceFlows } from "../../data-flow/drop-cross-section-flows";
 import { generateAgenticProposals } from "../../ai-enrichment/agent-orchestrator";
 import {
   buildProposalTargetComponentIdRemap,
   buildThirdPartyDataFlowSummary,
 } from "../../ai-enrichment/third-party-data-flow";
 import { ensureThirdPartySubTypes } from "../../ai-enrichment/third-party-subtype";
-import { traceDataparadeAiInference } from "../../tracing/langsmith-tracing";
+import { traceDataparadeAiInference, traceDataparadeScan } from "../../tracing/langsmith-tracing";
 import type { AiProposal, InferencePipelineResult } from "../../ai-enrichment/types";
 import type { DetectedComponent } from "../types";
 import type { OrchestratorScanResult } from "./orchestrator-result";
-import { assignStableComponentIds } from "./stable-component-ids";
-import { applyTerraformMinimalServiceScanResult } from "./terraform-minimal-services";
-
-function emitProgress(
-  onProgress: ((progress: ScanProgress) => void) | undefined,
-  phase: ScanPhase,
-  progress: number,
-  totalFiles: number,
-  message: string,
-): void {
-  if (!onProgress) return;
-  const clamped = Math.max(0, Math.min(progress, 1));
-  onProgress({
-    phase,
-    filesProcessed: totalFiles,
-    totalFiles,
-    progress: clamped,
-    message,
-  });
-}
 
 function buildAiProposalDetails(input: {
   proposals: Array<{ id: string; proposal: AiProposal }>;
@@ -174,10 +147,7 @@ function buildThirdPartyCoverage(input: {
   return { autofilled, suggested, unknown };
 }
 
-/**
- * Internal scan implementation (ingest → classify → flows → optional AI → validate).
- */
-export async function runScanPipeline(
+async function runScanPipelineInner(
   rootPath: string,
   config: ScanConfiguration,
   onProgress?: (progress: ScanProgress) => void,
@@ -186,39 +156,23 @@ export async function runScanPipeline(
   const warnings: string[] = [];
   const errors: string[] = [];
 
-  const projectNameFromPath = path.basename(rootPath.toString());
-
-  emitProgress(onProgress, "ingest", 0.05, 0, `Ingesting files from ${rootPath}...`);
-  emitProgress(onProgress, "analyze", 0.25, 0, "Running structural scan...");
-
-  const structural = await runStructuralScanPhase(
+  const phaseWork = await runDeterministicScanPhases(
     rootPath,
     config,
-    (warning) => warnings.push(warning),
-  );
-  const {
-    files,
-    findings,
-    sections,
-    monorepoPackageSectionPathDepth,
-    filesScanned,
-    totalLines,
-    languageStats,
-    terraformScanSummary,
-  } = structural;
-
-  emitProgress(
     onProgress,
-    "classify",
-    0.5,
-    filesScanned,
-    "Classifying detected components...",
+    { warnings, errors, startMs: start },
   );
 
-  const components = runClassifierPhase(findings, sections, {
-    projectName: config.projectName ?? projectNameFromPath,
-    minimumConfidence: config.minimumConfidence,
-  });
+  const work: DeterministicScanWork = {
+    ...phaseWork,
+    warnings,
+    errors,
+    scanDurationMs: Date.now() - start,
+  };
+
+  const components = work.components;
+  const dataFlows = work.dataFlows;
+  const { files, findings, sections, filesScanned } = work;
 
   const subTypesFilledEarly = ensureThirdPartySubTypes(components);
   if (subTypesFilledEarly > 0) {
@@ -226,34 +180,6 @@ export async function runScanPipeline(
       `third-party-subtype: inferred subType for ${subTypesFilledEarly} third-party component(s) from vendor/name heuristics.`,
     );
   }
-
-  let dataFlows: DetectedDataFlow[] = [];
-  if (config.enableDataFlowDetection) {
-    emitProgress(
-      onProgress,
-      "data_flow",
-      0.7,
-      filesScanned,
-      "Detecting data flows...",
-    );
-
-    try {
-      dataFlows = runDataFlowPhase(files, components, findings, sections, {
-        enableDataFlowDetection: config.enableDataFlowDetection,
-        minimumConfidence: config.minimumConfidence,
-      });
-    } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Unknown error during data-flow detection.";
-      errors.push(`data-flow: ${message}`);
-      dataFlows = [];
-    }
-  }
-
-  sortComponentsDeterministically(components);
-  sortDataFlowsDeterministically(dataFlows);
 
   let aiInferenceSummary: AiInferenceSummary | undefined;
   let structuralEnrichmentSummary: StructuralEnrichmentSummary | undefined;
@@ -278,7 +204,7 @@ export async function runScanPipeline(
     },
   } as const;
 
-  emitProgress(
+  emitScanProgress(
     onProgress,
     "data_flow",
     0.82,
@@ -328,7 +254,7 @@ export async function runScanPipeline(
       ...component,
       properties: { ...component.properties },
     }));
-    emitProgress(
+    emitScanProgress(
       onProgress,
       "data_flow",
       0.85,
@@ -456,7 +382,7 @@ export async function runScanPipeline(
 
   const fallbackResult = applyDeterministicInferenceFallbacks(components, dataFlows);
   components.splice(0, components.length, ...fallbackResult.components);
-  dataFlows = fallbackResult.dataFlows;
+  let finalizedFlows: DetectedDataFlow[] = fallbackResult.dataFlows;
 
   const subTypesFilledLate = ensureThirdPartySubTypes(components);
   if (subTypesFilledLate > 0) {
@@ -465,30 +391,20 @@ export async function runScanPipeline(
     );
   }
 
-  dataFlows = dropCrossSectionServiceFlows(components, dataFlows);
+  work.components = components;
+  work.dataFlows = finalizedFlows;
+  work.warnings = warnings;
+  work.errors = errors;
+  work.scanDurationMs = Date.now() - start;
 
-  const scanDurationMs = Date.now() - start;
-
-  emitProgress(onProgress, "output", 0.95, filesScanned, "Assembling scan result...");
-
-  const reduced = applyTerraformMinimalServiceScanResult({
-    components,
-    dataFlows,
-    filesScanned,
-    filesSkipped: 0,
-    totalLines,
-    scanDurationMs,
-    warnings,
-    errors,
-    languageStats: languageStats.length > 0 ? languageStats : undefined,
-    aiInferenceSummary,
-    structuralEnrichmentSummary,
-    aiInferenceProposalDetails,
-    terraformScanSummary,
-  });
-  const stableIds = assignStableComponentIds(
-    reduced.components,
-    reduced.dataFlows,
+  const result = finalizeDeterministicScanResult(
+    {
+      work,
+      aiInferenceSummary,
+      structuralEnrichmentSummary,
+      aiInferenceProposalDetails,
+    },
+    onProgress,
   );
 
   if (
@@ -497,41 +413,38 @@ export async function runScanPipeline(
     postAiComponents &&
     config.aiThirdPartyDataFlowEnabled !== false
   ) {
-    aiInferenceSummary = {
+    result.scanResult.aiInferenceSummary = {
       ...aiInferenceSummary,
       thirdPartyDataFlow: buildThirdPartyDataFlowSummary({
         proposals: inference.proposals,
         appliedProposalIds: inference.mergeResult.appliedProposalIds,
-        componentsAfterAi: stableIds.components,
+        componentsAfterAi: result.scanResult.components,
         files,
         agenticTrace: inference.usageSummary?.agenticTrace,
         proposalTargetComponentIdRemap: buildProposalTargetComponentIdRemap(
           postAiComponents,
-          stableIds.components,
+          result.scanResult.components,
         ),
       }),
     };
   }
 
-  const scanResult = {
-    ...reduced,
-    components: stableIds.components,
-    dataFlows: stableIds.dataFlows,
-    aiInferenceSummary,
-    structuralEnrichmentSummary,
-  };
+  return result;
+}
 
-  const validation = validateScanResult(scanResult);
-  if (!validation.ok) {
-    errors.push(...validation.errors);
-    scanResult.errors = errors;
-  }
-
-  emitProgress(onProgress, "output", 1, filesScanned, "Scan complete.");
-
-  return {
-    scanResult,
-    files,
-    findings,
-  };
+/**
+ * Full CLI scan pipeline: deterministic structural scan, optional structural enrichment,
+ * optional LLM inference, and LangSmith tracing when enabled.
+ */
+export async function runScanPipeline(
+  rootPath: string,
+  config: ScanConfiguration,
+  onProgress?: (progress: ScanProgress) => void,
+): Promise<OrchestratorScanResult> {
+  return traceDataparadeScan({
+    rootPath: rootPath.toString(),
+    projectName: config.projectName,
+    enableAiInference: config.enableAiInference,
+    run: () => runScanPipelineInner(rootPath, config, onProgress),
+  });
 }

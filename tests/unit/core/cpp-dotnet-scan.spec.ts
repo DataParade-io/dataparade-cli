@@ -4,6 +4,7 @@ import {
   createDefaultScanConfiguration,
   scan,
 } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 
 function fixturePath(name: string): string {
   return path.join(__dirname, "..", "..", "fixtures", name);
@@ -12,7 +13,7 @@ function fixturePath(name: string): string {
 describe("structural scan - C++ and .NET repositories", () => {
   it("produces components, flows, and parser stats for a C++ service", async () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult, files, findings } = await scan(
+    const { scanResult, files, findings } = await runScanPipeline(
       fixturePath("cpp-basic"),
       config,
     );
@@ -43,7 +44,7 @@ describe("structural scan - C++ and .NET repositories", () => {
 
   it("produces components, flows, and parser stats for a .NET service", async () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult, files, findings } = await scan(
+    const { scanResult, files, findings } = await runScanPipeline(
       fixturePath("csharp-basic"),
       config,
     );
@@ -84,7 +85,7 @@ describe("structural scan - C++ and .NET repositories", () => {
 
   it("honours the language filter for C++ and C#", async () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { files } = await scan(fixturePath("csharp-basic"), {
+    const { files } = await runScanPipeline(fixturePath("csharp-basic"), {
       ...config,
       languages: ["cpp"],
     });

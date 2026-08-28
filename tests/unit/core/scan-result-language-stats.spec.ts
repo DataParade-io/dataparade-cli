@@ -1,12 +1,13 @@
 import type { ScanConfiguration } from "../../../src/core/types";
-import { createDefaultScanConfiguration, scan } from "../../../src/core/pipeline/orchestrator";
+import { createDefaultScanConfiguration } from "../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 
 describe("ScanResult.languageStats for Python", () => {
   it("populates languageStats entry for Python files", async () => {
     const rootPath = `${__dirname}/../../fixtures/python-parser-basic`;
     const config: ScanConfiguration = createDefaultScanConfiguration({ enableAiInference: false });
 
-    const { scanResult } = await scan(rootPath, config);
+    const { scanResult } = await runScanPipeline(rootPath, config);
 
     expect(scanResult.languageStats).toBeDefined();
     const pythonStats = scanResult.languageStats?.find(

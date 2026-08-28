@@ -1,9 +1,7 @@
 import path from "path";
 
-import {
-  createDefaultScanConfiguration,
-  scan,
-} from "../../../../src/core/pipeline/orchestrator";
+import { createDefaultScanConfiguration } from "../../../../src/core/pipeline/orchestrator";
+import { runScanPipeline } from "../../../../src/core/pipeline/scan-pipeline";
 import type { DetectedComponent } from "../../../../src/core/types/component";
 import type { FixtureScanResult, LayerFinding } from "../../types";
 
@@ -35,7 +33,7 @@ function toLayerFinding(component: DetectedComponent): LayerFinding {
 export async function scanFixtureComponents(fixture: string): Promise<FixtureScanResult> {
   const root = path.join(FIXTURES_ROOT, fixture);
   const config = createDefaultScanConfiguration({ enableAiInference: false });
-  const { scanResult, files } = await scan(root, config);
+  const { scanResult, files } = await runScanPipeline(root, config);
 
   return {
     fixture,
