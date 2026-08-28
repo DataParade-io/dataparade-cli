@@ -38,6 +38,7 @@ function normalizeLanguages(
     "kotlin",
     "terraform",
     "dockerfile",
+    "rust",
   ];
 
   const result = normalized.filter((v): v is FileLanguage =>

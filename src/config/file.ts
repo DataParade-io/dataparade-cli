@@ -21,6 +21,7 @@ const fileLanguageEnum = z.enum([
   "kotlin",
   "terraform",
   "dockerfile",
+  "rust",
 ] satisfies [FileLanguage, ...FileLanguage[]]);
 
 const cliConfigFileSchema = z

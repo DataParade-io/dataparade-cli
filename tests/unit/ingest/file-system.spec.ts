@@ -132,6 +132,32 @@ describe("ingest/file-system - DP-P0-CLI-101", () => {
     }
   });
 
+  it("maps .rs files to rust language", async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "dp-cli-ingest-rs-"));
+    try {
+      fs.writeFileSync(
+        path.join(tempRoot, "types.rs"),
+        "pub struct CardData { pub pan: String }\n",
+        "utf8",
+      );
+      fs.mkdirSync(path.join(tempRoot, "src"), { recursive: true });
+      fs.writeFileSync(
+        path.join(tempRoot, "src", "main.rs"),
+        "fn main() {}\n",
+        "utf8",
+      );
+
+      const files = await ingestFileSystem(tempRoot);
+      const byPath = new Map(files.map((f) => [f.path, f]));
+
+      expect(byPath.get("types.rs")?.language).toBe("rust");
+      expect(byPath.get("src/main.rs")?.language).toBe("rust");
+      expect(byPath.get("types.rs")?.content).toContain("CardData");
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
   it("maps .tf and .tfvars to terraform language", async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "dp-cli-ingest-tf-"));
     try {
@@ -195,6 +221,26 @@ describe("ingest/file-system - DP-P0-CLI-105", () => {
     const ignored = files.find((f) => f.path.endsWith("ignored.ts"));
 
     expect(ignored).toBeUndefined();
+  });
+
+  it("ingests a single .rs file when the path is a supported source file", async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "dp-cli-ingest-rs-file-"));
+    try {
+      const rsPath = path.join(tempRoot, "types.rs");
+      fs.writeFileSync(
+        rsPath,
+        "pub struct CardData { pub pan: String }\n",
+        "utf8",
+      );
+
+      const files = await ingestFileSystem(rsPath);
+      expect(files).toHaveLength(1);
+      expect(files[0]?.path).toBe("types.rs");
+      expect(files[0]?.language).toBe("rust");
+      expect(files[0]?.content).toContain("CardData");
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
   });
 
   it("ingests a single file when the path is a supported source file", async () => {

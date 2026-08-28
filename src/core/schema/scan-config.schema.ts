@@ -18,6 +18,7 @@ const fileLanguageEnum = z.enum([
   "kotlin",
   "terraform",
   "dockerfile",
+  "rust",
 ] satisfies [FileLanguage, ...FileLanguage[]]);
 
 export const scanConfigurationSchema = z.object({
