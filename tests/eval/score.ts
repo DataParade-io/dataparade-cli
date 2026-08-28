@@ -1,7 +1,12 @@
+import {
+  dataItemKeysAlign,
+  dataItemsLabelsMatch,
+} from "./data-items-scoring";
 import type {
   EvalCase,
   EvalCaseResult,
   EvalEvidence,
+  EvalLayer,
   EvalScoreReport,
   FixtureScanResult,
   LayerFinding,
@@ -32,24 +37,68 @@ function evidenceOverlaps(
   );
 }
 
+function findingOverlapsCase(finding: LayerFinding, caseRecord: EvalCase): boolean {
+  return finding.sourceLines.some((line) => evidenceOverlaps(caseRecord.evidence, line));
+}
+
 function findingMatchesCase(finding: LayerFinding, caseRecord: EvalCase): boolean {
-  if (finding.key !== caseRecord.subject.key) {
+  if (!findingOverlapsCase(finding, caseRecord)) {
     return false;
   }
-  return finding.sourceLines.some((line) => evidenceOverlaps(caseRecord.evidence, line));
+
+  if (caseRecord.layer === "data-items") {
+    return true;
+  }
+
+  return finding.key === caseRecord.subject.key;
+}
+
+function compareDataItemFindingPreference(
+  finding: LayerFinding,
+  caseRecord: EvalCase,
+): number {
+  if (finding.key === caseRecord.subject.key) {
+    return 0;
+  }
+  if (dataItemKeysAlign(caseRecord.subject.key, finding.key)) {
+    return 1;
+  }
+  return 2;
 }
 
 function findMatchingFinding(
   findings: LayerFinding[],
   caseRecord: EvalCase,
 ): LayerFinding | undefined {
-  return findings.find((finding) => findingMatchesCase(finding, caseRecord));
+  const overlapping = findings.filter((finding) => findingOverlapsCase(finding, caseRecord));
+  if (overlapping.length === 0) {
+    return undefined;
+  }
+
+  if (caseRecord.layer !== "data-items") {
+    return overlapping.find((finding) => finding.key === caseRecord.subject.key);
+  }
+
+  return [...overlapping].sort(
+    (left, right) =>
+      compareDataItemFindingPreference(left, caseRecord) -
+      compareDataItemFindingPreference(right, caseRecord),
+  )[0];
 }
 
-function labelsMatch(finding: LayerFinding, expectedLabels: string[]): boolean {
+function labelsMatch(
+  finding: LayerFinding,
+  expectedLabels: string[],
+  layer: EvalLayer,
+): boolean {
   if (expectedLabels.length === 0) {
     return true;
   }
+
+  if (layer === "data-items") {
+    return dataItemsLabelsMatch(finding.labels, expectedLabels);
+  }
+
   const tags = new Set(finding.labels);
   return expectedLabels.every((label) => tags.has(label));
 }
@@ -118,7 +167,8 @@ export function scoreEvalCases(
 
     const finding = findMatchingFinding(findings, caseRecord);
     const matched = Boolean(finding);
-    const labelsCorrect = matched && labelsMatch(finding!, caseRecord.expected.labels);
+    const labelsCorrect =
+      matched && labelsMatch(finding!, caseRecord.expected.labels, caseRecord.layer);
     const documentedGap = Boolean(caseRecord.expected.documentedGap);
 
     let negativeClean = true;

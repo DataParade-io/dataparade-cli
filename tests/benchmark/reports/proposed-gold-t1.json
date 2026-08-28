@@ -1,0 +1,1641 @@
+{
+  "schemaVersion": "1.0",
+  "scoringContract": "T1",
+  "gitSha": "4fbd4abf0496a9bf013436931bb88a865b525eb7",
+  "generatedAt": "2026-08-28T12:38:32.687Z",
+  "reviewStates": [
+    "proposed",
+    "needs_adjudication",
+    "accepted"
+  ],
+  "provisional": true,
+  "aggregates": {
+    "recall": 0.49230769230769234,
+    "labelAccuracy": 0.90625,
+    "correctLabelRecall": 0.4461538461538462,
+    "precision": null,
+    "negativeCasePassRate": 0.9655172413793104,
+    "unreadCount": 29,
+    "denominators": {
+      "evaluablePositives": 65,
+      "matchedPositives": 32,
+      "matchedWithCorrectLabels": 29,
+      "negativeCases": 29,
+      "negativeCasesPassed": 28,
+      "exhaustiveScopedFindings": 0,
+      "exhaustiveScopedMatches": 0
+    }
+  },
+  "repos": [
+    {
+      "repoKey": "easy-school",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/easy-school@69ad989f7930d77d54145aae422cc2a7cb4c4dd2",
+      "evalCaseCount": 1,
+      "scannedFileCount": 12,
+      "findingCount": 0,
+      "scores": {
+        "recall": 0,
+        "labelAccuracy": null,
+        "correctLabelRecall": 0,
+        "precision": null,
+        "negativeCasePassRate": null,
+        "unreadCount": 0,
+        "denominators": {
+          "evaluablePositives": 1,
+          "matchedPositives": 0,
+          "matchedWithCorrectLabels": 0,
+          "negativeCases": 0,
+          "negativeCasesPassed": 0,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "easy-school-database-guardian-ssn",
+          "fixture": "easy-school",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        }
+      ]
+    },
+    {
+      "repoKey": "gitea",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/gitea@0b1067484fcdc497dc34d9113c467182231e6ea9",
+      "evalCaseCount": 28,
+      "scannedFileCount": 96,
+      "findingCount": 197,
+      "scores": {
+        "recall": 0.5,
+        "labelAccuracy": 0.8,
+        "correctLabelRecall": 0.4,
+        "precision": null,
+        "negativeCasePassRate": 1,
+        "unreadCount": 0,
+        "denominators": {
+          "evaluablePositives": 10,
+          "matchedPositives": 5,
+          "matchedWithCorrectLabels": 4,
+          "negativeCases": 9,
+          "negativeCasesPassed": 9,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "gitea-token-owner-id",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-token-name",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-access-token",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-token-hash",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-token-salt",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-token-last-eight",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-token-scope",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-token-created",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-token-updated",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-user-id",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-username",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-external-login-name",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-auth-source-id",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-full-name",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-email",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-avatar-url",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-profile-url",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-language",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-last-login",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-user-location",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-user-website",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-user-description",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-settings-full-name",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-settings-location",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-settings-full-name-option",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-settings-location-option",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-new-username",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "gitea-avatar-image",
+          "fixture": "gitea",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        }
+      ]
+    },
+    {
+      "repoKey": "hyperswitch-vault",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/hyperswitch-vault@abfca8e078039582460335be73341699ee826615",
+      "evalCaseCount": 29,
+      "scannedFileCount": 0,
+      "findingCount": 0,
+      "scores": {
+        "recall": null,
+        "labelAccuracy": null,
+        "correctLabelRecall": null,
+        "precision": null,
+        "negativeCasePassRate": null,
+        "unreadCount": 29,
+        "denominators": {
+          "evaluablePositives": 0,
+          "matchedPositives": 0,
+          "matchedWithCorrectLabels": 0,
+          "negativeCases": 0,
+          "negativeCasesPassed": 0,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "hyperswitch-card-number",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-cardholder-name",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-card-expiration-month",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-card-expiration-year",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-card-brand-not-cardholder-data",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": false,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-card-issuer-identification-not-pan",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": false,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-card-nickname",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-store-card-reference",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-dedup-hash1-reference",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": false,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-dedup-hash2-reference",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": false,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-store-merchant-id",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": false,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-store-merchant-customer-id",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-requestor-card-reference",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-encrypted-card-data-input",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-card-container-input",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-store-ttl",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": false,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-retrieve-merchant-id",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": false,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-retrieve-merchant-customer-id",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-retrieve-card-reference",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-retrieve-card-container",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-retrieve-encrypted-card-data",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-delete-merchant-id",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": false,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-delete-merchant-customer-id",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-delete-card-reference",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-fingerprint-data",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-fingerprint-key",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-fingerprint-id",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-stored-encrypted-data",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "hyperswitch-stored-card-data",
+          "fixture": "hyperswitch-vault",
+          "unread": true,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        }
+      ]
+    },
+    {
+      "repoKey": "keycloak",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/keycloak@b9b70f95f7e092ebadf898378948bab0971e015b",
+      "evalCaseCount": 15,
+      "scannedFileCount": 72,
+      "findingCount": 228,
+      "scores": {
+        "recall": 0.5,
+        "labelAccuracy": 0.75,
+        "correctLabelRecall": 0.375,
+        "precision": null,
+        "negativeCasePassRate": 1,
+        "unreadCount": 0,
+        "denominators": {
+          "evaluablePositives": 8,
+          "matchedPositives": 4,
+          "matchedWithCorrectLabels": 3,
+          "negativeCases": 6,
+          "negativeCasesPassed": 6,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "keycloak-user-id",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-username",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-first-name",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-last-name",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-email",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-email-constraint",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-realm-id",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-credential-id",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-credential-type",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-user-label",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-credential-user",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-secret-data",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-credential-data",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-credential-priority",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "keycloak-credential-salt",
+          "fixture": "keycloak",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        }
+      ]
+    },
+    {
+      "repoKey": "medusa-customer",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/medusa-customer@847612908fdd1c11a4df09ccc2e8ab44d338bb04",
+      "evalCaseCount": 19,
+      "scannedFileCount": 28,
+      "findingCount": 15,
+      "scores": {
+        "recall": 0.8,
+        "labelAccuracy": 1,
+        "correctLabelRecall": 0.8,
+        "precision": null,
+        "negativeCasePassRate": 1,
+        "unreadCount": 0,
+        "denominators": {
+          "evaluablePositives": 10,
+          "matchedPositives": 8,
+          "matchedWithCorrectLabels": 8,
+          "negativeCases": 3,
+          "negativeCasesPassed": 3,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "medusa-user-id",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-user-first-name",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-user-last-name",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-user-email",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-user-avatar",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-user-metadata",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-customer-id",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-company-name",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-customer-first-name",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-customer-last-name",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-customer-email",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-customer-phone",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-has-account",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-customer-metadata",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-created-by",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-invite-id",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-invite-email",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-invite-token",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "medusa-invite-expires-at",
+          "fixture": "medusa-customer",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        }
+      ]
+    },
+    {
+      "repoKey": "ory-kratos-password",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/ory-kratos-password@b86338da04a040247a07f46100a86dcfb3875909",
+      "evalCaseCount": 2,
+      "scannedFileCount": 96,
+      "findingCount": 932,
+      "scores": {
+        "recall": 1,
+        "labelAccuracy": 0,
+        "correctLabelRecall": 0,
+        "precision": null,
+        "negativeCasePassRate": 0,
+        "unreadCount": 0,
+        "denominators": {
+          "evaluablePositives": 1,
+          "matchedPositives": 1,
+          "matchedWithCorrectLabels": 0,
+          "negativeCases": 1,
+          "negativeCasesPassed": 0,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "ory-hashed-password",
+          "fixture": "ory-kratos-password",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "ory-password-migration-hook",
+          "fixture": "ory-kratos-password",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": false,
+          "documentedGap": false
+        }
+      ]
+    },
+    {
+      "repoKey": "posthog-user",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/posthog-user@a2f78ff63a1c7e1db33c623be83488a651bf4251",
+      "evalCaseCount": 13,
+      "scannedFileCount": 414,
+      "findingCount": 1220,
+      "scores": {
+        "recall": 0.5,
+        "labelAccuracy": 1,
+        "correctLabelRecall": 0.5,
+        "precision": null,
+        "negativeCasePassRate": 1,
+        "unreadCount": 0,
+        "denominators": {
+          "evaluablePositives": 4,
+          "matchedPositives": 2,
+          "matchedWithCorrectLabels": 2,
+          "negativeCases": 7,
+          "negativeCasesPassed": 7,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "posthog-email",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-pending-email",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-distinct-id",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-email-verified",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-credentials-reviewed-at",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-password-reset-at",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-2fa-reset-at",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-ui-metadata",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-active-flag",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-role",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-notification-settings",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-anonymize-flag",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "posthog-temporary-token",
+          "fixture": "posthog-user",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        }
+      ]
+    },
+    {
+      "repoKey": "saleor",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/saleor@030c1676145d63154687fa394d1a4abb224b1ac2",
+      "evalCaseCount": 23,
+      "scannedFileCount": 160,
+      "findingCount": 263,
+      "scores": {
+        "recall": 0.5,
+        "labelAccuracy": 1,
+        "correctLabelRecall": 0.5,
+        "precision": null,
+        "negativeCasePassRate": 1,
+        "unreadCount": 0,
+        "denominators": {
+          "evaluablePositives": 14,
+          "matchedPositives": 7,
+          "matchedWithCorrectLabels": 7,
+          "negativeCases": 2,
+          "negativeCasesPassed": 2,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "saleor-address-first-name",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-address-last-name",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-company-name",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-street-1",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-street-2",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-city",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-city-area",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-postal-code",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-country",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-country-area",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-phone",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-user-email",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-user-first-name",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-user-last-name",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-user-note",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-avatar",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-jwt-token-key",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-language",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-search-document",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-user-uuid",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-customer-note-content",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-customer-event-parameters",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "saleor-staff-email",
+          "fixture": "saleor",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        }
+      ]
+    },
+    {
+      "repoKey": "vgs-django",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/vgs-django@46acdb3290d677081e1b0889f3b736635a4e0847",
+      "evalCaseCount": 2,
+      "scannedFileCount": 16,
+      "findingCount": 2,
+      "scores": {
+        "recall": 0,
+        "labelAccuracy": null,
+        "correctLabelRecall": 0,
+        "precision": null,
+        "negativeCasePassRate": null,
+        "unreadCount": 0,
+        "denominators": {
+          "evaluablePositives": 2,
+          "matchedPositives": 0,
+          "matchedWithCorrectLabels": 0,
+          "negativeCases": 0,
+          "negativeCasesPassed": 0,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "vgs-django-database-pii",
+          "fixture": "vgs-django",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "vgs-django-third-party-checkr",
+          "fixture": "vgs-django",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        }
+      ]
+    },
+    {
+      "repoKey": "yjdh-employee",
+      "materializedPath": "/Users/ryan/Projects/dataparade-cli/worktrees/datap-proposed-eval/tests/benchmark/.cache/repos/yjdh-employee@b148e187b43dbaab7e6b9c6c4a394fe9e9ab7ee8",
+      "evalCaseCount": 18,
+      "scannedFileCount": 48,
+      "findingCount": 82,
+      "scores": {
+        "recall": 0.3333333333333333,
+        "labelAccuracy": 1,
+        "correctLabelRecall": 0.3333333333333333,
+        "precision": null,
+        "negativeCasePassRate": 1,
+        "unreadCount": 0,
+        "denominators": {
+          "evaluablePositives": 15,
+          "matchedPositives": 5,
+          "matchedWithCorrectLabels": 5,
+          "negativeCases": 1,
+          "negativeCasesPassed": 1,
+          "exhaustiveScopedFindings": 0,
+          "exhaustiveScopedMatches": 0
+        }
+      },
+      "caseOutcomes": [
+        {
+          "caseId": "yjdh-employee-id",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-first-name",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-last-name",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-finnish-social-security-number",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-email",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-employee-language",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-job-title",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-monthly-pay",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-vacation-money",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-other-expenses",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-working-hours",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-collective-agreement",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-residence-flag",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-commission-amount",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-commission-description",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-birthday",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-ssn-validation",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": false,
+          "labelsCorrect": false,
+          "negativeClean": true,
+          "documentedGap": false
+        },
+        {
+          "caseId": "yjdh-search-ssn",
+          "fixture": "yjdh-employee",
+          "unread": false,
+          "matched": true,
+          "labelsCorrect": true,
+          "negativeClean": true,
+          "documentedGap": false
+        }
+      ]
+    }
+  ]
+}
