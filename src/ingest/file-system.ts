@@ -97,6 +97,10 @@ function getFileLanguage(filePath: string): FileLanguage | undefined {
     return "go";
   }
 
+  if (ext === ".rs") {
+    return "rust";
+  }
+
   if (ext === ".java") {
     return "java";
   }

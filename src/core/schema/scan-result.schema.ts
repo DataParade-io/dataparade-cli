@@ -22,6 +22,7 @@ const fileLanguageEnum = z.enum([
   "kotlin",
   "terraform",
   "dockerfile",
+  "rust",
 ]);
 
 export const sourceLocationSchema = z.object({
