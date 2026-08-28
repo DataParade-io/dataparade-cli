@@ -15,10 +15,6 @@ scan-frontend-summary.json
 .env.example
 .env.*.example
 
-# Kanbus caches (issues/events under project/ are tracked)
-project/.overlay/
-project/.cache/
-
 # Local agent desk notes (Jira sync, host-specific)
 AGENTS.local.md
 
