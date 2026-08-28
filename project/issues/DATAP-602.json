@@ -66,10 +66,24 @@
       "text": "PRs #3, #4, and #5 merged to develop (2026-08-27), along with the later eval stack (#6–#12).\n\nOn develop: benchmark runner, data-flow / PII / data_items layers, 150-annotation proposed corpus, Cucumber, gold YAML import, scan-findings, fixture + corpus evaluate accuracy.\n\nClosed on that landing: DATAP-53a1e4, DATAP-87ebe8, DATAP-ce7eaa, DATAP-d61496, DATAP-f3feec, plus runner bugs DATAP-7aea12, DATAP-b80122, DATAP-7c57f9, DATAP-19ad97, and the proposed-packet sub-tasks whose YAML is in tests/benchmark/repos/.\n\nDATAP-b17f92 stays open for adjudication and remaining packets. Still open under this epic: DATAP-3eb0e4 (Rust ingest), DATAP-c66199 (human adjudication), DATAP-af2f48 (--baseline), DATAP-25e8b2 (concurrent Items), DATAP-6bd634 / DATAP-d8833a.",
       "created_at": "2026-08-27T18:57:26.450834Z",
       "comment_type": "default"
+    },
+    {
+      "id": "845848de-c34e-408b-aee5-08240349cf75",
+      "author": "ryan",
+      "text": "Agreed 2026-08-28: four-layer evaluation is now initiative DATAP-59a833.\n\n602 stays the CLI harness and corpus epic. T1 (d8833a, PR #15) is the mention/span grade, not the data-item entity grade. PR #16 added proposed component notes; that is not a Plexus component scorecard.\n\nChildren of DATAP-59a833: 7dc740 ontology, b45834 raw pattern hits, 089de7 component/flow Plexus grades, e06395 split mention vs data item.",
+      "created_at": "2026-08-28T14:01:00.053088Z",
+      "comment_type": "default"
+    },
+    {
+      "id": "745f727f-4b54-48d6-bc2b-d08066421cff",
+      "author": "ryan",
+      "text": "Agreed 2026-08-28: four-layer evaluation is local initiative KDATAP-0dbc61.\n\nDATAP-602 stays the one Jira epic (CLI harness and corpus). T1 is the mention/span grade, not the data-item entity grade.\n\nKDATAP children: 602d2b ontology, 7dc229 raw pattern hits, 4e1cdb component/flow Plexus grades, 96092c split mention vs data item.",
+      "created_at": "2026-08-28T14:03:50.984011Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-24T16:04:36.019Z",
-  "updated_at": "2026-08-27T19:00:37.019972Z",
+  "updated_at": "2026-08-28T14:03:50.984011Z",
   "closed_at": null,
   "custom": {
     "jira_key": "DATAP-602",
