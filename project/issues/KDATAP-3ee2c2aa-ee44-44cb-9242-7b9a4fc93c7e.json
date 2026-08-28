@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-3ee2c2aa-ee44-44cb-9242-7b9a4fc93c7e",
+  "title": "Move eval framework and corpus into the scanner project",
+  "description": "Purpose: Evaluation lives next to the scanner, not next to the CLI.\n\nMoves: tests/eval, tests/benchmark (corpus and runner), Plexus-facing features for scanner recall, src/evals if it is scanner scoring.\n\nKDATAP-0dbc61 four-layer work follows this harness.\n\nDefinition of done: mention-level T1 and component eval run from the scanner project against the same corpus.",
+  "type": "epic",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-4f695664-f223-459b-9c51-5b5a7aebeddc",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T15:59:37.709511Z",
+  "updated_at": "2026-08-28T15:59:37.709511Z",
+  "closed_at": null,
+  "custom": {}
+}

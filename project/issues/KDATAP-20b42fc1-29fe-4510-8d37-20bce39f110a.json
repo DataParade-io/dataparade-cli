@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-20b42fc1-29fe-4510-8d37-20bce39f110a",
+  "title": "A caller can scan without the CLI",
+  "description": "As an engineer, I want to call scan(config) from another program, so that evaluation and future services do not go through commander.\n\nFeature: programmatic scan\n\n  Scenario: Library scan\n    Given a fixture repository\n    When I call scan with a default configuration\n    Then I get a ScanResult with components and data flows\n    And no CLI process was started",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-6dbc6b03-b1cf-4287-a44d-1b06b707c20b",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T15:59:48.410919Z",
+  "updated_at": "2026-08-28T15:59:48.410919Z",
+  "closed_at": null,
+  "custom": {}
+}

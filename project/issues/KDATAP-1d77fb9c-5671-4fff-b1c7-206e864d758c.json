@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-1d77fb9c-5671-4fff-b1c7-206e864d758c",
+  "title": "Stand up the scanner project with the engine",
+  "description": "Purpose: Create DataParade-io/dataparade-scanner and move the deterministic scan engine into it.\n\nMoves: ingest, analyzers, patterns/, classifier, data-flow, core pipeline structural path, graph mapping, matching unit tests.\n\nDoes not move in this epic: AI enrichment, CLI, upload, platform API.\n\nDefinition of done: the new project can scan a fixture repo programmatically and its unit tests pass.",
+  "type": "epic",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-4f695664-f223-459b-9c51-5b5a7aebeddc",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T15:59:37.694990Z",
+  "updated_at": "2026-08-28T15:59:37.694990Z",
+  "closed_at": null,
+  "custom": {}
+}

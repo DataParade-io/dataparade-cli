@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-4f695664-f223-459b-9c51-5b5a7aebeddc",
+  "title": "Extract the scanner from the CLI",
+  "description": "Purpose: The scanner is a library. The CLI is how people run it and upload a diagram. Split them so programmatic scan, regression tests, and the evaluation framework live in one project we can improve without CLI, quota, or upload noise.\n\nNew repo (assumed): DataParade-io/dataparade-scanner\nPackage (assumed): @dataparade/scanner\nPublic API: scan(config) -> ScanResult, plus createDefaultScanConfiguration.\n\nMoves first: ingest, analyzers, patterns YAML, classifier, data-flow, core pipeline (structural path), graph mapping, tests/unit for those, tests/eval, tests/benchmark, Plexus-facing eval features.\n\nStays in the CLI: commander, config/env, writing dataflow.json, upload, platform API, quota, telemetry, Sentry.\n\nSecond cut, not this initiative: AI enrichment and LangSmith tracing stay in the CLI until the library API is stable.\n\nFour-layer eval (KDATAP-0dbc61) follows the eval harness into the scanner project.\n\nExclusions: do not merge to main; do not accept gold; do not use --local / a second Kanbus board.\n\nDefinition of done: scanner project exists, CLI depends on it, in-tree engine copy is gone, eval and corpus run from the scanner project.",
+  "type": "initiative",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": null,
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T15:59:30.388736Z",
+  "updated_at": "2026-08-28T15:59:30.388736Z",
+  "closed_at": null,
+  "custom": {}
+}

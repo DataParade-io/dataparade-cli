@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-6dbc6b03-b1cf-4287-a44d-1b06b707c20b",
+  "title": "Define the scanner package boundary",
+  "description": "Purpose: Write down what is in @dataparade/scanner, what stays in the CLI, and the public API.\n\nPublic API: createDefaultScanConfiguration, scan(config) -> ScanResult.\nScanResult stays components + dataFlows for this cut.\n\nDefinition of done: a short boundary doc on the wiki. Stories below match that doc.",
+  "type": "epic",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-4f695664-f223-459b-9c51-5b5a7aebeddc",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T15:59:37.680627Z",
+  "updated_at": "2026-08-28T15:59:37.680627Z",
+  "closed_at": null,
+  "custom": {}
+}
