@@ -3,7 +3,7 @@ virtual_projects: {}
 new_issue_project: null
 ignore_paths: []
 console_port: null
-project_key: DATAP
+project_key: KDATAP
 project_management_template: null
 hierarchy:
 - initiative
