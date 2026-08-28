@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-8e984b58-535f-4c94-95f7-b3571995048c",
+  "title": "Data items belong to components and ride data flows",
+  "description": "As a privacy reviewer, I want a data item to sit on a component and move along a data flow, so that the map says where personal data lives and where it goes.\n\nFeature: data item placement\n\n  Scenario: Data item on a component\n    Given a database component\n    And a data item for social_security_number\n    When I read the graph\n    Then the data item belongs to that component\n\n  Scenario: Data item on a flow\n    Given a data flow from the app to Checkr\n    And a data item for email\n    When I read the graph\n    Then the flow carries that data item\n    And the item is not only a category string",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-602d2b3d-d5c9-4c9b-a121-e137fd9369a0",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.841583Z",
+  "updated_at": "2026-08-28T14:03:38.841583Z",
+  "closed_at": null,
+  "custom": {}
+}

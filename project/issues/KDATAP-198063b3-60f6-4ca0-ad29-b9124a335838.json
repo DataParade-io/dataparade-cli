@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-198063b3-60f6-4ca0-ad29-b9124a335838",
+  "title": "A data item has stable identity across files",
+  "description": "As a corpus reviewer, I want a data item identity that can span files, so that three email fields can be one item or three by declaration, not by line number.\n\nFeature: data item identity\n\n  Scenario: Same item two files\n    Given mentions of email on user.ts line 8 and customer.ts line 12\n    And they declare the same data item identity\n    When I score the data-item layer\n    Then there is one data item\n    And both mentions count as evidence\n\n  Scenario: Distinct items\n    Given those same two mentions\n    And they declare different data item identities\n    When I score the data-item layer\n    Then there are two data items",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-96092c7b-c391-4e32-a753-4668607ed2f6",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.921221Z",
+  "updated_at": "2026-08-28T14:03:38.921221Z",
+  "closed_at": null,
+  "custom": {}
+}

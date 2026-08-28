@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-7dc22908-45ca-4f8b-ac20-d3cd4e4d8bb4",
+  "title": "Evaluate raw YAML pattern hits",
+  "description": "Purpose: Grade whether a YAML heuristic fired before classification. YAML is the rulebook. The grade is on the raw hits those rules emit, so a miss can be blamed on the heuristic, the classifier, or graph mapping.\n\nExclusions: changing the YAML heuristics in this planning epic.\n\nDefinition of done: stories specify matching raw pattern gold to engine hits, and separate miss attribution.",
+  "type": "epic",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-0dbc61da-10a5-485b-8537-ec2db1afe33a",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:22.942280Z",
+  "updated_at": "2026-08-28T14:03:22.942280Z",
+  "closed_at": null,
+  "custom": {}
+}

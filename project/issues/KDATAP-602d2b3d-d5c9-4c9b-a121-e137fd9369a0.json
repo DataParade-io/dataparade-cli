@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-602d2b3d-d5c9-4c9b-a121-e137fd9369a0",
+  "title": "Expand dataflow.json ontology with data items and mentions",
+  "description": "Purpose: Make a data item a first-class graph thing. A mention/span is evidence (file + lines), not the data item itself. Data items can belong to components and ride data flows.\n\nKeep terms: component, data flow, data item.\nFor a line use mention, evidence, or span. Not \"data item reference.\"\n\nDefinition of done: stories specify observable graph behavior; schema work waits on those specs.",
+  "type": "epic",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-0dbc61da-10a5-485b-8537-ec2db1afe33a",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:22.930557Z",
+  "updated_at": "2026-08-28T14:03:22.930557Z",
+  "closed_at": null,
+  "custom": {}
+}

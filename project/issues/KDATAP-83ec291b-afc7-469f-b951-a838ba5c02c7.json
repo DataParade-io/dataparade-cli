@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-83ec291b-afc7-469f-b951-a838ba5c02c7",
+  "title": "A miss names heuristic vs classifier vs graph mapping",
+  "description": "As an engineer, I want a miss to say whether the YAML rule failed, the classifier dropped it, or the graph mapper dropped it, so that one blended score does not hide the layer.\n\nFeature: miss attribution\n\n  Scenario: Heuristic miss\n    Given gold for a Stripe import\n    And matchPatterns emits no stripe hit\n    When I score the case\n    Then the miss is attributed to heuristic\n\n  Scenario: Classifier miss\n    Given a raw stripe hit\n    And no third_party component is produced\n    When I score the case\n    Then the miss is attributed to classifier\n\n  Scenario: Graph mapping miss\n    Given a third_party Stripe component in the scan result\n    And dataflow.json has no Stripe node\n    When I score the case\n    Then the miss is attributed to graph mapping",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-7dc22908-45ca-4f8b-ac20-d3cd4e4d8bb4",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.871006Z",
+  "updated_at": "2026-08-28T14:03:38.871006Z",
+  "closed_at": null,
+  "custom": {}
+}

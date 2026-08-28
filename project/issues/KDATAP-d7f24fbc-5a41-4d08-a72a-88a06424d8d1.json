@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-d7f24fbc-5a41-4d08-a72a-88a06424d8d1",
+  "title": "Plexus scores data-flow gold",
+  "description": "As an operator, I want plexus evaluate accuracy to score data-flow gold, so that arrows have a real scorecard.\n\nFeature: Plexus data-flow accuracy\n\n  Scenario: Flow endpoints and type\n    Given gold for a data flow from the app to Checkr of type api_call\n    And the scanner emits that flow\n    When I run plexus evaluate accuracy for the data-flow layer\n    Then the case is a hit\n\n  Scenario: Missing flow\n    Given gold for a database_query from the app to the user store\n    And the scanner emits no such flow\n    When I run plexus evaluate accuracy for the data-flow layer\n    Then the case is a miss",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-4e1cdba4-6bae-488b-ad2c-3666f791dd0d",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.891840Z",
+  "updated_at": "2026-08-28T14:03:38.891840Z",
+  "closed_at": null,
+  "custom": {}
+}

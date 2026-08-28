@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-0dbc61da-10a5-485b-8537-ec2db1afe33a",
+  "title": "Four-layer scanner evaluation",
+  "description": "Purpose: Grade the scanner in four layers and expand the dataflow graph so a data item is a thing, not a string on an edge. Plexus is the runner, not a fifth kind of finding.\n\nTerms we keep: component, data flow, data item.\nTerms for a line: mention, evidence, or span. Do not say \"data item reference.\"\nToday's data_items eval (T0/T1, PR #15) is mention-level. If data item means the entity, that layer must be renamed or split.\n\nFour grades:\n1. Raw pattern hits: did a YAML heuristic fire before classification. YAML is the rulebook, not a picture of the repo.\n2. Components and data flows: did we build the right map (boxes and arrows).\n3. Data items: the unique personal-data thing across files.\n4. Mentions / evidence spans: the line where we saw a thing.\n\nWhat exists now:\n- Graph nodes are only asset, actor, third_party_service. Edges are data_flow. Lines are receipts.\n- Mention-level CLI grade (T1) is on develop.\n- 15 proposed component notes (PR #16). No data-flow gold packets.\n- Plexus evaluate accuracy is Yes/No span overlap on field notes, not a component or flow scorecard.\n- .rs files are ingested (PR #17). There is no Rust analyzer.\n\nExclusions: implementing precision (that stays the existing precision initiative); merging to main; accepting gold without a human.\n\nDefinition of done for this initiative: children cover ontology, the four grades, and how Plexus runs each grade. Linked from DATAP-602.",
+  "type": "initiative",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": null,
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:16.498115Z",
+  "updated_at": "2026-08-28T14:03:16.498115Z",
+  "closed_at": null,
+  "custom": {}
+}
