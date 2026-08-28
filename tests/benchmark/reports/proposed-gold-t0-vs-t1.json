@@ -1,0 +1,52 @@
+{
+  "baseline": {
+    "scoringContract": "T0",
+    "gitSha": "cc99487",
+    "aggregates": {
+      "recall": 0.36923076923076925,
+      "labelAccuracy": 0,
+      "correctLabelRecall": 0,
+      "precision": null,
+      "negativeCasePassRate": 1,
+      "unreadCount": 29,
+      "denominators": {
+        "evaluablePositives": 65,
+        "matchedPositives": 24,
+        "matchedWithCorrectLabels": 0,
+        "negativeCases": 29,
+        "negativeCasesPassed": 29,
+        "exhaustiveScopedFindings": 0,
+        "exhaustiveScopedMatches": 0
+      }
+    }
+  },
+  "current": {
+    "scoringContract": "T1",
+    "gitSha": "646d8d32377b71c1a24d0194b06acfa3fdd53b79",
+    "aggregates": {
+      "recall": 0.49230769230769234,
+      "labelAccuracy": 0.90625,
+      "correctLabelRecall": 0.4461538461538462,
+      "precision": null,
+      "negativeCasePassRate": 0.9655172413793104,
+      "unreadCount": 29,
+      "denominators": {
+        "evaluablePositives": 65,
+        "matchedPositives": 32,
+        "matchedWithCorrectLabels": 29,
+        "negativeCases": 29,
+        "negativeCasesPassed": 28,
+        "exhaustiveScopedFindings": 0,
+        "exhaustiveScopedMatches": 0
+      }
+    }
+  },
+  "delta": {
+    "recall": 0.12307692307692308,
+    "labelAccuracy": 0.90625,
+    "correctLabelRecall": 0.4461538461538462,
+    "matchedPositives": 8,
+    "matchedWithCorrectLabels": 29,
+    "evaluablePositives": 0
+  }
+}

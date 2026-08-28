@@ -3,6 +3,12 @@ import path from "path";
 
 import type { EvalCase, EvalScoreReport, FixtureScanResult } from "../eval/types";
 import { scoreEvalCases } from "../eval/score";
+import {
+  buildBenchmarkReport,
+  compareBenchmarkReports,
+  SCORING_CONTRACT_T1,
+  type BenchmarkReport,
+} from "./benchmark-report";
 import { loadAnnotations, loadBenchmarkManifest } from "./manifest";
 import type { ReviewState } from "./schema";
 import { annotationsToEvalCases, type ToEvalCasesOptions } from "./to-eval-cases";
@@ -198,16 +204,92 @@ function parseReviewStates(args: string[]): {
   return { includeProposed };
 }
 
+function parseOutputPath(args: string[]): string | undefined {
+  const outputArg = args.find((arg) => arg.startsWith("--output="));
+  if (outputArg) {
+    return outputArg.slice("--output=".length);
+  }
+  const outputIndex = args.indexOf("--output");
+  if (outputIndex >= 0) {
+    return args[outputIndex + 1];
+  }
+  return undefined;
+}
+
+function parseCompareToPath(args: string[]): string | undefined {
+  const compareArg = args.find((arg) => arg.startsWith("--compare-to="));
+  if (compareArg) {
+    return compareArg.slice("--compare-to=".length);
+  }
+  const compareIndex = args.indexOf("--compare-to");
+  if (compareIndex >= 0) {
+    return args[compareIndex + 1];
+  }
+  return undefined;
+}
+
+function resolvedReviewStates(options: ToEvalCasesOptions): ReviewState[] {
+  return (
+    options.reviewStates ??
+    (options.includeProposed
+      ? ["proposed", "needs_adjudication", "accepted"]
+      : ["accepted"])
+  );
+}
+
 function isProvisionalRun(options: ToEvalCasesOptions): boolean {
-  const states = options.reviewStates ?? (options.includeProposed ? ["proposed", "needs_adjudication", "accepted"] : ["accepted"]);
-  return !states.every((s) => s === "accepted");
+  return !resolvedReviewStates(options).every((state) => state === "accepted");
+}
+
+export function writeBenchmarkReport(
+  report: BenchmarkReport,
+  outputPath: string,
+): void {
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+  fs.writeFileSync(outputPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+}
+
+export function loadBenchmarkReport(reportPath: string): BenchmarkReport {
+  return JSON.parse(fs.readFileSync(reportPath, "utf8")) as BenchmarkReport;
+}
+
+function printComparisonDelta(
+  baseline: BenchmarkReport,
+  current: BenchmarkReport,
+): void {
+  const delta = compareBenchmarkReports(baseline, current);
+  console.log("\n=== Comparison vs baseline ===");
+  console.log(`Baseline contract: ${baseline.scoringContract} (${baseline.gitSha})`);
+  console.log(`Current contract: ${current.scoringContract} (${current.gitSha})`);
+  console.log(
+    `Recall delta: ${delta.recall === null ? "n/a" : `${(delta.recall * 100).toFixed(1)} pts`}`,
+  );
+  console.log(
+    `Label accuracy delta: ${
+      delta.labelAccuracy === null ? "n/a" : `${(delta.labelAccuracy * 100).toFixed(1)} pts`
+    }`,
+  );
+  console.log(
+    `Correct-label recall delta: ${
+      delta.correctLabelRecall === null
+        ? "n/a"
+        : `${(delta.correctLabelRecall * 100).toFixed(1)} pts`
+    }`,
+  );
+  console.log(`Matched positives delta: ${delta.matchedPositives}`);
+  console.log(`Label-correct delta: ${delta.matchedWithCorrectLabels}`);
 }
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const { reviewStates, includeProposed } = parseReviewStates(args);
+  const outputPath = parseOutputPath(args);
+  const compareToPath = parseCompareToPath(args);
   const repoKeys = args.filter(
-    (arg) => !arg.startsWith("--"),
+    (arg) =>
+      !arg.startsWith("--") &&
+      arg !== outputPath &&
+      arg !== compareToPath,
   );
 
   const options: RunBenchmarkOptions = {
@@ -228,6 +310,28 @@ async function main(): Promise<void> {
 
   for (const result of results) {
     printRepoResult(result);
+  }
+
+  if (outputPath) {
+    const report = buildBenchmarkReport({
+      results,
+      reviewStates: resolvedReviewStates(options),
+      provisional: isProvisionalRun(options),
+      scoringContract: SCORING_CONTRACT_T1,
+    });
+    writeBenchmarkReport(report, outputPath);
+    console.log(`\nWrote benchmark report: ${outputPath}`);
+  }
+
+  if (compareToPath) {
+    const baseline = loadBenchmarkReport(compareToPath);
+    const current = buildBenchmarkReport({
+      results,
+      reviewStates: resolvedReviewStates(options),
+      provisional: isProvisionalRun(options),
+      scoringContract: SCORING_CONTRACT_T1,
+    });
+    printComparisonDelta(baseline, current);
   }
 }
 

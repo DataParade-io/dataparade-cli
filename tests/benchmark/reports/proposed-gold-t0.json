@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "1.0",
+  "scoringContract": "T0",
+  "gitSha": "cc99487",
+  "generatedAt": "2026-08-27T00:00:00.000Z",
+  "reviewStates": ["proposed", "needs_adjudication", "accepted"],
+  "provisional": true,
+  "aggregates": {
+    "recall": 0.36923076923076925,
+    "labelAccuracy": 0,
+    "correctLabelRecall": 0,
+    "precision": null,
+    "negativeCasePassRate": 1,
+    "unreadCount": 29,
+    "denominators": {
+      "evaluablePositives": 65,
+      "matchedPositives": 24,
+      "matchedWithCorrectLabels": 0,
+      "negativeCases": 29,
+      "negativeCasesPassed": 29,
+      "exhaustiveScopedFindings": 0,
+      "exhaustiveScopedMatches": 0
+    }
+  },
+  "repos": [
+    {
+      "repoKey": "medusa-customer",
+      "scores": {
+        "recall": 0.7,
+        "denominators": { "evaluablePositives": 10, "matchedPositives": 7 }
+      }
+    },
+    {
+      "repoKey": "keycloak",
+      "scores": {
+        "recall": 0.5,
+        "denominators": { "evaluablePositives": 8, "matchedPositives": 4 }
+      }
+    },
+    {
+      "repoKey": "gitea",
+      "scores": {
+        "recall": 0.4,
+        "denominators": { "evaluablePositives": 10, "matchedPositives": 4 }
+      }
+    },
+    {
+      "repoKey": "saleor",
+      "scores": {
+        "recall": 0.35714285714285715,
+        "denominators": { "evaluablePositives": 14, "matchedPositives": 5 }
+      }
+    },
+    {
+      "repoKey": "posthog-user",
+      "scores": {
+        "recall": 0.25,
+        "denominators": { "evaluablePositives": 4, "matchedPositives": 1 }
+      }
+    },
+    {
+      "repoKey": "yjdh-employee",
+      "scores": {
+        "recall": 0.2,
+        "denominators": { "evaluablePositives": 15, "matchedPositives": 3 }
+      }
+    },
+    {
+      "repoKey": "easy-school",
+      "scores": {
+        "recall": 0,
+        "denominators": { "evaluablePositives": 1, "matchedPositives": 0 }
+      }
+    },
+    {
+      "repoKey": "ory-kratos-password",
+      "scores": {
+        "recall": 0,
+        "denominators": { "evaluablePositives": 1, "matchedPositives": 0 }
+      }
+    },
+    {
+      "repoKey": "vgs-django",
+      "scores": {
+        "recall": 0,
+        "denominators": { "evaluablePositives": 2, "matchedPositives": 0 }
+      }
+    },
+    {
+      "repoKey": "hyperswitch-vault",
+      "scores": {
+        "recall": null,
+        "denominators": { "evaluablePositives": 0, "matchedPositives": 0 }
+      }
+    }
+  ],
+  "notes": "Provisional CLI T0 captured on origin/develop (cc99487) before T1 scoring-contract changes. Per-repo rows omit full case outcomes; aggregates match Kanbus DATAP-3a2d51 / DATAP-d8833a."
+}
