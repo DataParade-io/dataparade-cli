@@ -299,5 +299,24 @@ describe("scoreEvalCases", () => {
 
       expect(report.caseResults[0]?.matched).toBe(false);
     });
+
+    it("does not match data_items cases to non-data_item findings on the same line", () => {
+      const evalCase = makeDataItemsCase({
+        id: "email-positive",
+        fixture: "fixture-a",
+        subject: { key: "data_item:email" },
+        evidence: { file_path: "app.ts", start_line: 10, end_line: 10 },
+        expected: { status: "positive", labels: ["email_address"] },
+      });
+      const componentFinding = makeFinding("asset:database", [
+        { file_path: "app.ts", start_line: 10, end_line: 10 },
+      ]);
+      const report = scoreEvalCases(
+        [evalCase],
+        [makeScan("fixture-a", [componentFinding], ["app.ts"])],
+      );
+
+      expect(report.caseResults[0]?.matched).toBe(false);
+    });
   });
 });

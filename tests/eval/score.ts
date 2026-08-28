@@ -41,13 +41,17 @@ function findingOverlapsCase(finding: LayerFinding, caseRecord: EvalCase): boole
   return finding.sourceLines.some((line) => evidenceOverlaps(caseRecord.evidence, line));
 }
 
+function isDataItemFinding(finding: LayerFinding): boolean {
+  return finding.key.startsWith("data_item:");
+}
+
 function findingMatchesCase(finding: LayerFinding, caseRecord: EvalCase): boolean {
   if (!findingOverlapsCase(finding, caseRecord)) {
     return false;
   }
 
   if (caseRecord.layer === "data-items") {
-    return true;
+    return isDataItemFinding(finding);
   }
 
   return finding.key === caseRecord.subject.key;
@@ -70,13 +74,13 @@ function findMatchingFinding(
   findings: LayerFinding[],
   caseRecord: EvalCase,
 ): LayerFinding | undefined {
-  const overlapping = findings.filter((finding) => findingOverlapsCase(finding, caseRecord));
+  const overlapping = findings.filter((finding) => findingMatchesCase(finding, caseRecord));
   if (overlapping.length === 0) {
     return undefined;
   }
 
   if (caseRecord.layer !== "data-items") {
-    return overlapping.find((finding) => finding.key === caseRecord.subject.key);
+    return overlapping[0];
   }
 
   return [...overlapping].sort(

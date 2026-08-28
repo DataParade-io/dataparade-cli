@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
   "scoringContract": "T1",
-  "gitSha": "4fbd4abf0496a9bf013436931bb88a865b525eb7",
-  "generatedAt": "2026-08-28T12:38:32.687Z",
+  "gitSha": "646d8d32377b71c1a24d0194b06acfa3fdd53b79",
+  "generatedAt": "2026-08-28T13:26:08.410Z",
   "reviewStates": [
     "proposed",
     "needs_adjudication",
