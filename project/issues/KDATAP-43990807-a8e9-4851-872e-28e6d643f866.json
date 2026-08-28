@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-43990807-a8e9-4851-872e-28e6d643f866",
+  "title": "Split deterministic scan from the AI wrap",
+  "description": "As a maintainer, I want scan() to run ingest, analyzers, YAML, classifier, and data-flow without importing AI enrichment or LangSmith, so that the scanner package does not drag CLI keys and tracing with it.\n\nFeature: pipeline split\n\n  Scenario: Deterministic scan has no AI import\n    Given src/core/pipeline/scan-pipeline.ts\n    When the structural path is extracted\n    Then scan() does not import ai-enrichment or tracing\n    And the CLI can still run AI after scan() if flags ask for it\n\n  Scenario: Same structural result\n    Given a TypeScript fixture\n    When I call the deterministic scan\n    Then components and data flows match today's non-AI path",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-1d77fb9c-5671-4fff-b1c7-206e864d758c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T17:10:09.729624Z",
+  "updated_at": "2026-08-28T17:10:09.729624Z",
+  "closed_at": null,
+  "custom": {}
+}
