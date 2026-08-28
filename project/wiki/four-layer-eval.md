@@ -1,6 +1,6 @@
 # Four-layer scanner evaluation
 
-Local initiative: `KDATAP-0dbc61`. The only Jira issue on this board should be `DATAP-602`.
+One board. Initiative: `KDATAP-0dbc61`. The only Jira issue on this board is `DATAP-602`. Other issues use `KDATAP` keys on the same board. Do not create them with `--local`.
 
 ## Terms
 

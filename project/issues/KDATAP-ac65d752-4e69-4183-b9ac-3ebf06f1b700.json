@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-ac65d752-4e69-4183-b9ac-3ebf06f1b700",
+  "title": "Plexus scores component gold",
+  "description": "As an operator, I want plexus evaluate accuracy to score component gold, so that boxes are graded the same way we already grade mention spans.\n\nFeature: Plexus component accuracy\n\n  Scenario: Component identity plus span\n    Given an accepted component case asset:database with evidence on models.py lines 4-6\n    And the scanner emits a database component whose evidence overlaps that span\n    When I run plexus evaluate accuracy for the component layer\n    Then the case is a hit\n\n  Scenario: Wrong box\n    Given gold for third_party:checkr\n    And the scanner emits only asset:database on that span\n    When I run plexus evaluate accuracy for the component layer\n    Then the case is not a correct-label hit",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-4e1cdba4-6bae-488b-ad2c-3666f791dd0d",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.881447Z",
+  "updated_at": "2026-08-28T14:03:38.881447Z",
+  "closed_at": null,
+  "custom": {}
+}

@@ -80,10 +80,17 @@
       "text": "Agreed 2026-08-28: four-layer evaluation is local initiative KDATAP-0dbc61.\n\nDATAP-602 stays the one Jira epic (CLI harness and corpus). T1 is the mention/span grade, not the data-item entity grade.\n\nKDATAP children: 602d2b ontology, 7dc229 raw pattern hits, 4e1cdb component/flow Plexus grades, 96092c split mention vs data item.",
       "created_at": "2026-08-28T14:03:50.984011Z",
       "comment_type": "default"
+    },
+    {
+      "id": "0a79c065-e41d-42f1-9346-e80b98e062e0",
+      "author": "ryan",
+      "text": "Correction: KDATAP-0dbc61 and its children are on this same shared board, not a local overlay. One board. KDATAP is the key prefix for non-Jira issues.",
+      "created_at": "2026-08-28T14:07:38.897342Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-24T16:04:36.019Z",
-  "updated_at": "2026-08-28T14:03:50.984011Z",
+  "updated_at": "2026-08-28T14:07:38.897342Z",
   "closed_at": null,
   "custom": {
     "jira_key": "DATAP-602",

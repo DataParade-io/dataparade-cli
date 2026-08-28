@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-a7fea0f4-f7bb-400c-b95a-d126de2c6e39",
+  "title": "A proposed gold pattern hit matches when the named heuristic fires",
+  "description": "As an eval author, I want a raw pattern gold case to match when the named YAML heuristic fires on overlapping evidence, so that we can grade the rulebook before classification.\n\nFeature: raw pattern hit match\n\n  Scenario: Import heuristic fires\n    Given a positive case for pattern database_connection on app.ts line 10\n    And the file imports pg\n    When I score raw pattern hits\n    Then the case is matched\n\n  Scenario: Heuristic does not fire\n    Given a positive case for pattern external_api_call on client.py line 44\n    And no third-party HTTP or import heuristic fires there\n    When I score raw pattern hits\n    Then the case is not matched",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-7dc22908-45ca-4f8b-ac20-d3cd4e4d8bb4",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.860191Z",
+  "updated_at": "2026-08-28T14:03:38.860191Z",
+  "closed_at": null,
+  "custom": {}
+}

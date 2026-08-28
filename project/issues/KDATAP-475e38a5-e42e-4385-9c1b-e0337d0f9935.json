@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-475e38a5-e42e-4385-9c1b-e0337d0f9935",
+  "title": "Add proposed data_flows annotation packets",
+  "description": "Add proposed-only data_flows.yaml packets on existing corpus repos. Scanner-blind. Do not mark accepted. Do not change heuristics.",
+  "type": "task",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-4e1cdba4-6bae-488b-ad2c-3666f791dd0d",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.899800Z",
+  "updated_at": "2026-08-28T14:03:38.899800Z",
+  "closed_at": null,
+  "custom": {}
+}

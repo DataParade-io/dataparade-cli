@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-f66b887d-73d2-46a4-a092-a3e7bcb9270a",
+  "title": "Schema and mapping follow the ontology stories",
+  "description": "Implement diagram-graph schema and graph-mapping only after the ontology stories exist and fail for the right reason.",
+  "type": "task",
+  "status": "open",
+  "priority": 2,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-602d2b3d-d5c9-4c9b-a121-e137fd9369a0",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.849529Z",
+  "updated_at": "2026-08-28T14:03:38.849529Z",
+  "closed_at": null,
+  "custom": {}
+}

@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-b25c3aa8-ab0f-4710-8ab9-0e849c97bacc",
+  "title": "Current data_items eval cases are mentions",
+  "description": "As an eval reader, I want T0/T1 data_items cases to be named mentions or spans, so that we stop calling a line a data item.\n\nFeature: mention layer name\n\n  Scenario: T1 case is a mention\n    Given the existing proposed-gold data_items cases from PR #15\n    When I list the mention layer\n    Then each case has file and line evidence\n    And the layer name is mention or span, not data item\n\n  Scenario: T1 scoring contract still applies\n    Given a mention labeled email_address\n    And a finding labeled user_email on overlapping lines\n    When I score mentions\n    Then labelsCorrect is true",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-96092c7b-c391-4e32-a753-4668607ed2f6",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.910345Z",
+  "updated_at": "2026-08-28T14:03:38.910345Z",
+  "closed_at": null,
+  "custom": {}
+}

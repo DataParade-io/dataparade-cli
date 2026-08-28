@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-96092c7b-c391-4e32-a753-4668607ed2f6",
+  "title": "Split mention eval from data-item eval",
+  "description": "Purpose: Today's data_items eval (T0/T1 on develop) scores mentions/spans. A data item has stable identity across files. The layer name is not \"line.\"\n\nDefinition of done: stories rename or split the current layer so \"data item\" means the thing and \"mention\" means the line.",
+  "type": "epic",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-0dbc61da-10a5-485b-8537-ec2db1afe33a",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:22.968283Z",
+  "updated_at": "2026-08-28T14:03:22.968283Z",
+  "closed_at": null,
+  "custom": {}
+}

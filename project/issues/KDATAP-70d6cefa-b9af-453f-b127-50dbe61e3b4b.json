@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-70d6cefa-b9af-453f-b127-50dbe61e3b4b",
+  "title": "A mention is evidence of a data item or component",
+  "description": "As a corpus reviewer, I want a line to be called a mention, evidence, or span, so that we do not pretend a line is the data item.\n\nFeature: mention as evidence\n\n  Scenario: Line is not the data item\n    Given a data item for email\n    And an evidence span on user.ts line 8\n    When I read the graph\n    Then the data item identity is not the line number\n    And the span is attached as evidence\n\n  Scenario: Component still uses a span as a receipt\n    Given a component asset:database\n    And evidence on models.py lines 4-6\n    When I read the graph\n    Then the component identity is type:name\n    And the span is evidence, not a second component",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-602d2b3d-d5c9-4c9b-a121-e137fd9369a0",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T14:03:38.831148Z",
+  "updated_at": "2026-08-28T14:03:38.831148Z",
+  "closed_at": null,
+  "custom": {}
+}
