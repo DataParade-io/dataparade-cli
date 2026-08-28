@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-838c131d-f055-480b-8887-9b514172e4db",
+  "title": "Move engine detection config out of CLI config",
+  "description": "As a maintainer, I want actor, property, and third-party detection config to live in the scanner package, so that analyzers and the classifier do not import CLI env code.\n\nFeature: detection config move\n\n  Scenario: Engine config travels with the engine\n    Given property-detection-config, actor-detection-config, and third-party-detection-config\n    When the scanner package is built\n    Then those modules live in the scanner\n    And CLI-only config (env, upload, redact, resolve) stays in the CLI",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-1d77fb9c-5671-4fff-b1c7-206e864d758c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T17:10:09.747446Z",
+  "updated_at": "2026-08-28T17:10:09.747446Z",
+  "closed_at": null,
+  "custom": {}
+}

@@ -1,7 +1,7 @@
 {
   "id": "KDATAP-85b228da-a82e-436a-a78e-a60ee76c74b4",
   "title": "Create the scanner repository and package",
-  "description": "As a maintainer, I want DataParade-io/dataparade-scanner published as @dataparade/scanner, so that the CLI and eval can depend on one package.\n\nFeature: new project\n\n  Scenario: Package exists\n    Given the new repository\n    When I install @dataparade/scanner\n    Then I can import scan and createDefaultScanConfiguration",
+  "description": "As a maintainer, I want DataParade-io/scanner published as @dataparade/scanner, so that the CLI and eval can depend on one package.\n\nFeature: new project\n\n  Scenario: Package exists\n    Given the new repository DataParade-io/scanner\n    When I install @dataparade/scanner\n    Then I can import scan and createDefaultScanConfiguration\n\nNote: Ryan/endymion is admin on DataParade-io and can create this repo. Do not put it inside the dataparade monorepo.",
   "type": "story",
   "status": "open",
   "priority": 1,
@@ -12,7 +12,7 @@
   "dependencies": [],
   "comments": [],
   "created_at": "2026-08-28T15:59:48.441422Z",
-  "updated_at": "2026-08-28T15:59:48.441422Z",
+  "updated_at": "2026-08-28T17:10:09.701507Z",
   "closed_at": null,
   "custom": {}
 }

@@ -1,7 +1,7 @@
 {
   "id": "KDATAP-4f695664-f223-459b-9c51-5b5a7aebeddc",
   "title": "Extract the scanner from the CLI",
-  "description": "Purpose: The scanner is a library. The CLI is how people run it and upload a diagram. Split them so programmatic scan, regression tests, and the evaluation framework live in one project we can improve without CLI, quota, or upload noise.\n\nNew repo (assumed): DataParade-io/dataparade-scanner\nPackage (assumed): @dataparade/scanner\nPublic API: scan(config) -> ScanResult, plus createDefaultScanConfiguration.\n\nMoves first: ingest, analyzers, patterns YAML, classifier, data-flow, core pipeline (structural path), graph mapping, tests/unit for those, tests/eval, tests/benchmark, Plexus-facing eval features.\n\nStays in the CLI: commander, config/env, writing dataflow.json, upload, platform API, quota, telemetry, Sentry.\n\nSecond cut, not this initiative: AI enrichment and LangSmith tracing stay in the CLI until the library API is stable.\n\nFour-layer eval (KDATAP-0dbc61) follows the eval harness into the scanner project.\n\nExclusions: do not merge to main; do not accept gold; do not use --local / a second Kanbus board.\n\nDefinition of done: scanner project exists, CLI depends on it, in-tree engine copy is gone, eval and corpus run from the scanner project.",
+  "description": "Purpose: The scanner is a library. The CLI is how people run it and upload a diagram. Split them so programmatic scan, regression tests, behavior specs, and the evaluation framework live in one project.\n\nNew repo: DataParade-io/scanner\nPackage: @dataparade/scanner\nPublic API: createDefaultScanConfiguration, scan(config) -> ScanResult.\n\nNot the DataParade-io/dataparade monorepo. A new org repo.\n\nFirst-cut moves:\n- ingest, analyzers, patterns/ YAML, classifier, data-flow, pii-signals\n- core structural pipeline, graph mapping, schema, types\n- detection config that the engine needs (actor / property / third-party)\n- unit tests for those\n- tests/eval, tests/benchmark\n- features/scan-findings.feature and scanner-recall-evaluation.feature\n\nStays in the CLI:\n- commander, env, write dataflow.json, upload, quota, telemetry, Sentry\n- AI enrichment and LangSmith tracing (wrap after scan(), not inside it)\n\nHard cut: scan-pipeline.ts today imports AI and tracing. Split deterministic scan from the AI wrap before the move, or the library drags the CLI with it.\n\nExclusions: do not merge to main; do not accept gold; do not use --local.\n\nDefinition of done: scanner repo exists, CLI depends on @dataparade/scanner, in-tree engine copy is gone, eval and corpus run from scanner.",
   "type": "initiative",
   "status": "open",
   "priority": 1,
@@ -10,9 +10,17 @@
   "parent": null,
   "labels": [],
   "dependencies": [],
-  "comments": [],
+  "comments": [
+    {
+      "id": "aef54d0a-a20b-468a-b32f-217bcd027226",
+      "author": "ryan",
+      "text": "Restructure plan 2026-08-28: repo is DataParade-io/scanner (not dataparade-scanner, not the dataparade monorepo). Split scan-pipeline so scan() has no AI/tracing import before the file move. Detection config moves with the engine. Gherkin scan-findings and scanner-recall move with eval.",
+      "created_at": "2026-08-28T17:10:09.778934Z",
+      "comment_type": "default"
+    }
+  ],
   "created_at": "2026-08-28T15:59:30.388736Z",
-  "updated_at": "2026-08-28T15:59:30.388736Z",
+  "updated_at": "2026-08-28T17:10:09.778934Z",
   "closed_at": null,
   "custom": {}
 }
