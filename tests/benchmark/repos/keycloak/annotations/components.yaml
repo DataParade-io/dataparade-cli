@@ -1,0 +1,40 @@
+annotations:
+  - id: keycloak-user-entity-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+      start_line: 60
+      end_line: 65
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      UserEntity is a JPA @Entity mapped to USER_ENTITY with username and email
+      columns, representing persisted Keycloak account records.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed
+
+  - id: keycloak-credential-entity-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+      start_line: 43
+      end_line: 45
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      CredentialEntity is a JPA @Entity on CREDENTIAL storing secret and
+      credential payload columns linked to users via USER_ID.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed

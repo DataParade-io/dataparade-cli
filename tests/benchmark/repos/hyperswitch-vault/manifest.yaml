@@ -5,7 +5,7 @@ scope:
   include:
     - src/routes/data/types.rs
 coverage:
-  layers: [data_items]
+  layers: [components, data_items]
   languages: [rust]
   domains: [payment_card_vault, pci]
 selection_rationale: >-

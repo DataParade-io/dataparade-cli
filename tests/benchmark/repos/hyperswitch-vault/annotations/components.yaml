@@ -1,0 +1,40 @@
+annotations:
+  - id: hyperswitch-vault-api
+    layer: components
+    subject:
+      key: asset:api
+      name: API
+    evidence:
+      file_path: src/routes/data/types.rs
+      start_line: 46
+      end_line: 56
+    expected:
+      status: positive
+      labels: [api]
+    rationale: >-
+      StoreCardRequest defines the card-vault HTTP payload with merchant and card
+      data fields consumed by the vault store route.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed
+
+  - id: hyperswitch-vault-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: src/routes/data/types.rs
+      start_line: 5
+      end_line: 8
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      Route data types import storage::types::Locker and Encryptable, tying card
+      payloads to the vault's encrypted persistence layer.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed

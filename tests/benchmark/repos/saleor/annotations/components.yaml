@@ -1,0 +1,40 @@
+annotations:
+  - id: saleor-account-user-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: saleor/account/models.py
+      start_line: 169
+      end_line: 172
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      User subclasses Django model bases and declares EmailField and CharField
+      columns, representing account identity persisted through the ORM.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed
+
+  - id: saleor-account-address-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: saleor/account/models.py
+      start_line: 63
+      end_line: 65
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      Address is a Django ModelWithMetadata subclass with postal and contact
+      columns, storing customer address records in the database.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed

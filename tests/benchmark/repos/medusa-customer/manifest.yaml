@@ -7,7 +7,7 @@ scope:
     - packages/modules/customer/src/models/customer.ts
     - packages/modules/user/src/models/invite.ts
 coverage:
-  layers: [data_items]
+  layers: [components, data_items]
   languages: [typescript]
   domains: [commerce, identity, customer]
 selection_rationale: >-
