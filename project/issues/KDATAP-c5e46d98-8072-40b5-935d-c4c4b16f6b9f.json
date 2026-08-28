@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-c5e46d98-8072-40b5-935d-c4c4b16f6b9f",
+  "title": "CLI becomes a consumer of the scanner package",
+  "description": "Purpose: @dataparade/cli calls @dataparade/scanner. It does not contain a second copy of the engine.\n\nStays in the CLI: commander, env/config, write dataflow.json, upload, quota, telemetry, Sentry, AI wrap.\n\nDefinition of done: scan <path> on the CLI uses the package. In-tree engine modules are gone from the CLI repo.",
+  "type": "epic",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-4f695664-f223-459b-9c51-5b5a7aebeddc",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T15:59:37.722078Z",
+  "updated_at": "2026-08-28T15:59:37.722078Z",
+  "closed_at": null,
+  "custom": {}
+}

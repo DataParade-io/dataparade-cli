@@ -87,10 +87,17 @@
       "text": "Correction: KDATAP-0dbc61 and its children are on this same shared board, not a local overlay. One board. KDATAP is the key prefix for non-Jira issues.",
       "created_at": "2026-08-28T14:07:38.897342Z",
       "comment_type": "default"
+    },
+    {
+      "id": "469a7fa7-e13e-4c35-a041-b1b4f351a7ca",
+      "author": "ryan",
+      "text": "Extract plan: KDATAP-4f6956. Scanner engine and eval move to a new project. DATAP-602 stays the Jira epic for eval-on-the-scanner. CLI keeps upload and the command line.",
+      "created_at": "2026-08-28T15:59:48.503421Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-24T16:04:36.019Z",
-  "updated_at": "2026-08-28T14:07:38.897342Z",
+  "updated_at": "2026-08-28T15:59:48.503421Z",
   "closed_at": null,
   "custom": {
     "jira_key": "DATAP-602",

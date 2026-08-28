@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-bde2344e-4131-4ca5-be34-34ddb11137ff",
+  "title": "The CLI scan command uses the scanner package",
+  "description": "As a CLI user, I want scan <path> to behave as it does today, so that the split is invisible at the command line.\n\nFeature: CLI consumer\n\n  Scenario: Same command\n    Given a project path\n    When I run the CLI scan command\n    Then it calls @dataparade/scanner\n    And it still writes dataflow.json and can upload\n\n  Scenario: No second engine\n    Given the CLI repository\n    Then it does not contain a second copy of ingest, analyzers, or patterns",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-c5e46d98-8072-40b5-935d-c4c4b16f6b9f",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T15:59:48.492823Z",
+  "updated_at": "2026-08-28T15:59:48.492823Z",
+  "closed_at": null,
+  "custom": {}
+}

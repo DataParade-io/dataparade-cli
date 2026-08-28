@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-96cc8cc1-597f-4301-8f03-0a467be675d7",
+  "title": "Move the deterministic engine into the scanner project",
+  "description": "As a maintainer, I want ingest, analyzers, YAML patterns, classifier, data-flow, and graph mapping in the scanner project, so that one copy of the engine exists.\n\nFeature: engine move\n\n  Scenario: Structural scan lives in the scanner\n    Given the scanner project\n    When I scan a TypeScript fixture\n    Then components come from the moved analyzers and YAML rules\n    And AI enrichment is not required for that result",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-1d77fb9c-5671-4fff-b1c7-206e864d758c",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T15:59:48.455688Z",
+  "updated_at": "2026-08-28T15:59:48.455688Z",
+  "closed_at": null,
+  "custom": {}
+}

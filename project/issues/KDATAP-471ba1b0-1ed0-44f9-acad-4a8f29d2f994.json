@@ -1,0 +1,18 @@
+{
+  "id": "KDATAP-471ba1b0-1ed0-44f9-acad-4a8f29d2f994",
+  "title": "Eval harness and corpus live in the scanner project",
+  "description": "As an eval author, I want tests/eval, the benchmark corpus, and Plexus-facing scanner recall next to the engine, so that we score the library, not the CLI wrapper.\n\nFeature: eval follows the engine\n\n  Scenario: T1 mention grade runs in the scanner project\n    Given the proposed mention gold\n    When I run the mention-layer eval from the scanner project\n    Then I get the same scoring contract as today's T1\n\n  Scenario: Four-layer work follows\n    Given KDATAP-0dbc61\n    Then new eval layers are added in the scanner project",
+  "type": "story",
+  "status": "open",
+  "priority": 1,
+  "assignee": null,
+  "creator": null,
+  "parent": "KDATAP-3ee2c2aa-ee44-44cb-9242-7b9a4fc93c7e",
+  "labels": [],
+  "dependencies": [],
+  "comments": [],
+  "created_at": "2026-08-28T15:59:48.470629Z",
+  "updated_at": "2026-08-28T15:59:48.470629Z",
+  "closed_at": null,
+  "custom": {}
+}
