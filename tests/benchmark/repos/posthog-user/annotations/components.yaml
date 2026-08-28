@@ -1,0 +1,20 @@
+annotations:
+  - id: posthog-user-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: posthog/models/user.py
+      start_line: 232
+      end_line: 247
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      User subclasses AbstractUser and UUIDTClassicModel with EmailField,
+      ForeignKey team links, and account-security timestamps persisted via Django ORM.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed

@@ -3,7 +3,7 @@
   "title": "Build versioned ground-truth benchmark corpus",
   "description": "Starts NOW in parallel with DATAP-c7dd46 (evaluator foundation). Applies the completed curation skill from DATAP-9179d1. Convert the useful research corpus into a production benchmark with pinned repository commits and explicit complete-file or complete-directory annotation scopes. Store positive, negative, ambiguous, and unread states with provenance and review status. Every scanner finding inside an exhaustively annotated scope must match positive ground truth or count as a false positive. Internal parallelism: different repositories can have annotation packets prepared independently; humans can review independently; repo discovery continues while first repos are annotated. Sequential boundary: final benchmark serialization must follow shared identity/evidence conventions once DATAP-c7dd46 contract stabilizes; ground-truth labels require human approval before acceptance. Keep runtime cloning out of normal CI; provide a reproducible materialization or cached-fixture workflow for the benchmark.",
   "type": "task",
-  "status": "open",
+  "status": "in_progress",
   "priority": 1,
   "assignee": null,
   "creator": null,
@@ -115,10 +115,17 @@
       "text": "Provisional CLI benchmark on proposed gold completed: 24/65 recall (36.9%), 29 Hyperswitch unread, 0% label accuracy. Details on DATAP-3a2d51. Still not an accepted baseline.",
       "created_at": "2026-08-27T21:25:27.633797Z",
       "comment_type": "default"
+    },
+    {
+      "id": "cc201674-7740-45d3-bfcb-23e02a573875",
+      "author": "ryan",
+      "text": "Proposed 15 component-layer annotations across 8 benchmark packets (gitea, saleor, keycloak, posthog-user, medusa-customer, hyperswitch-vault, ory-kratos-password, yjdh-employee). All review_state: proposed. Manifests updated to include components coverage layer. Unit tests extended in manifest.spec.ts.",
+      "created_at": "2026-08-28T13:29:16.051482Z",
+      "comment_type": "default"
     }
   ],
   "created_at": "2026-08-26T20:11:17.314318Z",
-  "updated_at": "2026-08-27T21:25:27.633797Z",
+  "updated_at": "2026-08-28T13:29:16.051482Z",
   "closed_at": null,
   "custom": {
     "project_label": "DATAP",

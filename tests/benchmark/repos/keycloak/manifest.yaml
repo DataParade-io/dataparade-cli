@@ -6,7 +6,7 @@ scope:
     - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
     - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
 coverage:
-  layers: [data_items]
+  layers: [components, data_items]
   languages: [java]
   domains: [identity, credentials]
 selection_rationale: >-

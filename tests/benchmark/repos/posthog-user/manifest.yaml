@@ -4,7 +4,7 @@ license: MIT (community paths only)
 scope:
   include: [posthog/models/user.py]
 coverage:
-  layers: [data_items]
+  layers: [components, data_items]
   languages: [python]
   domains: [analytics, identity, account_security]
 selection_rationale: >-

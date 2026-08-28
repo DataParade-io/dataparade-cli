@@ -1,0 +1,60 @@
+annotations:
+  - id: medusa-user-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: packages/modules/user/src/models/user.ts
+      start_line: 3
+      end_line: 11
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      Medusa User model.define declares searchable email and profile fields with
+      a unique index, mapping staff users to database-backed records.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed
+
+  - id: medusa-customer-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: packages/modules/customer/src/models/customer.ts
+      start_line: 6
+      end_line: 16
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      Customer model.define stores commerce identity fields and relationships to
+      addresses and groups as a persisted Medusa module entity.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed
+
+  - id: medusa-invite-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: packages/modules/user/src/models/invite.ts
+      start_line: 3
+      end_line: 11
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      Invite model.define persists invitation email, token, and expiry columns
+      with unique indexes for onboarding workflows.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed

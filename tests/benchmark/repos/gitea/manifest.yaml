@@ -6,7 +6,7 @@ scope:
     - models/auth/access_token.go
     - modules/structs/user.go
 coverage:
-  layers: [data_items]
+  layers: [components, data_items]
   languages: [go]
   domains: [identity, credentials, api]
 selection_rationale: >-

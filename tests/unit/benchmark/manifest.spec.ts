@@ -74,7 +74,7 @@ describe("benchmark corpus manifests", () => {
       expect(manifest.commit).toBe("abfca8e078039582460335be73341699ee826615");
       expect(manifest.license).toBe("Apache-2.0");
       expect(manifest.scope.include).toEqual(["src/routes/data/types.rs"]);
-      expect(manifest.coverage.layers).toEqual(["data_items"]);
+      expect(manifest.coverage.layers).toEqual(["components", "data_items"]);
     });
 
     it("keeps every source-only data-item decision proposed", () => {
@@ -112,6 +112,88 @@ describe("benchmark corpus manifests", () => {
       expect(annotations.every((record) => record.provenance.review_state === "proposed")).toBe(true);
     });
   });
+
+  for (const packet of [
+    {
+      key: "gitea",
+      repository: "go-gitea/gitea",
+      commit: "0b1067484fcdc497dc34d9113c467182231e6ea9",
+      license: "MIT",
+      minimumRecords: 2,
+    },
+    {
+      key: "saleor",
+      repository: "saleor/saleor",
+      commit: "030c1676145d63154687fa394d1a4abb224b1ac2",
+      license: "BSD-3-Clause",
+      minimumRecords: 2,
+    },
+    {
+      key: "keycloak",
+      repository: "keycloak/keycloak",
+      commit: "b9b70f95f7e092ebadf898378948bab0971e015b",
+      license: "Apache-2.0",
+      minimumRecords: 2,
+    },
+    {
+      key: "hyperswitch-vault",
+      repository: "juspay/hyperswitch-card-vault",
+      commit: "abfca8e078039582460335be73341699ee826615",
+      license: "Apache-2.0",
+      minimumRecords: 2,
+    },
+    {
+      key: "yjdh-employee",
+      repository: "City-of-Helsinki/yjdh",
+      commit: "b148e187b43dbaab7e6b9c6c4a394fe9e9ab7ee8",
+      license: "MIT",
+      minimumRecords: 1,
+    },
+    {
+      key: "ory-kratos-password",
+      repository: "ory/kratos",
+      commit: "b86338da04a040247a07f46100a86dcfb3875909",
+      license: "Apache-2.0",
+      minimumRecords: 1,
+    },
+    {
+      key: "medusa-customer",
+      repository: "medusajs/medusa",
+      commit: "847612908fdd1c11a4df09ccc2e8ab44d338bb04",
+      license: "MIT (community paths only)",
+      minimumRecords: 3,
+    },
+    {
+      key: "posthog-user",
+      repository: "PostHog/posthog",
+      commit: "a2f78ff63a1c7e1db33c623be83488a651bf4251",
+      license: "MIT (community paths only)",
+      minimumRecords: 1,
+    },
+  ]) {
+    describe(`${packet.key} component packet`, () => {
+      it("loads proposed component annotations for the pinned scope", () => {
+        const repoDir = path.join(reposRoot, packet.key);
+        const manifest = loadBenchmarkManifest(repoDir);
+        const annotations = loadAnnotations(repoDir, "components");
+
+        expect(manifest.repository).toBe(packet.repository);
+        expect(manifest.commit).toBe(packet.commit);
+        expect(manifest.license).toBe(packet.license);
+        expect(manifest.coverage.layers).toContain("components");
+        expect(manifest.scope.include.length).toBeGreaterThan(0);
+        expect(annotations.length).toBeGreaterThanOrEqual(packet.minimumRecords);
+        expect(new Set(annotations.map((record) => record.id)).size).toBe(annotations.length);
+
+        for (const record of annotations) {
+          expect(record.layer).toBe("components");
+          expect(record.subject.key).toMatch(/^(asset|actor|third_party):/);
+          expect(record.expected.labels.length).toBeGreaterThan(0);
+          expect(record.provenance.review_state).toBe("proposed");
+        }
+      });
+    });
+  }
 
   for (const packet of [
     {

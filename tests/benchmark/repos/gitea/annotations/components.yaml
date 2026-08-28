@@ -1,0 +1,40 @@
+annotations:
+  - id: gitea-access-token-database
+    layer: components
+    subject:
+      key: asset:database
+      name: Database
+    evidence:
+      file_path: models/auth/access_token.go
+      start_line: 42
+      end_line: 44
+    expected:
+      status: positive
+      labels: [database]
+    rationale: >-
+      AccessToken is registered with the XORM engine via db.RegisterModel, binding
+      personal-access-token persistence to the application's database layer.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed
+
+  - id: gitea-user-api
+    layer: components
+    subject:
+      key: asset:api
+      name: API
+    evidence:
+      file_path: modules/structs/user.go
+      start_line: 13
+      end_line: 15
+    expected:
+      status: positive
+      labels: [api]
+    rationale: >-
+      The User struct is annotated swagger:model and serializes account identity
+      fields for Gitea's REST API responses.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed

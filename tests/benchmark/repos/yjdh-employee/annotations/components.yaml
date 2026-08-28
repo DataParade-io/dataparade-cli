@@ -1,0 +1,20 @@
+annotations:
+  - id: yjdh-employee-api
+    layer: components
+    subject:
+      key: asset:api
+      name: API
+    evidence:
+      file_path: backend/benefit/applications/api/v1/serializers/employee.py
+      start_line: 10
+      end_line: 16
+    expected:
+      status: positive
+      labels: [api]
+    rationale: >-
+      EmployeeSerializer is a Django REST ModelSerializer exposing employee
+      identity and compensation fields for the benefit applications API.
+    provenance:
+      proposed_by: cloud-agent-component-corpus
+      proposed_at: 2026-08-28
+      review_state: proposed
