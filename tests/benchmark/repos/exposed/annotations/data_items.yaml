@@ -1,0 +1,115 @@
+annotations:
+- id: exposed-entity-id-value
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: EntityID.value
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/dao/id/EntityID.kt
+    start_line: 20
+    end_line: 29
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseConfig.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Transaction.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/TransactionInterface.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/DatabasesManager.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/AbstractQuery.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/StatementBuilder.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/Statement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/InsertStatement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/dao/id/EntityID.kt
+  rationale: EntityID.value is the stored primary-key identifier for a row in an IdTable.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: exposed-database-url
+  layer: data_items
+  subject:
+    key: data_item:url
+    name: url
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
+    start_line: 23
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseConfig.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Transaction.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/TransactionInterface.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/DatabasesManager.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/AbstractQuery.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/StatementBuilder.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/Statement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/InsertStatement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
+  rationale: DatabaseApi.url is the JDBC connection URL, which may embed database credentials.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: exposed-no-email-field
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
+    start_line: 122
+    end_line: 122
+  expected:
+    status: negative
+    labels: []
+  rationale: The ORM core defines SQL keywords and generic column types, not customer email columns.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: exposed-schema-password-not-data-item
+  layer: data_items
+  subject:
+    key: data_item:password
+    name: password
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
+    start_line: 12
+    end_line: 12
+  expected:
+    status: negative
+    labels: []
+  rationale: Schema.password configures Oracle schema creation DDL and is not a persisted personal-data field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: exposed-statement-count-not-pii
+  layer: data_items
+  subject:
+    key: data_item:statementCount
+    name: statementCount
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Transaction.kt
+    start_line: 40
+    end_line: 41
+  expected:
+    status: negative
+    labels: []
+  rationale: statementCount is a diagnostic counter for executed SQL statements, not personal data.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

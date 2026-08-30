@@ -1,0 +1,162 @@
+annotations:
+- id: supabase-js-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: packages/core/auth-js/src/GoTrueClient.ts
+    start_line: 1232
+    end_line: 1237
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/core/auth-js/src/AuthAdminApi.ts
+    - packages/core/auth-js/src/AuthClient.ts
+    - packages/core/auth-js/src/GoTrueAdminApi.ts
+    - packages/core/auth-js/src/GoTrueClient.ts
+    - packages/core/auth-js/src/index.ts
+    - packages/core/auth-js/src/lib/base64url.ts
+    - packages/core/auth-js/src/lib/constants.ts
+    - packages/core/auth-js/src/lib/error-codes.ts
+    - packages/core/auth-js/src/lib/errors.ts
+    - packages/core/auth-js/src/lib/fetch.ts
+    - packages/core/auth-js/src/lib/helpers.ts
+    - packages/core/auth-js/src/lib/local-storage.ts
+    - packages/core/auth-js/src/lib/locks.ts
+    - packages/core/auth-js/src/lib/polyfills.ts
+    - packages/core/auth-js/src/lib/types.ts
+    - packages/core/auth-js/src/lib/version.ts
+    - packages/core/auth-js/src/lib/web3/ethereum.ts
+    - packages/core/auth-js/src/lib/web3/solana.ts
+    - packages/core/auth-js/src/lib/webauthn.dom.ts
+    - packages/core/auth-js/src/lib/webauthn.errors.ts
+    - packages/core/auth-js/src/lib/webauthn.ts
+    - packages/core/supabase-js/src/SupabaseClient.ts
+    - packages/core/supabase-js/src/cors.ts
+    - packages/core/supabase-js/src/index.ts
+    - packages/core/supabase-js/src/lib/SupabaseAuthClient.ts
+    - packages/core/supabase-js/src/lib/constants.ts
+    - packages/core/supabase-js/src/lib/fetch.ts
+    - packages/core/supabase-js/src/lib/helpers.ts
+    - packages/core/supabase-js/src/lib/types.ts
+  rationale: signInWithPassword destructures email from credentials and sends it in the token request body.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: supabase-js-password-signal
+  layer: pii_signals
+  subject:
+    key: pii:password
+    name: password
+  evidence:
+    file_path: packages/core/auth-js/src/GoTrueClient.ts
+    start_line: 1236
+    end_line: 1237
+  expected:
+    status: positive
+    labels:
+    - password
+    exhaustive_scope_files:
+    - packages/core/auth-js/src/AuthAdminApi.ts
+    - packages/core/auth-js/src/AuthClient.ts
+    - packages/core/auth-js/src/GoTrueAdminApi.ts
+    - packages/core/auth-js/src/GoTrueClient.ts
+    - packages/core/auth-js/src/index.ts
+    - packages/core/auth-js/src/lib/base64url.ts
+    - packages/core/auth-js/src/lib/constants.ts
+    - packages/core/auth-js/src/lib/error-codes.ts
+    - packages/core/auth-js/src/lib/errors.ts
+    - packages/core/auth-js/src/lib/fetch.ts
+    - packages/core/auth-js/src/lib/helpers.ts
+    - packages/core/auth-js/src/lib/local-storage.ts
+    - packages/core/auth-js/src/lib/locks.ts
+    - packages/core/auth-js/src/lib/polyfills.ts
+    - packages/core/auth-js/src/lib/types.ts
+    - packages/core/auth-js/src/lib/version.ts
+    - packages/core/auth-js/src/lib/web3/ethereum.ts
+    - packages/core/auth-js/src/lib/web3/solana.ts
+    - packages/core/auth-js/src/lib/webauthn.dom.ts
+    - packages/core/auth-js/src/lib/webauthn.errors.ts
+    - packages/core/auth-js/src/lib/webauthn.ts
+    - packages/core/supabase-js/src/SupabaseClient.ts
+    - packages/core/supabase-js/src/cors.ts
+    - packages/core/supabase-js/src/index.ts
+    - packages/core/supabase-js/src/lib/SupabaseAuthClient.ts
+    - packages/core/supabase-js/src/lib/constants.ts
+    - packages/core/supabase-js/src/lib/fetch.ts
+    - packages/core/supabase-js/src/lib/helpers.ts
+    - packages/core/supabase-js/src/lib/types.ts
+  rationale: password is sent to GoTrue in the sign-in request body.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: supabase-js-access-token-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: access_token
+  evidence:
+    file_path: packages/core/auth-js/src/lib/types.ts
+    start_line: 355
+    end_line: 355
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - packages/core/auth-js/src/AuthAdminApi.ts
+    - packages/core/auth-js/src/AuthClient.ts
+    - packages/core/auth-js/src/GoTrueAdminApi.ts
+    - packages/core/auth-js/src/GoTrueClient.ts
+    - packages/core/auth-js/src/index.ts
+    - packages/core/auth-js/src/lib/base64url.ts
+    - packages/core/auth-js/src/lib/constants.ts
+    - packages/core/auth-js/src/lib/error-codes.ts
+    - packages/core/auth-js/src/lib/errors.ts
+    - packages/core/auth-js/src/lib/fetch.ts
+    - packages/core/auth-js/src/lib/helpers.ts
+    - packages/core/auth-js/src/lib/local-storage.ts
+    - packages/core/auth-js/src/lib/locks.ts
+    - packages/core/auth-js/src/lib/polyfills.ts
+    - packages/core/auth-js/src/lib/types.ts
+    - packages/core/auth-js/src/lib/version.ts
+    - packages/core/auth-js/src/lib/web3/ethereum.ts
+    - packages/core/auth-js/src/lib/web3/solana.ts
+    - packages/core/auth-js/src/lib/webauthn.dom.ts
+    - packages/core/auth-js/src/lib/webauthn.errors.ts
+    - packages/core/auth-js/src/lib/webauthn.ts
+    - packages/core/supabase-js/src/SupabaseClient.ts
+    - packages/core/supabase-js/src/cors.ts
+    - packages/core/supabase-js/src/index.ts
+    - packages/core/supabase-js/src/lib/SupabaseAuthClient.ts
+    - packages/core/supabase-js/src/lib/constants.ts
+    - packages/core/supabase-js/src/lib/fetch.ts
+    - packages/core/supabase-js/src/lib/helpers.ts
+    - packages/core/supabase-js/src/lib/types.ts
+  rationale: Session.access_token is a JWT credential used for authenticated API calls.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: supabase-js-storage-key-not-pii
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: STORAGE_KEY
+  evidence:
+    file_path: packages/core/auth-js/src/lib/constants.ts
+    start_line: 25
+    end_line: 25
+  expected:
+    status: negative
+    labels: []
+  rationale: STORAGE_KEY is a static localStorage key name, not a user identifier or other PII value.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

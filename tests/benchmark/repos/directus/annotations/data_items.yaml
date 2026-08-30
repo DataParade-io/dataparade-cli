@@ -1,0 +1,210 @@
+annotations:
+- id: directus-user-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: id
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 8
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: User.id is the primary key returned from directus_users and embedded in JWT claims.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-user-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 11
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: User.email is the account email used for login and uniqueness checks.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-user-first-name
+  layer: data_items
+  subject:
+    key: data_item:first_name
+    name: first_name
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 9
+    end_line: 9
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: first_name is a persisted given name on the Directus user record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-user-last-name
+  layer: data_items
+  subject:
+    key: data_item:last_name
+    name: last_name
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 10
+    end_line: 10
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: last_name is a persisted family name on the Directus user record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-user-password
+  layer: data_items
+  subject:
+    key: data_item:password
+    name: password
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 12
+    end_line: 12
+  expected:
+    status: positive
+    labels:
+    - password
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: password stores the argon2 hash checked during local login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-session-token
+  layer: data_items
+  subject:
+    key: data_item:token
+    name: token
+  evidence:
+    file_path: api/src/services/authentication.ts
+    start_line: 292
+    end_line: 292
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: The refresh token inserted into directus_sessions is the bearer credential used to obtain new access tokens.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-access-token-jwt
+  layer: data_items
+  subject:
+    key: data_item:access_token
+    name: accessToken
+  evidence:
+    file_path: api/src/services/authentication.ts
+    start_line: 286
+    end_line: 289
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: jwt.sign produces the short-lived access token returned to clients after login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-user-role-not-pii
+  layer: data_items
+  subject:
+    key: data_item:role
+    name: role
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 14
+    end_line: 14
+  expected:
+    status: negative
+    labels: []
+  rationale: role is an authorization reference to a permissions role, not personal data content.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-user-status-not-pii
+  layer: data_items
+  subject:
+    key: data_item:status
+    name: status
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 13
+    end_line: 13
+  expected:
+    status: negative
+    labels: []
+  rationale: status is an account lifecycle flag (active, suspended, invited), not a personal data field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

@@ -1,0 +1,76 @@
+annotations:
+- id: directus-login-email-to-users-table
+  layer: data_flows
+  subject:
+    key: flow:login-email->directus_users
+    name: Login email to directus_users
+  evidence:
+    file_path: api/src/auth/drivers/local.ts
+    start_line: 25
+    end_line: 35
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: LocalAuthDriver.getUserID queries directus_users by lowercased email to resolve the account before password verification.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-login-to-sessions-table
+  layer: data_flows
+  subject:
+    key: flow:login->directus_sessions
+    name: Login to directus_sessions
+  evidence:
+    file_path: api/src/services/authentication.ts
+    start_line: 291
+    end_line: 298
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: After successful authentication, AuthenticationService inserts a refresh token and session metadata into directus_sessions.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-local-router-to-auth-service
+  layer: data_flows
+  subject:
+    key: flow:local-router->authentication-service
+    name: Local router to AuthenticationService
+  evidence:
+    file_path: api/src/auth/drivers/local.ts
+    start_line: 93
+    end_line: 96
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: The local auth POST handler passes validated email and password to AuthenticationService.login, which issues tokens.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

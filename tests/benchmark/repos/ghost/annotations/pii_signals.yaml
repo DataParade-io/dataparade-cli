@@ -1,0 +1,108 @@
+annotations:
+- id: ghost-member-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    start_line: 462
+    end_line: 462
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: memberRepository.create validates memberData.email with validator.isEmail before persisting the member.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: ghost-identity-token-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: identity_token
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/token-service.js
+    start_line: 21
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: encodeIdentityToken signs a JWT with the member subject used to authenticate member requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: ghost-staff-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: staff_email
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 274
+    end_line: 279
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: The users table schema defines a unique email column with isEmail validation for staff accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: ghost-no-member-phone-signal
+  layer: pii_signals
+  subject:
+    key: pii:phone_number
+    name: phone
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 639
+    end_line: 655
+  expected:
+    status: negative
+    labels: []
+  rationale: The members table schema in scope defines email and name fields but no phone number column.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

@@ -1,0 +1,76 @@
+annotations:
+- id: nopcommerce-login-to-customer-service
+  layer: data_flows
+  subject:
+    key: flow:login->customer-service
+    name: Login to CustomerService
+  evidence:
+    file_path: src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    start_line: 140
+    end_line: 157
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: ValidateCustomerAsync looks up the customer by username or email and loads the stored password hash before authentication proceeds.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-signin-to-cookie-claims
+  layer: data_flows
+  subject:
+    key: flow:customer->cookie-claims
+    name: Customer to cookie claims
+  evidence:
+    file_path: src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    start_line: 52
+    end_line: 73
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: SignInAsync copies username, email, and phone from the Customer record into authentication claims written to the session cookie.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-cookie-claim-to-customer-lookup
+  layer: data_flows
+  subject:
+    key: flow:cookie-claim->customer-service
+    name: Cookie claim to CustomerService
+  evidence:
+    file_path: src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    start_line: 114
+    end_line: 125
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: GetAuthenticatedCustomerAsync reads the username or email claim from the cookie principal and reloads the customer from CustomerService.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

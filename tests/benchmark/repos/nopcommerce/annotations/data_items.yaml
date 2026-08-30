@@ -1,0 +1,235 @@
+annotations:
+- id: nopcommerce-customer-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: Email
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 29
+    end_line: 29
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.Email is the persisted account email used for login and profile communication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-customer-username
+  layer: data_items
+  subject:
+    key: data_item:username
+    name: Username
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.Username is the optional login identifier when username-based authentication is enabled.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-customer-firstname
+  layer: data_items
+  subject:
+    key: data_item:first_name
+    name: FirstName
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 34
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.FirstName is a persisted given name on the shopper profile.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-customer-lastname
+  layer: data_items
+  subject:
+    key: data_item:last_name
+    name: LastName
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 39
+    end_line: 39
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.LastName is a persisted family name on the shopper profile.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-customer-phone
+  layer: data_items
+  subject:
+    key: data_item:phone
+    name: Phone
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 94
+    end_line: 94
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.Phone is a stored contact number on the customer record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-customer-guid
+  layer: data_items
+  subject:
+    key: data_item:customer_guid
+    name: CustomerGuid
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: CustomerGuid is a stable GUID assigned at construction that identifies the customer across integrations.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-customer-password
+  layer: data_items
+  subject:
+    key: data_item:password
+    name: Password
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    start_line: 21
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - password
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: CustomerPassword.Password stores the hashed or encrypted credential checked during ValidateCustomerAsync.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-oauth-access-token
+  layer: data_items
+  subject:
+    key: data_item:oauth_access_token
+    name: OAuthAccessToken
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    start_line: 36
+    end_line: 36
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: ExternalAuthenticationRecord.OAuthAccessToken persists the OAuth bearer token from an external login provider.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-password-salt-not-credential
+  layer: data_items
+  subject:
+    key: data_item:password_salt
+    name: PasswordSalt
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    start_line: 31
+    end_line: 31
+  expected:
+    status: negative
+    labels: []
+  rationale: PasswordSalt is hashing metadata used to verify passwords, not the credential itself.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-customer-active-not-pii
+  layer: data_items
+  subject:
+    key: data_item:active
+    name: Active
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 194
+    end_line: 194
+  expected:
+    status: negative
+    labels: []
+  rationale: Active is a boolean account-state flag, not personal data content.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

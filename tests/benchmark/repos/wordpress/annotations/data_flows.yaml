@@ -1,0 +1,197 @@
+annotations:
+- id: wordpress-signon-to-auth-cookie
+  layer: data_flows
+  subject:
+    key: flow:credentials->auth-cookie
+    name: Credentials to auth cookie
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 109
+    end_line: 115
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: wp_signon authenticates credentials then calls wp_set_auth_cookie on success.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-password-to-hash
+  layer: data_flows
+  subject:
+    key: flow:plaintext-password->user_pass
+    name: Plaintext password to user_pass hash
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 2300
+    end_line: 2301
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: wp_insert_user hashes userdata user_pass with wp_hash_password before persisting new users.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-session-to-usermeta
+  layer: data_flows
+  subject:
+    key: flow:session-token->session_tokens
+    name: Session token to user meta
+  evidence:
+    file_path: src/wp-includes/class-wp-user-meta-session-tokens.php
+    start_line: 93
+    end_line: 95
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: update_sessions writes session verifiers to the session_tokens user meta key.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-token-to-auth-cookie
+  layer: data_flows
+  subject:
+    key: flow:session-token->auth-cookie
+    name: Session token to auth cookie
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 1131
+    end_line: 1137
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: wp_set_auth_cookie creates or reuses a session token and encodes it into auth and logged_in cookies.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-authenticate-check-password
+  layer: data_flows
+  subject:
+    key: flow:password->wp_check_password
+    name: Password to wp_check_password
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 208
+    end_line: 208
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: wp_authenticate_username_password compares the submitted password against user_pass via wp_check_password.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-insert-user-database
+  layer: data_flows
+  subject:
+    key: flow:user-data->wpdb-users
+    name: User data to wpdb users table
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 2576
+    end_line: 2577
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: wp_insert_user inserts the prepared user row into $wpdb->users and reads insert_id.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-rest-email-to-user
+  layer: data_flows
+  subject:
+    key: flow:rest-email->user_email
+    name: REST email to user_email
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    start_line: 1180
+    end_line: 1181
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: prepare_item_for_database assigns request email onto prepared_user.user_email for REST updates.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

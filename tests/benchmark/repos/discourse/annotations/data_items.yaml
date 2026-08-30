@@ -1,0 +1,499 @@
+annotations:
+- id: discourse-user-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: id
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 2437
+    end_line: 2437
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The users table primary key id uniquely identifies each account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-username
+  layer: data_items
+  subject:
+    key: data_item:username
+    name: username
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 2464
+    end_line: 2464
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: username is the required login handle stored on the users table with a unique index.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-name
+  layer: data_items
+  subject:
+    key: data_item:name
+    name: name
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 2453
+    end_line: 2453
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The users.name column stores the user's display name separate from username.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-date-of-birth
+  layer: data_items
+  subject:
+    key: data_item:date_of_birth
+    name: date_of_birth
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 2442
+    end_line: 2442
+  expected:
+    status: positive
+    labels:
+    - date_of_birth
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: date_of_birth is a date column on users for optional birth-date profile data.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-locale
+  layer: data_items
+  subject:
+    key: data_item:locale
+    name: locale
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 2450
+    end_line: 2450
+  expected:
+    status: negative
+    labels: []
+  rationale: Locale is a language preference string, not identity or credential content in this taxonomy.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-user-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: app/models/user_email.rb
+    start_line: 125
+    end_line: 125
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: user_emails.email is a required string column validated as an email address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-normalized-email
+  layer: data_items
+  subject:
+    key: data_item:normalized_email
+    name: normalized_email
+  evidence:
+    file_path: app/models/user_email.rb
+    start_line: 126
+    end_line: 126
+  expected:
+    status: negative
+    labels: []
+  rationale: normalized_email is a canonicalized lookup key derived from email, not the raw address value.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-password-hash
+  layer: data_items
+  subject:
+    key: data_item:password_hash
+    name: password_hash
+  evidence:
+    file_path: app/models/user_password.rb
+    start_line: 83
+    end_line: 83
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: password_hash stores the PBKDF2 verifier used to confirm passwords, not the plaintext secret.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-password-salt
+  layer: data_items
+  subject:
+    key: data_item:password_salt
+    name: password_salt
+  evidence:
+    file_path: app/models/user_password.rb
+    start_line: 84
+    end_line: 84
+  expected:
+    status: negative
+    labels: []
+  rationale: password_salt is hashing metadata paired with password_hash, not an independently usable credential.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-api-key-bearer
+  layer: data_items
+  subject:
+    key: data_item:key
+    name: key
+  evidence:
+    file_path: app/models/user_api_key.rb
+    start_line: 28
+    end_line: 32
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The key getter returns the freshly generated bearer secret available only immediately after creation.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-api-key-hash
+  layer: data_items
+  subject:
+    key: data_item:key_hash
+    name: key_hash
+  evidence:
+    file_path: app/models/user_api_key.rb
+    start_line: 107
+    end_line: 107
+  expected:
+    status: negative
+    labels: []
+  rationale: key_hash is the stored verifier for the API key, not the bearer token itself.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-oauth2-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: app/models/oauth2_user_info.rb
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: oauth2_user_infos.email stores the email returned by an external OAuth provider.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-oauth2-uid
+  layer: data_items
+  subject:
+    key: data_item:uid
+    name: uid
+  evidence:
+    file_path: app/models/oauth2_user_info.rb
+    start_line: 23
+    end_line: 23
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: uid is the provider-scoped external account identifier with a unique index on uid and provider.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-oauth2-name
+  layer: data_items
+  subject:
+    key: data_item:name
+    name: name
+  evidence:
+    file_path: app/models/oauth2_user_info.rb
+    start_line: 21
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: oauth2_user_infos.name stores the display name supplied by the OAuth provider.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-associated-provider-uid
+  layer: data_items
+  subject:
+    key: data_item:provider_uid
+    name: provider_uid
+  evidence:
+    file_path: app/models/user_associated_account.rb
+    start_line: 23
+    end_line: 23
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: provider_uid is the external authenticator's stable account id for the linked user.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-profile-location
+  layer: data_items
+  subject:
+    key: data_item:location
+    name: location
+  evidence:
+    file_path: app/models/user_profile.rb
+    start_line: 224
+    end_line: 224
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: location is free-text profile data that may contain personal location but granularity is unspecified.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-profile-bio-raw
+  layer: data_items
+  subject:
+    key: data_item:bio_raw
+    name: bio_raw
+  evidence:
+    file_path: app/models/user_profile.rb
+    start_line: 222
+    end_line: 222
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: bio_raw is unstructured profile text that may contain personal data but is not required to.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

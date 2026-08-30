@@ -1,0 +1,138 @@
+annotations:
+- id: ghost-signup-email-to-magic-link
+  layer: data_flows
+  subject:
+    key: flow:signup-email->magic-link
+    name: Signup email to magic link
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    start_line: 1105
+    end_line: 1110
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: _handleSignup passes normalizedEmail to sendEmailWithMagicLink to deliver a sign-in or signup link.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: ghost-token-to-member-lookup
+  layer: data_flows
+  subject:
+    key: flow:identity-token->member-repository
+    name: Identity token to member lookup
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    start_line: 381
+    end_line: 389
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: getByToken decodes the JWT and loads the member record by email from data.sub.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: ghost-member-create-to-database
+  layer: data_flows
+  subject:
+    key: flow:member-create->database
+    name: Member create to database
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    start_line: 445
+    end_line: 456
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: create picks member email and profile fields from input and persists a new member record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: ghost-update-email-to-magic-link
+  layer: data_flows
+  subject:
+    key: flow:update-email->magic-link
+    name: Update email to magic link
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    start_line: 69
+    end_line: 75
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: updateEmailAddress sends the new email address through sendEmailWithMagicLink with updateEmail type.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: ghost-not-auth0-login-flow
+  layer: data_flows
+  subject:
+    key: flow:member->auth0
+    name: Member to Auth0
+  evidence:
+    file_path: ghost/core/core/server/services/auth/members/index.js
+    start_line: 13
+    end_line: 19
+  expected:
+    status: negative
+    labels: []
+  rationale: Member auth middleware validates GhostMembers JWTs locally; no Auth0 redirect or token exchange exists.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

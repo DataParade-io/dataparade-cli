@@ -1,0 +1,93 @@
+annotations:
+- id: nopcommerce-customer-database
+  layer: components
+  subject:
+    key: asset:database
+    name: Customer
+  evidence:
+    file_path: src/Libraries/Nop.Services/Customers/CustomerService.cs
+    start_line: 34
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: CustomerService persists Customer entities through IRepository<Customer>, the primary SQL store for shopper accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-cookie-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: CookieAuthenticationService
+  evidence:
+    file_path: src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    start_line: 12
+    end_line: 12
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: CookieAuthenticationService implements in-codebase cookie authentication via ASP.NET Core SignInAsync, not an external IdP.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-customer-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: Customer
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 9
+    end_line: 9
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer is the storefront end-user entity that registers, logs in, and owns profile and order data.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    start_line: 45
+    end_line: 73
+  expected:
+    status: negative
+    labels: []
+  rationale: The reviewed customer and authentication files implement local cookie login. They do not integrate Auth0 or another external identity vendor.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

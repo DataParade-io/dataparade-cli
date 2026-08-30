@@ -1,0 +1,93 @@
+annotations:
+- id: directus-users-database
+  layer: components
+  subject:
+    key: asset:database
+    name: directus_users
+  evidence:
+    file_path: api/src/services/users.ts
+    start_line: 42
+    end_line: 42
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: UsersService extends ItemsService for the directus_users collection, the primary SQL store for platform user accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-local-auth-driver
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: LocalAuthDriver
+  evidence:
+    file_path: api/src/auth/drivers/local.ts
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: LocalAuthDriver verifies email/password against directus_users inside the API, not via an external IdP.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-admin-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: User
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 7
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - admin
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: The User interface models Directus admin-panel operators with role and admin_access fields, not storefront customers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-not-stripe
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: api/src/services/authentication.ts
+    start_line: 106
+    end_line: 112
+  expected:
+    status: negative
+    labels: []
+  rationale: The reviewed auth and user services query directus_users and issue JWTs. They do not call Stripe or another payment vendor.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

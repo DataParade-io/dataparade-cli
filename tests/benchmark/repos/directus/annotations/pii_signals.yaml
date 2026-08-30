@@ -1,0 +1,93 @@
+annotations:
+- id: directus-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 11
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: User.email is the login identifier validated by Joi and queried case-insensitively during local authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-password-signal
+  layer: pii_signals
+  subject:
+    key: pii:password
+    name: password
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 12
+    end_line: 12
+  expected:
+    status: positive
+    labels:
+    - password
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: User.password stores the argon2 password hash verified by LocalAuthDriver.verify during login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-external-identifier-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: external_identifier
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 16
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: external_identifier links a Directus user to an external SSO identity provider subject.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: directus-provider-not-pii
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: provider
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 15
+    end_line: 15
+  expected:
+    status: negative
+    labels: []
+  rationale: provider names the configured authentication driver, not a person or credential.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

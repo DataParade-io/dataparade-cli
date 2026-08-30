@@ -1,0 +1,93 @@
+annotations:
+- id: nopcommerce-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: Email
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 27
+    end_line: 29
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.Email is a persisted account email also embedded in ClaimTypes.Email during sign-in.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-phone-signal
+  layer: pii_signals
+  subject:
+    key: pii:phone_number
+    name: Phone
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 92
+    end_line: 94
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.Phone is a stored phone number and is copied into ClaimTypes.MobilePhone on authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-username-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: Username
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 22
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.Username is the login identifier when usernames are enabled and is written to ClaimTypes.Name.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: nopcommerce-failed-login-attempts-not-pii
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: FailedLoginAttempts
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 182
+    end_line: 184
+  expected:
+    status: negative
+    labels: []
+  rationale: FailedLoginAttempts is an account lockout counter, not a personal identifier or contact field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

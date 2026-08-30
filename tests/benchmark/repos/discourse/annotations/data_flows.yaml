@@ -1,0 +1,253 @@
+annotations:
+- id: discourse-password-to-hash
+  layer: data_flows
+  subject:
+    key: flow:plaintext-password->password_hash
+    name: Plaintext password to password_hash
+  evidence:
+    file_path: app/models/user_password.rb
+    start_line: 59
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: ensure_password_is_hashed salts and hashes @raw_password into password_hash before save.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-api-key-to-key-hash
+  layer: data_flows
+  subject:
+    key: flow:api-key->key_hash
+    name: API key to key_hash
+  evidence:
+    file_path: app/models/user_api_key.rb
+    start_line: 23
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: generate_key creates a random @key and stores ApiKey.hash_key(@key) as key_hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-auth-token-generate
+  layer: data_flows
+  subject:
+    key: flow:token->auth_token
+    name: Session token to auth_token
+  evidence:
+    file_path: app/models/user_auth_token.rb
+    start_line: 109
+    end_line: 121
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: generate! hashes a random token into auth_token and exposes the unhashed value on unhashed_auth_token.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-email-normalize
+  layer: data_flows
+  subject:
+    key: flow:email->normalized_email
+    name: Email to normalized_email
+  evidence:
+    file_path: app/models/user_email.rb
+    start_line: 57
+    end_line: 58
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: normalize_email derives normalized_email from the current email value before validation.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-session-cookie-config
+  layer: data_flows
+  subject:
+    key: flow:session->cookie
+    name: Session store to cookie
+  evidence:
+    file_path: config/initializers/100-session_store.rb
+    start_line: 5
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: session_store binds server session state to the _forum_session browser cookie key.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-login-route
+  layer: data_flows
+  subject:
+    key: flow:login-request->session
+    name: Login request to session
+  evidence:
+    file_path: config/routes.rb
+    start_line: 551
+    end_line: 554
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: Session routes map HTTP login and forgot_password requests into SessionController actions.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-omniauth-csrf
+  layer: data_flows
+  subject:
+    key: flow:oauth-request->csrf-check
+    name: OAuth request to CSRF check
+  evidence:
+    file_path: config/initializers/009-omniauth.rb
+    start_line: 17
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: before_request_phase verifies CSRF tokens on non-GET OmniAuth requests before external auth proceeds.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

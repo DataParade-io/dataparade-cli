@@ -1,0 +1,239 @@
+annotations:
+- id: orchard-user-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: User
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    start_line: 6
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: User is the site member identity Orchard authenticates and persists through ASP.NET Core Identity.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-identity-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: UserService
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    start_line: 14
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: UserService implements local login, registration, and password reset via ASP.NET Core Identity.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-user-database
+  layer: components
+  subject:
+    key: asset:database
+    name: UserStore
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    start_line: 112
+    end_line: 113
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: UserStore persists IUser documents through YesSql ISession.SaveAsync.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-openid-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: OpenIdTokenStore
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    start_line: 41
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: OpenIdTokenStore is the in-codebase OpenIddict token persistence layer.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-session-cache
+  layer: components
+  subject:
+    key: asset:cache
+    name: CacheTicketStore
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    start_line: 12
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - cache
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: CacheTicketStore stores encrypted authentication tickets in IDistributedCache.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-password-reset-provider
+  layer: components
+  subject:
+    key: asset:service
+    name: PasswordResetTokenProvider
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    start_line: 9
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: PasswordResetTokenProvider issues protected reset tokens as an internal Identity service.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    start_line: 58
+    end_line: 66
+  expected:
+    status: negative
+    labels: []
+  rationale: UserService authenticates against the local UserManager store, not an Auth0 tenant.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-not-stripe
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    start_line: 58
+    end_line: 66
+  expected:
+    status: negative
+    labels: []
+  rationale: The reviewed Users and OpenId files handle identity only; they do not call Stripe.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

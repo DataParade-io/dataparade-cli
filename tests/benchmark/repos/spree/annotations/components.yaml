@@ -1,0 +1,233 @@
+annotations:
+- id: spree-customer-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: Customer
+  evidence:
+    file_path: spree/core/app/models/spree/customer.rb
+    start_line: 6
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: Customer is the storefront end-user account Spree authenticates and associates with orders.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-admin-actor
+  layer: components
+  subject:
+    key: actor:admin
+    name: AdminUser
+  evidence:
+    file_path: spree/core/app/models/spree/admin_user.rb
+    start_line: 3
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - admin
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: AdminUser is the privileged staff identity that approves, cancels, and creates orders.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-customer-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: Customer
+  evidence:
+    file_path: spree/core/app/models/spree/customer.rb
+    start_line: 13
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: Customer uses has_secure_password and email validation for in-codebase storefront authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-customer-database
+  layer: components
+  subject:
+    key: asset:database
+    name: spree_customers
+  evidence:
+    file_path: spree/core/app/models/spree/customer.rb
+    start_line: 7
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: Customer maps to the spree_customers table, the persistent store for buyer accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-payment-processing-service
+  layer: components
+  subject:
+    key: asset:service
+    name: PaymentProcessing
+  evidence:
+    file_path: spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    start_line: 15
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: PaymentProcessing drives checkout payment workflows rather than exposing an HTTP API surface.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-oauth-identity-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: UserIdentity
+  evidence:
+    file_path: spree/core/app/models/spree/user_identity.rb
+    start_line: 2
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: UserIdentity stores OAuth provider links and tokens for external login strategies.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: spree/core/app/models/spree/customer.rb
+    start_line: 13
+    end_line: 19
+  expected:
+    status: negative
+    labels: []
+  rationale: Core customer auth is local has_secure_password. The reviewed models do not integrate Auth0.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-not-stripe-sdk
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: spree/core/app/models/spree/gateway.rb
+    start_line: 39
+    end_line: 40
+  expected:
+    status: negative
+    labels: []
+  rationale: Spree core references Stripe only in gateway extension comments; it does not embed the Stripe SDK in these models.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

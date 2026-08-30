@@ -32,8 +32,8 @@ annotations:
     name: firstname
   evidence:
     file_path: app/models/user.rb
-    start_line: 126
-    end_line: 126
+    start_line: 131
+    end_line: 131
   expected:
     status: positive
     labels:
@@ -46,7 +46,7 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: validates_presence_of :firstname requires a personal given name on each user record.
+  rationale: validates_length_of :firstname marks the stored given-name field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -58,8 +58,8 @@ annotations:
     name: lastname
   evidence:
     file_path: app/models/user.rb
-    start_line: 126
-    end_line: 126
+    start_line: 132
+    end_line: 132
   expected:
     status: positive
     labels:
@@ -72,7 +72,7 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: validates_presence_of :lastname requires a personal family name on each user record.
+  rationale: validates_length_of :lastname marks the stored family-name field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -113,9 +113,8 @@ annotations:
     start_line: 39
     end_line: 39
   expected:
-    status: positive
-    labels:
-    - access_token
+    status: negative
+    labels: []
     exhaustive_scope_files:
     - app/models/user.rb
     - app/models/email_address.rb
@@ -124,7 +123,7 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: add_action :api registers the API bearer token action used by User#api_key.
+  rationale: add_action :api registers an action type, not a stored bearer token value.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

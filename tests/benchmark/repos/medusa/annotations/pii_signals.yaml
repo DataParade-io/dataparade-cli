@@ -1,0 +1,82 @@
+annotations:
+- id: medusa-no-customer-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: packages/medusa/src/modules/customer.ts
+    start_line: 1
+    end_line: 3
+  expected:
+    status: negative
+    labels: []
+  rationale: customer.ts re-exports the customer package and does not declare or handle email fields in scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-no-user-name-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: first_name
+  evidence:
+    file_path: packages/medusa/src/modules/user.ts
+    start_line: 1
+    end_line: 3
+  expected:
+    status: negative
+    labels: []
+  rationale: user.ts is a module registry export with no user name properties in the reviewed files.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-auth-emailpass-password-signal
+  layer: pii_signals
+  subject:
+    key: pii:password
+    name: EmailPassAuthProvider
+  evidence:
+    file_path: packages/medusa/src/modules/auth-emailpass.ts
+    start_line: 1
+    end_line: 1
+  expected:
+    status: positive
+    labels:
+    - password
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+  rationale: auth-emailpass.ts registers the email/password authentication provider used for credential-based login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-no-phone-signal
+  layer: pii_signals
+  subject:
+    key: pii:phone_number
+    name: phone
+  evidence:
+    file_path: packages/medusa/src/modules/order.ts
+    start_line: 1
+    end_line: 3
+  expected:
+    status: negative
+    labels: []
+  rationale: order.ts contains no phone number fields or handling in the scoped module registry files.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

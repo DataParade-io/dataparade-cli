@@ -1,0 +1,175 @@
+annotations:
+- id: wordpress-user-login-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: user_login
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 33
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: wp_signon credentials document user_login as the username used to authenticate.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-user-password-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: user_password
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 34
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: user_password in wp_signon credentials is the plaintext password submitted at login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-rest-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    start_line: 1443
+    end_line: 1447
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: REST user schema marks email as required with format email for edit context.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-rest-password-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: password
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    start_line: 1505
+    end_line: 1508
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: password is a required REST create field described as the user password and never displayed.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-session-token-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: session_token
+  evidence:
+    file_path: src/wp-includes/class-wp-session-tokens.php
+    start_line: 145
+    end_line: 145
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: wp_generate_password creates the random session token returned to the cookie layer.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-display-name-not-email
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: display_name
+  evidence:
+    file_path: src/wp-includes/class-wp-user.php
+    start_line: 33
+    end_line: 33
+  expected:
+    status: negative
+    labels: []
+  rationale: display_name is a public name string, not an email address field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-user-pass-hash-not-plaintext
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: user_pass
+  evidence:
+    file_path: src/wp-includes/class-wp-user.php
+    start_line: 14
+    end_line: 15
+  expected:
+    status: negative
+    labels: []
+  rationale: The class docblock states user_pass is hashed with bcrypt by default, not stored as plaintext.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

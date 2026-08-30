@@ -1,0 +1,359 @@
+annotations:
+- id: discourse-postgresql-database
+  layer: components
+  subject:
+    key: asset:database
+    name: discourse_development
+  evidence:
+    file_path: config/database.yml
+    start_line: 10
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: database.yml configures a PostgreSQL adapter and database name for ActiveRecord persistence.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-redis-cache
+  layer: components
+  subject:
+    key: asset:cache
+    name: redis
+  evidence:
+    file_path: config/initializers/001-redis.rb
+    start_line: 9
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - cache
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The Redis initializer validates Discourse.redis connectivity and version, treating Redis as an ephemeral cache layer.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-session-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: discourse_cookie_store
+  evidence:
+    file_path: config/initializers/100-session_store.rb
+    start_line: 5
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: Rails session_store configures Discourse's local cookie-based session authentication with key _forum_session.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-user-auth-token-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: UserAuthToken
+  evidence:
+    file_path: app/models/user_auth_token.rb
+    start_line: 4
+    end_line: 4
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: UserAuthToken manages in-app session tokens, rotation, and lookup for authenticated requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-session-api
+  layer: components
+  subject:
+    key: asset:api
+    name: SessionController
+  evidence:
+    file_path: config/routes.rb
+    start_line: 551
+    end_line: 551
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: routes.rb exposes session create/destroy and forgot_password endpoints as the HTTP login surface.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-site-api
+  layer: components
+  subject:
+    key: asset:api
+    name: SiteController
+  evidence:
+    file_path: config/routes.rb
+    start_line: 78
+    end_line: 78
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The site route maps to SiteController#site, a public HTTP API entry point for site metadata.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-google-auth-provider
+  layer: components
+  subject:
+    key: third_party:google_auth
+    name: Google OAuth2
+  evidence:
+    file_path: config/site_settings.yml
+    start_line: 758
+    end_line: 764
+  expected:
+    status: positive
+    labels:
+    - auth_provider
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: Site settings declare enable_google_oauth2_logins plus client id and secret for Google OAuth2 authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-sendgrid-email-provider
+  layer: components
+  subject:
+    key: third_party:sendgrid
+    name: SendGrid
+  evidence:
+    file_path: config/routes.rb
+    start_line: 38
+    end_line: 38
+  expected:
+    status: positive
+    labels:
+    - email_provider
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: routes.rb registers a POST webhook endpoint for SendGrid inbound email events.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-user-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: User
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 3
+    end_line: 3
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The User ActiveRecord model is the forum end-user account, not a staff-only or service identity.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-not-stripe
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: config/routes.rb
+    start_line: 38
+    end_line: 38
+  expected:
+    status: negative
+    labels: []
+  rationale: The reviewed routes and models handle sessions, users, and email webhooks. No Stripe payment integration appears in this scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: config/initializers/009-omniauth.rb
+    start_line: 6
+    end_line: 7
+  expected:
+    status: negative
+    labels: []
+  rationale: OmniAuth is configured for Discourse authenticators such as Google OAuth2, but Auth0 is not referenced in the reviewed files.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

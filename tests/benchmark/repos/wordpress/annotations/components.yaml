@@ -1,0 +1,220 @@
+annotations:
+- id: wordpress-wpdb-database
+  layer: components
+  subject:
+    key: asset:database
+    name: wpdb
+  evidence:
+    file_path: src/wp-includes/class-wpdb.php
+    start_line: 40
+    end_line: 44
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: wpdb is WordPress's database abstraction layer connecting to the SQL store for users and metadata.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-object-cache
+  layer: components
+  subject:
+    key: asset:cache
+    name: WP_Object_Cache
+  evidence:
+    file_path: src/wp-includes/class-wp-object-cache.php
+    start_line: 11
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - cache
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: WP_Object_Cache stores data in memory to avoid repeated database trips.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-auth-cookie-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_set_auth_cookie
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 1071
+    end_line: 1071
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: wp_set_auth_cookie issues local authentication cookies tied to session tokens.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-session-tokens-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: WP_Session_Tokens
+  evidence:
+    file_path: src/wp-includes/class-wp-session-tokens.php
+    start_line: 11
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: WP_Session_Tokens manages hashed session verifiers stored in user meta for login state.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-rest-users-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Users_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    start_line: 41
+    end_line: 42
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: WP_REST_Users_Controller registers wp/v2/users REST routes for user CRUD over HTTP.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-wp-user-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: WP_User
+  evidence:
+    file_path: src/wp-includes/class-wp-user.php
+    start_line: 47
+    end_line: 47
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: WP_User models site members and commenters, the public end-user actor type.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-not-stripe
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 109
+    end_line: 109
+  expected:
+    status: negative
+    labels: []
+  rationale: wp_authenticate handles local username/password login. No Stripe payment SDK or API appears in this scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 1071
+    end_line: 1071
+  expected:
+    status: negative
+    labels: []
+  rationale: Authentication is implemented with WordPress cookies and session tokens, not an external Auth0 integration.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: wordpress-not-sendgrid
+  layer: components
+  subject:
+    key: third_party:sendgrid
+    name: SendGrid
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    start_line: 41
+    end_line: 42
+  expected:
+    status: negative
+    labels: []
+  rationale: The reviewed user and auth files do not integrate SendGrid or another transactional email vendor.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

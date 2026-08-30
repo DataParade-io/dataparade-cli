@@ -1,0 +1,185 @@
+annotations:
+- id: medusa-auth-module
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: AuthModule
+  evidence:
+    file_path: packages/medusa/src/modules/auth.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+  rationale: auth.ts registers the in-process Medusa auth module via @medusajs/auth.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-customer-module
+  layer: components
+  subject:
+    key: actor:customer
+    name: CustomerModule
+  evidence:
+    file_path: packages/medusa/src/modules/customer.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+  rationale: customer.ts exports the CustomerModule that represents storefront customers in the Medusa module registry.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-stripe-provider
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: StripePaymentProvider
+  evidence:
+    file_path: packages/medusa/src/modules/payment-stripe.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - payment_processor
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+  rationale: payment-stripe.ts wires the Stripe payment provider from @medusajs/payment-stripe.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-google-auth-provider
+  layer: components
+  subject:
+    key: third_party:google_auth
+    name: GoogleAuthProvider
+  evidence:
+    file_path: packages/medusa/src/modules/auth-google.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - auth_provider
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+  rationale: auth-google.ts registers Google as an external identity provider for Medusa auth.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-sendgrid-email-provider
+  layer: components
+  subject:
+    key: third_party:sendgrid
+    name: SendGridNotificationProvider
+  evidence:
+    file_path: packages/medusa/src/modules/notification-sendgrid.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - email_provider
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+  rationale: notification-sendgrid.ts wires SendGrid as the transactional email notification provider.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: packages/medusa/src/modules/auth.ts
+    start_line: 1
+    end_line: 1
+  expected:
+    status: negative
+    labels: []
+  rationale: The auth module re-exports @medusajs/auth; these registry files do not integrate Auth0 directly.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-not-database-asset
+  layer: components
+  subject:
+    key: asset:database
+    name: Database
+  evidence:
+    file_path: packages/medusa/src/modules/customer.ts
+    start_line: 1
+    end_line: 6
+  expected:
+    status: negative
+    labels: []
+  rationale: Module registry files delegate to package implementations and do not declare database connections in scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

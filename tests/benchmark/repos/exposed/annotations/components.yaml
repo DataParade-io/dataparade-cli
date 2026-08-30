@@ -1,0 +1,114 @@
+annotations:
+- id: exposed-database-api
+  layer: components
+  subject:
+    key: asset:database
+    name: DatabaseApi
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
+    start_line: 7
+    end_line: 12
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseConfig.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Transaction.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/TransactionInterface.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/DatabasesManager.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/AbstractQuery.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/StatementBuilder.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/Statement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/InsertStatement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
+  rationale: DatabaseApi is the base class for database connections and transaction targets in this ORM access layer.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: exposed-statement-builder-query-api
+  layer: components
+  subject:
+    key: asset:service
+    name: StatementBuilder
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/StatementBuilder.kt
+    start_line: 7
+    end_line: 9
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseConfig.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Transaction.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/TransactionInterface.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/DatabasesManager.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/AbstractQuery.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/StatementBuilder.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/Statement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/InsertStatement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
+  rationale: StatementBuilder exposes the insert, delete, update, and select DSL used to build SQL statements.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: exposed-not-stripe
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
+    start_line: 7
+    end_line: 12
+  expected:
+    status: negative
+    labels: []
+  rationale: Exposed is a database ORM library. The reviewed core sources do not integrate Stripe or any payment processor.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: exposed-not-customer-actor
+  layer: components
+  subject:
+    key: actor:customer
+    name: Customer
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
+    start_line: 481
+    end_line: 482
+  expected:
+    status: negative
+    labels: []
+  rationale: SQL reserved keywords like USER appear in vendor keyword lists, but there is no customer or end-user domain model.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: exposed-not-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: AuthService
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Transaction.kt
+    start_line: 38
+    end_line: 39
+  expected:
+    status: negative
+    labels: []
+  rationale: Transaction is a database work unit, not an authentication or session service.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

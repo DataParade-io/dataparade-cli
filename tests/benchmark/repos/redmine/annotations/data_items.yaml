@@ -136,8 +136,8 @@ annotations:
     name: hashed_password
   evidence:
     file_path: app/models/user.rb
-    start_line: 353
-    end_line: 353
+    start_line: 361
+    end_line: 361
   expected:
     status: positive
     labels:
@@ -150,7 +150,7 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: check_password? compares the supplied password against the stored hashed_password verifier.
+  rationale: salt_password assigns SHA1(salt + SHA1(password)) to hashed_password as the stored verifier.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

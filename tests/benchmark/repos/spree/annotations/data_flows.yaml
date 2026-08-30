@@ -1,0 +1,216 @@
+annotations:
+- id: spree-customer-email-to-order
+  layer: data_flows
+  subject:
+    key: flow:customer->order-email
+    name: Customer email to order
+  evidence:
+    file_path: spree/core/app/models/spree/order.rb
+    start_line: 1113
+    end_line: 1115
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: link_by_email copies the associated customer's email onto the order before validation.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-address-to-gateway
+  layer: data_flows
+  subject:
+    key: flow:address->payment-gateway
+    name: Address to payment gateway
+  evidence:
+    file_path: spree/core/app/models/spree/address.rb
+    start_line: 311
+    end_line: 321
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: gateway_hash packages name, street, city, zip, country, and phone for payment providers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-order-to-payment-workflow
+  layer: data_flows
+  subject:
+    key: flow:order->payment-process-workflow
+    name: Order to payment workflow
+  evidence:
+    file_path: spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    start_line: 76
+    end_line: 80
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: process_payments_with sends each checkout payment to Spree.payment_process_workflow for gateway processing.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-oauth-to-customer
+  layer: data_flows
+  subject:
+    key: flow:oauth-info->customer
+    name: OAuth info to customer
+  evidence:
+    file_path: spree/core/app/models/spree/user_identity.rb
+    start_line: 63
+    end_line: 68
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: create_user_from_oauth maps provider info email and names into a new customer record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-address-to-customer-profile
+  layer: data_flows
+  subject:
+    key: flow:address->customer-profile
+    name: Address to customer profile
+  evidence:
+    file_path: spree/core/app/models/spree/address.rb
+    start_line: 477
+    end_line: 485
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: set_user_attributes back-fills customer first_name, last_name, and phone from a saved address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-customer-to-gateway-customer
+  layer: data_flows
+  subject:
+    key: flow:customer->gateway-customer
+    name: Customer to gateway customer
+  evidence:
+    file_path: spree/core/app/models/spree/gateway_customer.rb
+    start_line: 5
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: GatewayCustomer belongs_to customer and stores the provider profile_id for wallet reuse.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-order-total-not-gateway-pii
+  layer: data_flows
+  subject:
+    key: flow:order-total->gateway-pii
+    name: Order total to gateway PII
+  evidence:
+    file_path: spree/core/app/models/spree/order.rb
+    start_line: 59
+    end_line: 63
+  expected:
+    status: negative
+    labels: []
+  rationale: Order money totals are accounting fields; gateway_hash sends address contact data, not item_total.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

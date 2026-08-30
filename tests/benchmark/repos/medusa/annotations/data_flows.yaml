@@ -1,0 +1,95 @@
+annotations:
+- id: medusa-payment-to-stripe
+  layer: data_flows
+  subject:
+    key: flow:payment->stripe
+    name: Payment module to Stripe
+  evidence:
+    file_path: packages/medusa/src/modules/payment-stripe.ts
+    start_line: 1
+    end_line: 6
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+  rationale: payment-stripe.ts re-exports @medusajs/payment-stripe, routing payment operations to the Stripe provider package.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-auth-emailpass-provider
+  layer: data_flows
+  subject:
+    key: flow:auth->emailpass-provider
+    name: Auth to email/password provider
+  evidence:
+    file_path: packages/medusa/src/modules/auth-emailpass.ts
+    start_line: 1
+    end_line: 6
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+  rationale: auth-emailpass.ts registers the email/password auth provider that Medusa auth delegates credential checks to.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-not-customer-email-to-db
+  layer: data_flows
+  subject:
+    key: flow:customer-email->database
+    name: Customer email to database
+  evidence:
+    file_path: packages/medusa/src/modules/customer.ts
+    start_line: 1
+    end_line: 6
+  expected:
+    status: negative
+    labels: []
+  rationale: customer.ts is a module registry stub; it does not show customer email persistence or query flows.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-not-order-to-customer
+  layer: data_flows
+  subject:
+    key: flow:order->customer
+    name: Order to customer
+  evidence:
+    file_path: packages/medusa/src/modules/order.ts
+    start_line: 1
+    end_line: 6
+  expected:
+    status: negative
+    labels: []
+  rationale: order.ts only re-exports @medusajs/order and contains no order-to-customer data movement in scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

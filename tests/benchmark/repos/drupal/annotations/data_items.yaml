@@ -1,0 +1,346 @@
+annotations:
+- id: drupal-uid
+  layer: data_items
+  subject:
+    key: data_item:uid
+    name: uid
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 487
+    end_line: 488
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: uid is the primary numeric identifier for user accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-name
+  layer: data_items
+  subject:
+    key: data_item:name
+    name: name
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 520
+    end_line: 522
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: name is the required username submitted on login forms.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-mail
+  layer: data_items
+  subject:
+    key: data_item:mail
+    name: mail
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 537
+    end_line: 539
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: mail is the user's email address field on the User entity.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-pass
+  layer: data_items
+  subject:
+    key: data_item:pass
+    name: pass
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 532
+    end_line: 534
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: pass stores the hashed password verifier checked during authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-init-email
+  layer: data_items
+  subject:
+    key: data_item:init
+    name: init
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 581
+    end_line: 583
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: init records the email address supplied at account registration.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-get-email
+  layer: data_items
+  subject:
+    key: data_item:mail
+    name: getEmail
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 275
+    end_line: 276
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: getEmail returns the mail field value for the user account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-get-account-name
+  layer: data_items
+  subject:
+    key: data_item:name
+    name: getAccountName
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 416
+    end_line: 417
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: getAccountName returns the stored username string.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-login-pass-credential
+  layer: data_items
+  subject:
+    key: data_item:pass
+    name: pass
+  evidence:
+    file_path: core/modules/user/src/Form/UserLoginForm.php
+    start_line: 143
+    end_line: 145
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: The login form pass element accepts the plaintext password submitted by the user.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-http-login-pass
+  layer: data_items
+  subject:
+    key: data_item:pass
+    name: credentials.pass
+  evidence:
+    file_path: core/modules/user/src/Controller/UserAuthenticationController.php
+    start_line: 224
+    end_line: 224
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: credentials['pass'] is the plaintext password from the JSON login request body.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-one-time-hash
+  layer: data_items
+  subject:
+    key: data_item:hash
+    name: hash
+  evidence:
+    file_path: core/modules/user/src/OneTimeAuthentication.php
+    start_line: 105
+    end_line: 105
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: hash is the one-time login token embedded in password-reset URLs.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-status-not-pii
+  layer: data_items
+  subject:
+    key: data_item:status
+    name: status
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 556
+    end_line: 558
+  expected:
+    status: negative
+    labels: []
+  rationale: status is an active/blocked account flag, not personal data in the taxonomy.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-created-not-pii
+  layer: data_items
+  subject:
+    key: data_item:created
+    name: created
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 562
+    end_line: 564
+  expected:
+    status: negative
+    labels: []
+  rationale: created is an account creation timestamp, not a taxonomy data-item category.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-csrf-token-not-pii
+  layer: data_items
+  subject:
+    key: data_item:csrf_token
+    name: csrf_token
+  evidence:
+    file_path: core/modules/user/src/Controller/UserAuthenticationController.php
+    start_line: 240
+    end_line: 240
+  expected:
+    status: negative
+    labels: []
+  rationale: csrf_token is a CSRF protection value returned after login, not stored personal data.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-timezone-ambiguous
+  layer: data_items
+  subject:
+    key: data_item:timezone
+    name: timezone
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 545
+    end_line: 547
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: timezone may imply user location but is a preference string without a taxonomy label.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: drupal-logout-token-ambiguous
+  layer: data_items
+  subject:
+    key: data_item:logout_token
+    name: logout_token
+  evidence:
+    file_path: core/modules/user/src/Controller/UserAuthenticationController.php
+    start_line: 245
+    end_line: 245
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: logout_token is a CSRF token for the logout endpoint; whether it qualifies as access_token is policy-dependent.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

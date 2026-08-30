@@ -1,0 +1,233 @@
+annotations:
+- id: spree-customer-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: spree/core/app/models/spree/customer.rb
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: validates :email on Customer is an explicit email-address PII signal.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-address-phone-signal
+  layer: pii_signals
+  subject:
+    key: pii:phone_number
+    name: phone
+  evidence:
+    file_path: spree/core/app/models/spree/address.rb
+    start_line: 85
+    end_line: 85
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: validates :phone on Address signals a collected phone number at checkout.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-address-firstname-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: firstname
+  evidence:
+    file_path: spree/core/app/models/spree/address.rb
+    start_line: 81
+    end_line: 81
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: validates :firstname on Address is a person-name PII signal.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-address-street-signal
+  layer: pii_signals
+  subject:
+    key: pii:street_address
+    name: address1
+  evidence:
+    file_path: spree/core/app/models/spree/address.rb
+    start_line: 82
+    end_line: 82
+  expected:
+    status: positive
+    labels:
+    - street_address
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: validates :address1 on Address signals a street-address field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-oauth-access-token-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: access_token
+  evidence:
+    file_path: spree/core/app/models/spree/user_identity.rb
+    start_line: 18
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: UserIdentity documents encrypted OAuth access_token storage on the identity row.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-credit-card-last-digits-signal
+  layer: pii_signals
+  subject:
+    key: pii:card_number
+    name: last_digits
+  evidence:
+    file_path: spree/core/app/models/spree/credit_card.rb
+    start_line: 140
+    end_line: 140
+  expected:
+    status: positive
+    labels:
+    - card_number
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: set_last_digits derives last_digits from the card number, a card-number PII signal.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-accepts-marketing-not-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: accepts_email_marketing
+  evidence:
+    file_path: spree/core/app/models/spree/customer.rb
+    start_line: 21
+    end_line: 21
+  expected:
+    status: negative
+    labels: []
+  rationale: accepts_email_marketing is a boolean consent flag, not an email address field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spree-cc-type-not-card-number-signal
+  layer: pii_signals
+  subject:
+    key: pii:card_number
+    name: cc_type
+  evidence:
+    file_path: spree/core/app/models/spree/credit_card.rb
+    start_line: 69
+    end_line: 70
+  expected:
+    status: negative
+    labels: []
+  rationale: cc_type/brand stores the card network label, not a card number or last-four value.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

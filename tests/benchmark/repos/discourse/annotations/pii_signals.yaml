@@ -1,0 +1,215 @@
+annotations:
+- id: discourse-email-validation-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: app/models/user_email.rb
+    start_line: 13
+    end_line: 13
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: "validates :email, presence: true marks email as required identity data on UserEmail records."
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-username-schema-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: username
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 2464
+    end_line: 2464
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The users.username column is a required unique login identifier.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-unhashed-auth-token-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: unhashed_auth_token
+  evidence:
+    file_path: app/models/user_auth_token.rb
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: unhashed_auth_token holds the live session bearer value separate from the stored hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-raw-password-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: password
+  evidence:
+    file_path: app/models/user_password.rb
+    start_line: 21
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: password= stores the plaintext @raw_password before hashing on save.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-totp-provisioning-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: totp_provisioning_uri
+  evidence:
+    file_path: app/models/user_second_factor.rb
+    start_line: 33
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: totp_provisioning_uri embeds user.email in the TOTP enrollment URI.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-google-client-secret-not-email
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: google_oauth2_client_secret
+  evidence:
+    file_path: config/site_settings.yml
+    start_line: 764
+    end_line: 766
+  expected:
+    status: negative
+    labels: []
+  rationale: google_oauth2_client_secret is an OAuth client credential marked secret, not an email address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: discourse-bio-raw-ambiguous-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: bio_raw
+  evidence:
+    file_path: app/models/user_profile.rb
+    start_line: 222
+    end_line: 222
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: bio_raw may contain personal text but the column declaration does not require a person name.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

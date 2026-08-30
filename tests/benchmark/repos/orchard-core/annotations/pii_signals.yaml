@@ -1,0 +1,240 @@
+annotations:
+- id: orchard-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: Email
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    start_line: 16
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: The Email property name on User is an email-address PII signal.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-phone-signal
+  layer: pii_signals
+  subject:
+    key: pii:phone_number
+    name: PhoneNumber
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: PhoneNumber on User signals a stored phone contact field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-password-hash-signal
+  layer: pii_signals
+  subject:
+    key: pii:password_verifier
+    name: PasswordHash
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: PasswordHash stores the credential secret derived from the user's password.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-client-secret-signal
+  layer: pii_signals
+  subject:
+    key: pii:client_secret
+    name: ClientSecret
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    start_line: 34
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - client_secret
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: ClientSecret is documented as a confidential credential that may be hashed
+    or encrypted.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-openid-subject-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: Subject
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    start_line: 78
+    end_line: 78
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: OpenIdToken.Subject ties the token to the authenticated principal identifier.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-reset-token-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: ResetToken
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    start_line: 40
+    end_line: 40
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: ResetToken carries a one-time recovery secret generated by Identity.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-remember-me-not-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: RememberMe
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    start_line: 11
+    end_line: 11
+  expected:
+    status: negative
+    labels: []
+  rationale: RememberMe is a boolean cookie preference, not an email address field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: orchard-application-type-not-person-name
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: ApplicationType
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    start_line: 22
+    end_line: 22
+  expected:
+    status: negative
+    labels: []
+  rationale: ApplicationType describes the OAuth client category, not a human name.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

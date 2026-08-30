@@ -1,0 +1,86 @@
+annotations:
+- id: medusa-no-customer-email-item
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: packages/medusa/src/modules/customer.ts
+    start_line: 1
+    end_line: 6
+  expected:
+    status: negative
+    labels: []
+  rationale: The scoped customer module file only re-exports @medusajs/customer and does not define an email property.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-no-user-first-name-item
+  layer: data_items
+  subject:
+    key: data_item:first_name
+    name: first_name
+  evidence:
+    file_path: packages/medusa/src/modules/user.ts
+    start_line: 1
+    end_line: 6
+  expected:
+    status: negative
+    labels: []
+  rationale: user.ts is a thin module registry export without user profile field definitions.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-discovery-path-not-pii
+  layer: data_items
+  subject:
+    key: data_item:discoveryPath
+    name: discoveryPath
+  evidence:
+    file_path: packages/medusa/src/modules/auth.ts
+    start_line: 6
+    end_line: 6
+  expected:
+    status: negative
+    labels: []
+  rationale: discoveryPath resolves the auth package entry point for module loading, not personal data.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-order-module-default-export
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: id
+  evidence:
+    file_path: packages/medusa/src/modules/order.ts
+    start_line: 5
+    end_line: 5
+  expected:
+    status: negative
+    labels: []
+  rationale: order.ts exports OrderModule as default; there is no order id field in the scoped registry file.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: medusa-no-customer-phone-item
+  layer: data_items
+  subject:
+    key: data_item:phone
+    name: phone
+  evidence:
+    file_path: packages/medusa/src/modules/customer.ts
+    start_line: 1
+    end_line: 6
+  expected:
+    status: negative
+    labels: []
+  rationale: No phone field appears in the scoped customer module registry file.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
