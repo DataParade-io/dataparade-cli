@@ -3,9 +3,7 @@ commit: 98c9e238b806042f83836549f6a2b1f112721e07
 license: GPL-2.0-or-later
 scope:
   include:
-    - wp-includes/user.php
-    - wp-includes/class-wp-user.php
-    - wp-config-sample.php
+    - src/wp-includes/
 coverage:
   layers: [data_items, components, data_flows, raw_hits, mentions]
   languages:
