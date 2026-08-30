@@ -1,6 +1,11 @@
 # Scanner evaluation benchmark corpus
 
-Versioned ground-truth data for deterministic scanner evaluation. Labels are curated independently of scanner output; human review is required before annotations move from `proposed` to `accepted`.
+Versioned ground-truth data for deterministic scanner evaluation. Labels are curated independently of scanner output. Headline denominators use `review_state: accepted`.
+
+Canonical corpus layers are `components`, `data_flows`, `pii_signals`, and `data_items`.
+
+As of 2026-08-30 (`main` at `5c05f27`) accepted positives meet the 200-per-layer floor: components 519, data_flows 419, pii_signals 233, data_items 200. Original-ten packets still have 75 proposed `data_items` that are not in the headline count.
+
 
 ## Layout
 
@@ -13,25 +18,26 @@ tests/benchmark/
       manifest.yaml   # pinned commit, scope, coverage metadata
       annotations/
         components.yaml
+        data_flows.yaml
+        pii_signals.yaml
         data_items.yaml
   scripts/
     materialize-repo.mjs   # optional local clone helper (not run in CI)
   .cache/               # materialized clones (gitignored)
 ```
 
-## Current proposed repositories
+## Current corpus packets
 
-| Key | Repository | Status | Focus |
-|-----|------------|--------|-------|
-| `hyperswitch-vault` | `juspay/hyperswitch-card-vault` | Active proposed packet | Rust card-vault data items; one complete source file |
-| `vgs-django` | `vgs-samples/vgs-django-sample-id-verification` | Blocked: license decision | Django PII models + Checkr third-party API |
-| `easy-school` | `ZeroCoolHacker/easy-school` | Blocked: GLWT license decision | Plain Django SSN field without vendor wrappers |
+Twenty-nine pinned packets live under `repos/`: the original ten (gitea, saleor, keycloak, hyperswitch-vault, medusa-customer, posthog-user, yjdh-employee, vgs-django, easy-school, ory-kratos-password) plus 19 expansion repos (discourse, redmine, wordpress, magento, nopcommerce, orchard-core, spring-petclinic, pocketbase, ghost, directus, spree, strapi, flask-login, exposed, vapor, supabase-js, auth0-express, drupal, medusa).
+
+`vgs-django` and `easy-school` remain the starter packets for unit tests. License notes in those manifests are unchanged.
+
 
 ## Annotation workflow
 
 1. Proposed annotations start in `review_state: proposed`.
-2. A human reviewer inspects pinned source at the evidence location and updates `review_state` to `accepted` or `rejected`.
-3. Only `accepted` annotations count toward headline evaluation denominators.
+2. A reviewer inspects pinned source at the evidence location (Grok span-check for the 2026-08-30 expansion fill; Ryan accepted that gold without a second pass) and sets `review_state` to `accepted` or `rejected`.
+3. Only `accepted` annotations count toward headline evaluation denominators. Positives should set `exhaustive_scope_files` for precision.
 
 Component subject keys use the evaluator identity convention: `type:name` with a lowercase name (for example `asset:database`, `third_party:checkr`).
 
