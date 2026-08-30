@@ -641,3 +641,168 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: magento-address-company
+  layer: data_items
+  subject:
+    key: data_item:company
+    name: company
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 135
+    end_line: 135
+  expected:
+    status: positive
+    labels:
+    - employment_information
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: AddressInterface::getCompany is the organization name on a customer address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-address-fax
+  layer: data_items
+  subject:
+    key: data_item:fax
+    name: fax
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 165
+    end_line: 165
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: AddressInterface::getFax is a fax telephone number on the address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-address-prefix
+  layer: data_items
+  subject:
+    key: data_item:address_prefix
+    name: prefix
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 255
+    end_line: 255
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Address prefix is an honorific name part on the postal address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-address-suffix
+  layer: data_items
+  subject:
+    key: data_item:address_suffix
+    name: suffix
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 270
+    end_line: 270
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Address suffix is a name suffix on the postal address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-address-vat-id
+  layer: data_items
+  subject:
+    key: data_item:vat_id
+    name: vatId
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 285
+    end_line: 285
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: AddressInterface::getVatId is a tax/VAT identifier on the address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

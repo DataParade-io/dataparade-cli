@@ -231,3 +231,84 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: directus-external-identifier
+  layer: data_items
+  subject:
+    key: data_item:external_identifier
+    name: external_identifier
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 16
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: User.external_identifier is the identity-provider subject for the account.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: directus-session-token-type
+  layer: data_items
+  subject:
+    key: data_item:token
+    name: token
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 25
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: Session.token is the session cookie/token string.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: directus-share-password
+  layer: data_items
+  subject:
+    key: data_item:share_password
+    name: share_password
+  evidence:
+    file_path: api/src/types/auth.ts
+    start_line: 48
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - api/src/auth/auth.ts
+    - api/src/auth/drivers/local.ts
+    - api/src/database/index.ts
+    - api/src/services/authentication.ts
+    - api/src/services/users.ts
+    - api/src/types/auth.ts
+  rationale: ShareData.share_password is an optional password protecting a share link.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -495,3 +495,98 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: pocketbase-set-password-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: password
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 50
+    end_line: 54
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: SetPassword writes a plaintext password onto the auth record before hashing.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-smtp-username-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: Username
+  evidence:
+    file_path: core/settings_model.go
+    start_line: 366
+    end_line: 366
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/settings_model.go
+  rationale: SMTP Username is the mailbox/login used to send mail from the app.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-smtp-password-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: Password
+  evidence:
+    file_path: core/settings_model.go
+    start_line: 367
+    end_line: 367
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/settings_model.go
+  rationale: SMTP Password is the mail-server credential used to send mail.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -497,3 +497,38 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: spree-address-city-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:city
+    name: city
+  evidence:
+    file_path: spree/core/app/models/spree/address.rb
+    start_line: 83
+    end_line: 83
+  expected:
+    status: positive
+    labels:
+    - city
+    exhaustive_scope_files:
+    - spree/core/app/models/spree/customer.rb
+    - spree/core/app/models/spree/admin_user.rb
+    - spree/core/app/models/concerns/spree/customer_methods.rb
+    - spree/core/app/models/concerns/spree/admin_user_methods.rb
+    - spree/core/app/models/spree/address.rb
+    - spree/core/app/models/spree/order.rb
+    - spree/core/app/models/concerns/spree/purchase/addresses.rb
+    - spree/core/app/models/spree/payment.rb
+    - spree/core/app/models/concerns/spree/purchase/payment_processing.rb
+    - spree/core/app/models/spree/credit_card.rb
+    - spree/core/app/models/spree/payment_source.rb
+    - spree/core/app/models/spree/gateway_customer.rb
+    - spree/core/app/models/spree/user_identity.rb
+    - spree/core/app/services/spree/orders/create_user_account.rb
+  rationale: Address.city is the required locality on a postal address.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

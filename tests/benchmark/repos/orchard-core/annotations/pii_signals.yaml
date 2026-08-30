@@ -435,3 +435,111 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: orchard-user-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: UserName
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    start_line: 12
+    end_line: 12
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: User.UserName is the account login name.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: orchard-normalized-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: NormalizedEmail
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: User.NormalizedEmail is the canonical mailbox used for lookup.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: orchard-security-stamp-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: SecurityStamp
+  evidence:
+    file_path: src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - src/OrchardCore/OrchardCore.Users.Core/Models/User.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/LoginForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ForgotPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/ResetPasswordForm.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Models/UserToken.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserStore.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/UserService.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Services/PasswordResetTokenProvider.cs
+    - src/OrchardCore/OrchardCore.Users.Core/Authentication/CacheTicketStore.cs
+    - src/OrchardCore/OrchardCore.Users.Abstractions/IUser.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdToken.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdApplication.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
+    - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
+  rationale: User.SecurityStamp is the identity stamp used to invalidate sessions.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

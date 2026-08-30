@@ -16,7 +16,7 @@ The one hit is vgs-django Checkr (`app/checker_client.py`, components layer). Ev
 
 Gold labels in that first run were still `review_state: proposed`. Precision is a separate initiative. `--baseline` is not implemented.
 
-The 150-annotation original ten (PRs #3–#5) has been superseded. As of 2026-08-30, `main` (`5c05f27`) has accepted positives at or above 200 per canonical layer (components 519, data_flows 419, pii_signals 233, data_items 200).
+The 150-annotation original ten (PRs #3–#5) has been superseded. As of 2026-08-30, accepted positives are at or above 200 per canonical layer (components 519, data_flows 419, pii_signals 325, data_items 302).
 
 
 ## Operator path

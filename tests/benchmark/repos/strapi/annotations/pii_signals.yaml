@@ -268,3 +268,86 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: strapi-username-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: username
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 33
+    end_line: 38
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: Admin User.username is an optional login identifier.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-api-token-access-key-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: accessKey
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/api-token.ts
+    start_line: 50
+    end_line: 56
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/admin/server/src/content-types/api-token.ts
+  rationale: Api Token accessKey is the stored API credential string.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-api-token-encrypted-key-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: encryptedKey
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/api-token.ts
+    start_line: 57
+    end_line: 63
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/admin/server/src/content-types/api-token.ts
+  rationale: Api Token encryptedKey is the encrypted form of the API key.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

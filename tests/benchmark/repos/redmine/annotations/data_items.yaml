@@ -373,3 +373,31 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: redmine-remote-ip
+  layer: data_items
+  subject:
+    key: data_item:remote_ip
+    name: remote_ip
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 120
+    end_line: 120
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: User#remote_ip is the transient client IP used during login.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -313,3 +313,227 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: ghost-staff-user-slug-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: slug
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 272
+    end_line: 272
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: users.slug is the unique staff profile slug.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-staff-location-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:residence_information
+    name: location
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 295
+    end_line: 300
+  expected:
+    status: positive
+    labels:
+    - residence_information
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: users.location is free-text staff location on the profile.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-invite-token-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: token
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 499
+    end_line: 499
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: invites.token is the unique staff-invite redemption secret.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-invite-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 500
+    end_line: 506
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: invites.email is the invited staff member's mailbox.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-session-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: session_id
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 520
+    end_line: 520
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: sessions.session_id is the unique staff session cookie identifier.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-member-geolocation-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:residence_information
+    name: geolocation
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 673
+    end_line: 673
+  expected:
+    status: positive
+    labels:
+    - residence_information
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: members.geolocation stores member location derived from IP.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-token-value-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: token
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 1680
+    end_line: 1680
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: tokens.token is a stored member/auth token value.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

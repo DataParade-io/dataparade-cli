@@ -404,3 +404,138 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: nopcommerce-street-address-2-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:street_address
+    name: StreetAddress2
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 64
+    end_line: 64
+  expected:
+    status: positive
+    labels:
+    - street_address
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.StreetAddress2 is the secondary street line.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-county-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:address_region
+    name: County
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 79
+    end_line: 79
+  expected:
+    status: positive
+    labels:
+    - address_region
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.County is the county/region on the customer profile.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-fax-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:phone_number
+    name: Fax
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 104
+    end_line: 104
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.Fax is a fax telephone number on the profile.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-vat-number-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:national_identifier
+    name: VatNumber
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 109
+    end_line: 109
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.VatNumber is a tax identifier stored on the account.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-company-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:employment_information
+    name: Company
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 54
+    end_line: 54
+  expected:
+    status: positive
+    labels:
+    - employment_information
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.Company is the organization name on the storefront profile.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -848,3 +848,585 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: discourse-email-token-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: app/models/email_token.rb
+    start_line: 109
+    end_line: 109
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/email_token.rb
+  rationale: email_tokens.email is the mailbox being confirmed or reset.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-email-token-hash-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: token_hash
+  evidence:
+    file_path: app/models/email_token.rb
+    start_line: 112
+    end_line: 112
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/email_token.rb
+  rationale: email_tokens.token_hash stores the hashed email confirmation token.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-email-token-raw-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: token
+  evidence:
+    file_path: app/models/email_token.rb
+    start_line: 45
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/email_token.rb
+  rationale: EmailToken#token exposes the unhashed confirmation token until persist.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-auth-token-hash-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: auth_token
+  evidence:
+    file_path: app/models/user_auth_token.rb
+    start_line: 301
+    end_line: 301
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: user_auth_tokens.auth_token is the hashed session cookie token.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-auth-token-client-ip-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: client_ip
+  evidence:
+    file_path: app/models/user_auth_token.rb
+    start_line: 304
+    end_line: 304
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: user_auth_tokens.client_ip records the session client address.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-sso-external-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: external_email
+  evidence:
+    file_path: app/models/single_sign_on_record.rb
+    start_line: 16
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/single_sign_on_record.rb
+  rationale: SSO records store the identity-provider email.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-sso-external-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: external_name
+  evidence:
+    file_path: app/models/single_sign_on_record.rb
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/single_sign_on_record.rb
+  rationale: SSO records store the identity-provider display name.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-sso-external-username-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: external_username
+  evidence:
+    file_path: app/models/single_sign_on_record.rb
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/single_sign_on_record.rb
+  rationale: SSO records store the identity-provider username.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-sso-external-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: external_id
+  evidence:
+    file_path: app/models/single_sign_on_record.rb
+    start_line: 23
+    end_line: 23
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/single_sign_on_record.rb
+  rationale: SSO external_id is the unique identity-provider subject.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-incoming-from-address-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: from_address
+  evidence:
+    file_path: app/models/incoming_email.rb
+    start_line: 82
+    end_line: 82
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/incoming_email.rb
+  rationale: incoming_emails.from_address is the sender mailbox of inbound mail.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-email-change-new-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: new_email
+  evidence:
+    file_path: app/models/email_change_request.rb
+    start_line: 39
+    end_line: 39
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/email_change_request.rb
+  rationale: email_change_requests.new_email is the mailbox being switched to.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-screened-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: app/models/screened_email.rb
+    start_line: 77
+    end_line: 77
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/screened_email.rb
+  rationale: screened_emails.email is a watched signup mailbox.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-unsubscribe-key-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: key
+  evidence:
+    file_path: app/models/unsubscribe_key.rb
+    start_line: 61
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/unsubscribe_key.rb
+  rationale: unsubscribe_keys.key is a secret one-click unsubscribe token.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-totp-data-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: data
+  evidence:
+    file_path: app/models/user_second_factor.rb
+    start_line: 53
+    end_line: 53
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: user_second_factors.data stores TOTP secret or backup-code material.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-webauthn-credential-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: credential_id
+  evidence:
+    file_path: app/models/user_security_key.rb
+    start_line: 43
+    end_line: 43
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+    - app/models/user_security_key.rb
+  rationale: user_security_keys.credential_id uniquely identifies a passkey.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

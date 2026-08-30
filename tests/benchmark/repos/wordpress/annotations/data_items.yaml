@@ -524,3 +524,281 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: wordpress-comment-author-ip
+  layer: data_items
+  subject:
+    key: data_item:comment_author_IP
+    name: comment_author_IP
+  evidence:
+    file_path: src/wp-includes/class-wp-comment.php
+    start_line: 115
+    end_line: 115
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-comment.php
+  rationale: comment_author_IP stores the commenter's client IP on the comment object.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-username-schema
+  layer: data_items
+  subject:
+    key: data_item:username
+    name: username
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    start_line: 1410
+    end_line: 1418
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: REST user schema username is the account login name.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-password-schema
+  layer: data_items
+  subject:
+    key: data_item:password
+    name: password
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    start_line: 1505
+    end_line: 1513
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: REST user schema password is the submitted plaintext password (never
+    returned).
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-prepare-email
+  layer: data_items
+  subject:
+    key: data_item:user_email
+    name: user_email
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    start_line: 1180
+    end_line: 1181
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: prepare_item_for_database copies request email onto user_email.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-comment-author-email-schema
+  layer: data_items
+  subject:
+    key: data_item:author_email
+    name: author_email
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php
+    start_line: 1516
+    end_line: 1525
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php
+  rationale: Comment REST schema author_email is the commenter's mailbox.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-comment-author-ip-schema
+  layer: data_items
+  subject:
+    key: data_item:author_ip
+    name: author_ip
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php
+    start_line: 1526
+    end_line: 1531
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php
+  rationale: Comment REST schema author_ip is the commenter's IP address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-comment-author-name-schema
+  layer: data_items
+  subject:
+    key: data_item:author_name
+    name: author_name
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php
+    start_line: 1532
+    end_line: 1539
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php
+  rationale: Comment REST schema author_name is the commenter's display name.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-application-password-plaintext
+  layer: data_items
+  subject:
+    key: data_item:new_password
+    name: new_password
+  evidence:
+    file_path: src/wp-includes/class-wp-application-passwords.php
+    start_line: 98
+    end_line: 98
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-application-passwords.php
+  rationale: wp_generate_password produces the plaintext application password before
+    hashing.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-application-password-uuid
+  layer: data_items
+  subject:
+    key: data_item:uuid
+    name: uuid
+  evidence:
+    file_path: src/wp-includes/class-wp-application-passwords.php
+    start_line: 102
+    end_line: 102
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-application-passwords.php
+  rationale: uuid uniquely identifies a stored application-password credential.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill2
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
