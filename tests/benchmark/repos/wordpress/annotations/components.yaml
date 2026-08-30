@@ -22,7 +22,8 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wpdb is WordPress's database abstraction layer connecting to the SQL store for users and metadata.
+  rationale: wpdb is WordPress's database abstraction layer connecting to the SQL
+    store for users and metadata.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -82,7 +83,8 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wp_set_auth_cookie issues local authentication cookies tied to session tokens.
+  rationale: wp_set_auth_cookie issues local authentication cookies tied to session
+    tokens.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -112,7 +114,8 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: WP_Session_Tokens manages hashed session verifiers stored in user meta for login state.
+  rationale: WP_Session_Tokens manages hashed session verifiers stored in user meta
+    for login state.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -142,7 +145,8 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: WP_REST_Users_Controller registers wp/v2/users REST routes for user CRUD over HTTP.
+  rationale: WP_REST_Users_Controller registers wp/v2/users REST routes for user CRUD
+    over HTTP.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -172,7 +176,8 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: WP_User models site members and commenters, the public end-user actor type.
+  rationale: WP_User models site members and commenters, the public end-user actor
+    type.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -191,7 +196,8 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: wp_authenticate handles local username/password login. No Stripe payment SDK or API appears in this scope.
+  rationale: wp_authenticate handles local username/password login. No Stripe payment
+    SDK or API appears in this scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -210,7 +216,8 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Authentication is implemented with WordPress cookies and session tokens, not an external Auth0 integration.
+  rationale: Authentication is implemented with WordPress cookies and session tokens,
+    not an external Auth0 integration.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -229,7 +236,8 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed user and auth files do not integrate SendGrid or another transactional email vendor.
+  rationale: The reviewed user and auth files do not integrate SendGrid or another
+    transactional email vendor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -260,7 +268,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-categories-controller.php
-  rationale: WP_REST_Abilities_V1_Categories_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Abilities_V1_Categories_Controller registers WordPress REST routes
+    as an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -291,7 +300,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-list-controller.php
-  rationale: WP_REST_Abilities_V1_List_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Abilities_V1_List_Controller registers WordPress REST routes
+    as an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -322,7 +332,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-run-controller.php
-  rationale: WP_REST_Abilities_V1_Run_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Abilities_V1_Run_Controller registers WordPress REST routes as
+    an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -353,11 +364,14 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
-  rationale: WP_REST_Application_Passwords_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Application_Passwords_Controller registers WordPress REST routes
+    as an inbound HTTP API surface.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-rest-attachments-api
   layer: components
   subject:
@@ -382,7 +396,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php
-  rationale: WP_REST_Attachments_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Attachments_Controller registers WordPress REST routes as an
+    inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -413,7 +428,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-autosaves-controller.php
-  rationale: WP_REST_Autosaves_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Autosaves_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -444,7 +460,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-block-directory-controller.php
-  rationale: WP_REST_Block_Directory_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Block_Directory_Controller registers WordPress REST routes as
+    an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -475,7 +492,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-block-pattern-categories-controller.php
-  rationale: WP_REST_Block_Pattern_Categories_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Block_Pattern_Categories_Controller registers WordPress REST
+    routes as an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -506,7 +524,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-block-patterns-controller.php
-  rationale: WP_REST_Block_Patterns_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Block_Patterns_Controller registers WordPress REST routes as
+    an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -537,7 +556,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-block-renderer-controller.php
-  rationale: WP_REST_Block_Renderer_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Block_Renderer_Controller registers WordPress REST routes as
+    an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -568,7 +588,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-block-types-controller.php
-  rationale: WP_REST_Block_Types_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Block_Types_Controller registers WordPress REST routes as an
+    inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -599,7 +620,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-blocks-controller.php
-  rationale: WP_REST_Blocks_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Blocks_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -630,7 +652,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php
-  rationale: WP_REST_Comments_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Comments_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -661,7 +684,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-edit-site-export-controller.php
-  rationale: WP_REST_Edit_Site_Export_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Edit_Site_Export_Controller registers WordPress REST routes as
+    an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -692,7 +716,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-font-collections-controller.php
-  rationale: WP_REST_Font_Collections_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Font_Collections_Controller registers WordPress REST routes as
+    an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -723,7 +748,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-font-faces-controller.php
-  rationale: WP_REST_Font_Faces_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Font_Faces_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -754,7 +780,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-font-families-controller.php
-  rationale: WP_REST_Font_Families_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Font_Families_Controller registers WordPress REST routes as an
+    inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -785,7 +812,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-global-styles-controller.php
-  rationale: WP_REST_Global_Styles_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Global_Styles_Controller registers WordPress REST routes as an
+    inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -816,7 +844,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-global-styles-revisions-controller.php
-  rationale: WP_REST_Global_Styles_Revisions_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Global_Styles_Revisions_Controller registers WordPress REST routes
+    as an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -847,7 +876,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-icon-collections-controller.php
-  rationale: WP_REST_Icon_Collections_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Icon_Collections_Controller registers WordPress REST routes as
+    an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -878,7 +908,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-icons-controller.php
-  rationale: WP_REST_Icons_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Icons_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -909,7 +940,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-menu-items-controller.php
-  rationale: WP_REST_Menu_Items_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Menu_Items_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -940,7 +972,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-menu-locations-controller.php
-  rationale: WP_REST_Menu_Locations_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Menu_Locations_Controller registers WordPress REST routes as
+    an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -971,7 +1004,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-menus-controller.php
-  rationale: WP_REST_Menus_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Menus_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1002,7 +1036,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-navigation-fallback-controller.php
-  rationale: WP_REST_Navigation_Fallback_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Navigation_Fallback_Controller registers WordPress REST routes
+    as an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1033,7 +1068,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-pattern-directory-controller.php
-  rationale: WP_REST_Pattern_Directory_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Pattern_Directory_Controller registers WordPress REST routes
+    as an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1064,7 +1100,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-plugins-controller.php
-  rationale: WP_REST_Plugins_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Plugins_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1095,7 +1132,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-post-statuses-controller.php
-  rationale: WP_REST_Post_Statuses_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Post_Statuses_Controller registers WordPress REST routes as an
+    inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1126,7 +1164,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-post-types-controller.php
-  rationale: WP_REST_Post_Types_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Post_Types_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1157,7 +1196,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php
-  rationale: WP_REST_Posts_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Posts_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1188,7 +1228,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-revisions-controller.php
-  rationale: WP_REST_Revisions_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Revisions_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1219,7 +1260,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-search-controller.php
-  rationale: WP_REST_Search_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Search_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1250,7 +1292,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-settings-controller.php
-  rationale: WP_REST_Settings_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Settings_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1281,7 +1324,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-sidebars-controller.php
-  rationale: WP_REST_Sidebars_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Sidebars_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1312,7 +1356,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-site-health-controller.php
-  rationale: WP_REST_Site_Health_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Site_Health_Controller registers WordPress REST routes as an
+    inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1343,7 +1388,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-taxonomies-controller.php
-  rationale: WP_REST_Taxonomies_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Taxonomies_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1374,7 +1420,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-template-autosaves-controller.php
-  rationale: WP_REST_Template_Autosaves_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Template_Autosaves_Controller registers WordPress REST routes
+    as an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1405,7 +1452,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-template-revisions-controller.php
-  rationale: WP_REST_Template_Revisions_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Template_Revisions_Controller registers WordPress REST routes
+    as an inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1436,7 +1484,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-templates-controller.php
-  rationale: WP_REST_Templates_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Templates_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1467,7 +1516,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php
-  rationale: WP_REST_Terms_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Terms_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1498,7 +1548,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-themes-controller.php
-  rationale: WP_REST_Themes_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Themes_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1529,7 +1580,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-url-details-controller.php
-  rationale: WP_REST_URL_Details_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_URL_Details_Controller registers WordPress REST routes as an
+    inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1560,7 +1612,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-view-config-controller.php
-  rationale: WP_REST_View_Config_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_View_Config_Controller registers WordPress REST routes as an
+    inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1591,7 +1644,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-widget-types-controller.php
-  rationale: WP_REST_Widget_Types_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Widget_Types_Controller registers WordPress REST routes as an
+    inbound HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1622,7 +1676,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-widgets-controller.php
-  rationale: WP_REST_Widgets_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  rationale: WP_REST_Widgets_Controller registers WordPress REST routes as an inbound
+    HTTP API surface.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1653,7 +1708,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/class-wp-application-passwords.php
-  rationale: WP_Application_Passwords issues hashed application passwords stored in user meta.
+  rationale: WP_Application_Passwords issues hashed application passwords stored in
+    user meta.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1684,7 +1740,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/PHPMailer/PHPMailer.php
-  rationale: Bundled PHPMailer sends mail from core; it is an in-tree mailer, not SendGrid.
+  rationale: Bundled PHPMailer sends mail from core; it is an in-tree mailer, not
+    SendGrid.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1746,7 +1803,8 @@ annotations:
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/class-wp-comment.php
-  rationale: WP_Comment models public commenter identity including author email and IP.
+  rationale: WP_Comment models public commenter identity including author email and
+    IP.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1816,11 +1874,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: WP_Http_Cookie parses and represents HTTP cookies used by auth and session handling.
+  rationale: WP_Http_Cookie parses and represents HTTP cookies used by auth and session
+    handling.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-recovery-mode-cookie-service
   layer: components
   subject:
@@ -1853,11 +1914,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: WP_Recovery_Mode_Cookie_Service issues signed recovery-mode cookies for privileged site access.
+  rationale: WP_Recovery_Mode_Cookie_Service issues signed recovery-mode cookies for
+    privileged site access.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-user-query-service
   layer: components
   subject:
@@ -1894,7 +1958,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-user-request-service
   layer: components
   subject:
@@ -1927,11 +1993,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: WP_User_Request models personal data export and erasure requests for user accounts.
+  rationale: WP_User_Request models personal data export and erasure requests for
+    user accounts.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-rest-server-api
   layer: components
   subject:
@@ -1964,11 +2033,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: rest_get_server returns the singleton WP REST API server handling user endpoints.
+  rationale: rest_get_server returns the singleton WP REST API server handling user
+    endpoints.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-hash-password
   layer: components
   subject:
@@ -2005,7 +2077,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-check-password
   layer: components
   subject:
@@ -2038,11 +2112,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: wp_check_password verifies submitted passwords against stored user_pass hashes.
+  rationale: wp_check_password verifies submitted passwords against stored user_pass
+    hashes.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-logout
   layer: components
   subject:
@@ -2079,7 +2156,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-get-current-user
   layer: components
   subject:
@@ -2116,7 +2195,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-clear-auth-cookie
   layer: components
   subject:
@@ -2153,7 +2234,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-generate-password
   layer: components
   subject:
@@ -2186,11 +2269,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: wp_generate_password creates random secrets for resets and application passwords.
+  rationale: wp_generate_password creates random secrets for resets and application
+    passwords.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-authenticate
   layer: components
   subject:
@@ -2227,7 +2313,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-authenticate-app-password
   layer: components
   subject:
@@ -2260,11 +2348,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: wp_authenticate_application_password validates REST basic-auth application passwords.
+  rationale: wp_authenticate_application_password validates REST basic-auth application
+    passwords.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-validate-app-password
   layer: components
   subject:
@@ -2297,11 +2388,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: wp_validate_application_password checks application password credentials during REST auth.
+  rationale: wp_validate_application_password checks application password credentials
+    during REST auth.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-is-user-logged-in
   layer: components
   subject:
@@ -2334,11 +2428,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: is_user_logged_in reports whether the current request has an authenticated user.
+  rationale: is_user_logged_in reports whether the current request has an authenticated
+    user.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-validate-auth-cookie
   layer: components
   subject:
@@ -2371,11 +2468,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: wp_validate_auth_cookie validates logged_in and auth cookies to recover user id.
+  rationale: wp_validate_auth_cookie validates logged_in and auth cookies to recover
+    user id.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-create-user
   layer: components
   subject:
@@ -2412,7 +2512,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-insert-user
   layer: components
   subject:
@@ -2445,11 +2547,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: wp_insert_user inserts or updates rows in the users table and related meta.
+  rationale: wp_insert_user inserts or updates rows in the users table and related
+    meta.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-get-users
   layer: components
   subject:
@@ -2486,7 +2591,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-username-exists
   layer: components
   subject:
@@ -2523,7 +2630,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-email-exists
   layer: components
   subject:
@@ -2560,7 +2669,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-get-password-reset-key
   layer: components
   subject:
@@ -2597,7 +2708,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-check-password-reset-key
   layer: components
   subject:
@@ -2634,7 +2747,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-get-session-token
   layer: components
   subject:
@@ -2671,7 +2786,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-set-password
   layer: components
   subject:
@@ -2708,7 +2825,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-get-user-by
   layer: components
   subject:
@@ -2745,7 +2864,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wpdb-prepare
   layer: components
   subject:
@@ -2778,11 +2899,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: wpdb::prepare parameterizes SQL queries against the users and usermeta tables.
+  rationale: wpdb::prepare parameterizes SQL queries against the users and usermeta
+    tables.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wpdb-get-results
   layer: components
   subject:
@@ -2819,7 +2943,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-user-get-data-by
   layer: components
   subject:
@@ -2856,7 +2982,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-cache-set
   layer: components
   subject:
@@ -2893,7 +3021,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-object-cache-get
   layer: components
   subject:
@@ -2926,11 +3056,14 @@ annotations:
     - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
     - src/wp-includes/user.php
-  rationale: WP_Object_Cache::get reads cached user data to avoid repeated database access.
+  rationale: WP_Object_Cache::get reads cached user data to avoid repeated database
+    access.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-add-user-meta
   layer: components
   subject:
@@ -2967,7 +3100,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-not-supabase
   layer: components
   subject:
@@ -2980,11 +3115,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: User creation uses local wp_create_user and wpdb persistence. No Supabase client appears in this scope.
+  rationale: User creation uses local wp_create_user and wpdb persistence. No Supabase
+    client appears in this scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-not-paypal
   layer: components
   subject:
@@ -2997,11 +3135,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: wp_authenticate handles local credentials only. No PayPal payment SDK is referenced in the reviewed auth files.
+  rationale: wp_authenticate handles local credentials only. No PayPal payment SDK
+    is referenced in the reviewed auth files.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-user-query-not-cache
   layer: components
   subject:
@@ -3014,8 +3155,91 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: WP_User_Query issues SQL against the users table. It is not an object-cache layer.
+  rationale: WP_User_Query issues SQL against the users table. It is not an object-cache
+    layer.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-wp-mail-service
+  layer: components
+  subject:
+    key: asset:service
+    name: wp_mail
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 189
+    end_line: 189
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_mail sends account notification and password reset messages to user
+    email addresses.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-retrieve-password-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: retrieve_password
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 3264
+    end_line: 3264
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: retrieve_password initiates the password reset email flow for a user
+    login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

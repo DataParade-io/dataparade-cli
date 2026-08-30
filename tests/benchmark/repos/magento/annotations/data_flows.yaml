@@ -58,7 +58,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: The Ajax login controller decodes JSON credentials and forwards them to authenticate.
+  rationale: The Ajax login controller decodes JSON credentials and forwards them
+    to authenticate.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -91,7 +92,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: After successful authentication, LoginPost calls setCustomerDataAsLoggedIn to persist the customer in session.
+  rationale: After successful authentication, LoginPost calls setCustomerDataAsLoggedIn
+    to persist the customer in session.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -124,7 +126,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Authenticate loads the customer record by email via customerRepository->get before password validation.
+  rationale: Authenticate loads the customer record by email via customerRepository->get
+    before password validation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -157,7 +160,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: GetCustomerByToken filters the customer repository by rp_token to resolve the account for password reset.
+  rationale: GetCustomerByToken filters the customer repository by rp_token to resolve
+    the account for password reset.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -190,7 +194,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: initiatePasswordReset generates an rp_token and dispatches password reminder or reset confirmation email.
+  rationale: initiatePasswordReset generates an rp_token and dispatches password reminder
+    or reset confirmation email.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -223,7 +228,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: resetPassword writes a new password hash and clears the rp_token before saving the customer to the database.
+  rationale: resetPassword writes a new password hash and clears the rp_token before
+    saving the customer to the database.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -256,7 +262,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customerGroups/:id is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customerGroups/:id is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -289,7 +296,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customerGroups/default/:storeId is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customerGroups/default/:storeId is declared
+    in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -322,7 +330,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customerGroups/default is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customerGroups/default is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -355,7 +364,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customerGroups/default/:id is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customerGroups/default/:id is declared in
+    Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -388,7 +398,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customerGroups/:id/permissions is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customerGroups/:id/permissions is declared
+    in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -421,7 +432,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customerGroups/search is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customerGroups/search is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -487,7 +499,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/attributeMetadata/customer/attribute/:attributeCode is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/attributeMetadata/customer/attribute/:attributeCode
+    is declared in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -520,7 +533,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/attributeMetadata/customer/form/:formCode is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/attributeMetadata/customer/form/:formCode
+    is declared in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -553,7 +567,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/attributeMetadata/customer is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/attributeMetadata/customer is declared in
+    Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -586,7 +601,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/attributeMetadata/customer/custom is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/attributeMetadata/customer/custom is declared
+    in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -619,7 +635,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/attributeMetadata/customerAddress/attribute/:attributeCode is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/attributeMetadata/customerAddress/attribute/:attributeCode
+    is declared in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -652,7 +669,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/attributeMetadata/customerAddress/form/:formCode is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/attributeMetadata/customerAddress/form/:formCode
+    is declared in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -685,7 +703,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/attributeMetadata/customerAddress is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/attributeMetadata/customerAddress is declared
+    in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -718,7 +737,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/attributeMetadata/customerAddress/custom is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/attributeMetadata/customerAddress/custom
+    is declared in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -751,7 +771,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/:customerId is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/:customerId is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -850,7 +871,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/me/activate is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/me/activate is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -883,7 +905,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/search is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/search is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -916,7 +939,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/:email/activate is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/:email/activate is declared in
+    Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -949,7 +973,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/me/password is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/me/password is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -982,7 +1007,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/:customerId/password/resetLinkToken/:resetPasswordLinkToken is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/:customerId/password/resetLinkToken/:resetPasswordLinkToken
+    is declared in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1015,7 +1041,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/password is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/password is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1048,7 +1075,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/resetPassword is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/resetPassword is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1081,7 +1109,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/:customerId/confirm is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/:customerId/confirm is declared
+    in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1114,7 +1143,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/confirm is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/confirm is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1147,7 +1177,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/validate is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/validate is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1180,7 +1211,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/:customerId/permissions/readonly is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/:customerId/permissions/readonly
+    is declared in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1213,7 +1245,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/isEmailAvailable is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/isEmailAvailable is declared in
+    Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1246,7 +1279,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/addresses/:addressId is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/addresses/:addressId is declared
+    in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1279,7 +1313,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/me/billingAddress is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/me/billingAddress is declared
+    in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1312,7 +1347,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/:customerId/billingAddress is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/:customerId/billingAddress is
+    declared in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1345,7 +1381,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/me/shippingAddress is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/me/shippingAddress is declared
+    in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1378,7 +1415,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/:customerId/shippingAddress is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/:customerId/shippingAddress is
+    declared in Customer webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1411,7 +1449,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/addresses/:addressId is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/addresses/:addressId is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1444,7 +1483,8 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Inbound REST traffic for /V1/customers/activate is declared in Customer webapi.xml.
+  rationale: Inbound REST traffic for /V1/customers/activate is declared in Customer
+    webapi.xml.
   provenance:
     proposed_by: grok-4.6-fill-to-200
     proposed_at: '2026-08-30'
@@ -1495,7 +1535,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-forgot-password-to-initiate
   layer: data_flows
   subject:
@@ -1540,7 +1582,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-reset-post-to-reset-password
   layer: data_flows
   subject:
@@ -1585,7 +1629,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-logout-to-session
   layer: data_flows
   subject:
@@ -1630,7 +1676,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-edit-post-to-repository
   layer: data_flows
   subject:
@@ -1675,7 +1723,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-address-form-to-repository
   layer: data_flows
   subject:
@@ -1720,7 +1770,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-authenticate-hash-validate
   layer: data_flows
   subject:
@@ -1761,11 +1813,14 @@ annotations:
     - app/code/Magento/Customer/Model/ResourceModel/Customer.php
     - app/code/Magento/Customer/Model/Session.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: authenticate reads password_hash and validates submitted passwords with the encryptor.
+  rationale: authenticate reads password_hash and validates submitted passwords with
+    the encryptor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-auth-failure-increment
   layer: data_flows
   subject:
@@ -1810,7 +1865,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-session-logout-flow
   layer: data_flows
   subject:
@@ -1855,7 +1912,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-change-password-flow
   layer: data_flows
   subject:
@@ -1900,7 +1959,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-change-password-by-id-flow
   layer: data_flows
   subject:
@@ -1945,7 +2006,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-activate-email-flow
   layer: data_flows
   subject:
@@ -1990,7 +2053,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-activate-by-id-flow
   layer: data_flows
   subject:
@@ -2035,7 +2100,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-validate-reset-token-flow
   layer: data_flows
   subject:
@@ -2080,7 +2147,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-send-reset-email-flow
   layer: data_flows
   subject:
@@ -2121,11 +2190,14 @@ annotations:
     - app/code/Magento/Customer/Model/ResourceModel/Customer.php
     - app/code/Magento/Customer/Model/Session.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: initiatePasswordReset dispatches sendPasswordResetConfirmationEmail to the customer.
+  rationale: initiatePasswordReset dispatches sendPasswordResetConfirmationEmail to
+    the customer.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-email-notification-reset-flow
   layer: data_flows
   subject:
@@ -2170,7 +2242,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-customer-extractor-flow
   layer: data_flows
   subject:
@@ -2211,11 +2285,14 @@ annotations:
     - app/code/Magento/Customer/Model/ResourceModel/Customer.php
     - app/code/Magento/Customer/Model/Session.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: extract uses customerForm->extractData to map request fields to customer data.
+  rationale: extract uses customerForm->extractData to map request fields to customer
+    data.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-registry-retrieve-flow
   layer: data_flows
   subject:
@@ -2260,7 +2337,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-registry-email-flow
   layer: data_flows
   subject:
@@ -2305,7 +2384,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-customer-save-flow
   layer: data_flows
   subject:
@@ -2350,7 +2431,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-webapi-get-self-flow
   layer: data_flows
   subject:
@@ -2395,7 +2478,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-webapi-put-self-flow
   layer: data_flows
   subject:
@@ -2440,7 +2525,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-webapi-password-flow
   layer: data_flows
   subject:
@@ -2485,7 +2572,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-webapi-activate-flow
   layer: data_flows
   subject:
@@ -2530,7 +2619,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-create-account-hash-flow
   layer: data_flows
   subject:
@@ -2575,7 +2666,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-authenticate-email-lookup-flow
   layer: data_flows
   subject:
@@ -2620,7 +2713,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-login-post-session-flow
   layer: data_flows
   subject:
@@ -2665,7 +2760,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-ajax-login-session-flow
   layer: data_flows
   subject:
@@ -2710,7 +2807,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-reset-token-repository-flow
   layer: data_flows
   subject:
@@ -2755,7 +2854,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-initiate-reset-email-flow
   layer: data_flows
   subject:
@@ -2800,7 +2901,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-reset-password-db-flow
   layer: data_flows
   subject:
@@ -2845,7 +2948,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-customer-email-read-flow
   layer: data_flows
   subject:
@@ -2890,7 +2995,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-login-form-flow
   layer: data_flows
   subject:
@@ -2935,7 +3042,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-address-interface-street-flow
   layer: data_flows
   subject:
@@ -2980,7 +3089,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-account-interface-authenticate-flow
   layer: data_flows
   subject:
@@ -3021,11 +3132,14 @@ annotations:
     - app/code/Magento/Customer/Model/ResourceModel/Customer.php
     - app/code/Magento/Customer/Model/Session.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: AccountManagementInterface::authenticate declares the login contract used by controllers.
+  rationale: AccountManagementInterface::authenticate declares the login contract
+    used by controllers.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-email-notification-new-account-flow
   layer: data_flows
   subject:
@@ -3070,7 +3184,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-session-set-customer-flow
   layer: data_flows
   subject:
@@ -3115,7 +3231,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-not-oauth-flow
   layer: data_flows
   subject:
@@ -3128,11 +3246,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: LoginPost authenticates against local AccountManagement. No OAuth token exchange appears in this scope.
+  rationale: LoginPost authenticates against local AccountManagement. No OAuth token
+    exchange appears in this scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-not-stripe-flow
   layer: data_flows
   subject:
@@ -3145,8 +3266,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Address FormPost saves postal addresses locally. No card or payment data flows to Stripe in the reviewed module.
+  rationale: Address FormPost saves postal addresses locally. No card or payment data
+    flows to Stripe in the reviewed module.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -30,7 +30,8 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: ensure_password_is_hashed salts and hashes @raw_password into password_hash before save.
+  rationale: ensure_password_is_hashed salts and hashes @raw_password into password_hash
+    before save.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -68,7 +69,8 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: generate_key creates a random @key and stores ApiKey.hash_key(@key) as key_hash.
+  rationale: generate_key creates a random @key and stores ApiKey.hash_key(@key) as
+    key_hash.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -106,7 +108,8 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: generate! hashes a random token into auth_token and exposes the unhashed value on unhashed_auth_token.
+  rationale: generate! hashes a random token into auth_token and exposes the unhashed
+    value on unhashed_auth_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -144,7 +147,8 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: normalize_email derives normalized_email from the current email value before validation.
+  rationale: normalize_email derives normalized_email from the current email value
+    before validation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -182,7 +186,8 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: session_store binds server session state to the _forum_session browser cookie key.
+  rationale: session_store binds server session state to the _forum_session browser
+    cookie key.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -220,7 +225,8 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: Session routes map HTTP login and forgot_password requests into SessionController actions.
+  rationale: Session routes map HTTP login and forgot_password requests into SessionController
+    actions.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -258,7 +264,8 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: before_request_phase verifies CSRF tokens on non-GET OmniAuth requests before external auth proceeds.
+  rationale: before_request_phase verifies CSRF tokens on non-GET OmniAuth requests
+    before external auth proceeds.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -376,7 +383,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-admin-users-route-flow
   layer: data_flows
   subject:
@@ -493,7 +502,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-password-confirm-flow
   layer: data_flows
   subject:
@@ -534,7 +545,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-password-hash-flow
   layer: data_flows
   subject:
@@ -575,7 +588,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-user-password-association-flow
   layer: data_flows
   subject:
@@ -616,7 +631,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-user-email-normalize-flow
   layer: data_flows
   subject:
@@ -657,7 +674,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-primary-email-flow
   layer: data_flows
   subject:
@@ -698,7 +717,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-api-key-generate-flow
   layer: data_flows
   subject:
@@ -739,7 +760,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-api-key-scopes-flow
   layer: data_flows
   subject:
@@ -780,7 +803,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-auth-token-lookup-flow
   layer: data_flows
   subject:
@@ -821,7 +846,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-auth-token-rotate-flow
   layer: data_flows
   subject:
@@ -862,7 +889,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-oauth-email-flow
   layer: data_flows
   subject:
@@ -903,7 +932,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-associated-account-flow
   layer: data_flows
   subject:
@@ -944,7 +975,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-totp-scope-flow
   layer: data_flows
   subject:
@@ -985,7 +1018,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-ip-history-flow
   layer: data_flows
   subject:
@@ -1026,7 +1061,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-email-login-code-flow
   layer: data_flows
   subject:
@@ -1067,7 +1104,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-global-api-key-hash-flow
   layer: data_flows
   subject:
@@ -1108,7 +1147,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-forgot-password-route-flow
   layer: data_flows
   subject:
@@ -1149,7 +1190,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-users-index-route-flow
   layer: data_flows
   subject:
@@ -1190,7 +1233,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-sso-route-flow
   layer: data_flows
   subject:
@@ -1231,7 +1276,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-github-settings-flow
   layer: data_flows
   subject:
@@ -1272,7 +1319,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-twitter-settings-flow
   layer: data_flows
   subject:
@@ -1313,7 +1362,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-facebook-settings-flow
   layer: data_flows
   subject:
@@ -1354,7 +1405,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-omniauth-csrf-flow
   layer: data_flows
   subject:
@@ -1395,7 +1448,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-session-cookie-flow
   layer: data_flows
   subject:
@@ -1432,11 +1487,14 @@ annotations:
     - config/initializers/100-session_store.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: session_store maps server session state to the _forum_session cookie key.
+  rationale: session_store maps server session state to the _forum_session cookie
+    key.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-redis-version-flow
   layer: data_flows
   subject:
@@ -1477,7 +1535,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-database-adapter-flow
   layer: data_flows
   subject:
@@ -1518,7 +1578,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-user-destroy-tokens-flow
   layer: data_flows
   subject:
@@ -1559,7 +1621,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-user-stat-create-flow
   layer: data_flows
   subject:
@@ -1600,7 +1664,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-profile-bio-flow
   layer: data_flows
   subject:
@@ -1641,7 +1707,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-user-password-validator-flow
   layer: data_flows
   subject:
@@ -1682,7 +1750,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-api-key-scope-filter-flow
   layer: data_flows
   subject:
@@ -1723,7 +1793,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-email-token-model-flow
   layer: data_flows
   subject:
@@ -1764,7 +1836,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-site-route-flow
   layer: data_flows
   subject:
@@ -1805,7 +1879,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-sendgrid-webhook-flow
   layer: data_flows
   subject:
@@ -1846,7 +1922,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-google-settings-flow
   layer: data_flows
   subject:
@@ -1887,7 +1965,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-user-email-skip-validate-flow
   layer: data_flows
   subject:
@@ -1928,7 +2008,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-not-stripe-flow
   layer: data_flows
   subject:
@@ -1941,11 +2023,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: User model handles forum accounts only. No payment or card data flows to Stripe in this scope.
+  rationale: User model handles forum accounts only. No payment or card data flows
+    to Stripe in this scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-not-auth0-flow
   layer: data_flows
   subject:
@@ -1958,8 +2043,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: OmniAuth is configured for Discourse providers such as Google and GitHub, not Auth0.
+  rationale: OmniAuth is configured for Discourse providers such as Google and GitHub,
+    not Auth0.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: '2026-08-30'
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
