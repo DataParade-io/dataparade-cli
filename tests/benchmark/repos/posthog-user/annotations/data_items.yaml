@@ -1,15 +1,235 @@
-# Scanner-blind proposals for the complete user model file.
 annotations:
-  - { id: posthog-email, layer: data_items, subject: { key: data_item:email, name: email }, evidence: { file_path: posthog/models/user.py, start_line: 247, end_line: 247 }, expected: { status: positive, labels: [email_address] }, rationale: Explicit Django email field for the analytics user, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-pending-email, layer: data_items, subject: { key: data_item:pending_email, name: pending_email }, evidence: { file_path: posthog/models/user.py, start_line: 248, end_line: 248 }, expected: { status: positive, labels: [email_address] }, rationale: Explicit pending email address awaiting verification, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-distinct-id, layer: data_items, subject: { key: data_item:distinct_id, name: distinct_id }, evidence: { file_path: posthog/models/user.py, start_line: 249, end_line: 249 }, expected: { status: positive, labels: [user_identifier] }, rationale: Unique pseudonymous identifier for the user, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-email-verified, layer: data_items, subject: { key: data_item:is_email_verified, name: is_email_verified }, evidence: { file_path: posthog/models/user.py, start_line: 250, end_line: 250 }, expected: { status: negative, labels: [] }, rationale: Verification state is an account flag, not the email value, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-credentials-reviewed-at, layer: data_items, subject: { key: data_item:credentials_reviewed_at, name: credentials_reviewed_at }, evidence: { file_path: posthog/models/user.py, start_line: 251, end_line: 251 }, expected: { status: negative, labels: [] }, rationale: Review timestamp is operational metadata, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-password-reset-at, layer: data_items, subject: { key: data_item:requested_password_reset_at, name: requested_password_reset_at }, evidence: { file_path: posthog/models/user.py, start_line: 252, end_line: 252 }, expected: { status: negative, labels: [] }, rationale: Password-reset request time is operational metadata, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-2fa-reset-at, layer: data_items, subject: { key: data_item:requested_2fa_reset_at, name: requested_2fa_reset_at }, evidence: { file_path: posthog/models/user.py, start_line: 253, end_line: 253 }, expected: { status: negative, labels: [] }, rationale: 2FA-reset request time is operational metadata, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-ui-metadata, layer: data_items, subject: { key: data_item:has_seen_product_intro_for, name: has_seen_product_intro_for }, evidence: { file_path: posthog/models/user.py, start_line: 254, end_line: 254 }, expected: { status: ambiguous, labels: [] }, rationale: JSON may contain user configuration but its contents are not fixed, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-active-flag, layer: data_items, subject: { key: data_item:is_active, name: is_active }, evidence: { file_path: posthog/models/user.py, start_line: 256, end_line: 259 }, expected: { status: negative, labels: [] }, rationale: Account-enabled state is operational metadata, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-role, layer: data_items, subject: { key: data_item:role_at_organization, name: role_at_organization }, evidence: { file_path: posthog/models/user.py, start_line: 261, end_line: 261 }, expected: { status: negative, labels: [] }, rationale: Organization role is authorization metadata, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-notification-settings, layer: data_items, subject: { key: data_item:partial_notification_settings, name: partial_notification_settings }, evidence: { file_path: posthog/models/user.py, start_line: 266, end_line: 266 }, expected: { status: ambiguous, labels: [] }, rationale: Arbitrary notification JSON has no fixed personal-data semantics, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-anonymize-flag, layer: data_items, subject: { key: data_item:anonymize_data, name: anonymize_data }, evidence: { file_path: posthog/models/user.py, start_line: 267, end_line: 267 }, expected: { status: negative, labels: [] }, rationale: Anonymization preference is an account flag, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: posthog-temporary-token, layer: data_items, subject: { key: data_item:temporary_token, name: temporary_token }, evidence: { file_path: posthog/models/user.py, start_line: 333, end_line: 333 }, expected: { status: positive, labels: [credential_secret] }, rationale: Explicit temporary token field is secret-like authentication material, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
+- id: posthog-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 247
+    end_line: 247
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: Explicit Django email field for the analytics user
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-pending-email
+  layer: data_items
+  subject:
+    key: data_item:pending_email
+    name: pending_email
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 248
+    end_line: 248
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: Explicit pending email address awaiting verification
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-distinct-id
+  layer: data_items
+  subject:
+    key: data_item:distinct_id
+    name: distinct_id
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 249
+    end_line: 249
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: Unique pseudonymous identifier for the user
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-email-verified
+  layer: data_items
+  subject:
+    key: data_item:is_email_verified
+    name: is_email_verified
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 250
+    end_line: 250
+  expected:
+    status: negative
+    labels: []
+  rationale: Verification state is an account flag
+  not the email value: null
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-credentials-reviewed-at
+  layer: data_items
+  subject:
+    key: data_item:credentials_reviewed_at
+    name: credentials_reviewed_at
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 251
+    end_line: 251
+  expected:
+    status: negative
+    labels: []
+  rationale: Review timestamp is operational metadata
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-password-reset-at
+  layer: data_items
+  subject:
+    key: data_item:requested_password_reset_at
+    name: requested_password_reset_at
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 252
+    end_line: 252
+  expected:
+    status: negative
+    labels: []
+  rationale: Password-reset request time is operational metadata
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-2fa-reset-at
+  layer: data_items
+  subject:
+    key: data_item:requested_2fa_reset_at
+    name: requested_2fa_reset_at
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 253
+    end_line: 253
+  expected:
+    status: negative
+    labels: []
+  rationale: 2FA-reset request time is operational metadata
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-ui-metadata
+  layer: data_items
+  subject:
+    key: data_item:has_seen_product_intro_for
+    name: has_seen_product_intro_for
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 254
+    end_line: 254
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: JSON may contain user configuration but its contents are not fixed
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-active-flag
+  layer: data_items
+  subject:
+    key: data_item:is_active
+    name: is_active
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 256
+    end_line: 259
+  expected:
+    status: negative
+    labels: []
+  rationale: Account-enabled state is operational metadata
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-role
+  layer: data_items
+  subject:
+    key: data_item:role_at_organization
+    name: role_at_organization
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 261
+    end_line: 261
+  expected:
+    status: negative
+    labels: []
+  rationale: Organization role is authorization metadata
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-notification-settings
+  layer: data_items
+  subject:
+    key: data_item:partial_notification_settings
+    name: partial_notification_settings
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 266
+    end_line: 266
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Arbitrary notification JSON has no fixed personal-data semantics
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-anonymize-flag
+  layer: data_items
+  subject:
+    key: data_item:anonymize_data
+    name: anonymize_data
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 267
+    end_line: 267
+  expected:
+    status: negative
+    labels: []
+  rationale: Anonymization preference is an account flag
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: posthog-temporary-token
+  layer: data_items
+  subject:
+    key: data_item:temporary_token
+    name: temporary_token
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 333
+    end_line: 333
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: Explicit temporary token field is secret-like authentication material
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
