@@ -74,7 +74,12 @@ describe("benchmark corpus manifests", () => {
       expect(manifest.commit).toBe("abfca8e078039582460335be73341699ee826615");
       expect(manifest.license).toBe("Apache-2.0");
       expect(manifest.scope.include).toEqual(["src/routes/data/types.rs"]);
-      expect(manifest.coverage.layers).toEqual(["data_items"]);
+      expect(manifest.coverage.layers).toEqual([
+        "data_items",
+        "pii_signals",
+        "components",
+        "data_flows",
+      ]);
     });
 
     it("keeps every source-only data-item decision reviewable", () => {

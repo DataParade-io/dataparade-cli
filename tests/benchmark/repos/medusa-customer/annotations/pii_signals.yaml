@@ -1,0 +1,241 @@
+annotations:
+- id: medusa-user-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: id
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 5
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Primary key of the user model
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-user-first-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: first_name
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 6
+    end_line: 6
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: User first-name model property
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-user-last-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: last_name
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 7
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: User last-name model property
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-user-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 8
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: User email model property
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: id
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 8
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Primary key of the customer record
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-first-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: first_name
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 10
+    end_line: 10
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer first-name model property
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-last-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: last_name
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 11
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer last-name model property
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 12
+    end_line: 12
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer email model property
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-phone-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:phone_number
+    name: phone
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 13
+    end_line: 13
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer phone model property
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-invite-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: packages/modules/user/src/models/invite.ts
+    start_line: 6
+    end_line: 6
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Invitation target email address
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

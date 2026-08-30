@@ -232,3 +232,339 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: drupal-one-time-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: OneTimeAuthentication
+  evidence:
+    file_path: core/modules/user/src/OneTimeAuthentication.php
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: OneTimeAuthentication generates and verifies HMAC codes for password
+    reset and login links.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-login-finalizer-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: LoginFinalizer
+  evidence:
+    file_path: core/modules/user/src/LoginFinalizer.php
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: LoginFinalizer writes uid into the PHP session after successful authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-logout-finalizer-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: LogoutFinalizer
+  evidence:
+    file_path: core/modules/user/src/LogoutFinalizer.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: LogoutFinalizer destroys the session and resets the current user to anonymous.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-user-flood-control
+  layer: components
+  subject:
+    key: asset:service
+    name: UserFloodControl
+  evidence:
+    file_path: core/modules/user/src/UserFloodControl.php
+    start_line: 16
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: UserFloodControl rate-limits failed login attempts by IP and username.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-user-storage-database
+  layer: components
+  subject:
+    key: asset:database
+    name: UserStorage
+  evidence:
+    file_path: core/modules/user/src/UserStorage.php
+    start_line: 15
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: UserStorage persists and updates user rows in users_field_data.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-password-reset-api
+  layer: components
+  subject:
+    key: asset:api
+    name: resetPassword
+  evidence:
+    file_path: core/modules/user/src/Controller/UserAuthenticationController.php
+    start_line: 270
+    end_line: 278
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: UserAuthenticationController exposes POST /user/password for JSON password
+    reset requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-user-registration-api
+  layer: components
+  subject:
+    key: asset:api
+    name: UserRegistrationResource
+  evidence:
+    file_path: core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+    start_line: 26
+    end_line: 33
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: UserRegistrationResource exposes POST /user/register as a REST registration
+    endpoint.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-notification-handler
+  layer: components
+  subject:
+    key: asset:service
+    name: NotificationHandler
+  evidence:
+    file_path: core/modules/user/src/NotificationHandler.php
+    start_line: 16
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: NotificationHandler dispatches account and password reset notification
+    emails.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-password-checker-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: PasswordInterface
+  evidence:
+    file_path: core/modules/user/src/UserAuthentication.php
+    start_line: 21
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: UserAuthentication uses PasswordInterface to verify and rehash stored
+    password hashes.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-session-database
+  layer: components
+  subject:
+    key: asset:database
+    name: users_field_data
+  evidence:
+    file_path: core/modules/user/src/Authentication/Provider/Cookie.php
+    start_line: 98
+    end_line: 100
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: Cookie authentication queries users_field_data to rebuild sessions from
+    stored uid values.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

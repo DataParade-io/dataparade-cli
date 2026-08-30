@@ -157,7 +157,7 @@ describe("benchmark to eval cases", () => {
     });
 
     it("includes accepted annotations by default", () => {
-      expect(annotationsToEvalCases(annotations, fixture)).toHaveLength(1);
+      expect(annotationsToEvalCases(annotations, fixture)).toHaveLength(3);
     });
 
     it("maps proposed annotations when includeProposed is true", () => {
@@ -165,7 +165,7 @@ describe("benchmark to eval cases", () => {
         includeProposed: true,
       });
 
-      expect(cases).toHaveLength(1);
+      expect(cases).toHaveLength(3);
       expect(cases[0]).toMatchObject({
         id: "easy-school-database-guardian-ssn",
         fixture: "easy-school",

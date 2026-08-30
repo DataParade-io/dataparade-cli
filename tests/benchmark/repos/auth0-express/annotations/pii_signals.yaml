@@ -123,3 +123,87 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: auth0-express-refresh-token-item-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: refresh_token
+  evidence:
+    file_path: lib/context.js
+    start_line: 274
+    end_line: 274
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: refresh_token is stored in the session and sent to the token endpoint
+    on refresh; it is a credential secret, not the API access_token.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: auth0-express-sid-item-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: sid
+  evidence:
+    file_path: lib/context.js
+    start_line: 1097
+    end_line: 1097
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: session.sid stores the Auth0 session identifier separately because refresh
+    ID tokens may omit sid.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

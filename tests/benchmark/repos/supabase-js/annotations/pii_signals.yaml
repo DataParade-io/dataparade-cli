@@ -170,3 +170,154 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: supabase-js-refresh-token-item-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: refresh_token
+  evidence:
+    file_path: packages/core/auth-js/src/lib/types.ts
+    start_line: 359
+    end_line: 359
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - packages/core/auth-js/src/AuthAdminApi.ts
+    - packages/core/auth-js/src/AuthClient.ts
+    - packages/core/auth-js/src/GoTrueAdminApi.ts
+    - packages/core/auth-js/src/GoTrueClient.ts
+    - packages/core/auth-js/src/index.ts
+    - packages/core/auth-js/src/lib/base64url.ts
+    - packages/core/auth-js/src/lib/constants.ts
+    - packages/core/auth-js/src/lib/error-codes.ts
+    - packages/core/auth-js/src/lib/errors.ts
+    - packages/core/auth-js/src/lib/fetch.ts
+    - packages/core/auth-js/src/lib/helpers.ts
+    - packages/core/auth-js/src/lib/local-storage.ts
+    - packages/core/auth-js/src/lib/locks.ts
+    - packages/core/auth-js/src/lib/polyfills.ts
+    - packages/core/auth-js/src/lib/types.ts
+    - packages/core/auth-js/src/lib/version.ts
+    - packages/core/auth-js/src/lib/web3/ethereum.ts
+    - packages/core/auth-js/src/lib/web3/solana.ts
+    - packages/core/auth-js/src/lib/webauthn.dom.ts
+    - packages/core/auth-js/src/lib/webauthn.errors.ts
+    - packages/core/auth-js/src/lib/webauthn.ts
+    - packages/core/supabase-js/src/SupabaseClient.ts
+    - packages/core/supabase-js/src/cors.ts
+    - packages/core/supabase-js/src/index.ts
+    - packages/core/supabase-js/src/lib/SupabaseAuthClient.ts
+    - packages/core/supabase-js/src/lib/constants.ts
+    - packages/core/supabase-js/src/lib/fetch.ts
+    - packages/core/supabase-js/src/lib/helpers.ts
+    - packages/core/supabase-js/src/lib/types.ts
+  rationale: refresh_token is persisted in the session and posted to the refresh grant
+    endpoint; it is a credential secret, not the API bearer access_token.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: supabase-js-user-id-item-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: id
+  evidence:
+    file_path: packages/core/auth-js/src/lib/types.ts
+    start_line: 491
+    end_line: 492
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - packages/core/auth-js/src/AuthAdminApi.ts
+    - packages/core/auth-js/src/AuthClient.ts
+    - packages/core/auth-js/src/GoTrueAdminApi.ts
+    - packages/core/auth-js/src/GoTrueClient.ts
+    - packages/core/auth-js/src/index.ts
+    - packages/core/auth-js/src/lib/base64url.ts
+    - packages/core/auth-js/src/lib/constants.ts
+    - packages/core/auth-js/src/lib/error-codes.ts
+    - packages/core/auth-js/src/lib/errors.ts
+    - packages/core/auth-js/src/lib/fetch.ts
+    - packages/core/auth-js/src/lib/helpers.ts
+    - packages/core/auth-js/src/lib/local-storage.ts
+    - packages/core/auth-js/src/lib/locks.ts
+    - packages/core/auth-js/src/lib/polyfills.ts
+    - packages/core/auth-js/src/lib/types.ts
+    - packages/core/auth-js/src/lib/version.ts
+    - packages/core/auth-js/src/lib/web3/ethereum.ts
+    - packages/core/auth-js/src/lib/web3/solana.ts
+    - packages/core/auth-js/src/lib/webauthn.dom.ts
+    - packages/core/auth-js/src/lib/webauthn.errors.ts
+    - packages/core/auth-js/src/lib/webauthn.ts
+    - packages/core/supabase-js/src/SupabaseClient.ts
+    - packages/core/supabase-js/src/cors.ts
+    - packages/core/supabase-js/src/index.ts
+    - packages/core/supabase-js/src/lib/SupabaseAuthClient.ts
+    - packages/core/supabase-js/src/lib/constants.ts
+    - packages/core/supabase-js/src/lib/fetch.ts
+    - packages/core/supabase-js/src/lib/helpers.ts
+    - packages/core/supabase-js/src/lib/types.ts
+  rationale: User.id is the stable Supabase Auth user identifier returned in sessions.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: supabase-js-email-item-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: packages/core/auth-js/src/lib/types.ts
+    start_line: 503
+    end_line: 503
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/core/auth-js/src/AuthAdminApi.ts
+    - packages/core/auth-js/src/AuthClient.ts
+    - packages/core/auth-js/src/GoTrueAdminApi.ts
+    - packages/core/auth-js/src/GoTrueClient.ts
+    - packages/core/auth-js/src/index.ts
+    - packages/core/auth-js/src/lib/base64url.ts
+    - packages/core/auth-js/src/lib/constants.ts
+    - packages/core/auth-js/src/lib/error-codes.ts
+    - packages/core/auth-js/src/lib/errors.ts
+    - packages/core/auth-js/src/lib/fetch.ts
+    - packages/core/auth-js/src/lib/helpers.ts
+    - packages/core/auth-js/src/lib/local-storage.ts
+    - packages/core/auth-js/src/lib/locks.ts
+    - packages/core/auth-js/src/lib/polyfills.ts
+    - packages/core/auth-js/src/lib/types.ts
+    - packages/core/auth-js/src/lib/version.ts
+    - packages/core/auth-js/src/lib/web3/ethereum.ts
+    - packages/core/auth-js/src/lib/web3/solana.ts
+    - packages/core/auth-js/src/lib/webauthn.dom.ts
+    - packages/core/auth-js/src/lib/webauthn.errors.ts
+    - packages/core/auth-js/src/lib/webauthn.ts
+    - packages/core/supabase-js/src/SupabaseClient.ts
+    - packages/core/supabase-js/src/cors.ts
+    - packages/core/supabase-js/src/index.ts
+    - packages/core/supabase-js/src/lib/SupabaseAuthClient.ts
+    - packages/core/supabase-js/src/lib/constants.ts
+    - packages/core/supabase-js/src/lib/fetch.ts
+    - packages/core/supabase-js/src/lib/helpers.ts
+    - packages/core/supabase-js/src/lib/types.ts
+  rationale: User.email is a personal contact field on the authenticated user object.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

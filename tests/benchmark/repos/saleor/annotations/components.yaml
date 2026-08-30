@@ -1,0 +1,67 @@
+annotations:
+- id: saleor-account-database
+  layer: components
+  subject:
+    key: asset:database
+    name: account
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 169
+    end_line: 172
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Django User and Address models persist account and postal PII via the
+    ORM.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-customer-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: User
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 169
+    end_line: 172
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: User is the storefront customer identity with email and addresses, not
+    a service account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-not-stripe
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 169
+    end_line: 172
+  expected:
+    status: negative
+    labels: []
+  rationale: This account model file does not integrate Stripe or another payment
+    vendor.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

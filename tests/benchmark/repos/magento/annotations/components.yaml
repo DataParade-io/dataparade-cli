@@ -25,8 +25,7 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: AccountManagement implements in-codebase customer authentication, password
-    reset, and account activation.
+  rationale: AccountManagement implements in-codebase customer authentication, password reset, and account activation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -59,8 +58,7 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: The Authentication model validates password hashes and enforces account
-    lockout during login.
+  rationale: The Authentication model validates password hashes and enforces account lockout during login.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -93,8 +91,7 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Customer resource model is the EAV entity mapped to the customer database
-    tables.
+  rationale: Customer resource model is the EAV entity mapped to the customer database tables.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -127,8 +124,7 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: LoginPost is the storefront HTTP POST handler that accepts customer login
-    credentials.
+  rationale: LoginPost is the storefront HTTP POST handler that accepts customer login credentials.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -161,8 +157,7 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: The Ajax Login controller exposes a JSON login endpoint for XHR authentication
-    requests.
+  rationale: The Ajax Login controller exposes a JSON login endpoint for XHR authentication requests.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -195,8 +190,7 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: webapi.xml declares REST routes such as POST /V1/customers for account
-    creation and management.
+  rationale: webapi.xml declares REST routes such as POST /V1/customers for account creation and management.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -229,8 +223,7 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: CustomerInterface models the storefront end-user account, not an admin
-    or service identity.
+  rationale: CustomerInterface models the storefront end-user account, not an admin or service identity.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -249,8 +242,7 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Login flows delegate to local AccountManagement authentication. The reviewed
-    scope has no Auth0 or external IdP integration.
+  rationale: Login flows delegate to local AccountManagement authentication. The reviewed scope has no Auth0 or external IdP integration.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -269,8 +261,7 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Password-reset email uses Magento TransportBuilder. No SendGrid or other
-    email vendor SDK appears in this scope.
+  rationale: Password-reset email uses Magento TransportBuilder. No SendGrid or other email vendor SDK appears in this scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -289,11 +280,2812 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Customer Session extends SessionManager for PHP session state, not an
-    in-memory cache layer like Redis.
+  rationale: Customer Session extends SessionManager for PHP session state, not an in-memory cache layer like Redis.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customergroups-id
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customerGroups/:id
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 11
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customerGroups/:id REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customergroups-default-storeid
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customerGroups/default/:storeId
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customerGroups/default/:storeId REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customergroups-default
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customerGroups/default
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 23
+    end_line: 23
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customerGroups/default REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customergroups-default-id
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customerGroups/default/:id
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 29
+    end_line: 29
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customerGroups/default/:id REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customergroups-id-permissions
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customerGroups/:id/permissions
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 35
+    end_line: 35
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customerGroups/:id/permissions REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customergroups-search
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customerGroups/search
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 41
+    end_line: 41
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customerGroups/search REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customergroups
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customerGroups
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 47
+    end_line: 47
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customerGroups REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-attributemetadata-customer-attribute-attributecode
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/attributeMetadata/customer/attribute/:attributeCode
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 67
+    end_line: 67
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/attributeMetadata/customer/attribute/:attributeCode REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-attributemetadata-customer-form-formcode
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/attributeMetadata/customer/form/:formCode
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 73
+    end_line: 73
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/attributeMetadata/customer/form/:formCode REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-attributemetadata-customer
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/attributeMetadata/customer
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 79
+    end_line: 79
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/attributeMetadata/customer REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-attributemetadata-customer-custom
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/attributeMetadata/customer/custom
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 85
+    end_line: 85
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/attributeMetadata/customer/custom REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-attributemetadata-customeraddress-attribute-attributecode
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/attributeMetadata/customerAddress/attribute/:attributeCode
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 93
+    end_line: 93
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/attributeMetadata/customerAddress/attribute/:attributeCode REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-attributemetadata-customeraddress-form-formcode
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/attributeMetadata/customerAddress/form/:formCode
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 99
+    end_line: 99
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/attributeMetadata/customerAddress/form/:formCode REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-attributemetadata-customeraddress
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/attributeMetadata/customerAddress
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 105
+    end_line: 105
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/attributeMetadata/customerAddress REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-attributemetadata-customeraddress-custom
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/attributeMetadata/customerAddress/custom
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 111
+    end_line: 111
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/attributeMetadata/customerAddress/custom REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-customerid
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/:customerId
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 119
+    end_line: 119
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/:customerId REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 125
+    end_line: 125
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-me
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/me
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 137
+    end_line: 137
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/me REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-me-activate
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/me/activate
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 158
+    end_line: 158
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/me/activate REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-search
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/search
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 167
+    end_line: 167
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/search REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-email-activate
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/:email/activate
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 173
+    end_line: 173
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/:email/activate REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-me-password
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/me/password
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 179
+    end_line: 179
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/me/password REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-customerid-password-resetlinktoken-resetpasswordlinktoken
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/:customerId/password/resetLinkToken/:resetPasswordLinkToken
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 188
+    end_line: 188
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/:customerId/password/resetLinkToken/:resetPasswordLinkToken REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-password
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/password
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 194
+    end_line: 194
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/password REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-resetpassword
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/resetPassword
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 200
+    end_line: 200
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/resetPassword REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-customerid-confirm
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/:customerId/confirm
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 206
+    end_line: 206
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/:customerId/confirm REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-confirm
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/confirm
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 212
+    end_line: 212
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/confirm REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-validate
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/validate
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 218
+    end_line: 218
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/validate REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-customerid-permissions-readonly
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/:customerId/permissions/readonly
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 224
+    end_line: 224
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/:customerId/permissions/readonly REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-isemailavailable
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/isEmailAvailable
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 236
+    end_line: 236
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/isEmailAvailable REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-addresses-addressid
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/addresses/:addressId
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 244
+    end_line: 244
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/addresses/:addressId REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-me-billingaddress
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/me/billingAddress
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 250
+    end_line: 250
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/me/billingAddress REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-customerid-billingaddress
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/:customerId/billingAddress
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 259
+    end_line: 259
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/:customerId/billingAddress REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-me-shippingaddress
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/me/shippingAddress
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 265
+    end_line: 265
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/me/shippingAddress REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-customerid-shippingaddress
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/:customerId/shippingAddress
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 274
+    end_line: 274
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/:customerId/shippingAddress REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-addresses-addressid
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/addresses/:addressId
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 280
+    end_line: 280
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/addresses/:addressId REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-webapi-v1-customers-activate
+  layer: components
+  subject:
+    key: asset:api
+    name: /V1/customers/activate
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 286
+    end_line: 286
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer webapi.xml declares the /V1/customers/activate REST route.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-customer-repository-api
+  layer: components
+  subject:
+    key: asset:service
+    name: CustomerRepositoryInterface
+  evidence:
+    file_path: app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    start_line: 14
+    end_line: 14
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: CustomerRepositoryInterface defines persistence operations for customer accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-customer-model
+  layer: components
+  subject:
+    key: asset:database
+    name: Customer
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Customer.php
+    start_line: 49
+    end_line: 49
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer model maps storefront accounts to EAV customer entity tables.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-address-model
+  layer: components
+  subject:
+    key: asset:database
+    name: Address
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Address.php
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Address model stores customer street, city, and postal address data.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-address-resource-model
+  layer: components
+  subject:
+    key: asset:database
+    name: AddressResource
+  evidence:
+    file_path: app/code/Magento/Customer/Model/ResourceModel/Address.php
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Address resource model persists customer address EAV attributes to SQL.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-customer-registry
+  layer: components
+  subject:
+    key: asset:service
+    name: CustomerRegistry
+  evidence:
+    file_path: app/code/Magento/Customer/Model/CustomerRegistry.php
+    start_line: 21
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: CustomerRegistry caches loaded customer entities during request handling.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-customer-extractor
+  layer: components
+  subject:
+    key: asset:service
+    name: CustomerExtractor
+  evidence:
+    file_path: app/code/Magento/Customer/Model/CustomerExtractor.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: CustomerExtractor builds CustomerInterface objects from registration requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-email-notification
+  layer: components
+  subject:
+    key: asset:service
+    name: EmailNotification
+  evidence:
+    file_path: app/code/Magento/Customer/Model/EmailNotification.php
+    start_line: 30
+    end_line: 30
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: EmailNotification sends account confirmation and password reset emails.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-login-controller
+  layer: components
+  subject:
+    key: asset:api
+    name: Login
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/Login.php
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Login controller renders the storefront login form route.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-create-post-api
+  layer: components
+  subject:
+    key: asset:api
+    name: CreatePost
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/CreatePost.php
+    start_line: 52
+    end_line: 52
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: CreatePost handles HTTP POST account registration submissions.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-forgot-password-post-api
+  layer: components
+  subject:
+    key: asset:api
+    name: ForgotPasswordPost
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: ForgotPasswordPost accepts forgot-password form posts from customers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-reset-password-post-api
+  layer: components
+  subject:
+    key: asset:api
+    name: ResetPasswordPost
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: ResetPasswordPost processes password reset submissions with rp tokens.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-logout-controller
+  layer: components
+  subject:
+    key: asset:api
+    name: Logout
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/Logout.php
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Logout controller ends the customer PHP session on sign-out.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-edit-post-api
+  layer: components
+  subject:
+    key: asset:api
+    name: EditPost
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/EditPost.php
+    start_line: 53
+    end_line: 53
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: EditPost updates customer profile fields from account edit forms.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-address-form-post-api
+  layer: components
+  subject:
+    key: asset:api
+    name: AddressFormPost
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Address/FormPost.php
+    start_line: 41
+    end_line: 41
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Address FormPost saves customer address data from storefront forms.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-webapi-customers-me
+  layer: components
+  subject:
+    key: asset:api
+    name: customers/me
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 149
+    end_line: 149
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: webapi.xml exposes GET /V1/customers/me for authenticated customer profile reads.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-webapi-password-change
+  layer: components
+  subject:
+    key: asset:api
+    name: customers/me/password
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 179
+    end_line: 179
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: webapi.xml maps PUT /V1/customers/me/password to changePasswordById.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-webapi-activate
+  layer: components
+  subject:
+    key: asset:api
+    name: customers/me/activate
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 158
+    end_line: 158
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: webapi.xml exposes customer self-activation via PUT /V1/customers/me/activate.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-create-account-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: createAccount
+  evidence:
+    file_path: app/code/Magento/Customer/Model/AccountManagement.php
+    start_line: 854
+    end_line: 854
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: createAccount registers new customers and optional passwords.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-change-password-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: changePassword
+  evidence:
+    file_path: app/code/Magento/Customer/Model/AccountManagement.php
+    start_line: 1033
+    end_line: 1033
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: changePassword validates the current password before storing a new hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-activate-account-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: activate
+  evidence:
+    file_path: app/code/Magento/Customer/Model/AccountManagement.php
+    start_line: 577
+    end_line: 577
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: activate confirms customer accounts using email confirmation keys.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-authenticate-method
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: Authentication::authenticate
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Authentication.php
+    start_line: 169
+    end_line: 169
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Authentication::authenticate verifies password hashes and lockout state.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-auth-failure-handler
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: processAuthenticationFailure
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Authentication.php
+    start_line: 91
+    end_line: 91
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: processAuthenticationFailure increments failed login counters for customers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-session-set-logged-in
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: setCustomerDataAsLoggedIn
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Session.php
+    start_line: 469
+    end_line: 469
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: setCustomerDataAsLoggedIn stores authenticated customer data in session.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-session-logout
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: Session::logout
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Session.php
+    start_line: 506
+    end_line: 506
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Session::logout clears customer authentication state from PHP session.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-address-interface
+  layer: components
+  subject:
+    key: asset:database
+    name: AddressInterface
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 14
+    end_line: 14
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: AddressInterface models customer postal addresses including street and region.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-customer-interface-email
+  layer: components
+  subject:
+    key: asset:database
+    name: CustomerInterface::EMAIL
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: CustomerInterface defines the email attribute for customer accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-customer-interface-password
+  layer: components
+  subject:
+    key: asset:database
+    name: CustomerInterface::PASSWORD
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 27
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: CustomerInterface defines the password attribute used during registration.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-account-management-interface
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: AccountManagementInterface
+  evidence:
+    file_path: app/code/Magento/Customer/Api/AccountManagementInterface.php
+    start_line: 14
+    end_line: 14
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: AccountManagementInterface declares authenticate, reset, and activation contracts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-validate-reset-token
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: validateResetPasswordLinkToken
+  evidence:
+    file_path: app/code/Magento/Customer/Model/AccountManagement.php
+    start_line: 644
+    end_line: 644
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: validateResetPasswordLinkToken checks rp_token values before password resets.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-send-reset-confirmation
+  layer: components
+  subject:
+    key: asset:service
+    name: sendPasswordResetConfirmationEmail
+  evidence:
+    file_path: app/code/Magento/Customer/Model/AccountManagement.php
+    start_line: 1557
+    end_line: 1557
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: sendPasswordResetConfirmationEmail dispatches password reset messages to customers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-customer-registry-retrieve
+  layer: components
+  subject:
+    key: asset:service
+    name: CustomerRegistry::retrieve
+  evidence:
+    file_path: app/code/Magento/Customer/Model/CustomerRegistry.php
+    start_line: 79
+    end_line: 79
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: CustomerRegistry::retrieve loads customer entities by id from persistence.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-customer-registry-email
+  layer: components
+  subject:
+    key: asset:service
+    name: CustomerRegistry::retrieveByEmail
+  evidence:
+    file_path: app/code/Magento/Customer/Model/CustomerRegistry.php
+    start_line: 106
+    end_line: 106
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: retrieveByEmail resolves customers by email and website for login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-customer-get-email
+  layer: components
+  subject:
+    key: asset:database
+    name: Customer::getEmail
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Customer.php
+    start_line: 34
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer::getEmail returns the persisted email address for an account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-resource-customer-save
+  layer: components
+  subject:
+    key: asset:database
+    name: CustomerResource::save
+  evidence:
+    file_path: app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    start_line: 274
+    end_line: 274
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Api/CustomerRepositoryInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Controller/Account/CreatePost.php
+    - app/code/Magento/Customer/Controller/Account/EditPost.php
+    - app/code/Magento/Customer/Controller/Account/ForgotPasswordPost.php
+    - app/code/Magento/Customer/Controller/Account/Login.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Account/Logout.php
+    - app/code/Magento/Customer/Controller/Account/ResetPasswordPost.php
+    - app/code/Magento/Customer/Controller/Address/FormPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Address.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Customer.php
+    - app/code/Magento/Customer/Model/CustomerExtractor.php
+    - app/code/Magento/Customer/Model/CustomerRegistry.php
+    - app/code/Magento/Customer/Model/EmailNotification.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Model/ResourceModel/Address.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer resource save validates and writes customer EAV data to SQL.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-not-stripe
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/CreatePost.php
+    start_line: 52
+    end_line: 52
+  expected:
+    status: negative
+    labels: []
+  rationale: CreatePost registers local customer accounts. No Stripe payment SDK appears in this scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-customer-registry-not-cache
+  layer: components
+  subject:
+    key: asset:cache
+    name: CustomerRegistry
+  evidence:
+    file_path: app/code/Magento/Customer/Model/CustomerRegistry.php
+    start_line: 21
+    end_line: 21
+  expected:
+    status: negative
+    labels: []
+  rationale: CustomerRegistry caches entities per request but is not a distributed cache like Redis.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: magento-not-auth0-component
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Session.php
+    start_line: 28
+    end_line: 28
+  expected:
+    status: negative
+    labels: []
+  rationale: Customer Session uses local PHP session state. No Auth0 integration appears in the reviewed Customer module.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed

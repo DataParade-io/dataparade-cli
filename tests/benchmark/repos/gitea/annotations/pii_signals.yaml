@@ -1,0 +1,232 @@
+annotations:
+- id: gitea-token-owner-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: UID
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: UID links a personal access token to its owning user account.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-access-token-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: Token
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The comment and token-generation routine identify this as the bearer
+    value of a personal access token.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-user-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: ID
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The public API's user ID identifies the represented account.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-username-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: UserName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The source comments identify this as the user's login/username.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-external-login-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: LoginName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 21
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: This is an identifier supplied by an external authenticator for the user.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-full-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: FullName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 25
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The source explicitly calls this the user's full name.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: Email
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 27
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The API field is explicitly formatted and named as an email address.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-settings-full-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: FullName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 74
+    end_line: 74
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: This settings API updates the user's full name.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-settings-full-name-option-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: FullName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 89
+    end_line: 89
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: This update option accepts the user's full name.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-new-username-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: NewName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 107
+    end_line: 107
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The source explicitly calls this the new username for an account.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

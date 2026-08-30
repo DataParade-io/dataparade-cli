@@ -1,0 +1,47 @@
+annotations:
+- id: yjdh-employee-serializer-to-model
+  layer: data_flows
+  subject:
+    key: flow:employee-serializer->employee-model
+    name: Serializer to Employee
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 10
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: EmployeeSerializer writes first_name, last_name, and other identity fields
+    onto the Employee model.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-ssn-serializer-validation
+  layer: data_flows
+  subject:
+    key: flow:ssn->employee-serializer
+    name: SSN through serializer validation
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 41
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: validate_social_security_number validates hetu format before the value
+    is written to Employee.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

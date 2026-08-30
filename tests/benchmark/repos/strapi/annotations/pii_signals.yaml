@@ -103,3 +103,168 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: strapi-user-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 39
+    end_line: 45
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: email is a required, unique admin account address used for login and
+    password reset.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-user-firstname-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: firstname
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: firstname is a persisted given name on the admin user profile.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-user-lastname-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: lastname
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: lastname is a persisted family name on the admin user profile.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-user-password-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:password_verifier
+    name: password
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 47
+    end_line: 53
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: password stores the bcrypt hash validated during admin login.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-reset-password-token-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: resetPasswordToken
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 55
+    end_line: 59
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: resetPasswordToken is a one-time secret emailed to the user to authorize
+    a password reset.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-registration-token-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: registrationToken
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 67
+    end_line: 71
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: registrationToken is a private invite token used to complete admin account
+    registration.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

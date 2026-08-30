@@ -1,0 +1,46 @@
+annotations:
+- id: hyperswitch-card-to-locker
+  layer: data_flows
+  subject:
+    key: flow:card->locker
+    name: Card to Locker storage
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 60
+    end_line: 63
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: StoreCardRequest accepts plaintext Card data for vault persistence.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-decrypted-to-encrypted
+  layer: data_flows
+  subject:
+    key: flow:decrypted-card->encrypted-locker
+    name: Decrypted card to encrypted Locker
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 202
+    end_line: 204
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: SecretDataManager writes decrypted card bytes into Locker as Encryptable
+    storage.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

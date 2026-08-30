@@ -217,3 +217,350 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: ghost-token-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: TokenService
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/token-service.js
+    start_line: 10
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: TokenService signs and verifies GhostMembers RS512 identity JWTs.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-staff-auth-api
+  layer: components
+  subject:
+    key: asset:api
+    name: authentication
+  evidence:
+    file_path: ghost/core/core/server/api/endpoints/authentication.js
+    start_line: 32
+    end_line: 33
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: authentication.js exposes staff setup and login API endpoints for Ghost
+    administrators.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-payments-service
+  layer: components
+  subject:
+    key: asset:service
+    name: PaymentsService
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/payments-service.js
+    start_line: 147
+    end_line: 147
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: PaymentsService orchestrates member checkout sessions through the Stripe
+    API.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-users-database
+  layer: components
+  subject:
+    key: asset:database
+    name: users
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 269
+    end_line: 269
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: schema.js defines the users table that stores staff account credentials.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-member-repository-service
+  layer: components
+  subject:
+    key: asset:service
+    name: MemberRepository
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    start_line: 381
+    end_line: 389
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: MemberRepository loads and persists member records from the members table.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-router-controller-api
+  layer: components
+  subject:
+    key: asset:api
+    name: RouterController
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    start_line: 1105
+    end_line: 1110
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: RouterController handles member signup and signin HTTP routes including
+    magic-link delivery.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-express-jwt-middleware
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: express-jwt
+  evidence:
+    file_path: ghost/core/core/server/services/auth/members/index.js
+    start_line: 13
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: authenticateMembersToken uses express-jwt to validate GhostMembers bearer
+    tokens on requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-stripe-checkout-api
+  layer: components
+  subject:
+    key: asset:api
+    name: createCheckoutSession
+  evidence:
+    file_path: ghost/core/core/server/services/stripe/stripe-api.js
+    start_line: 64
+    end_line: 64
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: StripeAPI wraps Stripe SDK calls such as createCheckoutSession for member
+    subscriptions.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-member-controller-api
+  layer: components
+  subject:
+    key: asset:api
+    name: MemberController
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    start_line: 69
+    end_line: 75
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: MemberController exposes authenticated member profile routes including
+    email updates.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-members-schema-database
+  layer: components
+  subject:
+    key: asset:database
+    name: members
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 639
+    end_line: 655
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: schema.js defines the members table columns including email and transient_id
+    used by member auth.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -1,0 +1,71 @@
+annotations:
+- id: keycloak-user-entity-database
+  layer: components
+  subject:
+    key: asset:database
+    name: USER_ENTITY
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 60
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+  rationale: UserEntity is a JPA entity mapped to USER_ENTITY, the identity store.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: keycloak-user-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: User
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 60
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+  rationale: USER_ENTITY is the end-user identity record for the realm.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: keycloak-credential-entity-database
+  layer: components
+  subject:
+    key: asset:database
+    name: CREDENTIAL
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 43
+    end_line: 45
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: CredentialEntity is a JPA entity mapped to CREDENTIAL, storing secret
+    and credential payloads.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

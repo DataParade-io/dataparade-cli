@@ -1,0 +1,24 @@
+annotations:
+- id: ory-hashed-password-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:password_verifier
+    name: HashedPassword
+  evidence:
+    file_path: identity/credentials_password.go
+    start_line: 10
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - identity/credentials_password.go
+  rationale: Source explicitly identifies this value as a hash representation of the
+    password.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

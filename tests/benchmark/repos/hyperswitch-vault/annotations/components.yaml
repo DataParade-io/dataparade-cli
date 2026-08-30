@@ -1,0 +1,46 @@
+annotations:
+- id: hyperswitch-locker-database
+  layer: components
+  subject:
+    key: asset:database
+    name: Locker
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 197
+    end_line: 206
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: Locker is the vault storage record whose data field holds encrypted card
+    payloads.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-merchant-customer-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: merchant_customer_id
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 47
+    end_line: 49
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: StoreCardRequest scopes stored cards to a merchant's customer identifier.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

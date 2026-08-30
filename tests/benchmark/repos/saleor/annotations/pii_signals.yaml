@@ -1,0 +1,309 @@
+annotations:
+- id: saleor-address-first-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: first_name
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 64
+    end_line: 64
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal-address first name identifies the recipient
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-address-last-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: last_name
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 65
+    end_line: 65
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal-address last name identifies the recipient
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-street-1-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:street_address
+    name: street_address_1
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 67
+    end_line: 67
+  expected:
+    status: positive
+    labels:
+    - street_address
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Primary postal street address
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-street-2-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:street_address
+    name: street_address_2
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 68
+    end_line: 68
+  expected:
+    status: positive
+    labels:
+    - street_address
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Secondary postal street-address component
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-city-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:city
+    name: city
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 69
+    end_line: 69
+  expected:
+    status: positive
+    labels:
+    - city
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal city field
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-city-area-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:address_region
+    name: city_area
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 70
+    end_line: 70
+  expected:
+    status: positive
+    labels:
+    - address_region
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal locality-area field
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-postal-code-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:postal_code
+    name: postal_code
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 71
+    end_line: 71
+  expected:
+    status: positive
+    labels:
+    - postal_code
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal-code field
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-country-area-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:address_region
+    name: country_area
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 73
+    end_line: 73
+  expected:
+    status: positive
+    labels:
+    - address_region
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal regional-address component
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-phone-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:phone_number
+    name: phone
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 74
+    end_line: 74
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Explicit phone-number model field
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-user-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 172
+    end_line: 172
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Unique user email field
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-user-first-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: first_name
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 173
+    end_line: 173
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: User profile first name
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-user-last-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: last_name
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 174
+    end_line: 174
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: User profile last name
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-user-uuid-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: uuid
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 202
+    end_line: 202
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Unique UUID represents the User and is used for string representation
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-staff-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: staff_email
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 424
+    end_line: 424
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Explicit staff email address
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

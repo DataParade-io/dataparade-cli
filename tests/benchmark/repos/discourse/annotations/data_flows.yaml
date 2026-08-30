@@ -30,8 +30,7 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: ensure_password_is_hashed salts and hashes @raw_password into password_hash
-    before save.
+  rationale: ensure_password_is_hashed salts and hashes @raw_password into password_hash before save.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -69,8 +68,7 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: generate_key creates a random @key and stores ApiKey.hash_key(@key) as
-    key_hash.
+  rationale: generate_key creates a random @key and stores ApiKey.hash_key(@key) as key_hash.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -108,8 +106,7 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: generate! hashes a random token into auth_token and exposes the unhashed
-    value on unhashed_auth_token.
+  rationale: generate! hashes a random token into auth_token and exposes the unhashed value on unhashed_auth_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -147,8 +144,7 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: normalize_email derives normalized_email from the current email value
-    before validation.
+  rationale: normalize_email derives normalized_email from the current email value before validation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -186,8 +182,7 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: session_store binds server session state to the _forum_session browser
-    cookie key.
+  rationale: session_store binds server session state to the _forum_session browser cookie key.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -225,8 +220,7 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: Session routes map HTTP login and forgot_password requests into SessionController
-    actions.
+  rationale: Session routes map HTTP login and forgot_password requests into SessionController actions.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -264,11 +258,1708 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: before_request_phase verifies CSRF tokens on non-GET OmniAuth requests
-    before external auth proceeds.
+  rationale: before_request_phase verifies CSRF tokens on non-GET OmniAuth requests before external auth proceeds.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: discourse-users-route-flow
+  layer: data_flows
+  subject:
+    key: flow:http->discourse-users-api
+    name: UsersController HTTP route
+  evidence:
+    file_path: config/routes.rb
+    start_line: 170
+    end_line: 170
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The route maps inbound HTTP to UsersController.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-session-csrf-route-flow
+  layer: data_flows
+  subject:
+    key: flow:http->discourse-session-csrf-api
+    name: SessionController csrf HTTP route
+  evidence:
+    file_path: config/routes.rb
+    start_line: 598
+    end_line: 598
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The route maps inbound HTTP to SessionController csrf.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-login-route-flow
+  layer: data_flows
+  subject:
+    key: flow:http->discourse-login-api
+    name: StaticController login HTTP route
+  evidence:
+    file_path: config/routes.rb
+    start_line: 622
+    end_line: 622
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The route maps inbound HTTP to StaticController login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-admin-users-route-flow
+  layer: data_flows
+  subject:
+    key: flow:http->discourse-admin-users-api
+    name: Admin::UsersController HTTP route
+  evidence:
+    file_path: config/routes.rb
+    start_line: 130
+    end_line: 130
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The route maps inbound HTTP to Admin::UsersController.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-webhooks-mailgun-route-flow
+  layer: data_flows
+  subject:
+    key: flow:http->discourse-webhooks-mailgun-api
+    name: WebhooksController mailgun HTTP route
+  evidence:
+    file_path: config/routes.rb
+    start_line: 32
+    end_line: 32
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/user_email.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_api_key.rb
+    - app/models/user_auth_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_second_factor.rb
+    - app/models/user_ip_address_history.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/initializers/002-rails_failover.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: The route maps inbound HTTP to WebhooksController mailgun.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: discourse-password-setter-flow
+  layer: data_flows
+  subject:
+    key: flow:password->raw_password
+    name: Password to raw_password
+  evidence:
+    file_path: app/models/user_password.rb
+    start_line: 21
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: password= assigns submitted passwords to @raw_password before hashing.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-password-confirm-flow
+  layer: data_flows
+  subject:
+    key: flow:password->confirm
+    name: Password to confirm_password
+  evidence:
+    file_path: app/models/user_password.rb
+    start_line: 32
+    end_line: 35
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: confirm_password? compares submitted passwords against stored password_hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-password-hash-flow
+  layer: data_flows
+  subject:
+    key: flow:raw_password->hash_password
+    name: Raw password to hash_password
+  evidence:
+    file_path: app/models/user_password.rb
+    start_line: 51
+    end_line: 53
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: hash_password delegates to PasswordHasher with salt and algorithm parameters.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-user-password-association-flow
+  layer: data_flows
+  subject:
+    key: flow:user->user_password
+    name: User to user_password
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 84
+    end_line: 84
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: User has_one user_password for local credential storage.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-user-email-normalize-flow
+  layer: data_flows
+  subject:
+    key: flow:email->normalized
+    name: Email to normalized_email
+  evidence:
+    file_path: app/models/user_email.rb
+    start_line: 57
+    end_line: 58
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: normalize_email derives normalized_email before validation.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-primary-email-flow
+  layer: data_flows
+  subject:
+    key: flow:email->primary
+    name: Email to primary flag
+  evidence:
+    file_path: app/models/user_email.rb
+    start_line: 16
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: primary validation ensures one primary email per user id.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-api-key-generate-flow
+  layer: data_flows
+  subject:
+    key: flow:key->key_hash
+    name: API key to key_hash
+  evidence:
+    file_path: app/models/user_api_key.rb
+    start_line: 23
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: generate_key stores ApiKey.hash_key(@key) as key_hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-api-key-scopes-flow
+  layer: data_flows
+  subject:
+    key: flow:scopes->user_api_key
+    name: Scopes to user API key
+  evidence:
+    file_path: app/models/user_api_key.rb
+    start_line: 13
+    end_line: 13
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: scopes association attaches permission scopes to issued API keys.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-auth-token-lookup-flow
+  layer: data_flows
+  subject:
+    key: flow:token->user_auth_token
+    name: Token to UserAuthToken lookup
+  evidence:
+    file_path: app/models/user_auth_token.rb
+    start_line: 145
+    end_line: 145
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: lookup matches unhashed tokens to persisted auth_token hashes.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-auth-token-rotate-flow
+  layer: data_flows
+  subject:
+    key: flow:token->rotated_at
+    name: Token to rotation timestamp
+  evidence:
+    file_path: app/models/user_auth_token.rb
+    start_line: 118
+    end_line: 118
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: generate! updates rotated_at when session tokens rotate.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-oauth-email-flow
+  layer: data_flows
+  subject:
+    key: flow:provider->oauth-email
+    name: Provider profile to oauth email
+  evidence:
+    file_path: app/models/oauth2_user_info.rb
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: Oauth2UserInfo stores provider email addresses from OAuth callbacks.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-associated-account-flow
+  layer: data_flows
+  subject:
+    key: flow:oauth->provider_uid
+    name: OAuth to provider_uid
+  evidence:
+    file_path: app/models/user_associated_account.rb
+    start_line: 23
+    end_line: 23
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: UserAssociatedAccount persists provider_uid from external identity providers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-totp-scope-flow
+  layer: data_flows
+  subject:
+    key: flow:user->totp
+    name: User to TOTP factors
+  evidence:
+    file_path: app/models/user_second_factor.rb
+    start_line: 13
+    end_line: 13
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: totps scope loads enabled TOTP second-factor records for a user.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-ip-history-flow
+  layer: data_flows
+  subject:
+    key: flow:request->ip_address
+    name: Request to ip_address history
+  evidence:
+    file_path: app/models/user_ip_address_history.rb
+    start_line: 7
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: ip_address validation records client IPs linked to user_id.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-email-login-code-flow
+  layer: data_flows
+  subject:
+    key: flow:email->login-code
+    name: Email to login code
+  evidence:
+    file_path: app/models/email_login_code.rb
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: EmailLoginCode.generate! creates one-time login codes for an email address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-global-api-key-hash-flow
+  layer: data_flows
+  subject:
+    key: flow:api-key->key_hash
+    name: Global API key to key_hash
+  evidence:
+    file_path: app/models/api_key.rb
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: ApiKey stores hash_key output instead of the raw key value.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-forgot-password-route-flow
+  layer: data_flows
+  subject:
+    key: flow:http->forgot_password
+    name: HTTP to forgot_password
+  evidence:
+    file_path: config/routes.rb
+    start_line: 554
+    end_line: 554
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: forgot_password routes POST reset requests into SessionController.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-users-index-route-flow
+  layer: data_flows
+  subject:
+    key: flow:http->users-index
+    name: HTTP to users index
+  evidence:
+    file_path: config/routes.rb
+    start_line: 128
+    end_line: 128
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: users resources route list and destroy actions for forum accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-sso-route-flow
+  layer: data_flows
+  subject:
+    key: flow:http->sso
+    name: HTTP to session SSO
+  evidence:
+    file_path: config/routes.rb
+    start_line: 594
+    end_line: 594
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: session/sso routes external SSO login attempts into SessionController.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-github-settings-flow
+  layer: data_flows
+  subject:
+    key: flow:settings->github-oauth
+    name: Settings to GitHub OAuth
+  evidence:
+    file_path: config/site_settings.yml
+    start_line: 820
+    end_line: 820
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: enable_github_logins toggles GitHub OAuth client credentials.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-twitter-settings-flow
+  layer: data_flows
+  subject:
+    key: flow:settings->twitter-oauth
+    name: Settings to Twitter OAuth
+  evidence:
+    file_path: config/site_settings.yml
+    start_line: 795
+    end_line: 795
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: enable_twitter_logins toggles Twitter OAuth for social login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-facebook-settings-flow
+  layer: data_flows
+  subject:
+    key: flow:settings->facebook-oauth
+    name: Settings to Facebook OAuth
+  evidence:
+    file_path: config/site_settings.yml
+    start_line: 807
+    end_line: 807
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: enable_facebook_logins toggles Facebook OAuth for social login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-omniauth-csrf-flow
+  layer: data_flows
+  subject:
+    key: flow:oauth-request->csrf
+    name: OAuth request to CSRF check
+  evidence:
+    file_path: config/initializers/009-omniauth.rb
+    start_line: 14
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: before_request_phase verifies CSRF tokens on OmniAuth requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-session-cookie-flow
+  layer: data_flows
+  subject:
+    key: flow:session->cookie
+    name: Session to _forum_session cookie
+  evidence:
+    file_path: config/initializers/100-session_store.rb
+    start_line: 5
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: session_store maps server session state to the _forum_session cookie key.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-redis-version-flow
+  layer: data_flows
+  subject:
+    key: flow:boot->redis-check
+    name: Boot to Redis version check
+  evidence:
+    file_path: config/initializers/001-redis.rb
+    start_line: 9
+    end_line: 9
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: Redis initializer reads Discourse.redis.info during application boot.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-database-adapter-flow
+  layer: data_flows
+  subject:
+    key: flow:config->postgresql
+    name: Config to PostgreSQL adapter
+  evidence:
+    file_path: config/database.yml
+    start_line: 10
+    end_line: 10
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: database.yml configures ActiveRecord to use the postgresql adapter.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-user-destroy-tokens-flow
+  layer: data_flows
+  subject:
+    key: flow:user-delete->auth-tokens
+    name: User delete to auth tokens
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 2108
+    end_line: 2108
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: Destroying a user deletes associated UserAuthToken rows.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-user-stat-create-flow
+  layer: data_flows
+  subject:
+    key: flow:user-create->user-stat
+    name: User create to user stat
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 181
+    end_line: 181
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: after_create :create_user_stat persists analytics when accounts are created.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-profile-bio-flow
+  layer: data_flows
+  subject:
+    key: flow:bio->profile
+    name: Bio text to user profile
+  evidence:
+    file_path: app/models/user_profile.rb
+    start_line: 15
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: bio_raw validation stores biography text on user profiles.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-user-password-validator-flow
+  layer: data_flows
+  subject:
+    key: flow:password->validator
+    name: Password to validator
+  evidence:
+    file_path: app/models/user_password.rb
+    start_line: 47
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: password_validator enforces policy on @raw_password before save.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-api-key-scope-filter-flow
+  layer: data_flows
+  subject:
+    key: flow:scope->allowed
+    name: Scope to allowed_scopes
+  evidence:
+    file_path: app/models/user_api_key.rb
+    start_line: 54
+    end_line: 54
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: allowed_scopes filters requested scopes against site policy.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-email-token-model-flow
+  layer: data_flows
+  subject:
+    key: flow:email->email-token
+    name: Email to email token
+  evidence:
+    file_path: app/models/email_token.rb
+    start_line: 3
+    end_line: 3
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: EmailToken model backs signed tokens for email confirmation flows.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-site-route-flow
+  layer: data_flows
+  subject:
+    key: flow:get->site-metadata
+    name: GET to site metadata
+  evidence:
+    file_path: config/routes.rb
+    start_line: 78
+    end_line: 78
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: site route serves public site metadata including auth settings.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-sendgrid-webhook-flow
+  layer: data_flows
+  subject:
+    key: flow:sendgrid->webhook
+    name: SendGrid to webhook
+  evidence:
+    file_path: config/routes.rb
+    start_line: 38
+    end_line: 38
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: sendgrid_webhook route ingests inbound email events from SendGrid.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-google-settings-flow
+  layer: data_flows
+  subject:
+    key: flow:settings->google-oauth
+    name: Settings to Google OAuth
+  evidence:
+    file_path: config/site_settings.yml
+    start_line: 758
+    end_line: 758
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: enable_google_oauth2_logins toggles Google OAuth client credentials.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-user-email-skip-validate-flow
+  layer: data_flows
+  subject:
+    key: flow:flag->skip-validate
+    name: Flag to skip email validation
+  evidence:
+    file_path: app/models/user_email.rb
+    start_line: 6
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/api_key.rb
+    - app/models/email_login_code.rb
+    - app/models/email_token.rb
+    - app/models/oauth2_user_info.rb
+    - app/models/user.rb
+    - app/models/user_api_key.rb
+    - app/models/user_associated_account.rb
+    - app/models/user_auth_token.rb
+    - app/models/user_email.rb
+    - app/models/user_ip_address_history.rb
+    - app/models/user_password.rb
+    - app/models/user_profile.rb
+    - app/models/user_second_factor.rb
+    - config/database.yml
+    - config/initializers/001-redis.rb
+    - config/initializers/002-rails_failover.rb
+    - config/initializers/005-site_settings.rb
+    - config/initializers/008-rack-cors.rb
+    - config/initializers/009-omniauth.rb
+    - config/initializers/100-session_store.rb
+    - config/routes.rb
+    - config/site_settings.yml
+  rationale: skip_validate_email flags bypass email validation during imports.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-not-stripe-flow
+  layer: data_flows
+  subject:
+    key: flow:user->stripe
+    name: User to Stripe
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 3
+    end_line: 3
+  expected:
+    status: negative
+    labels: []
+  rationale: User model handles forum accounts only. No payment or card data flows to Stripe in this scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: discourse-not-auth0-flow
+  layer: data_flows
+  subject:
+    key: flow:oauth->auth0
+    name: OAuth to Auth0
+  evidence:
+    file_path: config/initializers/009-omniauth.rb
+    start_line: 6
+    end_line: 6
+  expected:
+    status: negative
+    labels: []
+  rationale: OmniAuth is configured for Discourse providers such as Google and GitHub, not Auth0.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed

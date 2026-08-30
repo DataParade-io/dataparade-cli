@@ -295,3 +295,358 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: pocketbase-external-auth-model
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: ExternalAuth
+  evidence:
+    file_path: core/external_auth_model.go
+    start_line: 21
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: ExternalAuth links auth records to OAuth2 provider identities in the
+    _externalAuths collection.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-mfa-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: MFA
+  evidence:
+    file_path: core/mfa_model.go
+    start_line: 27
+    end_line: 30
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: MFA stores multi-factor authentication methods for auth collection records.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-otp-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: OTP
+  evidence:
+    file_path: core/otp_model.go
+    start_line: 21
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: OTP stores one-time password challenges used during auth flows.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-email-field-type
+  layer: components
+  subject:
+    key: asset:database
+    name: EmailField
+  evidence:
+    file_path: core/field_email.go
+    start_line: 24
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: EmailField defines the email column type persisted for auth collection
+    records.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-password-field-type
+  layer: components
+  subject:
+    key: asset:database
+    name: PasswordField
+  evidence:
+    file_path: core/field_password.go
+    start_line: 32
+    end_line: 33
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: PasswordField stores bcrypt password hashes for auth collection records.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-collection-auth-type
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: Collection
+  evidence:
+    file_path: core/collection_model.go
+    start_line: 23
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: CollectionTypeAuth marks collections that own password and token authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-oauth2-config
+  layer: components
+  subject:
+    key: asset:config
+    name: OAuth2Config
+  evidence:
+    file_path: core/collection_model_auth_options.go
+    start_line: 407
+    end_line: 410
+  expected:
+    status: positive
+    labels:
+    - config
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: OAuth2Config lists enabled OAuth2 providers and mapped identity fields
+    for auth collections.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-find-auth-record-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: FindAuthRecordByToken
+  evidence:
+    file_path: core/record_query.go
+    start_line: 483
+    end_line: 483
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: FindAuthRecordByToken validates JWTs and loads the associated auth record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-password-auth-config
+  layer: components
+  subject:
+    key: asset:config
+    name: PasswordAuth
+  evidence:
+    file_path: core/collection_model_auth_options.go
+    start_line: 60
+    end_line: 63
+  expected:
+    status: positive
+    labels:
+    - config
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: PasswordAuth configures identity fields and enables password authentication
+    for collections.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-external-auths-database
+  layer: components
+  subject:
+    key: asset:database
+    name: _externalAuths
+  evidence:
+    file_path: core/external_auth_model.go
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/collection_model.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+    - core/mfa_model.go
+    - core/otp_model.go
+    - core/record_query.go
+  rationale: CollectionNameExternalAuths names the database table storing linked OAuth
+    provider records.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

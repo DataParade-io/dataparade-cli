@@ -241,3 +241,257 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: pocketbase-email-field-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 7
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: Record.Email returns the auth collection email field used as the account
+    address.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-password-hash-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:password_verifier
+    name: password
+  evidence:
+    file_path: core/field_password.go
+    start_line: 313
+    end_line: 313
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: PasswordFieldValue.Hash stores the bcrypt verifier persisted to the database.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-token-key-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: tokenKey
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 35
+    end_line: 37
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: TokenKey is combined with collection token secrets to sign JWT auth tokens.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-jwt-auth-token-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: auth_token
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 72
+    end_line: 72
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: NewAuthToken returns a signed JWT bearer credential for authenticated
+    API access.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-token-claim-new-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: TokenClaimNewEmail
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: TokenClaimNewEmail carries the requested replacement email in email-change
+    tokens.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-auth-token-secret-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: Secret
+  evidence:
+    file_path: core/collection_model_auth_options.go
+    start_line: 74
+    end_line: 75
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: AuthToken.Secret is a random signing key combined with tokenKey to mint
+    JWT credentials.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-external-provider-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: providerId
+  evidence:
+    file_path: core/external_auth_model.go
+    start_line: 101
+    end_line: 104
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: ProviderId stores the external OAuth provider's subject identifier for
+    the linked account.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: pocketbase-plain-password-transient-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: Plain
+  evidence:
+    file_path: core/field_password.go
+    start_line: 314
+    end_line: 314
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: PasswordFieldValue.Plain holds the supplied password before bcrypt hashing
+    on write.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

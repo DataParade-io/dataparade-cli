@@ -1,0 +1,89 @@
+annotations:
+- id: posthog-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 247
+    end_line: 247
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: Explicit Django email field for the analytics user
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: posthog-pending-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: pending_email
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 248
+    end_line: 248
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: Explicit pending email address awaiting verification
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: posthog-distinct-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: distinct_id
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 249
+    end_line: 249
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: Unique pseudonymous identifier for the user
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: posthog-temporary-token-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: temporary_token
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 333
+    end_line: 333
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: Explicit temporary token field is secret-like authentication material
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

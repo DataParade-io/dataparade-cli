@@ -218,3 +218,233 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: redmine-user-login-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: login
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 126
+    end_line: 129
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: login is validated as the unique sign-in identifier for each user account.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-user-mail-accessor-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: mail
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 203
+    end_line: 209
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: User#mail reads and writes the default email_address.address value.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-hashed-password-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:password_verifier
+    name: hashed_password
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 361
+    end_line: 361
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: salt_password assigns SHA1(salt + SHA1(password)) to hashed_password
+    as the stored verifier.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-plain-password-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: password
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 118
+    end_line: 118
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: password is a transient credential supplied during login and hashed before
+    persistence.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-api-key-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: api_key
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 457
+    end_line: 461
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: api_key returns api_token.value, a bearer credential used to access the
+    API.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-token-value-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: value
+  evidence:
+    file_path: app/models/token.rb
+    start_line: 47
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: generate_new_token assigns Token.generate_token_value to value, the stored
+    bearer secret for session and API tokens.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-twofa-totp-key-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: twofa_totp_key
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 484
+    end_line: 489
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: twofa_totp_key is stored ciphered and backs two-factor authentication
+    secrets.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-auth-source-password-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: account_password
+  evidence:
+    file_path: app/models/auth_source.rb
+    start_line: 63
+    end_line: 68
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: account_password is a ciphered bind credential for external auth source
+    connections.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

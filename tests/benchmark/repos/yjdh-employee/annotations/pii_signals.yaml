@@ -1,0 +1,334 @@
+annotations:
+- id: yjdh-employee-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: id
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee serializer exposes the employee record identifier
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-first-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: first_name
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee first name
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-last-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: last_name
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee last name
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-finnish-social-security-number-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:national_identifier
+    name: social_security_number
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 21
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Explicit Finnish social-security-number field validated by the Finnish
+    HETU library in this file
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee email field
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-job-title-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:employment_information
+    name: job_title
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - employment_information
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee job title describes employment information
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-monthly-pay-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:compensation
+    name: monthly_pay
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 25
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - compensation
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee monthly pay is compensation information
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-vacation-money-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:compensation
+    name: vacation_money
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - compensation
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Vacation-money value is compensation information
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-other-expenses-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:compensation
+    name: other_expenses
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 27
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - compensation
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee expense value is financial employment information
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-working-hours-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:employment_information
+    name: working_hours
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 28
+    end_line: 28
+  expected:
+    status: positive
+    labels:
+    - employment_information
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee working-hours value describes employment conditions
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-residence-flag-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:residence_information
+    name: is_living_in_helsinki
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 30
+    end_line: 30
+  expected:
+    status: positive
+    labels:
+    - residence_information
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Boolean explicitly indicates whether the employee resides in Helsinki
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-commission-amount-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:compensation
+    name: commission_amount
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 31
+    end_line: 31
+  expected:
+    status: positive
+    labels:
+    - compensation
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee commission amount is compensation information
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-birthday-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:date_of_birth
+    name: birthday
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 34
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - date_of_birth
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee birthday is directly exposed and marked read-only in the API
+    serializer
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-ssn-validation-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:national_identifier
+    name: social_security_number
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 41
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Dedicated validation confirms the field has Finnish social-security-number
+    semantics
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: yjdh-search-ssn-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:national_identifier
+    name: social_security_number
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 91
+    end_line: 91
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Search serializer exposes the same named national identifier
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

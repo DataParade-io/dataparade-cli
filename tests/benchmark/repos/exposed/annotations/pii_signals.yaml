@@ -94,3 +94,37 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: exposed-database-url-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: url
+  evidence:
+    file_path: exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
+    start_line: 23
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseConfig.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Transaction.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/TransactionInterface.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/DatabasesManager.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/AbstractQuery.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/StatementBuilder.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/Statement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/InsertStatement.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
+    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
+  rationale: DatabaseApi.url is the JDBC connection URL, which may embed database
+    credentials.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

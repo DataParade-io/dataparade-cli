@@ -1,0 +1,139 @@
+annotations:
+- id: keycloak-user-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: id
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 69
+    end_line: 69
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: Primary ID of the user entity
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: keycloak-username-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: username
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 73
+    end_line: 73
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: User account login identifier
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: keycloak-first-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: firstName
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 76
+    end_line: 76
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: User first name
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: keycloak-last-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: lastName
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 83
+    end_line: 83
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: User last name
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: keycloak-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 85
+    end_line: 85
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: User email address
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: keycloak-secret-data-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: secretData
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 65
+    end_line: 65
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: Explicit secret credential payload
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

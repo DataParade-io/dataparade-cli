@@ -1,0 +1,225 @@
+annotations:
+- id: hyperswitch-card-number-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:payment_card_number
+    name: card_number
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 14
+    end_line: 14
+  expected:
+    status: positive
+    labels:
+    - payment_card_number
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: CardNumber is the primary account number field of the Card structure.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-cardholder-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:cardholder_name
+    name: name_on_card
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 15
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - cardholder_name
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: Name on card is the cardholder-name value in a payment-card structure.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-card-expiration-month-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:payment_card_expiration
+    name: card_exp_month
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 16
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - payment_card_expiration
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: Month component of the payment-card expiration date.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-card-expiration-year-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:payment_card_expiration
+    name: card_exp_year
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - payment_card_expiration
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: Year component of the payment-card expiration date.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-encrypted-card-data-input-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:payment_card_data
+    name: enc_card_data
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 61
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - payment_card_data
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: Explicit encrypted card payload remains payment-card data despite its
+    encrypted representation.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-card-container-input-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:payment_card_data
+    name: card
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 62
+    end_line: 62
+  expected:
+    status: positive
+    labels:
+    - payment_card_data
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: The Card variant carries the Card structure containing the primary account
+    number and related cardholder data.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-retrieve-card-container-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:payment_card_data
+    name: card
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 134
+    end_line: 134
+  expected:
+    status: positive
+    labels:
+    - payment_card_data
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: Response field returns the Card structure containing payment-card data.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-retrieve-encrypted-card-data-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:payment_card_data
+    name: enc_card_data
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 135
+    end_line: 135
+  expected:
+    status: positive
+    labels:
+    - payment_card_data
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: Explicit encrypted card payload remains payment-card data despite its
+    encrypted representation.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-stored-encrypted-data-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:payment_card_data
+    name: EncData
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 163
+    end_line: 163
+  expected:
+    status: positive
+    labels:
+    - payment_card_data
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: StoredData variant represents the encrypted card-data form handled by
+    the vault.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: hyperswitch-stored-card-data-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:payment_card_data
+    name: CardData
+  evidence:
+    file_path: src/routes/data/types.rs
+    start_line: 164
+    end_line: 164
+  expected:
+    status: positive
+    labels:
+    - payment_card_data
+    exhaustive_scope_files:
+    - src/routes/data/types.rs
+  rationale: StoredData variant holds the Card structure containing payment-card data.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

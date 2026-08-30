@@ -271,3 +271,348 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: redmine-email-address-model
+  layer: components
+  subject:
+    key: asset:database
+    name: EmailAddress
+  evidence:
+    file_path: app/models/email_address.rb
+    start_line: 20
+    end_line: 23
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: EmailAddress persists user email addresses in the email_addresses table.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-principal-identity-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: Principal
+  evidence:
+    file_path: app/models/principal.rb
+    start_line: 20
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: Principal is the shared identity base class for users and groups stored
+    in the users table.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-doorkeeper-oauth-api
+  layer: components
+  subject:
+    key: asset:api
+    name: Doorkeeper
+  evidence:
+    file_path: config/routes.rb
+    start_line: 21
+    end_line: 23
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: routes.rb mounts Doorkeeper OAuth2 application endpoints for API authorization.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-anonymous-user-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: AnonymousUser
+  evidence:
+    file_path: app/models/anonymous_user.rb
+    start_line: 20
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: AnonymousUser represents unauthenticated visitors with a fixed anonymous
+    principal record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-session-config
+  layer: components
+  subject:
+    key: asset:config
+    name: session_lifetime
+  evidence:
+    file_path: config/settings.yml
+    start_line: 67
+    end_line: 72
+  expected:
+    status: positive
+    labels:
+    - config
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: settings.yml declares session_lifetime and session_timeout values governing
+    authenticated sessions.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-webhook-outbound-api
+  layer: components
+  subject:
+    key: asset:api
+    name: Webhook
+  evidence:
+    file_path: app/models/webhook.rb
+    start_line: 27
+    end_line: 38
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: Webhook.Executor posts JSON payloads to configured external HTTP endpoints.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-group-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: Group
+  evidence:
+    file_path: app/models/group.rb
+    start_line: 20
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - employee
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: Group principals bundle staff users for shared permissions inside Redmine.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-application-record-orm
+  layer: components
+  subject:
+    key: asset:database
+    name: ApplicationRecord
+  evidence:
+    file_path: app/models/application_record.rb
+    start_line: 19
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: ApplicationRecord is the ActiveRecord base class backing all persisted
+    auth models.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-twofa-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: twofa
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 412
+    end_line: 414
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: User.twofa_active? gates two-factor authentication state on stored TOTP
+    secrets.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: redmine-api-key-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: api_key
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 457
+    end_line: 461
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - app/models/anonymous_user.rb
+    - app/models/group.rb
+    - app/models/webhook.rb
+    - app/models/application_record.rb
+    - config/database.yml.example
+    - config/routes.rb
+    - config/settings.yml
+  rationale: User.api_key issues persistent API tokens used to authenticate REST requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

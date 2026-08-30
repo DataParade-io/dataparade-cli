@@ -209,3 +209,117 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: drupal-get-email-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: getEmail
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 275
+    end_line: 276
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: getEmail returns the mail field value for the user account.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-get-account-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: getAccountName
+  evidence:
+    file_path: core/modules/user/src/Entity/User.php
+    start_line: 416
+    end_line: 417
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: getAccountName returns the stored username string.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-login-pass-credential-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: pass
+  evidence:
+    file_path: core/modules/user/src/Form/UserLoginForm.php
+    start_line: 143
+    end_line: 145
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: The login form pass element accepts the plaintext password submitted
+    by the user.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-http-login-pass-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: credentials.pass
+  evidence:
+    file_path: core/modules/user/src/Controller/UserAuthenticationController.php
+    start_line: 224
+    end_line: 224
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+  rationale: credentials['pass'] is the plaintext password from the JSON login request
+    body.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

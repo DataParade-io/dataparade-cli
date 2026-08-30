@@ -1,0 +1,24 @@
+annotations:
+- id: ory-kratos-password-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: CredentialsPassword
+  evidence:
+    file_path: identity/credentials_password.go
+    start_line: 9
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - identity/credentials_password.go
+  rationale: CredentialsPassword is Kratos in-process password-credential configuration,
+    not an external IdP.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

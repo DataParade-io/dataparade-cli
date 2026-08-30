@@ -22,8 +22,7 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wpdb is WordPress's database abstraction layer connecting to the SQL
-    store for users and metadata.
+  rationale: wpdb is WordPress's database abstraction layer connecting to the SQL store for users and metadata.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -83,8 +82,7 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wp_set_auth_cookie issues local authentication cookies tied to session
-    tokens.
+  rationale: wp_set_auth_cookie issues local authentication cookies tied to session tokens.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -114,8 +112,7 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: WP_Session_Tokens manages hashed session verifiers stored in user meta
-    for login state.
+  rationale: WP_Session_Tokens manages hashed session verifiers stored in user meta for login state.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -145,8 +142,7 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: WP_REST_Users_Controller registers wp/v2/users REST routes for user CRUD
-    over HTTP.
+  rationale: WP_REST_Users_Controller registers wp/v2/users REST routes for user CRUD over HTTP.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -176,8 +172,7 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: WP_User models site members and commenters, the public end-user actor
-    type.
+  rationale: WP_User models site members and commenters, the public end-user actor type.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -196,8 +191,7 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: wp_authenticate handles local username/password login. No Stripe payment
-    SDK or API appears in this scope.
+  rationale: wp_authenticate handles local username/password login. No Stripe payment SDK or API appears in this scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -216,8 +210,7 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Authentication is implemented with WordPress cookies and session tokens,
-    not an external Auth0 integration.
+  rationale: Authentication is implemented with WordPress cookies and session tokens, not an external Auth0 integration.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
@@ -236,11 +229,2793 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed user and auth files do not integrate SendGrid or another
-    transactional email vendor.
+  rationale: The reviewed user and auth files do not integrate SendGrid or another transactional email vendor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: wordpress-rest-abilities-v1-categories-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Abilities_V1_Categories_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-categories-controller.php
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-categories-controller.php
+  rationale: WP_REST_Abilities_V1_Categories_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-abilities-v1-list-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Abilities_V1_List_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-list-controller.php
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-list-controller.php
+  rationale: WP_REST_Abilities_V1_List_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-abilities-v1-run-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Abilities_V1_Run_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-run-controller.php
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-run-controller.php
+  rationale: WP_REST_Abilities_V1_Run_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-application-passwords-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Application_Passwords_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+  rationale: WP_REST_Application_Passwords_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-rest-attachments-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Attachments_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php
+    start_line: 27
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php
+  rationale: WP_REST_Attachments_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-autosaves-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Autosaves_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-autosaves-controller.php
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-autosaves-controller.php
+  rationale: WP_REST_Autosaves_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-block-directory-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Block_Directory_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-block-directory-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-block-directory-controller.php
+  rationale: WP_REST_Block_Directory_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-block-pattern-categories-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Block_Pattern_Categories_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-block-pattern-categories-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-block-pattern-categories-controller.php
+  rationale: WP_REST_Block_Pattern_Categories_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-block-patterns-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Block_Patterns_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-block-patterns-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-block-patterns-controller.php
+  rationale: WP_REST_Block_Patterns_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-block-renderer-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Block_Renderer_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-block-renderer-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-block-renderer-controller.php
+  rationale: WP_REST_Block_Renderer_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-block-types-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Block_Types_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-block-types-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-block-types-controller.php
+  rationale: WP_REST_Block_Types_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-blocks-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Blocks_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-blocks-controller.php
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-blocks-controller.php
+  rationale: WP_REST_Blocks_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-comments-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Comments_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php
+  rationale: WP_REST_Comments_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-edit-site-export-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Edit_Site_Export_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-edit-site-export-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-edit-site-export-controller.php
+  rationale: WP_REST_Edit_Site_Export_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-font-collections-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Font_Collections_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-font-collections-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-font-collections-controller.php
+  rationale: WP_REST_Font_Collections_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-font-faces-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Font_Faces_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-font-faces-controller.php
+    start_line: 13
+    end_line: 13
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-font-faces-controller.php
+  rationale: WP_REST_Font_Faces_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-font-families-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Font_Families_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-font-families-controller.php
+    start_line: 15
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-font-families-controller.php
+  rationale: WP_REST_Font_Families_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-global-styles-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Global_Styles_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-global-styles-controller.php
+    start_line: 13
+    end_line: 13
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-global-styles-controller.php
+  rationale: WP_REST_Global_Styles_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-global-styles-revisions-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Global_Styles_Revisions_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-global-styles-revisions-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-global-styles-revisions-controller.php
+  rationale: WP_REST_Global_Styles_Revisions_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-icon-collections-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Icon_Collections_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-icon-collections-controller.php
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-icon-collections-controller.php
+  rationale: WP_REST_Icon_Collections_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-icons-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Icons_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-icons-controller.php
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-icons-controller.php
+  rationale: WP_REST_Icons_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-menu-items-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Menu_Items_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-menu-items-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-menu-items-controller.php
+  rationale: WP_REST_Menu_Items_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-menu-locations-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Menu_Locations_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-menu-locations-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-menu-locations-controller.php
+  rationale: WP_REST_Menu_Locations_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-menus-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Menus_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-menus-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-menus-controller.php
+  rationale: WP_REST_Menus_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-navigation-fallback-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Navigation_Fallback_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-navigation-fallback-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-navigation-fallback-controller.php
+  rationale: WP_REST_Navigation_Fallback_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-pattern-directory-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Pattern_Directory_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-pattern-directory-controller.php
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-pattern-directory-controller.php
+  rationale: WP_REST_Pattern_Directory_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-plugins-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Plugins_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-plugins-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-plugins-controller.php
+  rationale: WP_REST_Plugins_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-post-statuses-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Post_Statuses_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-post-statuses-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-post-statuses-controller.php
+  rationale: WP_REST_Post_Statuses_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-post-types-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Post_Types_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-post-types-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-post-types-controller.php
+  rationale: WP_REST_Post_Types_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-posts-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Posts_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php
+  rationale: WP_REST_Posts_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-revisions-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Revisions_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-revisions-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-revisions-controller.php
+  rationale: WP_REST_Revisions_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-search-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Search_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-search-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-search-controller.php
+  rationale: WP_REST_Search_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-settings-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Settings_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-settings-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-settings-controller.php
+  rationale: WP_REST_Settings_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-sidebars-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Sidebars_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-sidebars-controller.php
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-sidebars-controller.php
+  rationale: WP_REST_Sidebars_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-site-health-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Site_Health_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-site-health-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-site-health-controller.php
+  rationale: WP_REST_Site_Health_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-taxonomies-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Taxonomies_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-taxonomies-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-taxonomies-controller.php
+  rationale: WP_REST_Taxonomies_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-template-autosaves-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Template_Autosaves_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-template-autosaves-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-template-autosaves-controller.php
+  rationale: WP_REST_Template_Autosaves_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-template-revisions-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Template_Revisions_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-template-revisions-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-template-revisions-controller.php
+  rationale: WP_REST_Template_Revisions_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-templates-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Templates_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-templates-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-templates-controller.php
+  rationale: WP_REST_Templates_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-terms-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Terms_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php
+  rationale: WP_REST_Terms_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-themes-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Themes_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-themes-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-themes-controller.php
+  rationale: WP_REST_Themes_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-url-details-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_URL_Details_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-url-details-controller.php
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-url-details-controller.php
+  rationale: WP_REST_URL_Details_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-view-config-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_View_Config_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-view-config-controller.php
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-view-config-controller.php
+  rationale: WP_REST_View_Config_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-widget-types-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Widget_Types_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-widget-types-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-widget-types-controller.php
+  rationale: WP_REST_Widget_Types_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-rest-widgets-api
+  layer: components
+  subject:
+    key: asset:api
+    name: WP_REST_Widgets_Controller
+  evidence:
+    file_path: src/wp-includes/rest-api/endpoints/class-wp-rest-widgets-controller.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-widgets-controller.php
+  rationale: WP_REST_Widgets_Controller registers WordPress REST routes as an inbound HTTP API surface.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-application-passwords-auth
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: WP_Application_Passwords
+  evidence:
+    file_path: src/wp-includes/class-wp-application-passwords.php
+    start_line: 15
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-application-passwords.php
+  rationale: WP_Application_Passwords issues hashed application passwords stored in user meta.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-phpmailer-service
+  layer: components
+  subject:
+    key: asset:service
+    name: PHPMailer
+  evidence:
+    file_path: src/wp-includes/PHPMailer/PHPMailer.php
+    start_line: 32
+    end_line: 32
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/PHPMailer/PHPMailer.php
+  rationale: Bundled PHPMailer sends mail from core; it is an in-tree mailer, not SendGrid.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-http-client-service
+  layer: components
+  subject:
+    key: asset:service
+    name: WP_Http
+  evidence:
+    file_path: src/wp-includes/class-wp-http.php
+    start_line: 34
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-http.php
+  rationale: WP_Http is the core outbound HTTP client used by WordPress.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-comment-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: WP_Comment
+  evidence:
+    file_path: src/wp-includes/class-wp-comment.php
+    start_line: 61
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-comment.php
+  rationale: WP_Comment models public commenter identity including author email and IP.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-role-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: WP_Role
+  evidence:
+    file_path: src/wp-includes/class-wp-role.php
+    start_line: 16
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-role.php
+  rationale: WP_Role holds capability maps used for in-app authorization.
+  provenance:
+    proposed_by: grok-4.6-fill-to-200
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-http-cookie-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: WP_Http_Cookie
+  evidence:
+    file_path: src/wp-includes/class-wp-http-cookie.php
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: WP_Http_Cookie parses and represents HTTP cookies used by auth and session handling.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-recovery-mode-cookie-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: WP_Recovery_Mode_Cookie_Service
+  evidence:
+    file_path: src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    start_line: 15
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: WP_Recovery_Mode_Cookie_Service issues signed recovery-mode cookies for privileged site access.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-user-query-service
+  layer: components
+  subject:
+    key: asset:service
+    name: WP_User_Query
+  evidence:
+    file_path: src/wp-includes/class-wp-user-query.php
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: WP_User_Query queries the users table and user meta for account lookups.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-user-request-service
+  layer: components
+  subject:
+    key: asset:service
+    name: WP_User_Request
+  evidence:
+    file_path: src/wp-includes/class-wp-user-request.php
+    start_line: 10
+    end_line: 10
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: WP_User_Request models personal data export and erasure requests for user accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-rest-server-api
+  layer: components
+  subject:
+    key: asset:api
+    name: rest_get_server
+  evidence:
+    file_path: src/wp-includes/rest-api.php
+    start_line: 629
+    end_line: 629
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: rest_get_server returns the singleton WP REST API server handling user endpoints.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-hash-password
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_hash_password
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 2753
+    end_line: 2753
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_hash_password hashes plaintext passwords before persistence.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-check-password
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_check_password
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 2843
+    end_line: 2843
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_check_password verifies submitted passwords against stored user_pass hashes.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-logout
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_logout
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 744
+    end_line: 744
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_logout clears authentication cookies and destroys the current session.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-get-current-user
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_get_current_user
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 69
+    end_line: 69
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_get_current_user resolves the authenticated WP_User for the request.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-clear-auth-cookie
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_clear_auth_cookie
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 1208
+    end_line: 1208
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_clear_auth_cookie removes auth and logged_in cookies on logout.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-generate-password
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_generate_password
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 2964
+    end_line: 2964
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_generate_password creates random secrets for resets and application passwords.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-authenticate
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_authenticate
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 684
+    end_line: 684
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_authenticate runs the core username/password authentication pipeline.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-authenticate-app-password
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_authenticate_application_password
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 372
+    end_line: 372
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_authenticate_application_password validates REST basic-auth application passwords.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-validate-app-password
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_validate_application_password
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 521
+    end_line: 521
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_validate_application_password checks application password credentials during REST auth.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-is-user-logged-in
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: is_user_logged_in
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 1262
+    end_line: 1262
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: is_user_logged_in reports whether the current request has an authenticated user.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-validate-auth-cookie
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_validate_auth_cookie
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 782
+    end_line: 782
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_validate_auth_cookie validates logged_in and auth cookies to recover user id.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-create-user
+  layer: components
+  subject:
+    key: asset:service
+    name: wp_create_user
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 3000
+    end_line: 3000
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_create_user creates a new user record with login, password, and email.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-insert-user
+  layer: components
+  subject:
+    key: asset:service
+    name: wp_insert_user
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 2223
+    end_line: 2223
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_insert_user inserts or updates rows in the users table and related meta.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-get-users
+  layer: components
+  subject:
+    key: asset:service
+    name: get_users
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 873
+    end_line: 873
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: get_users retrieves multiple WP_User objects from the database.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-username-exists
+  layer: components
+  subject:
+    key: asset:service
+    name: username_exists
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 2080
+    end_line: 2080
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: username_exists checks the users table for duplicate logins during registration.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-email-exists
+  layer: components
+  subject:
+    key: asset:service
+    name: email_exists
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 2112
+    end_line: 2112
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: email_exists checks the users table for duplicate user_email values.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-get-password-reset-key
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: get_password_reset_key
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 3102
+    end_line: 3102
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: get_password_reset_key generates password reset keys stored in user_activation_key.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-check-password-reset-key
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: check_password_reset_key
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 3178
+    end_line: 3178
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: check_password_reset_key validates reset keys before password changes.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-get-session-token
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_get_session_token
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 3692
+    end_line: 3692
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_get_session_token reads the session verifier for the logged-in user.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-set-password
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: wp_set_password
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 3103
+    end_line: 3103
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_set_password hashes and stores a new password for a user id.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-get-user-by
+  layer: components
+  subject:
+    key: asset:service
+    name: get_user_by
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 101
+    end_line: 101
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: get_user_by loads a WP_User by login, email, slug, or id.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wpdb-prepare
+  layer: components
+  subject:
+    key: asset:database
+    name: wpdb::prepare
+  evidence:
+    file_path: src/wp-includes/class-wpdb.php
+    start_line: 1458
+    end_line: 1458
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wpdb::prepare parameterizes SQL queries against the users and usermeta tables.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wpdb-get-results
+  layer: components
+  subject:
+    key: asset:database
+    name: wpdb::get_results
+  evidence:
+    file_path: src/wp-includes/class-wpdb.php
+    start_line: 3205
+    end_line: 3205
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wpdb::get_results fetches user rows and metadata query results.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-user-get-data-by
+  layer: components
+  subject:
+    key: asset:database
+    name: WP_User::get_data_by
+  evidence:
+    file_path: src/wp-includes/class-wp-user.php
+    start_line: 205
+    end_line: 205
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: WP_User::get_data_by retrieves raw user table columns from the database.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-wp-cache-set
+  layer: components
+  subject:
+    key: asset:cache
+    name: wp_cache_set
+  evidence:
+    file_path: src/wp-includes/cache.php
+    start_line: 108
+    end_line: 108
+  expected:
+    status: positive
+    labels:
+    - cache
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: wp_cache_set stores user and session values in the object cache.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-object-cache-get
+  layer: components
+  subject:
+    key: asset:cache
+    name: WP_Object_Cache::get
+  evidence:
+    file_path: src/wp-includes/class-wp-object-cache.php
+    start_line: 362
+    end_line: 362
+  expected:
+    status: positive
+    labels:
+    - cache
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: WP_Object_Cache::get reads cached user data to avoid repeated database access.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-add-user-meta
+  layer: components
+  subject:
+    key: asset:database
+    name: add_user_meta
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 1247
+    end_line: 1247
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - src/wp-includes/author-template.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-application-passwords.php
+    - src/wp-includes/class-wp-http-cookie.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/class-wp-recovery-mode-cookie-service.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/class-wp-user-query.php
+    - src/wp-includes/class-wp-user-request.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/meta.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/rest-api.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/user.php
+  rationale: add_user_meta writes user metadata such as session_tokens to usermeta.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-not-supabase
+  layer: components
+  subject:
+    key: third_party:supabase
+    name: Supabase
+  evidence:
+    file_path: src/wp-includes/user.php
+    start_line: 3000
+    end_line: 3000
+  expected:
+    status: negative
+    labels: []
+  rationale: User creation uses local wp_create_user and wpdb persistence. No Supabase client appears in this scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-not-paypal
+  layer: components
+  subject:
+    key: third_party:paypal
+    name: PayPal
+  evidence:
+    file_path: src/wp-includes/pluggable.php
+    start_line: 684
+    end_line: 684
+  expected:
+    status: negative
+    labels: []
+  rationale: wp_authenticate handles local credentials only. No PayPal payment SDK is referenced in the reviewed auth files.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed
+- id: wordpress-user-query-not-cache
+  layer: components
+  subject:
+    key: asset:cache
+    name: WP_User_Query
+  evidence:
+    file_path: src/wp-includes/class-wp-user-query.php
+    start_line: 18
+    end_line: 18
+  expected:
+    status: negative
+    labels: []
+  rationale: WP_User_Query issues SQL against the users table. It is not an object-cache layer.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: proposed

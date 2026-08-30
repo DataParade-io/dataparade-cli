@@ -1,0 +1,46 @@
+annotations:
+- id: posthog-user-email-persisted
+  layer: data_flows
+  subject:
+    key: flow:user-model->database
+    name: User email to database
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 247
+    end_line: 248
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: email and pending_email are ORM columns written on the User table.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: posthog-password-to-hash
+  layer: data_flows
+  subject:
+    key: flow:password->password-hash
+    name: Password to hashed password
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 123
+    end_line: 126
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: create_user calls set_password before save, hashing the supplied password
+    for storage.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

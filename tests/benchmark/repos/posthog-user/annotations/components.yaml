@@ -1,0 +1,46 @@
+annotations:
+- id: posthog-user-database
+  layer: components
+  subject:
+    key: asset:database
+    name: User
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 232
+    end_line: 247
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: Django User model persists email and account fields to the analytics
+    identity store.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: posthog-user-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: User
+  evidence:
+    file_path: posthog/models/user.py
+    start_line: 232
+    end_line: 233
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - posthog/models/user.py
+  rationale: User is the product account, with email as USERNAME_FIELD.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

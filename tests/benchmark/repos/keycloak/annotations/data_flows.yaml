@@ -1,0 +1,48 @@
+annotations:
+- id: keycloak-user-entity-persist
+  layer: data_flows
+  subject:
+    key: flow:user-entity->database
+    name: UserEntity to USER_ENTITY
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 60
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+  rationale: JPA maps UserEntity fields onto USER_ENTITY, persisting identity attributes.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: keycloak-credential-entity-persist
+  layer: data_flows
+  subject:
+    key: flow:credential-entity->database
+    name: CredentialEntity to CREDENTIAL
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 64
+    end_line: 68
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: SECRET_DATA and CREDENTIAL_DATA columns persist credential secrets onto
+    CREDENTIAL.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

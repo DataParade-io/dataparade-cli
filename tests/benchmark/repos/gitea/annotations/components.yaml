@@ -1,0 +1,49 @@
+annotations:
+- id: gitea-access-token-database
+  layer: components
+  subject:
+    key: asset:database
+    name: access_token
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 19
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: AccessToken is an xorm-mapped table storing personal access tokens and
+    owner UIDs.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-user-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: User
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 13
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The user struct is the account identity that owns tokens and profile
+    fields.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

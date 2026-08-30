@@ -151,3 +151,420 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: ghost-identity-token-encode
+  layer: data_flows
+  subject:
+    key: flow:sub->identity_token
+    name: Sub to identity token
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/token-service.js
+    start_line: 19
+    end_line: 35
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: encodeIdentityToken signs the member email sub into a GhostMembers identity
+    JWT.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-token-decode-to-sub
+  layer: data_flows
+  subject:
+    key: flow:token->sub
+    name: Token to sub
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/token-service.js
+    start_line: 75
+    end_line: 91
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: decodeToken verifies the JWT signature and enforces the members:identity
+    scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-auth-header-to-jwt
+  layer: data_flows
+  subject:
+    key: flow:authorization->jwt
+    name: Authorization header to JWT
+  evidence:
+    file_path: ghost/core/core/server/services/auth/members/index.js
+    start_line: 20
+    end_line: 31
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: authenticateMembersToken extracts GhostMembers bearer credentials from
+    the Authorization header.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-checkout-email-to-stripe
+  layer: data_flows
+  subject:
+    key: flow:email->stripe_checkout
+    name: Email to Stripe checkout
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/payments-service.js
+    start_line: 143
+    end_line: 147
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: createCheckoutSessionForTier passes member email into stripeAPIService.createCheckoutSession.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-staff-setup-credentials
+  layer: data_flows
+  subject:
+    key: flow:setup->auth_setup
+    name: Setup credentials to auth.setup
+  evidence:
+    file_path: ghost/core/core/server/api/endpoints/authentication.js
+    start_line: 50
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: Staff setup forwards name, email, and password from the request into
+    auth.setup.setupUser.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-entitlement-token-encode
+  layer: data_flows
+  subject:
+    key: flow:member->entitlement_token
+    name: Member to entitlement token
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/token-service.js
+    start_line: 38
+    end_line: 59
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: encodeEntitlementToken embeds member_uuid, paid status, and tier ids
+    into a short-lived JWT.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-stripe-customer-create
+  layer: data_flows
+  subject:
+    key: flow:email->stripe_customer
+    name: Email to Stripe customer
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/payments-service.js
+    start_line: 247
+    end_line: 250
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: createCustomerForMember passes member email and name to stripeAPIService.createCustomer.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-jwt-member-request-property
+  layer: data_flows
+  subject:
+    key: flow:jwt->req.member
+    name: JWT to req.member
+  evidence:
+    file_path: ghost/core/core/server/services/auth/members/index.js
+    start_line: 13
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: express-jwt middleware attaches the decoded member payload to req.member
+    for downstream handlers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-auth-middleware-unauthorized-wrap
+  layer: data_flows
+  subject:
+    key: flow:jwt_error->unauthorized
+    name: JWT error to UnauthorizedError
+  evidence:
+    file_path: ghost/core/core/server/services/auth/members/index.js
+    start_line: 46
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: authenticateMembersToken maps express-jwt UnauthorizedError into Ghost
+    UnauthorizedError responses.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-token-kid-to-jwt-sign
+  layer: data_flows
+  subject:
+    key: flow:kid->jwt_sign
+    name: Key id to JWT sign
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/token-service.js
+    start_line: 21
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: encodeIdentityToken includes the JWK kid in JWT claims and signing options.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-payments-price-to-checkout
+  layer: data_flows
+  subject:
+    key: flow:price->checkout_session
+    name: Price to checkout session
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/services/payments-service.js
+    start_line: 147
+    end_line: 149
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: createCheckoutSessionForTier returns the Stripe checkout session URL
+    for the selected price.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-repository-transient-id-cycle
+  layer: data_flows
+  subject:
+    key: flow:member->transient_id
+    name: Member to transient_id
+  evidence:
+    file_path: ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    start_line: 396
+    end_line: 402
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/members/members-api/services/payments-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+    - ghost/core/core/server/api/endpoints/authentication.js
+  rationale: cycleTransientId writes a new transient_id for the member record in the
+    database.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

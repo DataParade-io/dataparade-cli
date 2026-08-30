@@ -202,3 +202,345 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: medusa-user-module
+  layer: components
+  subject:
+    key: actor:admin
+    name: UserModule
+  evidence:
+    file_path: packages/medusa/src/modules/user.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - admin
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: user.ts registers the Medusa admin user module from @medusajs/user.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-github-auth-provider
+  layer: components
+  subject:
+    key: third_party:github_auth
+    name: GithubAuthProvider
+  evidence:
+    file_path: packages/medusa/src/modules/auth-github.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - auth_provider
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: auth-github.ts wires GitHub as an external identity provider for Medusa
+    auth.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-oidc-auth-provider
+  layer: components
+  subject:
+    key: third_party:oidc
+    name: OidcAuthProvider
+  evidence:
+    file_path: packages/medusa/src/modules/auth-oidc.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - auth_provider
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: auth-oidc.ts registers an OpenID Connect provider for federated login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-redis-cache-module
+  layer: components
+  subject:
+    key: asset:cache
+    name: RedisCacheModule
+  evidence:
+    file_path: packages/medusa/src/modules/cache-redis.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - cache
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: cache-redis.ts exposes the Redis cache module used by Medusa services.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-rbac-module
+  layer: components
+  subject:
+    key: asset:service
+    name: RbacModule
+  evidence:
+    file_path: packages/medusa/src/modules/rbac.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: rbac.ts registers role-based access control via @medusajs/rbac.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-payment-module
+  layer: components
+  subject:
+    key: asset:service
+    name: PaymentModule
+  evidence:
+    file_path: packages/medusa/src/modules/payment.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: payment.ts exports the core payment module registry entry.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-order-module
+  layer: components
+  subject:
+    key: asset:service
+    name: OrderModule
+  evidence:
+    file_path: packages/medusa/src/modules/order.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: order.ts re-exports the order module that links customers to purchases.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-emailpass-provider
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: EmailPassAuthProvider
+  evidence:
+    file_path: packages/medusa/src/modules/auth-emailpass.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: auth-emailpass.ts registers local email/password authentication for Medusa.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-notification-module
+  layer: components
+  subject:
+    key: asset:service
+    name: NotificationModule
+  evidence:
+    file_path: packages/medusa/src/modules/notification-sendgrid.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - email_provider
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: notification-sendgrid.ts wires SendGrid for transactional customer email.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-auth-registry
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: AuthModuleRegistry
+  evidence:
+    file_path: packages/medusa/src/modules/auth.ts
+    start_line: 1
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/medusa/src/modules/auth.ts
+    - packages/medusa/src/modules/auth-emailpass.ts
+    - packages/medusa/src/modules/auth-google.ts
+    - packages/medusa/src/modules/auth-github.ts
+    - packages/medusa/src/modules/auth-oidc.ts
+    - packages/medusa/src/modules/customer.ts
+    - packages/medusa/src/modules/user.ts
+    - packages/medusa/src/modules/order.ts
+    - packages/medusa/src/modules/payment.ts
+    - packages/medusa/src/modules/payment-stripe.ts
+    - packages/medusa/src/modules/notification-sendgrid.ts
+    - packages/medusa/src/modules/cache-redis.ts
+    - packages/medusa/src/modules/rbac.ts
+  rationale: auth.ts is the root module registry that loads Medusa authentication
+    providers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

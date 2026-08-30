@@ -8,7 +8,7 @@ scope:
     - path: students/migrations/
       reason: generated migrations
 coverage:
-  layers: [components]
+  layers: [components, data_flows]
   languages: [python]
   domains: [education]
 selection_rationale: >-

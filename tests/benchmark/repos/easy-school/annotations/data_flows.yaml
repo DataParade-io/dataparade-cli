@@ -1,0 +1,47 @@
+annotations:
+- id: easy-school-guardian-ssn-persisted
+  layer: data_flows
+  subject:
+    key: flow:guardian-model->database
+    name: Guardian SSN to database
+  evidence:
+    file_path: students/models.py
+    start_line: 57
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - students/models.py
+  rationale: Guardian.social_security_number is a CharField column persisted via Django
+    ORM.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: easy-school-student-profile-persisted
+  layer: data_flows
+  subject:
+    key: flow:student-model->database
+    name: Student profile to database
+  evidence:
+    file_path: students/models.py
+    start_line: 17
+    end_line: 23
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - students/models.py
+  rationale: Student stores admission number, name, gender, and date of birth as ORM
+    columns.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

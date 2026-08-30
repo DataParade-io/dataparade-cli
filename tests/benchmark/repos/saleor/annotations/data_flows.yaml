@@ -1,0 +1,46 @@
+annotations:
+- id: saleor-user-email-persisted
+  layer: data_flows
+  subject:
+    key: flow:user-model->database
+    name: User email to database
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 172
+    end_line: 174
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: User.email and name fields are Django model columns written to the account
+    database.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: saleor-address-persisted
+  layer: data_flows
+  subject:
+    key: flow:address-model->database
+    name: Address to database
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 63
+    end_line: 74
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Address stores street, city, postal code, and phone as ORM columns.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

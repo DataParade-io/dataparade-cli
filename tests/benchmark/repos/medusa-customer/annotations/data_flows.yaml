@@ -1,0 +1,73 @@
+annotations:
+- id: medusa-customer-user-email-persisted
+  layer: data_flows
+  subject:
+    key: flow:user-model->database
+    name: User email to database
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 8
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: email is a required searchable column on the user model.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-customer-email-persisted
+  layer: data_flows
+  subject:
+    key: flow:customer-model->database
+    name: Customer email to database
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 12
+    end_line: 12
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer email is stored as a searchable nullable column.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-invite-token-persisted
+  layer: data_flows
+  subject:
+    key: flow:invite-token->database
+    name: Invite token to database
+  evidence:
+    file_path: packages/modules/user/src/models/invite.ts
+    start_line: 8
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Invite.token is persisted for staff invitation acceptance.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

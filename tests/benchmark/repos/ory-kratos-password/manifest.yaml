@@ -4,7 +4,7 @@ license: Apache-2.0
 scope:
   include: [identity/credentials_password.go]
 coverage:
-  layers: [data_items]
+  layers: [data_items, pii_signals, components, data_flows]
   languages: [go]
   domains: [identity, credentials, password]
 selection_rationale: >-

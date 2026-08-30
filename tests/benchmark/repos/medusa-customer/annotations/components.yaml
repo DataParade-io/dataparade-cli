@@ -1,0 +1,122 @@
+annotations:
+- id: medusa-customer-user-database
+  layer: components
+  subject:
+    key: asset:database
+    name: user
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 3
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Medusa user model defines searchable email and name columns persisted
+    by the ORM layer.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-customer-database
+  layer: components
+  subject:
+    key: asset:database
+    name: Customer
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 6
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer model stores storefront identity fields and related addresses.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-invite-database
+  layer: components
+  subject:
+    key: asset:database
+    name: invite
+  evidence:
+    file_path: packages/modules/user/src/models/invite.ts
+    start_line: 3
+    end_line: 10
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Invite model persists email, token, and expiry for staff onboarding.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-user-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: user
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 3
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: User is the admin account identity with unique email.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: medusa-customer-customer-actor
+  layer: components
+  subject:
+    key: actor:customer
+    name: Customer
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 6
+    end_line: 13
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer is the storefront buyer identity with optional account registration.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

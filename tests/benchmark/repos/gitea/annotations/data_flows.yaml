@@ -1,0 +1,49 @@
+annotations:
+- id: gitea-token-hash-persisted
+  layer: data_flows
+  subject:
+    key: flow:access-token->database
+    name: AccessToken to store
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 19
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: AccessToken persists UID and TokenHash into the auth store; Token is
+    omitted from xorm.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: gitea-token-to-hash
+  layer: data_flows
+  subject:
+    key: flow:token->token-hash
+    name: Token to TokenHash
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 51
+    end_line: 52
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: setNewTokenValue hashes the generated bearer token into TokenHash before
+    database insert.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

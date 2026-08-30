@@ -131,3 +131,301 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: strapi-token-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: token
+  evidence:
+    file_path: packages/core/admin/server/src/services/token.ts
+    start_line: 40
+    end_line: 40
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: The token service generates random refresh tokens and resolves JWT signing
+    options.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-session-manager
+  layer: components
+  subject:
+    key: asset:cache
+    name: session-manager
+  evidence:
+    file_path: packages/core/core/src/services/session-manager.ts
+    start_line: 1
+    end_line: 1
+  expected:
+    status: positive
+    labels:
+    - cache
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: session-manager coordinates admin refresh sessions stored for authenticated
+    operators.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-session-middleware
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: session middleware
+  evidence:
+    file_path: packages/core/core/src/middlewares/session.ts
+    start_line: 1
+    end_line: 1
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: The session middleware attaches session handling to incoming admin API
+    requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-bcrypt-hash-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: hashPassword
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 72
+    end_line: 72
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: auth.hashPassword bcrypt-hashes admin passwords before they are stored.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-validate-password-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: validatePassword
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 80
+    end_line: 80
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: validatePassword compares a login password to the stored admin_users
+    hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-forgot-password-service
+  layer: components
+  subject:
+    key: asset:service
+    name: forgotPassword
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 111
+    end_line: 111
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: forgotPassword issues reset tokens and emails admins a password recovery
+    link.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-reset-password-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: resetPassword
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 152
+    end_line: 152
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: resetPassword validates a reset token and writes a new password hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-local-passport-strategy
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: local-strategy
+  evidence:
+    file_path: packages/core/admin/server/src/services/passport/local-strategy.ts
+    start_line: 1
+    end_line: 1
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: The local passport strategy authenticates admin users with email and
+    password.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-auth-controller
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: authentication controller
+  evidence:
+    file_path: packages/core/admin/server/src/controllers/authentication.ts
+    start_line: 39
+    end_line: 39
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: The authentication controller exposes login, logout, and password reset
+    HTTP endpoints.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-admin-user-content-type
+  layer: components
+  subject:
+    key: actor:user
+    name: admin::user
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 5
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - admin
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: The admin::user content type models Strapi admin operators with role
+    relations.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

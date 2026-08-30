@@ -201,3 +201,408 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: drupal-password-to-password-checker
+  layer: data_flows
+  subject:
+    key: flow:password->password_checker
+    name: Password to password checker
+  evidence:
+    file_path: core/modules/user/src/UserAuthentication.php
+    start_line: 57
+    end_line: 58
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: authenticateAccount passes the submitted password to passwordChecker->check
+    against the stored hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-password-rehash-to-save
+  layer: data_flows
+  subject:
+    key: flow:password->entity_save
+    name: Password rehash to entity save
+  evidence:
+    file_path: core/modules/user/src/UserAuthentication.php
+    start_line: 60
+    end_line: 62
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: When needsRehash is true, authenticateAccount writes the password back
+    to the user entity.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-lookup-account-by-name
+  layer: data_flows
+  subject:
+    key: flow:name->lookup_account
+    name: Name to lookupAccount
+  evidence:
+    file_path: core/modules/user/src/UserAuthentication.php
+    start_line: 44
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: lookupAccount loads a user entity by username from the user storage.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-http-login-to-csrf-token
+  layer: data_flows
+  subject:
+    key: flow:login->csrf_token
+    name: HTTP login to CSRF token
+  evidence:
+    file_path: core/modules/user/src/Controller/UserAuthenticationController.php
+    start_line: 240
+    end_line: 240
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: Successful JSON login returns a csrf_token derived from the authenticated
+    session.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-reset-password-to-notification
+  layer: data_flows
+  subject:
+    key: flow:account->send_password_reset
+    name: Account to sendPasswordReset
+  evidence:
+    file_path: core/modules/user/src/Controller/UserAuthenticationController.php
+    start_line: 311
+    end_line: 312
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: resetPassword delegates to notificationHandler->sendPasswordReset for
+    the matched account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-one-time-login-url-flow
+  layer: data_flows
+  subject:
+    key: flow:account->one_time_login_url
+    name: Account to one-time login URL
+  evidence:
+    file_path: core/modules/user/src/OneTimeAuthentication.php
+    start_line: 97
+    end_line: 106
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: generateOneTimeLoginUrl embeds uid, timestamp, and HMAC into a password-reset
+    login route.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-verify-hmac-flow
+  layer: data_flows
+  subject:
+    key: flow:hmac->verify
+    name: HMAC to verifyHmac
+  evidence:
+    file_path: core/modules/user/src/OneTimeAuthentication.php
+    start_line: 78
+    end_line: 81
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: verifyHmac recomputes generateHmac and compares it with hash_equals for
+    one-time links.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-finalizer-last-login-to-database
+  layer: data_flows
+  subject:
+    key: flow:last_login->database
+    name: Last login to database
+  evidence:
+    file_path: core/modules/user/src/LoginFinalizer.php
+    start_line: 47
+    end_line: 49
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: finalizeLogin updates the user login timestamp in persistent storage
+    via UserStorage.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-session-migrate-on-login
+  layer: data_flows
+  subject:
+    key: flow:login->session_migrate
+    name: Login to session migrate
+  evidence:
+    file_path: core/modules/user/src/LoginFinalizer.php
+    start_line: 55
+    end_line: 57
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: finalizeLogin migrates the PHP session and stores uid after authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-cookie-roles-to-session
+  layer: data_flows
+  subject:
+    key: flow:uid->roles_query
+    name: Session uid to roles query
+  evidence:
+    file_path: core/modules/user/src/Authentication/Provider/Cookie.php
+    start_line: 105
+    end_line: 108
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: getUserFromSession loads role IDs from user__roles for the session uid.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-flood-register-on-failed-login
+  layer: data_flows
+  subject:
+    key: flow:failed_login->flood_register
+    name: Failed login to flood register
+  evidence:
+    file_path: core/modules/user/src/Controller/UserAuthenticationController.php
+    start_line: 253
+    end_line: 257
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: Failed HTTP login registers user.http_login and user.failed_login_ip
+    flood events.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: drupal-logout-destroy-session
+  layer: data_flows
+  subject:
+    key: flow:logout->session_destroy
+    name: Logout to session destroy
+  evidence:
+    file_path: core/modules/user/src/LogoutFinalizer.php
+    start_line: 40
+    end_line: 41
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/modules/user/src/Entity/User.php
+    - core/modules/user/src/UserAuthentication.php
+    - core/modules/user/src/Authentication/Provider/Cookie.php
+    - core/modules/user/src/Controller/UserAuthenticationController.php
+    - core/modules/user/src/Form/UserLoginForm.php
+    - core/modules/user/src/LoginFinalizer.php
+    - core/modules/user/src/LogoutFinalizer.php
+    - core/modules/user/src/OneTimeAuthentication.php
+    - core/modules/user/src/UserFloodControl.php
+    - core/modules/user/src/UserStorage.php
+    - core/modules/user/src/NotificationHandler.php
+    - core/modules/user/src/Plugin/rest/resource/UserRegistrationResource.php
+  rationale: finalizeLogout destroys the PHP session and sets an anonymous account
+    on the proxy.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

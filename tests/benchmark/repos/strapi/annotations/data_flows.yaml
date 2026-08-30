@@ -83,3 +83,329 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: strapi-forgot-to-reset-token
+  layer: data_flows
+  subject:
+    key: flow:forgot-email->reset-token
+    name: Forgot email to reset token
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 119
+    end_line: 119
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: forgotPassword calls assignResetPasswordToken and emails the generated
+    code to the admin.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-reset-token-to-user-query
+  layer: data_flows
+  subject:
+    key: flow:reset-token->admin-user
+    name: Reset token to admin user
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 155
+    end_line: 157
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: resetPassword loads the matching admin::user row by resetPasswordToken
+    before updating the hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-password-to-bcrypt
+  layer: data_flows
+  subject:
+    key: flow:password->bcrypt-hash
+    name: Password to bcrypt hash
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 72
+    end_line: 72
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: hashPassword bcrypt-hashes the submitted password before persistence.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-login-password-compare
+  layer: data_flows
+  subject:
+    key: flow:login->bcrypt-compare
+    name: Login to bcrypt compare
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 94
+    end_line: 94
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: checkCredentials compares the submitted password to user.password with
+    bcrypt.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-assign-reset-token
+  layer: data_flows
+  subject:
+    key: flow:user-id->reset-token
+    name: User id to reset token
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 36
+    end_line: 42
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: assignResetPasswordToken writes resetPasswordToken and expiry onto the
+    admin user record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-passport-to-check-credentials
+  layer: data_flows
+  subject:
+    key: flow:passport->checkCredentials
+    name: Passport to checkCredentials
+  evidence:
+    file_path: packages/core/admin/server/src/services/passport/local-strategy.ts
+    start_line: 14
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: The local strategy forwards submitted credentials to auth.checkCredentials.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-login-passport-authenticate
+  layer: data_flows
+  subject:
+    key: flow:login-body->passport
+    name: Login body to passport
+  evidence:
+    file_path: packages/core/admin/server/src/controllers/authentication.ts
+    start_line: 46
+    end_line: 46
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: The login handler invokes passport.authenticate with the local strategy.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-forgot-email-query
+  layer: data_flows
+  subject:
+    key: flow:forgot-email->admin_users
+    name: Forgot email to admin_users
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 112
+    end_line: 114
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: forgotPassword queries admin::user by email to locate the active admin
+    account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-reset-email-send
+  layer: data_flows
+  subject:
+    key: flow:reset-url->email
+    name: Reset URL to email
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 126
+    end_line: 139
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: forgotPassword sends a templated email containing the reset-password
+    URL to user.email.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-token-create-random
+  layer: data_flows
+  subject:
+    key: flow:rng->refresh-token
+    name: Random bytes to refresh token
+  evidence:
+    file_path: packages/core/admin/server/src/services/token.ts
+    start_line: 40
+    end_line: 41
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: createToken generates a random hex refresh token for admin sessions.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: strapi-check-credentials-email-query
+  layer: data_flows
+  subject:
+    key: flow:login-email->admin_users
+    name: Login email to admin_users
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 88
+    end_line: 88
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+    - packages/core/core/src/services/session-manager.ts
+    - packages/core/core/src/middlewares/session.ts
+  rationale: checkCredentials queries admin::user by email to load the stored password
+    hash.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
