@@ -1,21 +1,374 @@
-# Scanner-blind proposals for the complete non-enterprise TypeScript scope.
 annotations:
-  - { id: medusa-user-id, layer: data_items, subject: { key: data_item:id, name: id }, evidence: { file_path: packages/modules/user/src/models/user.ts, start_line: 5, end_line: 5 }, expected: { status: positive, labels: [user_identifier] }, rationale: Primary key of the user model, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-user-first-name, layer: data_items, subject: { key: data_item:first_name, name: first_name }, evidence: { file_path: packages/modules/user/src/models/user.ts, start_line: 6, end_line: 6 }, expected: { status: positive, labels: [person_name] }, rationale: User first-name model property, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-user-last-name, layer: data_items, subject: { key: data_item:last_name, name: last_name }, evidence: { file_path: packages/modules/user/src/models/user.ts, start_line: 7, end_line: 7 }, expected: { status: positive, labels: [person_name] }, rationale: User last-name model property, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-user-email, layer: data_items, subject: { key: data_item:email, name: email }, evidence: { file_path: packages/modules/user/src/models/user.ts, start_line: 8, end_line: 8 }, expected: { status: positive, labels: [email_address] }, rationale: User email model property, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-user-avatar, layer: data_items, subject: { key: data_item:avatar_url, name: avatar_url }, evidence: { file_path: packages/modules/user/src/models/user.ts, start_line: 9, end_line: 9 }, expected: { status: ambiguous, labels: [] }, rationale: Avatar URL may expose user profile content but links have no settled taxonomy treatment, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-user-metadata, layer: data_items, subject: { key: data_item:metadata, name: metadata }, evidence: { file_path: packages/modules/user/src/models/user.ts, start_line: 10, end_line: 10 }, expected: { status: ambiguous, labels: [] }, rationale: Arbitrary JSON can contain personal data but its contents are undefined, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-customer-id, layer: data_items, subject: { key: data_item:id, name: id }, evidence: { file_path: packages/modules/customer/src/models/customer.ts, start_line: 8, end_line: 8 }, expected: { status: positive, labels: [user_identifier] }, rationale: Primary key of the customer record, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-company-name, layer: data_items, subject: { key: data_item:company_name, name: company_name }, evidence: { file_path: packages/modules/customer/src/models/customer.ts, start_line: 9, end_line: 9 }, expected: { status: ambiguous, labels: [] }, rationale: Company name can represent an organization or a sole proprietor, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-customer-first-name, layer: data_items, subject: { key: data_item:first_name, name: first_name }, evidence: { file_path: packages/modules/customer/src/models/customer.ts, start_line: 10, end_line: 10 }, expected: { status: positive, labels: [person_name] }, rationale: Customer first-name model property, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-customer-last-name, layer: data_items, subject: { key: data_item:last_name, name: last_name }, evidence: { file_path: packages/modules/customer/src/models/customer.ts, start_line: 11, end_line: 11 }, expected: { status: positive, labels: [person_name] }, rationale: Customer last-name model property, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-customer-email, layer: data_items, subject: { key: data_item:email, name: email }, evidence: { file_path: packages/modules/customer/src/models/customer.ts, start_line: 12, end_line: 12 }, expected: { status: positive, labels: [email_address] }, rationale: Customer email model property, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-customer-phone, layer: data_items, subject: { key: data_item:phone, name: phone }, evidence: { file_path: packages/modules/customer/src/models/customer.ts, start_line: 13, end_line: 13 }, expected: { status: positive, labels: [phone_number] }, rationale: Customer phone model property, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-has-account, layer: data_items, subject: { key: data_item:has_account, name: has_account }, evidence: { file_path: packages/modules/customer/src/models/customer.ts, start_line: 14, end_line: 14 }, expected: { status: negative, labels: [] }, rationale: Account-presence flag is operational state rather than data content, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-customer-metadata, layer: data_items, subject: { key: data_item:metadata, name: metadata }, evidence: { file_path: packages/modules/customer/src/models/customer.ts, start_line: 15, end_line: 15 }, expected: { status: ambiguous, labels: [] }, rationale: Arbitrary customer JSON has undefined contents, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-created-by, layer: data_items, subject: { key: data_item:created_by, name: created_by }, evidence: { file_path: packages/modules/customer/src/models/customer.ts, start_line: 16, end_line: 16 }, expected: { status: ambiguous, labels: [] }, rationale: Creator reference may identify a user but its identifier semantics are unspecified, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-invite-id, layer: data_items, subject: { key: data_item:id, name: id }, evidence: { file_path: packages/modules/user/src/models/invite.ts, start_line: 5, end_line: 5 }, expected: { status: negative, labels: [] }, rationale: Invitation record primary key is not itself a user identity or credential, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-invite-email, layer: data_items, subject: { key: data_item:email, name: email }, evidence: { file_path: packages/modules/user/src/models/invite.ts, start_line: 6, end_line: 6 }, expected: { status: positive, labels: [email_address] }, rationale: Invitation target email address, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-invite-token, layer: data_items, subject: { key: data_item:token, name: token }, evidence: { file_path: packages/modules/user/src/models/invite.ts, start_line: 8, end_line: 8 }, expected: { status: ambiguous, labels: [] }, rationale: Invitation token is secret-like but policy has not assigned it a canonical credential label, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: medusa-invite-expires-at, layer: data_items, subject: { key: data_item:expires_at, name: expires_at }, evidence: { file_path: packages/modules/user/src/models/invite.ts, start_line: 9, end_line: 9 }, expected: { status: negative, labels: [] }, rationale: Invitation expiry is operational metadata, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
+- id: medusa-user-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: id
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 5
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Primary key of the user model
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-user-first-name
+  layer: data_items
+  subject:
+    key: data_item:first_name
+    name: first_name
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 6
+    end_line: 6
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: User first-name model property
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-user-last-name
+  layer: data_items
+  subject:
+    key: data_item:last_name
+    name: last_name
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 7
+    end_line: 7
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: User last-name model property
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-user-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 8
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: User email model property
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-user-avatar
+  layer: data_items
+  subject:
+    key: data_item:avatar_url
+    name: avatar_url
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 9
+    end_line: 9
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Avatar URL may expose user profile content but links have no settled taxonomy treatment
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: medusa-user-metadata
+  layer: data_items
+  subject:
+    key: data_item:metadata
+    name: metadata
+  evidence:
+    file_path: packages/modules/user/src/models/user.ts
+    start_line: 10
+    end_line: 10
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Arbitrary JSON can contain personal data but its contents are undefined
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: medusa-customer-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: id
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 8
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Primary key of the customer record
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-company-name
+  layer: data_items
+  subject:
+    key: data_item:company_name
+    name: company_name
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 9
+    end_line: 9
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Company name can represent an organization or a sole proprietor
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: medusa-customer-first-name
+  layer: data_items
+  subject:
+    key: data_item:first_name
+    name: first_name
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 10
+    end_line: 10
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer first-name model property
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-customer-last-name
+  layer: data_items
+  subject:
+    key: data_item:last_name
+    name: last_name
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 11
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer last-name model property
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-customer-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 12
+    end_line: 12
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer email model property
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-customer-phone
+  layer: data_items
+  subject:
+    key: data_item:phone
+    name: phone
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 13
+    end_line: 13
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Customer phone model property
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-has-account
+  layer: data_items
+  subject:
+    key: data_item:has_account
+    name: has_account
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 14
+    end_line: 14
+  expected:
+    status: negative
+    labels: []
+  rationale: Account-presence flag is operational state rather than data content
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: medusa-customer-metadata
+  layer: data_items
+  subject:
+    key: data_item:metadata
+    name: metadata
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 15
+    end_line: 15
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Arbitrary customer JSON has undefined contents
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: medusa-created-by
+  layer: data_items
+  subject:
+    key: data_item:created_by
+    name: created_by
+  evidence:
+    file_path: packages/modules/customer/src/models/customer.ts
+    start_line: 16
+    end_line: 16
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Creator reference may identify a user but its identifier semantics are unspecified
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: medusa-invite-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: id
+  evidence:
+    file_path: packages/modules/user/src/models/invite.ts
+    start_line: 5
+    end_line: 5
+  expected:
+    status: negative
+    labels: []
+  rationale: Invitation record primary key is not itself a user identity or credential
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: medusa-invite-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: packages/modules/user/src/models/invite.ts
+    start_line: 6
+    end_line: 6
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/modules/customer/src/models/customer.ts
+    - packages/modules/user/src/models/invite.ts
+    - packages/modules/user/src/models/user.ts
+  rationale: Invitation target email address
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: medusa-invite-token
+  layer: data_items
+  subject:
+    key: data_item:token
+    name: token
+  evidence:
+    file_path: packages/modules/user/src/models/invite.ts
+    start_line: 8
+    end_line: 8
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Invitation token is secret-like but policy has not assigned it a canonical credential label
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: medusa-invite-expires-at
+  layer: data_items
+  subject:
+    key: data_item:expires_at
+    name: expires_at
+  evidence:
+    file_path: packages/modules/user/src/models/invite.ts
+    start_line: 9
+    end_line: 9
+  expected:
+    status: negative
+    labels: []
+  rationale: Invitation expiry is operational metadata
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed

@@ -1,17 +1,268 @@
-# Scanner-blind proposals for the complete two-file Java persistence scope.
 annotations:
-  - { id: keycloak-user-id, layer: data_items, subject: { key: data_item:id, name: id }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java, start_line: 69, end_line: 69 }, expected: { status: positive, labels: [user_identifier] }, rationale: Primary ID of the user entity, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-username, layer: data_items, subject: { key: data_item:username, name: username }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java, start_line: 73, end_line: 73 }, expected: { status: positive, labels: [user_identifier] }, rationale: User account login identifier, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-first-name, layer: data_items, subject: { key: data_item:first_name, name: firstName }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java, start_line: 76, end_line: 76 }, expected: { status: positive, labels: [person_name] }, rationale: User first name, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-last-name, layer: data_items, subject: { key: data_item:last_name, name: lastName }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java, start_line: 83, end_line: 83 }, expected: { status: positive, labels: [person_name] }, rationale: User last name, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-email, layer: data_items, subject: { key: data_item:email, name: email }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java, start_line: 85, end_line: 85 }, expected: { status: positive, labels: [email_address] }, rationale: User email address, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-email-constraint, layer: data_items, subject: { key: data_item:email_constraint, name: emailConstraint }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java, start_line: 93, end_line: 93 }, expected: { status: negative, labels: [] }, rationale: Constraint value is generated metadata used to manage uniqueness, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-realm-id, layer: data_items, subject: { key: data_item:realm_id, name: realmId }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java, start_line: 96, end_line: 96 }, expected: { status: negative, labels: [] }, rationale: Realm identifies an authentication tenant rather than a natural person, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-credential-id, layer: data_items, subject: { key: data_item:id, name: id }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java, start_line: 49, end_line: 49 }, expected: { status: negative, labels: [] }, rationale: Credential-record ID is not a user identity or bearer secret, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-credential-type, layer: data_items, subject: { key: data_item:type, name: type }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java, start_line: 52, end_line: 52 }, expected: { status: negative, labels: [] }, rationale: Credential type classifies a record but is not the credential value, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-user-label, layer: data_items, subject: { key: data_item:user_label, name: userLabel }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java, start_line: 55, end_line: 55 }, expected: { status: ambiguous, labels: [] }, rationale: User-entered credential label has unconstrained contents, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-credential-user, layer: data_items, subject: { key: data_item:user, name: user }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java, start_line: 62, end_line: 62 }, expected: { status: positive, labels: [user_identifier] }, rationale: Credential record is linked directly to its user entity, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-secret-data, layer: data_items, subject: { key: data_item:secret_data, name: secretData }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java, start_line: 65, end_line: 65 }, expected: { status: positive, labels: [credential_secret] }, rationale: Explicit secret credential payload, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-credential-data, layer: data_items, subject: { key: data_item:credential_data, name: credentialData }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java, start_line: 68, end_line: 68 }, expected: { status: positive, labels: [credential_data] }, rationale: Explicit credential-data payload, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-credential-priority, layer: data_items, subject: { key: data_item:priority, name: priority }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java, start_line: 71, end_line: 71 }, expected: { status: negative, labels: [] }, rationale: Ordering metadata is not credential content, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: keycloak-credential-salt, layer: data_items, subject: { key: data_item:salt, name: salt }, evidence: { file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java, start_line: 75, end_line: 75 }, expected: { status: negative, labels: [] }, rationale: Deprecated salt is verifier metadata, not a bearer secret, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
+- id: keycloak-user-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: id
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 69
+    end_line: 69
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: Primary ID of the user entity
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: keycloak-username
+  layer: data_items
+  subject:
+    key: data_item:username
+    name: username
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 73
+    end_line: 73
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: User account login identifier
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: keycloak-first-name
+  layer: data_items
+  subject:
+    key: data_item:first_name
+    name: firstName
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 76
+    end_line: 76
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: User first name
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: keycloak-last-name
+  layer: data_items
+  subject:
+    key: data_item:last_name
+    name: lastName
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 83
+    end_line: 83
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: User last name
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: keycloak-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 85
+    end_line: 85
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: User email address
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: keycloak-email-constraint
+  layer: data_items
+  subject:
+    key: data_item:email_constraint
+    name: emailConstraint
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 93
+    end_line: 93
+  expected:
+    status: negative
+    labels: []
+  rationale: Constraint value is generated metadata used to manage uniqueness
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: keycloak-realm-id
+  layer: data_items
+  subject:
+    key: data_item:realm_id
+    name: realmId
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+    start_line: 96
+    end_line: 96
+  expected:
+    status: negative
+    labels: []
+  rationale: Realm identifies an authentication tenant rather than a natural person
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: keycloak-credential-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: id
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 49
+    end_line: 49
+  expected:
+    status: negative
+    labels: []
+  rationale: Credential-record ID is not a user identity or bearer secret
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: keycloak-credential-type
+  layer: data_items
+  subject:
+    key: data_item:type
+    name: type
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 52
+    end_line: 52
+  expected:
+    status: negative
+    labels: []
+  rationale: Credential type classifies a record but is not the credential value
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: keycloak-user-label
+  layer: data_items
+  subject:
+    key: data_item:user_label
+    name: userLabel
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 55
+    end_line: 55
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: User-entered credential label has unconstrained contents
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: keycloak-secret-data
+  layer: data_items
+  subject:
+    key: data_item:secret_data
+    name: secretData
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 65
+    end_line: 65
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: Explicit secret credential payload
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: keycloak-credential-data
+  layer: data_items
+  subject:
+    key: data_item:credential_data
+    name: credentialData
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 68
+    end_line: 68
+  expected:
+    status: positive
+    labels:
+    - credential_data
+    exhaustive_scope_files:
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
+  rationale: Explicit credential-data payload
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: keycloak-credential-priority
+  layer: data_items
+  subject:
+    key: data_item:priority
+    name: priority
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 71
+    end_line: 71
+  expected:
+    status: negative
+    labels: []
+  rationale: Ordering metadata is not credential content
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: keycloak-credential-salt
+  layer: data_items
+  subject:
+    key: data_item:salt
+    name: salt
+  evidence:
+    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
+    start_line: 75
+    end_line: 75
+  expected:
+    status: negative
+    labels: []
+  rationale: Deprecated salt is verifier metadata
+  not a bearer secret: null
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed

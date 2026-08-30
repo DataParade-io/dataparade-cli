@@ -1,25 +1,434 @@
-# Scanner-blind proposals for every relevant declaration in the complete model file.
 annotations:
-  - { id: saleor-address-first-name, layer: data_items, subject: { key: data_item:first_name, name: first_name }, evidence: { file_path: saleor/account/models.py, start_line: 64, end_line: 64 }, expected: { status: positive, labels: [person_name] }, rationale: Postal-address first name identifies the recipient, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-address-last-name, layer: data_items, subject: { key: data_item:last_name, name: last_name }, evidence: { file_path: saleor/account/models.py, start_line: 65, end_line: 65 }, expected: { status: positive, labels: [person_name] }, rationale: Postal-address last name identifies the recipient, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-company-name, layer: data_items, subject: { key: data_item:company_name, name: company_name }, evidence: { file_path: saleor/account/models.py, start_line: 66, end_line: 66 }, expected: { status: ambiguous, labels: [] }, rationale: Company field may name an organization or a sole proprietor, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-street-1, layer: data_items, subject: { key: data_item:street_address_1, name: street_address_1 }, evidence: { file_path: saleor/account/models.py, start_line: 67, end_line: 67 }, expected: { status: positive, labels: [street_address] }, rationale: Primary postal street address, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-street-2, layer: data_items, subject: { key: data_item:street_address_2, name: street_address_2 }, evidence: { file_path: saleor/account/models.py, start_line: 68, end_line: 68 }, expected: { status: positive, labels: [street_address] }, rationale: Secondary postal street-address component, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-city, layer: data_items, subject: { key: data_item:city, name: city }, evidence: { file_path: saleor/account/models.py, start_line: 69, end_line: 69 }, expected: { status: positive, labels: [city] }, rationale: Postal city field, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-city-area, layer: data_items, subject: { key: data_item:city_area, name: city_area }, evidence: { file_path: saleor/account/models.py, start_line: 70, end_line: 70 }, expected: { status: positive, labels: [address_region] }, rationale: Postal locality-area field, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-postal-code, layer: data_items, subject: { key: data_item:postal_code, name: postal_code }, evidence: { file_path: saleor/account/models.py, start_line: 71, end_line: 71 }, expected: { status: positive, labels: [postal_code] }, rationale: Postal-code field, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-country, layer: data_items, subject: { key: data_item:country, name: country }, evidence: { file_path: saleor/account/models.py, start_line: 72, end_line: 72 }, expected: { status: negative, labels: [] }, rationale: Country alone is not treated as a sensitive data item here, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-country-area, layer: data_items, subject: { key: data_item:country_area, name: country_area }, evidence: { file_path: saleor/account/models.py, start_line: 73, end_line: 73 }, expected: { status: positive, labels: [address_region] }, rationale: Postal regional-address component, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-phone, layer: data_items, subject: { key: data_item:phone, name: phone }, evidence: { file_path: saleor/account/models.py, start_line: 74, end_line: 74 }, expected: { status: positive, labels: [phone_number] }, rationale: Explicit phone-number model field, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-user-email, layer: data_items, subject: { key: data_item:email, name: email }, evidence: { file_path: saleor/account/models.py, start_line: 172, end_line: 172 }, expected: { status: positive, labels: [email_address] }, rationale: Unique user email field, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-user-first-name, layer: data_items, subject: { key: data_item:first_name, name: first_name }, evidence: { file_path: saleor/account/models.py, start_line: 173, end_line: 173 }, expected: { status: positive, labels: [person_name] }, rationale: User profile first name, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-user-last-name, layer: data_items, subject: { key: data_item:last_name, name: last_name }, evidence: { file_path: saleor/account/models.py, start_line: 174, end_line: 174 }, expected: { status: positive, labels: [person_name] }, rationale: User profile last name, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-user-note, layer: data_items, subject: { key: data_item:note, name: note }, evidence: { file_path: saleor/account/models.py, start_line: 182, end_line: 182 }, expected: { status: ambiguous, labels: [] }, rationale: Free-text user note may contain personal data but is unconstrained, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-avatar, layer: data_items, subject: { key: data_item:avatar, name: avatar }, evidence: { file_path: saleor/account/models.py, start_line: 192, end_line: 192 }, expected: { status: ambiguous, labels: [] }, rationale: User avatar can contain an image of a person but image taxonomy is unresolved, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-jwt-token-key, layer: data_items, subject: { key: data_item:jwt_token_key, name: jwt_token_key }, evidence: { file_path: saleor/account/models.py, start_line: 193, end_line: 195 }, expected: { status: ambiguous, labels: [] }, rationale: Authentication invalidation key is credential-adjacent but not a bearer JWT, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-language, layer: data_items, subject: { key: data_item:language_code, name: language_code }, evidence: { file_path: saleor/account/models.py, start_line: 196, end_line: 198 }, expected: { status: negative, labels: [] }, rationale: Locale preference is configuration in this packet, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-search-document, layer: data_items, subject: { key: data_item:search_document, name: search_document }, evidence: { file_path: saleor/account/models.py, start_line: 201, end_line: 201 }, expected: { status: ambiguous, labels: [] }, rationale: Denormalized search text can aggregate user information but source does not define its contents, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-user-uuid, layer: data_items, subject: { key: data_item:uuid, name: uuid }, evidence: { file_path: saleor/account/models.py, start_line: 202, end_line: 202 }, expected: { status: positive, labels: [user_identifier] }, rationale: Unique UUID represents the User and is used for string representation, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-customer-note-content, layer: data_items, subject: { key: data_item:content, name: content }, evidence: { file_path: saleor/account/models.py, start_line: 382, end_line: 382 }, expected: { status: ambiguous, labels: [] }, rationale: Customer-note free text can contain personal data but is not constrained by this model, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-customer-event-parameters, layer: data_items, subject: { key: data_item:parameters, name: parameters }, evidence: { file_path: saleor/account/models.py, start_line: 403, end_line: 403 }, expected: { status: ambiguous, labels: [] }, rationale: Arbitrary event JSON may contain customer data but no fixed content is defined, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: saleor-staff-email, layer: data_items, subject: { key: data_item:staff_email, name: staff_email }, evidence: { file_path: saleor/account/models.py, start_line: 424, end_line: 424 }, expected: { status: positive, labels: [email_address] }, rationale: Explicit staff email address, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
+- id: saleor-address-first-name
+  layer: data_items
+  subject:
+    key: data_item:first_name
+    name: first_name
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 64
+    end_line: 64
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal-address first name identifies the recipient
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-address-last-name
+  layer: data_items
+  subject:
+    key: data_item:last_name
+    name: last_name
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 65
+    end_line: 65
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal-address last name identifies the recipient
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-company-name
+  layer: data_items
+  subject:
+    key: data_item:company_name
+    name: company_name
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 66
+    end_line: 66
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Company field may name an organization or a sole proprietor
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: saleor-street-1
+  layer: data_items
+  subject:
+    key: data_item:street_address_1
+    name: street_address_1
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 67
+    end_line: 67
+  expected:
+    status: positive
+    labels:
+    - street_address
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Primary postal street address
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-street-2
+  layer: data_items
+  subject:
+    key: data_item:street_address_2
+    name: street_address_2
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 68
+    end_line: 68
+  expected:
+    status: positive
+    labels:
+    - street_address
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Secondary postal street-address component
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-city
+  layer: data_items
+  subject:
+    key: data_item:city
+    name: city
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 69
+    end_line: 69
+  expected:
+    status: positive
+    labels:
+    - city
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal city field
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-city-area
+  layer: data_items
+  subject:
+    key: data_item:city_area
+    name: city_area
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 70
+    end_line: 70
+  expected:
+    status: positive
+    labels:
+    - address_region
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal locality-area field
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-postal-code
+  layer: data_items
+  subject:
+    key: data_item:postal_code
+    name: postal_code
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 71
+    end_line: 71
+  expected:
+    status: positive
+    labels:
+    - postal_code
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal-code field
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-country
+  layer: data_items
+  subject:
+    key: data_item:country
+    name: country
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 72
+    end_line: 72
+  expected:
+    status: negative
+    labels: []
+  rationale: Country alone is not treated as a sensitive data item here
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: saleor-country-area
+  layer: data_items
+  subject:
+    key: data_item:country_area
+    name: country_area
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 73
+    end_line: 73
+  expected:
+    status: positive
+    labels:
+    - address_region
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Postal regional-address component
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-phone
+  layer: data_items
+  subject:
+    key: data_item:phone
+    name: phone
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 74
+    end_line: 74
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Explicit phone-number model field
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-user-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 172
+    end_line: 172
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Unique user email field
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-user-first-name
+  layer: data_items
+  subject:
+    key: data_item:first_name
+    name: first_name
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 173
+    end_line: 173
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: User profile first name
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-user-last-name
+  layer: data_items
+  subject:
+    key: data_item:last_name
+    name: last_name
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 174
+    end_line: 174
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: User profile last name
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-user-note
+  layer: data_items
+  subject:
+    key: data_item:note
+    name: note
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 182
+    end_line: 182
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Free-text user note may contain personal data but is unconstrained
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: saleor-avatar
+  layer: data_items
+  subject:
+    key: data_item:avatar
+    name: avatar
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 192
+    end_line: 192
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: User avatar can contain an image of a person but image taxonomy is unresolved
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: saleor-jwt-token-key
+  layer: data_items
+  subject:
+    key: data_item:jwt_token_key
+    name: jwt_token_key
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 193
+    end_line: 195
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Authentication invalidation key is credential-adjacent but not a bearer JWT
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: saleor-language
+  layer: data_items
+  subject:
+    key: data_item:language_code
+    name: language_code
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 196
+    end_line: 198
+  expected:
+    status: negative
+    labels: []
+  rationale: Locale preference is configuration in this packet
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: saleor-search-document
+  layer: data_items
+  subject:
+    key: data_item:search_document
+    name: search_document
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 201
+    end_line: 201
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Denormalized search text can aggregate user information but source does not define its contents
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: saleor-user-uuid
+  layer: data_items
+  subject:
+    key: data_item:uuid
+    name: uuid
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 202
+    end_line: 202
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Unique UUID represents the User and is used for string representation
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: saleor-customer-note-content
+  layer: data_items
+  subject:
+    key: data_item:content
+    name: content
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 382
+    end_line: 382
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Customer-note free text can contain personal data but is not constrained by this model
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: saleor-customer-event-parameters
+  layer: data_items
+  subject:
+    key: data_item:parameters
+    name: parameters
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 403
+    end_line: 403
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Arbitrary event JSON may contain customer data but no fixed content is defined
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: saleor-staff-email
+  layer: data_items
+  subject:
+    key: data_item:staff_email
+    name: staff_email
+  evidence:
+    file_path: saleor/account/models.py
+    start_line: 424
+    end_line: 424
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - saleor/account/models.py
+  rationale: Explicit staff email address
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted

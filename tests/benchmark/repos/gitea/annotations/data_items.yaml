@@ -1,198 +1,521 @@
-# Scanner-blind proposals across both complete Go files.
 annotations:
-  - id: gitea-token-owner-id
-    layer: data_items
-    subject: { key: data_item:uid, name: UID }
-    evidence: { file_path: models/auth/access_token.go, start_line: 22, end_line: 22 }
-    expected: { status: positive, labels: [user_identifier] }
-    rationale: UID links a personal access token to its owning user account.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-token-name
-    layer: data_items
-    subject: { key: data_item:name, name: Name }
-    evidence: { file_path: models/auth/access_token.go, start_line: 23, end_line: 23 }
-    expected: { status: ambiguous, labels: [] }
-    rationale: A user-chosen token name can be arbitrary free text; its contents are not established here.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-access-token
-    layer: data_items
-    subject: { key: data_item:token, name: Token }
-    evidence: { file_path: models/auth/access_token.go, start_line: 24, end_line: 24 }
-    expected: { status: positive, labels: [access_token] }
-    rationale: The comment and token-generation routine identify this as the bearer value of a personal access token.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-token-hash
-    layer: data_items
-    subject: { key: data_item:token_hash, name: TokenHash }
-    evidence: { file_path: models/auth/access_token.go, start_line: 25, end_line: 25 }
-    expected: { status: negative, labels: [] }
-    rationale: This stored SHA-256 verifier is not the bearer token itself.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-token-salt
-    layer: data_items
-    subject: { key: data_item:token_salt, name: TokenSalt }
-    evidence: { file_path: models/auth/access_token.go, start_line: 26, end_line: 26 }
-    expected: { status: negative, labels: [] }
-    rationale: Salt is verifier metadata, not an independently usable access token.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-token-last-eight
-    layer: data_items
-    subject: { key: data_item:token_last_eight, name: TokenLastEight }
-    evidence: { file_path: models/auth/access_token.go, start_line: 27, end_line: 27 }
-    expected: { status: negative, labels: [] }
-    rationale: An eight-character display suffix is not the bearer credential.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-token-scope
-    layer: data_items
-    subject: { key: data_item:scope, name: Scope }
-    evidence: { file_path: models/auth/access_token.go, start_line: 28, end_line: 28 }
-    expected: { status: negative, labels: [] }
-    rationale: Authorization scope is access-control metadata, not identity or credential content.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-token-created
-    layer: data_items
-    subject: { key: data_item:created_unix, name: CreatedUnix }
-    evidence: { file_path: models/auth/access_token.go, start_line: 30, end_line: 30 }
-    expected: { status: negative, labels: [] }
-    rationale: Token creation time is operational metadata in this scope.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-token-updated
-    layer: data_items
-    subject: { key: data_item:updated_unix, name: UpdatedUnix }
-    evidence: { file_path: models/auth/access_token.go, start_line: 31, end_line: 31 }
-    expected: { status: negative, labels: [] }
-    rationale: Token update time is operational metadata in this scope.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-user-id
-    layer: data_items
-    subject: { key: data_item:id, name: ID }
-    evidence: { file_path: modules/structs/user.go, start_line: 17, end_line: 17 }
-    expected: { status: positive, labels: [user_identifier] }
-    rationale: The public API's user ID identifies the represented account.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-username
-    layer: data_items
-    subject: { key: data_item:user_name, name: UserName }
-    evidence: { file_path: modules/structs/user.go, start_line: 19, end_line: 19 }
-    expected: { status: positive, labels: [user_identifier] }
-    rationale: The source comments identify this as the user's login/username.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-external-login-name
-    layer: data_items
-    subject: { key: data_item:login_name, name: LoginName }
-    evidence: { file_path: modules/structs/user.go, start_line: 21, end_line: 21 }
-    expected: { status: positive, labels: [user_identifier] }
-    rationale: This is an identifier supplied by an external authenticator for the user.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-auth-source-id
-    layer: data_items
-    subject: { key: data_item:source_id, name: SourceID }
-    evidence: { file_path: modules/structs/user.go, start_line: 23, end_line: 23 }
-    expected: { status: negative, labels: [] }
-    rationale: This identifies the configured authentication source, not the person.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-full-name
-    layer: data_items
-    subject: { key: data_item:full_name, name: FullName }
-    evidence: { file_path: modules/structs/user.go, start_line: 25, end_line: 25 }
-    expected: { status: positive, labels: [person_name] }
-    rationale: The source explicitly calls this the user's full name.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-email
-    layer: data_items
-    subject: { key: data_item:email, name: Email }
-    evidence: { file_path: modules/structs/user.go, start_line: 27, end_line: 27 }
-    expected: { status: positive, labels: [email_address] }
-    rationale: The API field is explicitly formatted and named as an email address.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-avatar-url
-    layer: data_items
-    subject: { key: data_item:avatar_url, name: AvatarURL }
-    evidence: { file_path: modules/structs/user.go, start_line: 29, end_line: 29 }
-    expected: { status: ambiguous, labels: [] }
-    rationale: A link to a user's avatar may expose profile information, but the URL alone has no written taxonomy label.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-profile-url
-    layer: data_items
-    subject: { key: data_item:html_url, name: HTMLURL }
-    evidence: { file_path: modules/structs/user.go, start_line: 31, end_line: 31 }
-    expected: { status: ambiguous, labels: [] }
-    rationale: A user profile link can identify a person, but link semantics need a taxonomy policy.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-language
-    layer: data_items
-    subject: { key: data_item:language, name: Language }
-    evidence: { file_path: modules/structs/user.go, start_line: 33, end_line: 33 }
-    expected: { status: negative, labels: [] }
-    rationale: Locale preference is non-sensitive profile configuration for this packet.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-last-login
-    layer: data_items
-    subject: { key: data_item:last_login, name: LastLogin }
-    evidence: { file_path: modules/structs/user.go, start_line: 37, end_line: 37 }
-    expected: { status: negative, labels: [] }
-    rationale: Account activity time is not a data-item category in the current taxonomy.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-user-location
-    layer: data_items
-    subject: { key: data_item:location, name: Location }
-    evidence: { file_path: modules/structs/user.go, start_line: 47, end_line: 47 }
-    expected: { status: ambiguous, labels: [] }
-    rationale: User-entered location may be personal location data, but granularity and taxonomy treatment are unspecified.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-user-website
-    layer: data_items
-    subject: { key: data_item:website, name: Website }
-    evidence: { file_path: modules/structs/user.go, start_line: 49, end_line: 49 }
-    expected: { status: ambiguous, labels: [] }
-    rationale: User-entered website may be personal, organizational, or generic.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-user-description
-    layer: data_items
-    subject: { key: data_item:description, name: Description }
-    evidence: { file_path: modules/structs/user.go, start_line: 51, end_line: 51 }
-    expected: { status: ambiguous, labels: [] }
-    rationale: Unstructured profile text may contain personal data but the declaration does not require it.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-settings-full-name
-    layer: data_items
-    subject: { key: data_item:full_name, name: FullName }
-    evidence: { file_path: modules/structs/user.go, start_line: 74, end_line: 74 }
-    expected: { status: positive, labels: [person_name] }
-    rationale: This settings API updates the user's full name.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-settings-location
-    layer: data_items
-    subject: { key: data_item:location, name: Location }
-    evidence: { file_path: modules/structs/user.go, start_line: 77, end_line: 77 }
-    expected: { status: ambiguous, labels: [] }
-    rationale: Settings preserve the same unconstrained user-entered location semantics.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-settings-full-name-option
-    layer: data_items
-    subject: { key: data_item:full_name, name: FullName }
-    evidence: { file_path: modules/structs/user.go, start_line: 89, end_line: 89 }
-    expected: { status: positive, labels: [person_name] }
-    rationale: This update option accepts the user's full name.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-settings-location-option
-    layer: data_items
-    subject: { key: data_item:location, name: Location }
-    evidence: { file_path: modules/structs/user.go, start_line: 92, end_line: 92 }
-    expected: { status: ambiguous, labels: [] }
-    rationale: This update option accepts an unconstrained user-entered location.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-new-username
-    layer: data_items
-    subject: { key: data_item:new_name, name: NewName }
-    evidence: { file_path: modules/structs/user.go, start_line: 107, end_line: 107 }
-    expected: { status: positive, labels: [user_identifier] }
-    rationale: The source explicitly calls this the new username for an account.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
-  - id: gitea-avatar-image
-    layer: data_items
-    subject: { key: data_item:image, name: Image }
-    evidence: { file_path: modules/structs/user.go, start_line: 113, end_line: 113 }
-    expected: { status: ambiguous, labels: [] }
-    rationale: Base64 avatar content may depict a person, but no image-content taxonomy label is defined.
-    provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed }
+- id: gitea-token-owner-id
+  layer: data_items
+  subject:
+    key: data_item:uid
+    name: UID
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: UID links a personal access token to its owning user account.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-token-name
+  layer: data_items
+  subject:
+    key: data_item:name
+    name: Name
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 23
+    end_line: 23
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: A user-chosen token name can be arbitrary free text; its contents are not established here.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-access-token
+  layer: data_items
+  subject:
+    key: data_item:token
+    name: Token
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The comment and token-generation routine identify this as the bearer value of a personal
+    access token.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-token-hash
+  layer: data_items
+  subject:
+    key: data_item:token_hash
+    name: TokenHash
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 25
+    end_line: 25
+  expected:
+    status: negative
+    labels: []
+  rationale: This stored SHA-256 verifier is not the bearer token itself.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-token-salt
+  layer: data_items
+  subject:
+    key: data_item:token_salt
+    name: TokenSalt
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 26
+    end_line: 26
+  expected:
+    status: negative
+    labels: []
+  rationale: Salt is verifier metadata, not an independently usable access token.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-token-last-eight
+  layer: data_items
+  subject:
+    key: data_item:token_last_eight
+    name: TokenLastEight
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 27
+    end_line: 27
+  expected:
+    status: negative
+    labels: []
+  rationale: An eight-character display suffix is not the bearer credential.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-token-scope
+  layer: data_items
+  subject:
+    key: data_item:scope
+    name: Scope
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 28
+    end_line: 28
+  expected:
+    status: negative
+    labels: []
+  rationale: Authorization scope is access-control metadata, not identity or credential content.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-token-created
+  layer: data_items
+  subject:
+    key: data_item:created_unix
+    name: CreatedUnix
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 30
+    end_line: 30
+  expected:
+    status: negative
+    labels: []
+  rationale: Token creation time is operational metadata in this scope.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-token-updated
+  layer: data_items
+  subject:
+    key: data_item:updated_unix
+    name: UpdatedUnix
+  evidence:
+    file_path: models/auth/access_token.go
+    start_line: 31
+    end_line: 31
+  expected:
+    status: negative
+    labels: []
+  rationale: Token update time is operational metadata in this scope.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-user-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: ID
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The public API's user ID identifies the represented account.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-username
+  layer: data_items
+  subject:
+    key: data_item:user_name
+    name: UserName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The source comments identify this as the user's login/username.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-external-login-name
+  layer: data_items
+  subject:
+    key: data_item:login_name
+    name: LoginName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 21
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: This is an identifier supplied by an external authenticator for the user.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-auth-source-id
+  layer: data_items
+  subject:
+    key: data_item:source_id
+    name: SourceID
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 23
+    end_line: 23
+  expected:
+    status: negative
+    labels: []
+  rationale: This identifies the configured authentication source, not the person.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-full-name
+  layer: data_items
+  subject:
+    key: data_item:full_name
+    name: FullName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 25
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The source explicitly calls this the user's full name.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: Email
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 27
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The API field is explicitly formatted and named as an email address.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-avatar-url
+  layer: data_items
+  subject:
+    key: data_item:avatar_url
+    name: AvatarURL
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 29
+    end_line: 29
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: A link to a user's avatar may expose profile information, but the URL alone has no written
+    taxonomy label.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-profile-url
+  layer: data_items
+  subject:
+    key: data_item:html_url
+    name: HTMLURL
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 31
+    end_line: 31
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: A user profile link can identify a person, but link semantics need a taxonomy policy.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-language
+  layer: data_items
+  subject:
+    key: data_item:language
+    name: Language
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 33
+    end_line: 33
+  expected:
+    status: negative
+    labels: []
+  rationale: Locale preference is non-sensitive profile configuration for this packet.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-last-login
+  layer: data_items
+  subject:
+    key: data_item:last_login
+    name: LastLogin
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 37
+    end_line: 37
+  expected:
+    status: negative
+    labels: []
+  rationale: Account activity time is not a data-item category in the current taxonomy.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-user-location
+  layer: data_items
+  subject:
+    key: data_item:location
+    name: Location
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 47
+    end_line: 47
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: User-entered location may be personal location data, but granularity and taxonomy treatment
+    are unspecified.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-user-website
+  layer: data_items
+  subject:
+    key: data_item:website
+    name: Website
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 49
+    end_line: 49
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: User-entered website may be personal, organizational, or generic.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-user-description
+  layer: data_items
+  subject:
+    key: data_item:description
+    name: Description
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 51
+    end_line: 51
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Unstructured profile text may contain personal data but the declaration does not require
+    it.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-settings-full-name
+  layer: data_items
+  subject:
+    key: data_item:full_name
+    name: FullName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 74
+    end_line: 74
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: This settings API updates the user's full name.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-settings-location
+  layer: data_items
+  subject:
+    key: data_item:location
+    name: Location
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 77
+    end_line: 77
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Settings preserve the same unconstrained user-entered location semantics.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-settings-full-name-option
+  layer: data_items
+  subject:
+    key: data_item:full_name
+    name: FullName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 89
+    end_line: 89
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: This update option accepts the user's full name.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-settings-location-option
+  layer: data_items
+  subject:
+    key: data_item:location
+    name: Location
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 92
+    end_line: 92
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: This update option accepts an unconstrained user-entered location.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: gitea-new-username
+  layer: data_items
+  subject:
+    key: data_item:new_name
+    name: NewName
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 107
+    end_line: 107
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - models/auth/access_token.go
+    - modules/structs/user.go
+  rationale: The source explicitly calls this the new username for an account.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: gitea-avatar-image
+  layer: data_items
+  subject:
+    key: data_item:image
+    name: Image
+  evidence:
+    file_path: modules/structs/user.go
+    start_line: 113
+    end_line: 113
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Base64 avatar content may depict a person, but no image-content taxonomy label is defined.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed

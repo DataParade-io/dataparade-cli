@@ -1,20 +1,22 @@
 annotations:
-  - id: easy-school-database-guardian-ssn
-    layer: components
-    subject:
-      key: asset:database
-      name: Database
-    evidence:
-      file_path: students/models.py
-      start_line: 57
-      end_line: 61
-    expected:
-      status: positive
-      labels: [database]
-    rationale: >-
-      Guardian model stores social_security_number as a Django CharField,
-      demonstrating database-backed sensitive data without integration wrappers.
-    provenance:
-      proposed_by: corpus-curation-agent
-      proposed_at: 2026-08-26
-      review_state: proposed
+- id: easy-school-database-guardian-ssn
+  layer: components
+  subject:
+    key: asset:database
+    name: Database
+  evidence:
+    file_path: students/models.py
+    start_line: 57
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - students/models.py
+  rationale: Guardian model stores social_security_number as a Django CharField, demonstrating database-backed
+    sensitive data without integration wrappers.
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted

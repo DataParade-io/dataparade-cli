@@ -1,20 +1,353 @@
-# Scanner-blind proposals for the complete 93-line serializer scope.
 annotations:
-  - { id: yjdh-employee-id, layer: data_items, subject: { key: data_item:id, name: id }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 18, end_line: 18 }, expected: { status: positive, labels: [user_identifier] }, rationale: Employee serializer exposes the employee record identifier, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-first-name, layer: data_items, subject: { key: data_item:first_name, name: first_name }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 19, end_line: 19 }, expected: { status: positive, labels: [person_name] }, rationale: Employee first name, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-last-name, layer: data_items, subject: { key: data_item:last_name, name: last_name }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 20, end_line: 20 }, expected: { status: positive, labels: [person_name] }, rationale: Employee last name, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-finnish-social-security-number, layer: data_items, subject: { key: data_item:social_security_number, name: social_security_number }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 21, end_line: 21 }, expected: { status: positive, labels: [national_identifier] }, rationale: Explicit Finnish social-security-number field validated by the Finnish HETU library in this file, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-email, layer: data_items, subject: { key: data_item:email, name: email }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 22, end_line: 22 }, expected: { status: positive, labels: [email_address] }, rationale: Employee email field, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-employee-language, layer: data_items, subject: { key: data_item:employee_language, name: employee_language }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 23, end_line: 23 }, expected: { status: negative, labels: [] }, rationale: Language preference is non-sensitive configuration in this packet, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-job-title, layer: data_items, subject: { key: data_item:job_title, name: job_title }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 24, end_line: 24 }, expected: { status: positive, labels: [employment_information] }, rationale: Employee job title describes employment information, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-monthly-pay, layer: data_items, subject: { key: data_item:monthly_pay, name: monthly_pay }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 25, end_line: 25 }, expected: { status: positive, labels: [compensation] }, rationale: Employee monthly pay is compensation information, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-vacation-money, layer: data_items, subject: { key: data_item:vacation_money, name: vacation_money }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 26, end_line: 26 }, expected: { status: positive, labels: [compensation] }, rationale: Vacation-money value is compensation information, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-other-expenses, layer: data_items, subject: { key: data_item:other_expenses, name: other_expenses }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 27, end_line: 27 }, expected: { status: positive, labels: [compensation] }, rationale: Employee expense value is financial employment information, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-working-hours, layer: data_items, subject: { key: data_item:working_hours, name: working_hours }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 28, end_line: 28 }, expected: { status: positive, labels: [employment_information] }, rationale: Employee working-hours value describes employment conditions, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-collective-agreement, layer: data_items, subject: { key: data_item:collective_bargaining_agreement, name: collective_bargaining_agreement }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 29, end_line: 29 }, expected: { status: ambiguous, labels: [] }, rationale: Agreement text may identify employment terms but lacks a settled taxonomy category, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-residence-flag, layer: data_items, subject: { key: data_item:is_living_in_helsinki, name: is_living_in_helsinki }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 30, end_line: 30 }, expected: { status: positive, labels: [residence_information] }, rationale: Boolean explicitly indicates whether the employee resides in Helsinki, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-commission-amount, layer: data_items, subject: { key: data_item:commission_amount, name: commission_amount }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 31, end_line: 31 }, expected: { status: positive, labels: [compensation] }, rationale: Employee commission amount is compensation information, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-commission-description, layer: data_items, subject: { key: data_item:commission_description, name: commission_description }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 32, end_line: 32 }, expected: { status: ambiguous, labels: [] }, rationale: Free-text commission description can contain employment or personal detail, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-birthday, layer: data_items, subject: { key: data_item:birthday, name: birthday }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 34, end_line: 34 }, expected: { status: positive, labels: [date_of_birth] }, rationale: Employee birthday is directly exposed and marked read-only in the API serializer, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-ssn-validation, layer: data_items, subject: { key: data_item:social_security_number, name: social_security_number }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 41, end_line: 48 }, expected: { status: positive, labels: [national_identifier] }, rationale: Dedicated validation confirms the field has Finnish social-security-number semantics, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
-  - { id: yjdh-search-ssn, layer: data_items, subject: { key: data_item:social_security_number, name: social_security_number }, evidence: { file_path: backend/benefit/applications/api/v1/serializers/employee.py, start_line: 91, end_line: 91 }, expected: { status: positive, labels: [national_identifier] }, rationale: Search serializer exposes the same named national identifier, provenance: { proposed_by: corpus-curation-agent, proposed_at: 2026-08-26, review_state: proposed } }
+- id: yjdh-employee-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: id
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 18
+    end_line: 18
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee serializer exposes the employee record identifier
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-first-name
+  layer: data_items
+  subject:
+    key: data_item:first_name
+    name: first_name
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee first name
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-last-name
+  layer: data_items
+  subject:
+    key: data_item:last_name
+    name: last_name
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee last name
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-finnish-social-security-number
+  layer: data_items
+  subject:
+    key: data_item:social_security_number
+    name: social_security_number
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 21
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Explicit Finnish social-security-number field validated by the Finnish HETU library in this
+    file
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 22
+    end_line: 22
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee email field
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-employee-language
+  layer: data_items
+  subject:
+    key: data_item:employee_language
+    name: employee_language
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 23
+    end_line: 23
+  expected:
+    status: negative
+    labels: []
+  rationale: Language preference is non-sensitive configuration in this packet
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: yjdh-job-title
+  layer: data_items
+  subject:
+    key: data_item:job_title
+    name: job_title
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - employment_information
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee job title describes employment information
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-monthly-pay
+  layer: data_items
+  subject:
+    key: data_item:monthly_pay
+    name: monthly_pay
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 25
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - compensation
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee monthly pay is compensation information
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-vacation-money
+  layer: data_items
+  subject:
+    key: data_item:vacation_money
+    name: vacation_money
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - compensation
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Vacation-money value is compensation information
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-other-expenses
+  layer: data_items
+  subject:
+    key: data_item:other_expenses
+    name: other_expenses
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 27
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - compensation
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee expense value is financial employment information
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-working-hours
+  layer: data_items
+  subject:
+    key: data_item:working_hours
+    name: working_hours
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 28
+    end_line: 28
+  expected:
+    status: positive
+    labels:
+    - employment_information
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee working-hours value describes employment conditions
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-collective-agreement
+  layer: data_items
+  subject:
+    key: data_item:collective_bargaining_agreement
+    name: collective_bargaining_agreement
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 29
+    end_line: 29
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Agreement text may identify employment terms but lacks a settled taxonomy category
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: yjdh-residence-flag
+  layer: data_items
+  subject:
+    key: data_item:is_living_in_helsinki
+    name: is_living_in_helsinki
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 30
+    end_line: 30
+  expected:
+    status: positive
+    labels:
+    - residence_information
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Boolean explicitly indicates whether the employee resides in Helsinki
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-commission-amount
+  layer: data_items
+  subject:
+    key: data_item:commission_amount
+    name: commission_amount
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 31
+    end_line: 31
+  expected:
+    status: positive
+    labels:
+    - compensation
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee commission amount is compensation information
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-commission-description
+  layer: data_items
+  subject:
+    key: data_item:commission_description
+    name: commission_description
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 32
+    end_line: 32
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: Free-text commission description can contain employment or personal detail
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: proposed
+- id: yjdh-birthday
+  layer: data_items
+  subject:
+    key: data_item:birthday
+    name: birthday
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 34
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - date_of_birth
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Employee birthday is directly exposed and marked read-only in the API serializer
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-ssn-validation
+  layer: data_items
+  subject:
+    key: data_item:social_security_number
+    name: social_security_number
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 41
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Dedicated validation confirms the field has Finnish social-security-number semantics
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
+- id: yjdh-search-ssn
+  layer: data_items
+  subject:
+    key: data_item:social_security_number
+    name: social_security_number
+  evidence:
+    file_path: backend/benefit/applications/api/v1/serializers/employee.py
+    start_line: 91
+    end_line: 91
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - backend/benefit/applications/api/v1/serializers/employee.py
+  rationale: Search serializer exposes the same named national identifier
+  provenance:
+    proposed_by: corpus-curation-agent
+    proposed_at: 2026-08-26
+    review_state: accepted
