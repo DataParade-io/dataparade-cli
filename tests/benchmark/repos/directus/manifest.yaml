@@ -3,7 +3,7 @@ commit: a6c460a765c590c15b2e4d71e820247cbc25179e
 license: LicenseRef-Proprietary
 scope:
   include:
-    - src/server/services/
+    - api/
 coverage:
   layers: [data_items, components, data_flows, raw_hits, mentions]
   languages:

@@ -4,7 +4,7 @@ license: MIT
 scope:
   include:
     - core/server/services/members/
-    - core/server/data/
+    - core/server/models/
 coverage:
   layers: [data_items, components, data_flows, raw_hits, mentions]
   languages:

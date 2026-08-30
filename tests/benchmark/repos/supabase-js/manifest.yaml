@@ -3,7 +3,7 @@ commit: b3b939a405ae663aea2fabecfa4dfcc6161d155a
 license: MIT
 scope:
   include:
-    - src/
+    - packages/
 coverage:
   layers: [data_items, components, data_flows, raw_hits, mentions]
   languages:
