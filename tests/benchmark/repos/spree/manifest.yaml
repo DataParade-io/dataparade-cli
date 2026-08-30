@@ -3,7 +3,7 @@ commit: e6e9823b79177d49e1682e31482a9da5d9139140
 license: BSD-3-Clause
 scope:
   include:
-    - core/
+    - spree/core/
 coverage:
   layers: [data_items, components, data_flows, raw_hits, mentions]
   languages:
