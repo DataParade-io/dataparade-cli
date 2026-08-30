@@ -4,7 +4,7 @@ Versioned ground-truth data for deterministic scanner evaluation. Labels are cur
 
 Canonical corpus layers are `components`, `data_flows`, `pii_signals`, and `data_items`.
 
-As of 2026-08-30 (`main` at `5c05f27`) accepted positives meet the 200-per-layer floor: components 519, data_flows 419, pii_signals 233, data_items 200. Original-ten packets still have 75 proposed `data_items` that are not in the headline count.
+As of 2026-08-30 (`main`) accepted positives: components 519, data_flows 419, pii_signals 267, data_items 239. Original-ten packets still have leftover proposed non-positive or unaccepted records from earlier curation.
 
 
 ## Layout

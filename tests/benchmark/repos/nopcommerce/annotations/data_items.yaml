@@ -251,3 +251,192 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: nopcommerce-customer-first-name
+  layer: data_items
+  subject:
+    key: data_item:FirstName
+    name: FirstName
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 34
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.FirstName is the given name on the storefront profile.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-customer-last-name
+  layer: data_items
+  subject:
+    key: data_item:LastName
+    name: LastName
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 39
+    end_line: 39
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.LastName is the family name on the storefront profile.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-customer-dob
+  layer: data_items
+  subject:
+    key: data_item:DateOfBirth
+    name: DateOfBirth
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 49
+    end_line: 49
+  expected:
+    status: positive
+    labels:
+    - date_of_birth
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.DateOfBirth is the account holder's birth date.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-street-address
+  layer: data_items
+  subject:
+    key: data_item:StreetAddress
+    name: StreetAddress
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 59
+    end_line: 59
+  expected:
+    status: positive
+    labels:
+    - street_address
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.StreetAddress is the primary street line.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-zip
+  layer: data_items
+  subject:
+    key: data_item:ZipPostalCode
+    name: ZipPostalCode
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 69
+    end_line: 69
+  expected:
+    status: positive
+    labels:
+    - postal_code
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.ZipPostalCode is the postal code.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-city
+  layer: data_items
+  subject:
+    key: data_item:City
+    name: City
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 74
+    end_line: 74
+  expected:
+    status: positive
+    labels:
+    - city
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.City is the locality on the customer profile.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: nopcommerce-phone
+  layer: data_items
+  subject:
+    key: data_item:Phone
+    name: Phone
+  evidence:
+    file_path: src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    start_line: 94
+    end_line: 94
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
+    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
+    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
+    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
+    - src/Libraries/Nop.Services/Customers/CustomerService.cs
+  rationale: Customer.Phone is the contact telephone number.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

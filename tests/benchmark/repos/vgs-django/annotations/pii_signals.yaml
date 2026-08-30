@@ -1,0 +1,47 @@
+annotations:
+- id: vgs-django-ssn-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:national_identifier
+    name: social_security_number
+  evidence:
+    file_path: app/models.py
+    start_line: 5
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - app/models.py
+    - app/checker_client.py
+  rationale: PiiData.social_security_number stores SSN as a CharField.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: vgs-django-dln-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:national_identifier
+    name: driver_license_number
+  evidence:
+    file_path: app/models.py
+    start_line: 6
+    end_line: 6
+  expected:
+    status: positive
+    labels:
+    - national_identifier
+    exhaustive_scope_files:
+    - app/models.py
+    - app/checker_client.py
+  rationale: PiiData.driver_license_number stores a driver license identifier.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

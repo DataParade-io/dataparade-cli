@@ -443,3 +443,201 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: magento-address-city
+  layer: data_items
+  subject:
+    key: data_item:city
+    name: city
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 195
+    end_line: 195
+  expected:
+    status: positive
+    labels:
+    - city
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: AddressInterface::getCity is the locality of a customer address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-address-postcode
+  layer: data_items
+  subject:
+    key: data_item:postcode
+    name: postcode
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 180
+    end_line: 180
+  expected:
+    status: positive
+    labels:
+    - postal_code
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: AddressInterface::getPostcode is the postal code of a customer address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-address-firstname
+  layer: data_items
+  subject:
+    key: data_item:address_firstname
+    name: firstname
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 210
+    end_line: 210
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Address firstname is the given name on a shipping or billing address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-address-lastname
+  layer: data_items
+  subject:
+    key: data_item:address_lastname
+    name: lastname
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 225
+    end_line: 225
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Address lastname is the family name on a shipping or billing address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-customer-prefix
+  layer: data_items
+  subject:
+    key: data_item:prefix
+    name: prefix
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 245
+    end_line: 245
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer prefix is an honorific name part on the account.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: magento-customer-suffix
+  layer: data_items
+  subject:
+    key: data_item:suffix
+    name: suffix
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 260
+    end_line: 260
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer suffix is a name suffix on the account.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

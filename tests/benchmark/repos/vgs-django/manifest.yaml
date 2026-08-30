@@ -9,7 +9,7 @@ scope:
     - path: app/migrations/
       reason: generated migrations
 coverage:
-  layers: [components, data_flows]
+  layers: [components, data_flows, data_items, pii_signals]
   languages: [python]
   domains: [identity_verification, pii]
 selection_rationale: >-

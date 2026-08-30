@@ -249,3 +249,67 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: ghost-staff-user-id-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: id
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 270
+    end_line: 270
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: users.id is the staff user primary key.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: ghost-staff-user-name-pii-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: name
+  evidence:
+    file_path: ghost/core/core/server/data/schema/schema.js
+    start_line: 271
+    end_line: 271
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - ghost/core/core/server/models/member.js
+    - ghost/core/core/server/models/user.js
+    - ghost/core/core/server/data/schema/schema.js
+    - ghost/core/core/server/data/db/connection.js
+    - ghost/core/core/server/services/auth/members/index.js
+    - ghost/core/core/server/services/members/members-api/members-api.js
+    - ghost/core/core/server/services/members/members-api/controllers/member-controller.js
+    - ghost/core/core/server/services/members/members-api/controllers/router-controller.js
+    - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
+    - ghost/core/core/server/services/members/members-api/services/token-service.js
+    - ghost/core/core/server/services/stripe/stripe-api.js
+  rationale: users.name is the staff member's display name.
+  provenance:
+    proposed_by: pii-signal-backport
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

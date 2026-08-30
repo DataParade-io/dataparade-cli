@@ -341,3 +341,186 @@ annotations:
     review_state: accepted
     reviewed_by: grok-4.6-refine
     reviewed_at: '2026-08-30'
+- id: wordpress-user-id-property
+  layer: data_items
+  subject:
+    key: data_item:ID
+    name: ID
+  evidence:
+    file_path: src/wp-includes/class-wp-user.php
+    start_line: 62
+    end_line: 62
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: WP_User::$ID is the numeric user primary key.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-nickname
+  layer: data_items
+  subject:
+    key: data_item:nickname
+    name: nickname
+  evidence:
+    file_path: src/wp-includes/class-wp-user.php
+    start_line: 17
+    end_line: 17
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: nickname is a display alias on the WP_User profile.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-user-nicename
+  layer: data_items
+  subject:
+    key: data_item:user_nicename
+    name: user_nicename
+  evidence:
+    file_path: src/wp-includes/class-wp-user.php
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+  rationale: user_nicename is the URL-safe account slug for the user.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-comment-author
+  layer: data_items
+  subject:
+    key: data_item:comment_author
+    name: comment_author
+  evidence:
+    file_path: src/wp-includes/class-wp-comment.php
+    start_line: 91
+    end_line: 91
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-comment.php
+  rationale: comment_author is the public name of the commenter.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-comment-author-email
+  layer: data_items
+  subject:
+    key: data_item:comment_author_email
+    name: comment_author_email
+  evidence:
+    file_path: src/wp-includes/class-wp-comment.php
+    start_line: 99
+    end_line: 99
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-comment.php
+  rationale: comment_author_email is the commenter's email address.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
+- id: wordpress-application-password-hash
+  layer: data_items
+  subject:
+    key: data_item:application_password
+    name: password
+  evidence:
+    file_path: src/wp-includes/class-wp-application-passwords.php
+    start_line: 105
+    end_line: 105
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - src/wp-includes/user.php
+    - src/wp-includes/class-wp-user.php
+    - src/wp-includes/class-wpdb.php
+    - src/wp-includes/pluggable.php
+    - src/wp-includes/class-wp-session-tokens.php
+    - src/wp-includes/class-wp-user-meta-session-tokens.php
+    - src/wp-includes/cache.php
+    - src/wp-includes/class-wp-object-cache.php
+    - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
+    - src/wp-includes/class-wp-application-passwords.php
+  rationale: The stored application password field is a one-way hash, not plaintext.
+  provenance:
+    proposed_by: grok-4.6-data-item-fill
+    proposed_at: '2026-08-30'
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
