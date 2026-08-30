@@ -21,11 +21,14 @@ annotations:
     - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
     - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
     - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
-  rationale: The @Pattern(regexp = "\\d{10}") on telephone is an explicit phone-number signal on the owner entity.
+  rationale: The @Pattern(regexp = "\\d{10}") on telephone is an explicit phone-number
+    signal on the owner entity.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spring-petclinic-first-name-signal
   layer: pii_signals
   subject:
@@ -52,7 +55,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spring-petclinic-pet-birthdate-not-human-dob-signal
   layer: pii_signals
   subject:
@@ -69,4 +74,6 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

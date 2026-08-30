@@ -22,11 +22,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wpdb is WordPress's database abstraction layer connecting to the SQL store for users and metadata.
+  rationale: wpdb is WordPress's database abstraction layer connecting to the SQL
+    store for users and metadata.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-object-cache
   layer: components
   subject:
@@ -54,7 +57,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-auth-cookie-service
   layer: components
   subject:
@@ -78,11 +83,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wp_set_auth_cookie issues local authentication cookies tied to session tokens.
+  rationale: wp_set_auth_cookie issues local authentication cookies tied to session
+    tokens.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-session-tokens-service
   layer: components
   subject:
@@ -106,11 +114,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: WP_Session_Tokens manages hashed session verifiers stored in user meta for login state.
+  rationale: WP_Session_Tokens manages hashed session verifiers stored in user meta
+    for login state.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-rest-users-api
   layer: components
   subject:
@@ -134,11 +145,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: WP_REST_Users_Controller registers wp/v2/users REST routes for user CRUD over HTTP.
+  rationale: WP_REST_Users_Controller registers wp/v2/users REST routes for user CRUD
+    over HTTP.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-wp-user-actor
   layer: components
   subject:
@@ -162,11 +176,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: WP_User models site members and commenters, the public end-user actor type.
+  rationale: WP_User models site members and commenters, the public end-user actor
+    type.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-not-stripe
   layer: components
   subject:
@@ -179,11 +196,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: wp_authenticate handles local username/password login. No Stripe payment SDK or API appears in this scope.
+  rationale: wp_authenticate handles local username/password login. No Stripe payment
+    SDK or API appears in this scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-not-auth0
   layer: components
   subject:
@@ -196,11 +216,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Authentication is implemented with WordPress cookies and session tokens, not an external Auth0 integration.
+  rationale: Authentication is implemented with WordPress cookies and session tokens,
+    not an external Auth0 integration.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-not-sendgrid
   layer: components
   subject:
@@ -213,8 +236,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed user and auth files do not integrate SendGrid or another transactional email vendor.
+  rationale: The reviewed user and auth files do not integrate SendGrid or another
+    transactional email vendor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -28,11 +28,14 @@ annotations:
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
-  rationale: AuthenticateAsync resolves the user and passes the submitted password to CheckPasswordSignInAsync.
+  rationale: AuthenticateAsync resolves the user and passes the submitted password
+    to CheckPasswordSignInAsync.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-create-user-to-store
   layer: data_flows
   subject:
@@ -62,11 +65,14 @@ annotations:
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
-  rationale: UserStore.CreateAsync persists the new User document to YesSql after handler hooks run.
+  rationale: UserStore.CreateAsync persists the new User document to YesSql after
+    handler hooks run.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-reset-password-flow
   layer: data_flows
   subject:
@@ -96,11 +102,14 @@ annotations:
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
-  rationale: ResetPasswordAsync validates the reset token and writes a new PasswordHash through UserManager.
+  rationale: ResetPasswordAsync validates the reset token and writes a new PasswordHash
+    through UserManager.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-ticket-to-cache
   layer: data_flows
   subject:
@@ -130,11 +139,14 @@ annotations:
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
-  rationale: StoreAsync serializes and protects the authentication ticket before writing it to IDistributedCache.
+  rationale: StoreAsync serializes and protects the authentication ticket before writing
+    it to IDistributedCache.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-openid-token-to-store
   layer: data_flows
   subject:
@@ -164,11 +176,14 @@ annotations:
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
-  rationale: OpenIdTokenStore.CreateAsync saves issued tokens into the OpenId YesSql collection.
+  rationale: OpenIdTokenStore.CreateAsync saves issued tokens into the OpenId YesSql
+    collection.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-set-email-on-user
   layer: data_flows
   subject:
@@ -198,11 +213,14 @@ annotations:
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
-  rationale: SetEmailAsync writes the normalized mailbox onto the User entity for persistence.
+  rationale: SetEmailAsync writes the normalized mailbox onto the User entity for
+    persistence.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-display-name-not-user-email
   layer: data_flows
   subject:
@@ -215,8 +233,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: OpenIdApplication.DisplayName labels the OAuth client; it is not copied into User.Email.
+  rationale: OpenIdApplication.DisplayName labels the OAuth client; it is not copied
+    into User.Email.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

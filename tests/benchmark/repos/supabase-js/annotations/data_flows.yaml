@@ -42,11 +42,14 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: signInWithPassword sends email and password to the GoTrue /token?grant_type=password endpoint.
+  rationale: signInWithPassword sends email and password to the GoTrue /token?grant_type=password
+    endpoint.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-session-to-storage
   layer: data_flows
   subject:
@@ -90,11 +93,14 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: _saveSession persists the cloned session (tokens and metadata) into configured storage under storageKey.
+  rationale: _saveSession persists the cloned session (tokens and metadata) into configured
+    storage under storageKey.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-access-token-to-authorization
   layer: data_flows
   subject:
@@ -138,11 +144,14 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: fetchWithAuth attaches the session access token (or API key fallback) as a Bearer Authorization header on outbound requests.
+  rationale: fetchWithAuth attaches the session access token (or API key fallback)
+    as a Bearer Authorization header on outbound requests.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-refresh-to-token-endpoint
   layer: data_flows
   subject:
@@ -186,11 +195,14 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: Token refresh posts refresh_token to /token?grant_type=refresh_token to obtain a new session.
+  rationale: Token refresh posts refresh_token to /token?grant_type=refresh_token
+    to obtain a new session.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-storage-key-not-flow
   layer: data_flows
   subject:
@@ -203,8 +215,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: STORAGE_KEY is a local storage key name constant. It does not flow data to a database.
+  rationale: STORAGE_KEY is a local storage key name constant. It does not flow data
+    to a database.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

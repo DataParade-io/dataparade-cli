@@ -19,11 +19,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: LocalAuthDriver.getUserID queries directus_users by lowercased email to resolve the account before password verification.
+  rationale: LocalAuthDriver.getUserID queries directus_users by lowercased email
+    to resolve the account before password verification.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-login-to-sessions-table
   layer: data_flows
   subject:
@@ -44,11 +47,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: After successful authentication, AuthenticationService inserts a refresh token and session metadata into directus_sessions.
+  rationale: After successful authentication, AuthenticationService inserts a refresh
+    token and session metadata into directus_sessions.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-local-router-to-auth-service
   layer: data_flows
   subject:
@@ -69,8 +75,11 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: The local auth POST handler passes validated email and password to AuthenticationService.login, which issues tokens.
+  rationale: The local auth POST handler passes validated email and password to AuthenticationService.login,
+    which issues tokens.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

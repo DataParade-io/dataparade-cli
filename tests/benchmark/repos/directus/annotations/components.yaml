@@ -19,11 +19,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: UsersService extends ItemsService for the directus_users collection, the primary SQL store for platform user accounts.
+  rationale: UsersService extends ItemsService for the directus_users collection,
+    the primary SQL store for platform user accounts.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-local-auth-driver
   layer: components
   subject:
@@ -44,11 +47,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: LocalAuthDriver verifies email/password against directus_users inside the API, not via an external IdP.
+  rationale: LocalAuthDriver verifies email/password against directus_users inside
+    the API, not via an external IdP.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-admin-actor
   layer: components
   subject:
@@ -69,11 +75,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: The User interface models Directus admin-panel operators with role and admin_access fields, not storefront customers.
+  rationale: The User interface models Directus admin-panel operators with role and
+    admin_access fields, not storefront customers.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-not-stripe
   layer: components
   subject:
@@ -86,8 +95,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed auth and user services query directus_users and issue JWTs. They do not call Stripe or another payment vendor.
+  rationale: The reviewed auth and user services query directus_users and issue JWTs.
+    They do not call Stripe or another payment vendor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

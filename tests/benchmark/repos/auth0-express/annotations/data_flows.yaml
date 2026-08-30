@@ -33,11 +33,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: callback builds a session object from the token response and persists id_token, access_token, and refresh_token.
+  rationale: callback builds a session object from the token response and persists
+    id_token, access_token, and refresh_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-refresh-to-token-endpoint
   layer: data_flows
   subject:
@@ -72,11 +75,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: refresh calls refreshTokenGrant with the stored refresh_token and writes new tokens back into the session.
+  rationale: refresh calls refreshTokenGrant with the stored refresh_token and writes
+    new tokens back into the session.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-cookie-to-session
   layer: data_flows
   subject:
@@ -111,11 +117,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: Incoming session cookies are decrypted and parsed into the request session object on each request.
+  rationale: Incoming session cookies are decrypted and parsed into the request session
+    object on each request.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-login-to-idp
   layer: data_flows
   subject:
@@ -150,11 +159,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: login builds an authorization URL and redirects the browser to the Auth0 authorization server.
+  rationale: login builds an authorization URL and redirects the browser to the Auth0
+    authorization server.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-userinfo-not-in-callback
   layer: data_flows
   subject:
@@ -167,8 +179,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: authorizationCodeGrant exchanges the code for tokens directly. fetchUserInfo is a separate optional call, not part of the default callback flow shown here.
+  rationale: authorizationCodeGrant exchanges the code for tokens directly. fetchUserInfo
+    is a separate optional call, not part of the default callback flow shown here.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

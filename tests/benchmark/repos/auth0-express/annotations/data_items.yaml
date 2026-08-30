@@ -37,7 +37,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-refresh-token-item
   layer: data_items
   subject:
@@ -72,11 +74,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: refresh_token is stored in the session and sent to the token endpoint on refresh; it is a credential secret, not the API access_token.
+  rationale: refresh_token is stored in the session and sent to the token endpoint
+    on refresh; it is a credential secret, not the API access_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-id-token-item
   layer: data_items
   subject:
@@ -89,11 +94,14 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: id_token is an OIDC identity JWT stored at callback; it is not a source-fixed API access_token.
+  rationale: id_token is an OIDC identity JWT stored at callback; it is not a source-fixed
+    API access_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-sub-item
   layer: data_items
   subject:
@@ -128,11 +136,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: previousSub from req.oidc.user.sub compares the authenticated subject across logins.
+  rationale: previousSub from req.oidc.user.sub compares the authenticated subject
+    across logins.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-sid-item
   layer: data_items
   subject:
@@ -167,11 +178,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: session.sid stores the Auth0 session identifier separately because refresh ID tokens may omit sid.
+  rationale: session.sid stores the Auth0 session identifier separately because refresh
+    ID tokens may omit sid.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-login-route-not-pii
   layer: data_items
   subject:
@@ -188,4 +202,6 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

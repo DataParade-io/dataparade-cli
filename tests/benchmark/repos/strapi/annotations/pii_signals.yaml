@@ -19,11 +19,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: The email attribute is declared type email, required, and used as the passport usernameField for login.
+  rationale: The email attribute is declared type email, required, and used as the
+    passport usernameField for login.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-password-type-signal
   layer: pii_signals
   subject:
@@ -44,11 +47,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: The password attribute is declared type password and compared with bcrypt during checkCredentials.
+  rationale: The password attribute is declared type password and compared with bcrypt
+    during checkCredentials.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-session-user-id-signal
   layer: pii_signals
   subject:
@@ -69,11 +75,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: session.userId links each stored session row to its owning admin user account.
+  rationale: session.userId links each stored session row to its owning admin user
+    account.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-prefered-language-not-pii
   layer: pii_signals
   subject:
@@ -86,8 +95,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: preferedLanguage is a locale preference string, not a person name or other PII field.
+  rationale: preferedLanguage is a locale preference string, not a person name or
+    other PII field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

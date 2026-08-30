@@ -19,11 +19,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: Customer.Email is the persisted account email used for login and profile communication.
+  rationale: Customer.Email is the persisted account email used for login and profile
+    communication.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-customer-username
   layer: data_items
   subject:
@@ -44,11 +47,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: Customer.Username is the optional login identifier when username-based authentication is enabled.
+  rationale: Customer.Username is the optional login identifier when username-based
+    authentication is enabled.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-customer-firstname
   layer: data_items
   subject:
@@ -73,7 +79,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-customer-lastname
   layer: data_items
   subject:
@@ -98,7 +106,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-customer-phone
   layer: data_items
   subject:
@@ -123,7 +133,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-customer-guid
   layer: data_items
   subject:
@@ -144,11 +156,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: CustomerGuid is a stable GUID assigned at construction that identifies the customer across integrations.
+  rationale: CustomerGuid is a stable GUID assigned at construction that identifies
+    the customer across integrations.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-customer-password
   layer: data_items
   subject:
@@ -161,11 +176,14 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: CustomerPassword.Password has no source-fixed type; PasswordFormat defaults to Clear and may store plaintext or a hash.
+  rationale: CustomerPassword.Password has no source-fixed type; PasswordFormat defaults
+    to Clear and may store plaintext or a hash.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-oauth-access-token
   layer: data_items
   subject:
@@ -186,11 +204,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: ExternalAuthenticationRecord.OAuthAccessToken persists the OAuth bearer token from an external login provider.
+  rationale: ExternalAuthenticationRecord.OAuthAccessToken persists the OAuth bearer
+    token from an external login provider.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-password-salt-not-credential
   layer: data_items
   subject:
@@ -203,11 +224,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: PasswordSalt is hashing metadata used to verify passwords, not the credential itself.
+  rationale: PasswordSalt is hashing metadata used to verify passwords, not the credential
+    itself.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-customer-active-not-pii
   layer: data_items
   subject:
@@ -224,4 +248,6 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

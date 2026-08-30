@@ -24,7 +24,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-login-form-to-finalizer
   layer: data_flows
   subject:
@@ -46,11 +48,14 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: submitForm calls loginFinalizer->finalizeLogin after successful credential validation.
+  rationale: submitForm calls loginFinalizer->finalizeLogin after successful credential
+    validation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-http-login-to-finalizer
   layer: data_flows
   subject:
@@ -72,11 +77,14 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: The JSON login endpoint calls userLoginFinalize after authenticateAccount succeeds.
+  rationale: The JSON login endpoint calls userLoginFinalize after authenticateAccount
+    succeeds.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-session-uid-to-database
   layer: data_flows
   subject:
@@ -98,11 +106,14 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: getUserFromSession reads session uid and queries users_field_data to rebuild the authenticated user.
+  rationale: getUserFromSession reads session uid and queries users_field_data to
+    rebuild the authenticated user.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-finalizer-uid-to-session
   layer: data_flows
   subject:
@@ -124,11 +135,14 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: finalizeLogin writes the authenticated user id into the PHP session as uid.
+  rationale: finalizeLogin writes the authenticated user id into the PHP session as
+    uid.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-one-time-email-to-hmac
   layer: data_flows
   subject:
@@ -150,11 +164,14 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: generateHmac binds timestamp, login time, uid, and email into a password-reset authentication code.
+  rationale: generateHmac binds timestamp, login time, uid, and email into a password-reset
+    authentication code.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-http-login-lookup-account
   layer: data_flows
   subject:
@@ -176,8 +193,11 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: The HTTP login handler looks up the account by name then authenticates the submitted password.
+  rationale: The HTTP login handler looks up the account by name then authenticates
+    the submitted password.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

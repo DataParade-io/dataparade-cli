@@ -27,11 +27,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: link_by_email copies the associated customer's email onto the order before validation.
+  rationale: link_by_email copies the associated customer's email onto the order before
+    validation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-address-to-gateway
   layer: data_flows
   subject:
@@ -60,11 +63,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: gateway_hash packages name, street, city, zip, country, and phone for payment providers.
+  rationale: gateway_hash packages name, street, city, zip, country, and phone for
+    payment providers.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-order-to-payment-workflow
   layer: data_flows
   subject:
@@ -93,11 +99,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: process_payments_with sends each checkout payment to Spree.payment_process_workflow for gateway processing.
+  rationale: process_payments_with sends each checkout payment to Spree.payment_process_workflow
+    for gateway processing.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-oauth-to-customer
   layer: data_flows
   subject:
@@ -126,11 +135,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: create_user_from_oauth maps provider info email and names into a new customer record.
+  rationale: create_user_from_oauth maps provider info email and names into a new
+    customer record.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-address-to-customer-profile
   layer: data_flows
   subject:
@@ -159,11 +171,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: set_user_attributes back-fills customer first_name, last_name, and phone from a saved address.
+  rationale: set_user_attributes back-fills customer first_name, last_name, and phone
+    from a saved address.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-customer-to-gateway-customer
   layer: data_flows
   subject:
@@ -192,11 +207,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: GatewayCustomer belongs_to customer and stores the provider profile_id for wallet reuse.
+  rationale: GatewayCustomer belongs_to customer and stores the provider profile_id
+    for wallet reuse.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-order-total-not-gateway-pii
   layer: data_flows
   subject:
@@ -209,8 +227,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Order money totals are accounting fields; gateway_hash sends address contact data, not item_total.
+  rationale: Order money totals are accounting fields; gateway_hash sends address
+    contact data, not item_total.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -42,11 +42,14 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: SupabaseClient wires auth, rest, storage, and realtime URLs against the hosted Supabase project API.
+  rationale: SupabaseClient wires auth, rest, storage, and realtime URLs against the
+    hosted Supabase project API.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-auth-service
   layer: components
   subject:
@@ -90,11 +93,14 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: GoTrueClient is the in-SDK authentication client that manages sessions, tokens, and user state locally.
+  rationale: GoTrueClient is the in-SDK authentication client that manages sessions,
+    tokens, and user state locally.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-customer-actor
   layer: components
   subject:
@@ -142,7 +148,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-not-auth0
   layer: components
   subject:
@@ -155,8 +163,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: signInWithPassword posts credentials to the Supabase GoTrue /token endpoint. There is no Auth0 SDK integration in the auth client scope.
+  rationale: signInWithPassword posts credentials to the Supabase GoTrue /token endpoint.
+    There is no Auth0 SDK integration in the auth client scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

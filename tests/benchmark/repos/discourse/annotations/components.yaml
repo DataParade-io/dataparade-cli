@@ -30,11 +30,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: database.yml configures a PostgreSQL adapter and database name for ActiveRecord persistence.
+  rationale: database.yml configures a PostgreSQL adapter and database name for ActiveRecord
+    persistence.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-redis-cache
   layer: components
   subject:
@@ -66,11 +69,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: The Redis initializer validates Discourse.redis connectivity and version, treating Redis as an ephemeral cache layer.
+  rationale: The Redis initializer validates Discourse.redis connectivity and version,
+    treating Redis as an ephemeral cache layer.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-session-auth-service
   layer: components
   subject:
@@ -102,11 +108,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: Rails session_store configures Discourse's local cookie-based session authentication with key _forum_session.
+  rationale: Rails session_store configures Discourse's local cookie-based session
+    authentication with key _forum_session.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-user-auth-token-service
   layer: components
   subject:
@@ -138,11 +147,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: UserAuthToken manages in-app session tokens, rotation, and lookup for authenticated requests.
+  rationale: UserAuthToken manages in-app session tokens, rotation, and lookup for
+    authenticated requests.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-session-api
   layer: components
   subject:
@@ -174,11 +186,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: routes.rb exposes session create/destroy and forgot_password endpoints as the HTTP login surface.
+  rationale: routes.rb exposes session create/destroy and forgot_password endpoints
+    as the HTTP login surface.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-site-api
   layer: components
   subject:
@@ -210,11 +225,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: The site route maps to SiteController#site, a public HTTP API entry point for site metadata.
+  rationale: The site route maps to SiteController#site, a public HTTP API entry point
+    for site metadata.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-google-auth-provider
   layer: components
   subject:
@@ -246,11 +264,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: Site settings declare enable_google_oauth2_logins plus client id and secret for Google OAuth2 authentication.
+  rationale: Site settings declare enable_google_oauth2_logins plus client id and
+    secret for Google OAuth2 authentication.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-sendgrid-email-provider
   layer: components
   subject:
@@ -282,11 +303,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: routes.rb registers a POST webhook endpoint for SendGrid inbound email events.
+  rationale: routes.rb registers a POST webhook endpoint for SendGrid inbound email
+    events.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-user-actor
   layer: components
   subject:
@@ -318,11 +342,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: The User ActiveRecord model is the forum end-user account, not a staff-only or service identity.
+  rationale: The User ActiveRecord model is the forum end-user account, not a staff-only
+    or service identity.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-not-stripe
   layer: components
   subject:
@@ -335,11 +362,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed routes and models handle sessions, users, and email webhooks. No Stripe payment integration appears in this scope.
+  rationale: The reviewed routes and models handle sessions, users, and email webhooks.
+    No Stripe payment integration appears in this scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-not-auth0
   layer: components
   subject:
@@ -352,8 +382,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: OmniAuth is configured for Discourse authenticators such as Google OAuth2, but Auth0 is not referenced in the reviewed files.
+  rationale: OmniAuth is configured for Discourse authenticators such as Google OAuth2,
+    but Auth0 is not referenced in the reviewed files.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

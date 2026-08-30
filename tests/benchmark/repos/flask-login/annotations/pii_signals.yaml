@@ -16,11 +16,14 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: session.get("_user_id") is a live identifier used to restore the authenticated user.
+  rationale: session.get("_user_id") is a live identifier used to restore the authenticated
+    user.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-remember-token-name-signal
   layer: pii_signals
   subject:
@@ -38,11 +41,14 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: COOKIE_NAME documents the remember_token cookie that carries a re-authentication secret.
+  rationale: COOKIE_NAME documents the remember_token cookie that carries a re-authentication
+    secret.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-flash-message-not-email
   layer: pii_signals
   subject:
@@ -59,4 +65,6 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

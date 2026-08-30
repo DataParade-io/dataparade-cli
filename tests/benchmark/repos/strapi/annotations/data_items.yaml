@@ -19,11 +19,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: email is a required, unique admin account address used for login and password reset.
+  rationale: email is a required, unique admin account address used for login and
+    password reset.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-user-firstname
   layer: data_items
   subject:
@@ -48,7 +51,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-user-lastname
   layer: data_items
   subject:
@@ -73,7 +78,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-user-password
   layer: data_items
   subject:
@@ -98,7 +105,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-reset-password-token
   layer: data_items
   subject:
@@ -119,11 +128,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: resetPasswordToken is a one-time secret emailed to the user to authorize a password reset.
+  rationale: resetPasswordToken is a one-time secret emailed to the user to authorize
+    a password reset.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-registration-token
   layer: data_items
   subject:
@@ -144,11 +156,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: registrationToken is a private invite token used to complete admin account registration.
+  rationale: registrationToken is a private invite token used to complete admin account
+    registration.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-session-id
   layer: data_items
   subject:
@@ -161,11 +176,14 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: sessionId uniquely identifies a session row; whether it is an access_token is not source-fixed.
+  rationale: sessionId uniquely identifies a session row; whether it is an access_token
+    is not source-fixed.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-session-user-id
   layer: data_items
   subject:
@@ -186,11 +204,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: userId on the session record identifies which admin account owns the session.
+  rationale: userId on the session record identifies which admin account owns the
+    session.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-is-active-not-pii
   layer: data_items
   subject:
@@ -207,4 +228,6 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

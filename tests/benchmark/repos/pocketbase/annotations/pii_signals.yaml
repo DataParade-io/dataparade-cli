@@ -23,11 +23,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: EmailField is declared for storing a single email string address on auth records.
+  rationale: EmailField is declared for storing a single email string address on auth
+    records.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-field-name-email-signal
   layer: pii_signals
   subject:
@@ -52,11 +55,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: FieldNameEmail names the canonical auth collection email column used across record and token code.
+  rationale: FieldNameEmail names the canonical auth collection email column used
+    across record and token code.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-password-bcrypt-signal
   layer: pii_signals
   subject:
@@ -81,11 +87,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: PasswordField documents bcrypt hashed strings for the auth collection password system field.
+  rationale: PasswordField documents bcrypt hashed strings for the auth collection
+    password system field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-jwt-auth-token-signal
   layer: pii_signals
   subject:
@@ -114,7 +123,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-record-id-signal
   layer: pii_signals
   subject:
@@ -143,7 +154,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-token-claim-email-signal
   layer: pii_signals
   subject:
@@ -168,11 +181,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: TokenClaimEmail names the JWT claim carrying the account email in verification and reset flows.
+  rationale: TokenClaimEmail names the JWT claim carrying the account email in verification
+    and reset flows.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-token-key-signal
   layer: pii_signals
   subject:
@@ -197,11 +213,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: FieldNameTokenKey identifies the per-record secret mixed into JWT signing keys.
+  rationale: FieldNameTokenKey identifies the per-record secret mixed into JWT signing
+    keys.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-verified-not-email-signal
   layer: pii_signals
   subject:
@@ -214,8 +233,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Verified() returns a boolean verification flag, not an email address field.
+  rationale: Verified() returns a boolean verification flag, not an email address
+    field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

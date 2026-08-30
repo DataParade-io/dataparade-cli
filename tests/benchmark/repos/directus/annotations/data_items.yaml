@@ -19,11 +19,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: User.id is the primary key returned from directus_users and embedded in JWT claims.
+  rationale: User.id is the primary key returned from directus_users and embedded
+    in JWT claims.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-user-email
   layer: data_items
   subject:
@@ -48,7 +51,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-user-first-name
   layer: data_items
   subject:
@@ -73,7 +78,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-user-last-name
   layer: data_items
   subject:
@@ -98,7 +105,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-user-password
   layer: data_items
   subject:
@@ -123,7 +132,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-session-token
   layer: data_items
   subject:
@@ -144,11 +155,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: The refresh token inserted into directus_sessions is a credential used to obtain new access tokens, not the access token itself.
+  rationale: The refresh token inserted into directus_sessions is a credential used
+    to obtain new access tokens, not the access token itself.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-access-token-jwt
   layer: data_items
   subject:
@@ -169,11 +183,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: jwt.sign produces the short-lived access token returned to clients after login.
+  rationale: jwt.sign produces the short-lived access token returned to clients after
+    login.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-user-role-not-pii
   layer: data_items
   subject:
@@ -186,11 +203,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: role is an authorization reference to a permissions role, not personal data content.
+  rationale: role is an authorization reference to a permissions role, not personal
+    data content.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-user-status-not-pii
   layer: data_items
   subject:
@@ -203,8 +223,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: status is an account lifecycle flag (active, suspended, invited), not a personal data field.
+  rationale: status is an account lifecycle flag (active, suspended, invited), not
+    a personal data field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

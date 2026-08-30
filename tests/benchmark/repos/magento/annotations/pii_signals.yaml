@@ -25,11 +25,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: The EMAIL constant and getEmail docblock identify the customer's email address field.
+  rationale: The EMAIL constant and getEmail docblock identify the customer's email
+    address field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-firstname-signal
   layer: pii_signals
   subject:
@@ -60,7 +63,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-dob-signal
   layer: pii_signals
   subject:
@@ -87,11 +92,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: DOB is the date-of-birth attribute with an explicit privacy warning in getDob documentation.
+  rationale: DOB is the date-of-birth attribute with an explicit privacy warning in
+    getDob documentation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-telephone-signal
   layer: pii_signals
   subject:
@@ -118,11 +126,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: TELEPHONE names the address telephone number field with getTelephone/setTelephone accessors.
+  rationale: TELEPHONE names the address telephone number field with getTelephone/setTelephone
+    accessors.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-street-signal
   layer: pii_signals
   subject:
@@ -153,7 +164,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-rp-token-signal
   layer: pii_signals
   subject:
@@ -180,11 +193,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: rp_token is the reset-password bearer token used to look up and authorize password changes.
+  rationale: rp_token is the reset-password bearer token used to look up and authorize
+    password changes.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-password-hash-not-access-token
   layer: pii_signals
   subject:
@@ -197,11 +213,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: getPasswordHash returns a stored password verifier hash, not a reusable bearer access token.
+  rationale: getPasswordHash returns a stored password verifier hash, not a reusable
+    bearer access token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-gender-not-dob-signal
   layer: pii_signals
   subject:
@@ -214,8 +233,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: GENDER is a demographic code, not a date-of-birth field despite appearing near DOB in the schema.
+  rationale: GENDER is a demographic code, not a date-of-birth field despite appearing
+    near DOB in the schema.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

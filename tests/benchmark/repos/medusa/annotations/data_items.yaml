@@ -11,11 +11,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The scoped customer module file only re-exports @medusajs/customer and does not define an email property.
+  rationale: The scoped customer module file only re-exports @medusajs/customer and
+    does not define an email property.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-no-user-first-name-item
   layer: data_items
   subject:
@@ -32,7 +35,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-discovery-path-not-pii
   layer: data_items
   subject:
@@ -45,11 +50,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: discoveryPath resolves the auth package entry point for module loading, not personal data.
+  rationale: discoveryPath resolves the auth package entry point for module loading,
+    not personal data.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-order-module-default-export
   layer: data_items
   subject:
@@ -62,11 +70,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: order.ts exports OrderModule as default; there is no order id field in the scoped registry file.
+  rationale: order.ts exports OrderModule as default; there is no order id field in
+    the scoped registry file.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-no-customer-phone-item
   layer: data_items
   subject:
@@ -83,4 +94,6 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

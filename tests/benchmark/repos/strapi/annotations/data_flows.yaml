@@ -19,11 +19,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: The local passport strategy forwards email and password to auth.checkCredentials for verification.
+  rationale: The local passport strategy forwards email and password to auth.checkCredentials
+    for verification.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-credentials-to-db-query
   layer: data_flows
   subject:
@@ -44,11 +47,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: checkCredentials queries admin::user by email to load the stored password hash before bcrypt comparison.
+  rationale: checkCredentials queries admin::user by email to load the stored password
+    hash before bcrypt comparison.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-login-to-session-cookie
   layer: data_flows
   subject:
@@ -69,8 +75,11 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: After passport authenticates the user, the login handler generates a refresh token and sets it on the HTTP response cookie.
+  rationale: After passport authenticates the user, the login handler generates a
+    refresh token and sets it on the HTTP response cookie.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

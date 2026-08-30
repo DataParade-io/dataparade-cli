@@ -27,11 +27,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: Customer is the storefront end-user account Spree authenticates and associates with orders.
+  rationale: Customer is the storefront end-user account Spree authenticates and associates
+    with orders.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-admin-actor
   layer: components
   subject:
@@ -60,11 +63,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: AdminUser is the privileged staff identity that approves, cancels, and creates orders.
+  rationale: AdminUser is the privileged staff identity that approves, cancels, and
+    creates orders.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-customer-auth-service
   layer: components
   subject:
@@ -93,11 +99,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: Customer uses has_secure_password and email validation for in-codebase storefront authentication.
+  rationale: Customer uses has_secure_password and email validation for in-codebase
+    storefront authentication.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-customer-database
   layer: components
   subject:
@@ -126,11 +135,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: Customer maps to the spree_customers table, the persistent store for buyer accounts.
+  rationale: Customer maps to the spree_customers table, the persistent store for
+    buyer accounts.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-payment-processing-service
   layer: components
   subject:
@@ -159,11 +171,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: PaymentProcessing drives checkout payment workflows rather than exposing an HTTP API surface.
+  rationale: PaymentProcessing drives checkout payment workflows rather than exposing
+    an HTTP API surface.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-oauth-identity-service
   layer: components
   subject:
@@ -192,11 +207,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: UserIdentity stores OAuth provider links and tokens for external login strategies.
+  rationale: UserIdentity stores OAuth provider links and tokens for external login
+    strategies.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-not-auth0
   layer: components
   subject:
@@ -209,11 +227,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Core customer auth is local has_secure_password. The reviewed models do not integrate Auth0.
+  rationale: Core customer auth is local has_secure_password. The reviewed models
+    do not integrate Auth0.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-not-stripe-sdk
   layer: components
   subject:
@@ -226,8 +247,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Spree core references Stripe only in gateway extension comments; it does not embed the Stripe SDK in these models.
+  rationale: Spree core references Stripe only in gateway extension comments; it does
+    not embed the Stripe SDK in these models.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

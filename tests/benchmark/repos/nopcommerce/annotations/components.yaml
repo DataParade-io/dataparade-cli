@@ -19,11 +19,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: CustomerService persists Customer entities through IRepository<Customer>, the primary SQL store for shopper accounts.
+  rationale: CustomerService persists Customer entities through IRepository<Customer>,
+    the primary SQL store for shopper accounts.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-cookie-auth-service
   layer: components
   subject:
@@ -44,11 +47,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: CookieAuthenticationService implements in-codebase cookie authentication via ASP.NET Core SignInAsync, not an external IdP.
+  rationale: CookieAuthenticationService implements in-codebase cookie authentication
+    via ASP.NET Core SignInAsync, not an external IdP.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-customer-actor
   layer: components
   subject:
@@ -69,11 +75,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: Customer is the storefront end-user entity that registers, logs in, and owns profile and order data.
+  rationale: Customer is the storefront end-user entity that registers, logs in, and
+    owns profile and order data.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-not-auth0
   layer: components
   subject:
@@ -86,8 +95,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed customer and authentication files implement local cookie login. They do not integrate Auth0 or another external identity vendor.
+  rationale: The reviewed customer and authentication files implement local cookie
+    login. They do not integrate Auth0 or another external identity vendor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

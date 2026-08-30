@@ -24,11 +24,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: members.email is a required unique column validated as an email address for site subscribers.
+  rationale: members.email is a required unique column validated as an email address
+    for site subscribers.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-member-name-item
   layer: data_items
   subject:
@@ -54,11 +57,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: members.name stores the subscriber display name collected during signup and profile updates.
+  rationale: members.name stores the subscriber display name collected during signup
+    and profile updates.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-staff-password-item
   layer: data_items
   subject:
@@ -84,11 +90,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: users.password is a required hashed credential column for Ghost staff login.
+  rationale: users.password is a required hashed credential column for Ghost staff
+    login.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-member-uuid-item
   layer: data_items
   subject:
@@ -118,7 +127,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-member-status-not-pii
   layer: data_items
   subject:
@@ -131,11 +142,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: members.status tracks subscription tier state (free, paid, comped, gift), not personal data content.
+  rationale: members.status tracks subscription tier state (free, paid, comped, gift),
+    not personal data content.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-email-count-not-pii
   layer: data_items
   subject:
@@ -148,8 +162,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: email_count is an engagement counter, not a stored email address or other PII field.
+  rationale: email_count is an engagement counter, not a stored email address or other
+    PII field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -25,11 +25,14 @@ annotations:
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
-  rationale: DatabaseApi is the base class for database connections and transaction targets in this ORM access layer.
+  rationale: DatabaseApi is the base class for database connections and transaction
+    targets in this ORM access layer.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-statement-builder-query-api
   layer: components
   subject:
@@ -56,11 +59,14 @@ annotations:
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
-  rationale: StatementBuilder exposes the insert, delete, update, and select DSL used to build SQL statements.
+  rationale: StatementBuilder exposes the insert, delete, update, and select DSL used
+    to build SQL statements.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-not-stripe
   layer: components
   subject:
@@ -73,11 +79,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Exposed is a database ORM library. The reviewed core sources do not integrate Stripe or any payment processor.
+  rationale: Exposed is a database ORM library. The reviewed core sources do not integrate
+    Stripe or any payment processor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-not-customer-actor
   layer: components
   subject:
@@ -90,11 +99,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: SQL reserved keywords like USER appear in vendor keyword lists, but there is no customer or end-user domain model.
+  rationale: SQL reserved keywords like USER appear in vendor keyword lists, but there
+    is no customer or end-user domain model.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-not-auth-service
   layer: components
   subject:
@@ -107,8 +119,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Transaction is a database work unit, not an authentication or session service.
+  rationale: Transaction is a database work unit, not an authentication or session
+    service.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

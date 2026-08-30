@@ -24,11 +24,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: memberRepository.create validates memberData.email with validator.isEmail before persisting the member.
+  rationale: memberRepository.create validates memberData.email with validator.isEmail
+    before persisting the member.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-identity-token-signal
   layer: pii_signals
   subject:
@@ -54,11 +57,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: encodeIdentityToken signs a JWT with the member subject used to authenticate member requests.
+  rationale: encodeIdentityToken signs a JWT with the member subject used to authenticate
+    member requests.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-staff-email-signal
   layer: pii_signals
   subject:
@@ -84,11 +90,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: The users table schema defines a unique email column with isEmail validation for staff accounts.
+  rationale: The users table schema defines a unique email column with isEmail validation
+    for staff accounts.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-no-member-phone-signal
   layer: pii_signals
   subject:
@@ -101,8 +110,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The members table schema in scope defines email and name fields but no phone number column.
+  rationale: The members table schema in scope defines email and name fields but no
+    phone number column.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

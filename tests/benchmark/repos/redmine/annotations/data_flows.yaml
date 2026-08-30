@@ -20,11 +20,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: try_to_login! passes the supplied login and password to find_by_login and check_password? for authentication.
+  rationale: try_to_login! passes the supplied login and password to find_by_login
+    and check_password? for authentication.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-mail-to-email-address
   layer: data_flows
   subject:
@@ -46,11 +49,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: User#mail= writes the supplied address onto the associated EmailAddress record.
+  rationale: User#mail= writes the supplied address onto the associated EmailAddress
+    record.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-password-to-hashed-password
   layer: data_flows
   subject:
@@ -72,11 +78,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: before_save update_hashed_password calls salt_password to hash the transient password into hashed_password.
+  rationale: before_save update_hashed_password calls salt_password to hash the transient
+    password into hashed_password.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-ldap-to-user-create
   layer: data_flows
   subject:
@@ -98,11 +107,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: When no local user exists, AuthSource.authenticate attrs flow into a new User record on first login.
+  rationale: When no local user exists, AuthSource.authenticate attrs flow into a
+    new User record on first login.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-session-token-create
   layer: data_flows
   subject:
@@ -124,11 +136,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: generate_session_token creates a Token row and returns its value for session authentication.
+  rationale: generate_session_token creates a Token row and returns its value for
+    session authentication.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-email-change-destroys-recovery-tokens
   layer: data_flows
   subject:
@@ -150,11 +165,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: destroy_tokens deletes recovery tokens when an email address changes, propagating identity updates into token state.
+  rationale: destroy_tokens deletes recovery tokens when an email address changes,
+    propagating identity updates into token state.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-external-auth-to-check-password
   layer: data_flows
   subject:
@@ -176,11 +194,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: For LDAP-backed users, check_password? delegates login and password to auth_source.authenticate.
+  rationale: For LDAP-backed users, check_password? delegates login and password to
+    auth_source.authenticate.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-not-payment-flow
   layer: data_flows
   subject:
@@ -193,8 +214,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: api_key issues API tokens only; the reviewed auth scope has no payment or card-processing flow.
+  rationale: api_key issues API tokens only; the reviewed auth scope has no payment
+    or card-processing flow.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -42,11 +42,14 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: signInWithPassword destructures email from credentials and sends it in the token request body.
+  rationale: signInWithPassword destructures email from credentials and sends it in
+    the token request body.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-password-signal
   layer: pii_signals
   subject:
@@ -94,7 +97,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-access-token-signal
   layer: pii_signals
   subject:
@@ -142,7 +147,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-storage-key-not-pii
   layer: pii_signals
   subject:
@@ -155,8 +162,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: STORAGE_KEY is a static localStorage key name, not a user identifier or other PII value.
+  rationale: STORAGE_KEY is a static localStorage key name, not a user identifier
+    or other PII value.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

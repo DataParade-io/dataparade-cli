@@ -11,11 +11,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: customer.ts re-exports the customer package and does not declare or handle email fields in scope.
+  rationale: customer.ts re-exports the customer package and does not declare or handle
+    email fields in scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-no-user-name-signal
   layer: pii_signals
   subject:
@@ -28,11 +31,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: user.ts is a module registry export with no user name properties in the reviewed files.
+  rationale: user.ts is a module registry export with no user name properties in the
+    reviewed files.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-auth-emailpass-password-signal
   layer: pii_signals
   subject:
@@ -45,11 +51,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: auth-emailpass.ts only re-exports EmailPassAuthProvider; it does not declare a password field or credential value.
+  rationale: auth-emailpass.ts only re-exports EmailPassAuthProvider; it does not
+    declare a password field or credential value.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-no-phone-signal
   layer: pii_signals
   subject:
@@ -62,8 +71,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: order.ts contains no phone number fields or handling in the scoped module registry files.
+  rationale: order.ts contains no phone number fields or handling in the scoped module
+    registry files.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -24,11 +24,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: connection.js instantiates knex from configured database settings used to persist members and users.
+  rationale: connection.js instantiates knex from configured database settings used
+    to persist members and users.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-members-auth-service
   layer: components
   subject:
@@ -54,11 +57,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: authenticateMembersToken verifies GhostMembers JWTs and attaches the member to the request.
+  rationale: authenticateMembersToken verifies GhostMembers JWTs and attaches the
+    member to the request.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-members-api
   layer: components
   subject:
@@ -84,11 +90,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: MembersAPI exposes HTTP routes such as sendMagicLink for member sign-in and signup flows.
+  rationale: MembersAPI exposes HTTP routes such as sendMagicLink for member sign-in
+    and signup flows.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-stripe-integration
   layer: components
   subject:
@@ -114,11 +123,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: stripe-api.js requires the Stripe SDK to process member subscriptions and payments.
+  rationale: stripe-api.js requires the Stripe SDK to process member subscriptions
+    and payments.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-member-customer-actor
   layer: components
   subject:
@@ -144,11 +156,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: The Member model maps to the members table and represents paying and free site subscribers.
+  rationale: The Member model maps to the members table and represents paying and
+    free site subscribers.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-staff-admin-actor
   layer: components
   subject:
@@ -174,11 +189,14 @@ annotations:
     - ghost/core/core/server/services/members/members-api/repositories/member-repository.js
     - ghost/core/core/server/services/members/members-api/services/token-service.js
     - ghost/core/core/server/services/stripe/stripe-api.js
-  rationale: The User model maps to the staff users table for Ghost administrators and editors.
+  rationale: The User model maps to the staff users table for Ghost administrators
+    and editors.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: ghost-not-auth0
   layer: components
   subject:
@@ -191,8 +209,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Member authentication uses locally issued GhostMembers JWTs, not an external Auth0 integration.
+  rationale: Member authentication uses locally issued GhostMembers JWTs, not an external
+    Auth0 integration.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

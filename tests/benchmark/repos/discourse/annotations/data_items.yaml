@@ -34,7 +34,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-username
   layer: data_items
   subject:
@@ -66,11 +68,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: username is the required login handle stored on the users table with a unique index.
+  rationale: username is the required login handle stored on the users table with
+    a unique index.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-name
   layer: data_items
   subject:
@@ -106,7 +111,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-date-of-birth
   layer: data_items
   subject:
@@ -138,11 +145,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: date_of_birth is a date column on users for optional birth-date profile data.
+  rationale: date_of_birth is a date column on users for optional birth-date profile
+    data.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-locale
   layer: data_items
   subject:
@@ -155,11 +165,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Locale is a language preference string, not identity or credential content in this taxonomy.
+  rationale: Locale is a language preference string, not identity or credential content
+    in this taxonomy.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-user-email
   layer: data_items
   subject:
@@ -195,7 +208,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-normalized-email
   layer: data_items
   subject:
@@ -208,11 +223,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: normalized_email is a canonicalized lookup key derived from email, not the raw address value.
+  rationale: normalized_email is a canonicalized lookup key derived from email, not
+    the raw address value.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-password-hash
   layer: data_items
   subject:
@@ -244,11 +262,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: password_hash stores the PBKDF2 verifier used to confirm passwords, not the plaintext secret.
+  rationale: password_hash stores the PBKDF2 verifier used to confirm passwords, not
+    the plaintext secret.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-password-salt
   layer: data_items
   subject:
@@ -261,11 +282,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: password_salt is hashing metadata paired with password_hash, not an independently usable credential.
+  rationale: password_salt is hashing metadata paired with password_hash, not an independently
+    usable credential.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-api-key-bearer
   layer: data_items
   subject:
@@ -297,11 +321,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: The key getter returns the freshly generated bearer secret available only immediately after creation.
+  rationale: The key getter returns the freshly generated bearer secret available
+    only immediately after creation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-api-key-hash
   layer: data_items
   subject:
@@ -314,11 +341,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: key_hash is the stored verifier for the API key, not the bearer token itself.
+  rationale: key_hash is the stored verifier for the API key, not the bearer token
+    itself.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-oauth2-email
   layer: data_items
   subject:
@@ -350,11 +380,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: oauth2_user_infos.email stores the email returned by an external OAuth provider.
+  rationale: oauth2_user_infos.email stores the email returned by an external OAuth
+    provider.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-oauth2-uid
   layer: data_items
   subject:
@@ -386,11 +419,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: uid is the provider-scoped external account identifier with a unique index on uid and provider.
+  rationale: uid is the provider-scoped external account identifier with a unique
+    index on uid and provider.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-oauth2-name
   layer: data_items
   subject:
@@ -422,11 +458,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: oauth2_user_infos.name stores the display name supplied by the OAuth provider.
+  rationale: oauth2_user_infos.name stores the display name supplied by the OAuth
+    provider.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-associated-provider-uid
   layer: data_items
   subject:
@@ -458,11 +497,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: provider_uid is the external authenticator's stable account id for the linked user.
+  rationale: provider_uid is the external authenticator's stable account id for the
+    linked user.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-profile-location
   layer: data_items
   subject:
@@ -475,11 +517,14 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: location is free-text profile data that may contain personal location but granularity is unspecified.
+  rationale: location is free-text profile data that may contain personal location
+    but granularity is unspecified.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-profile-bio-raw
   layer: data_items
   subject:
@@ -492,8 +537,11 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: bio_raw is unstructured profile text that may contain personal data but is not required to.
+  rationale: bio_raw is unstructured profile text that may contain personal data but
+    is not required to.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

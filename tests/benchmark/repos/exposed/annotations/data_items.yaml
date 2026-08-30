@@ -11,11 +11,14 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: EntityID.value is a generic identity wrapper with no source-fixed person or credential type.
+  rationale: EntityID.value is a generic identity wrapper with no source-fixed person
+    or credential type.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-database-url
   layer: data_items
   subject:
@@ -42,11 +45,14 @@ annotations:
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
-  rationale: DatabaseApi.url is the JDBC connection URL, which may embed database credentials.
+  rationale: DatabaseApi.url is the JDBC connection URL, which may embed database
+    credentials.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-no-email-field
   layer: data_items
   subject:
@@ -59,11 +65,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The ORM core defines SQL keywords and generic column types, not customer email columns.
+  rationale: The ORM core defines SQL keywords and generic column types, not customer
+    email columns.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-schema-password-not-data-item
   layer: data_items
   subject:
@@ -76,11 +85,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Schema.password configures Oracle schema creation DDL and is not a persisted personal-data field.
+  rationale: Schema.password configures Oracle schema creation DDL and is not a persisted
+    personal-data field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-statement-count-not-pii
   layer: data_items
   subject:
@@ -93,8 +105,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: statementCount is a diagnostic counter for executed SQL statements, not personal data.
+  rationale: statementCount is a diagnostic counter for executed SQL statements, not
+    personal data.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

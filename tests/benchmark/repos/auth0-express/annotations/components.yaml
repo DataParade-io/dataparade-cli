@@ -33,11 +33,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: OIDC discovery and Auth0-specific logout branch on *.auth0.com issuers, integrating the external Auth0 identity provider.
+  rationale: OIDC discovery and Auth0-specific logout branch on *.auth0.com issuers,
+    integrating the external Auth0 identity provider.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-auth-service
   layer: components
   subject:
@@ -72,11 +75,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: appSession encrypts and manages the local Express session cookie that holds OIDC tokens between requests.
+  rationale: appSession encrypts and manages the local Express session cookie that
+    holds OIDC tokens between requests.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-customer-actor
   layer: components
   subject:
@@ -111,11 +117,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: req.oidc.user exposes filtered ID token claims representing the signed-in end user.
+  rationale: req.oidc.user exposes filtered ID token claims representing the signed-in
+    end user.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-not-supabase
   layer: components
   subject:
@@ -128,8 +137,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: client.discovery targets the configured OIDC issuer (Auth0). The lib scope does not call Supabase APIs.
+  rationale: client.discovery targets the configured OIDC issuer (Auth0). The lib
+    scope does not call Supabase APIs.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

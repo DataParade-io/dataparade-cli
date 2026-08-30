@@ -33,11 +33,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: access_token from the refresh grant is written into the encrypted session and used for API access.
+  rationale: access_token from the refresh grant is written into the encrypted session
+    and used for API access.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-id-token-signal
   layer: pii_signals
   subject:
@@ -50,11 +53,14 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: id_token is an OIDC identity JWT stored in the session after login; it is not a source-fixed API access_token.
+  rationale: id_token is an OIDC identity JWT stored in the session after login; it
+    is not a source-fixed API access_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-sub-signal
   layer: pii_signals
   subject:
@@ -89,11 +95,14 @@ annotations:
     - lib/utils/promisifyCompat.js
     - lib/utils/sessionExpiry.js
     - lib/weakCache.js
-  rationale: claims.sub is the stable subject identifier used to detect same-user re-login versus account switch.
+  rationale: claims.sub is the stable subject identifier used to detect same-user
+    re-login versus account switch.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: auth0-express-client-id-not-email
   layer: pii_signals
   subject:
@@ -106,8 +115,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: clientID is an OAuth application identifier, not an email address or other PII field.
+  rationale: clientID is an OAuth application identifier, not an email address or
+    other PII field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

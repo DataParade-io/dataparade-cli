@@ -214,7 +214,7 @@ describe("benchmark corpus manifests", () => {
               expect(record.evidence.end_line).toBeGreaterThanOrEqual(
                 record.evidence.start_line,
               );
-              expect(record.provenance.review_state).toBe("proposed");
+              expect(record.provenance.review_state).toBe("accepted");
               if (record.expected.status === "positive") {
                 expect(record.expected.labels.length).toBeGreaterThan(0);
                 expect(record.expected.exhaustive_scope_files?.length).toBeGreaterThan(0);

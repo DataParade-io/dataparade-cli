@@ -16,11 +16,14 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: get_id serializes self.id as the stable user identifier Flask-Login stores in the session.
+  rationale: get_id serializes self.id as the stable user identifier Flask-Login stores
+    in the session.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-session-user-id
   layer: data_items
   subject:
@@ -38,11 +41,14 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: session["_user_id"] is the stored user identifier used to reload the authenticated user.
+  rationale: session["_user_id"] is the stored user identifier used to reload the
+    authenticated user.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-remember-cookie-value
   layer: data_items
   subject:
@@ -60,11 +66,14 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: encode_cookie(str(session["_user_id"])) is the remember-me cookie payload that re-authenticates the user.
+  rationale: encode_cookie(str(session["_user_id"])) is the remember-me cookie payload
+    that re-authenticates the user.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-login-message-not-pii
   layer: data_items
   subject:
@@ -81,7 +90,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-is-authenticated-not-pii
   layer: data_items
   subject:
@@ -98,4 +109,6 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

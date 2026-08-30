@@ -30,11 +30,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: ensure_password_is_hashed salts and hashes @raw_password into password_hash before save.
+  rationale: ensure_password_is_hashed salts and hashes @raw_password into password_hash
+    before save.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-api-key-to-key-hash
   layer: data_flows
   subject:
@@ -66,11 +69,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: generate_key creates a random @key and stores ApiKey.hash_key(@key) as key_hash.
+  rationale: generate_key creates a random @key and stores ApiKey.hash_key(@key) as
+    key_hash.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-auth-token-generate
   layer: data_flows
   subject:
@@ -102,11 +108,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: generate! hashes a random token into auth_token and exposes the unhashed value on unhashed_auth_token.
+  rationale: generate! hashes a random token into auth_token and exposes the unhashed
+    value on unhashed_auth_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-email-normalize
   layer: data_flows
   subject:
@@ -138,11 +147,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: normalize_email derives normalized_email from the current email value before validation.
+  rationale: normalize_email derives normalized_email from the current email value
+    before validation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-session-cookie-config
   layer: data_flows
   subject:
@@ -174,11 +186,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: session_store binds server session state to the _forum_session browser cookie key.
+  rationale: session_store binds server session state to the _forum_session browser
+    cookie key.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-login-route
   layer: data_flows
   subject:
@@ -210,11 +225,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: Session routes map HTTP login and forgot_password requests into SessionController actions.
+  rationale: Session routes map HTTP login and forgot_password requests into SessionController
+    actions.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-omniauth-csrf
   layer: data_flows
   subject:
@@ -246,8 +264,11 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: before_request_phase verifies CSRF tokens on non-GET OmniAuth requests before external auth proceeds.
+  rationale: before_request_phase verifies CSRF tokens on non-GET OmniAuth requests
+    before external auth proceeds.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

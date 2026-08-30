@@ -24,11 +24,14 @@ annotations:
     - packages/medusa/src/modules/payment.ts
     - packages/medusa/src/modules/payment-stripe.ts
     - packages/medusa/src/modules/notification-sendgrid.ts
-  rationale: payment-stripe.ts re-exports @medusajs/payment-stripe, routing payment operations to the Stripe provider package.
+  rationale: payment-stripe.ts re-exports @medusajs/payment-stripe, routing payment
+    operations to the Stripe provider package.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-auth-emailpass-provider
   layer: data_flows
   subject:
@@ -54,11 +57,14 @@ annotations:
     - packages/medusa/src/modules/payment.ts
     - packages/medusa/src/modules/payment-stripe.ts
     - packages/medusa/src/modules/notification-sendgrid.ts
-  rationale: auth-emailpass.ts registers the email/password auth provider that Medusa auth delegates credential checks to.
+  rationale: auth-emailpass.ts registers the email/password auth provider that Medusa
+    auth delegates credential checks to.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-not-customer-email-to-db
   layer: data_flows
   subject:
@@ -71,11 +77,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: customer.ts is a module registry stub; it does not show customer email persistence or query flows.
+  rationale: customer.ts is a module registry stub; it does not show customer email
+    persistence or query flows.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: medusa-not-order-to-customer
   layer: data_flows
   subject:
@@ -88,8 +97,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: order.ts only re-exports @medusajs/order and contains no order-to-customer data movement in scope.
+  rationale: order.ts only re-exports @medusajs/order and contains no order-to-customer
+    data movement in scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

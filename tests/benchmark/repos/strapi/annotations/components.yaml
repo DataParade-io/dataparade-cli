@@ -19,11 +19,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: The admin::user content type maps to the admin_users table, the persistent store for Strapi admin accounts.
+  rationale: The admin::user content type maps to the admin_users table, the persistent
+    store for Strapi admin accounts.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-sessions-database
   layer: components
   subject:
@@ -44,11 +47,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: The admin::session content type maps to strapi_sessions, storing refresh tokens and session metadata.
+  rationale: The admin::session content type maps to strapi_sessions, storing refresh
+    tokens and session metadata.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-auth-service
   layer: components
   subject:
@@ -69,11 +75,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: The auth service hashes passwords and validates admin credentials against admin_users via strapi.db.query.
+  rationale: The auth service hashes passwords and validates admin credentials against
+    admin_users via strapi.db.query.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-admin-actor
   layer: components
   subject:
@@ -94,11 +103,14 @@ annotations:
     - packages/core/admin/server/src/services/token.ts
     - packages/core/admin/server/src/controllers/authentication.ts
     - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: The admin::user content type represents Strapi admin-panel operators with role relations, not public API consumers.
+  rationale: The admin::user content type represents Strapi admin-panel operators
+    with role relations, not public API consumers.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: strapi-not-auth0
   layer: components
   subject:
@@ -111,8 +123,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed admin authentication flow uses passport local strategy and session cookies, not Auth0.
+  rationale: The reviewed admin authentication flow uses passport local strategy and
+    session cookies, not Auth0.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

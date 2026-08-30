@@ -23,11 +23,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: BaseModel.Id is the primary key embedded in JWT TokenClaimId for auth records.
+  rationale: BaseModel.Id is the primary key embedded in JWT TokenClaimId for auth
+    records.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-email-field
   layer: data_items
   subject:
@@ -52,11 +55,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: Record.Email returns the auth collection email field used as the account address.
+  rationale: Record.Email returns the auth collection email field used as the account
+    address.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-password-hash
   layer: data_items
   subject:
@@ -85,7 +91,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-token-key
   layer: data_items
   subject:
@@ -114,7 +122,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-jwt-auth-token
   layer: data_items
   subject:
@@ -139,11 +149,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: NewAuthToken returns a signed JWT bearer credential for authenticated API access.
+  rationale: NewAuthToken returns a signed JWT bearer credential for authenticated
+    API access.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-token-claim-email
   layer: data_items
   subject:
@@ -168,11 +181,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: TokenClaimEmail is embedded in verification and password-reset JWT payloads carrying the account email.
+  rationale: TokenClaimEmail is embedded in verification and password-reset JWT payloads
+    carrying the account email.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-token-claim-new-email
   layer: data_items
   subject:
@@ -197,11 +213,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: TokenClaimNewEmail carries the requested replacement email in email-change tokens.
+  rationale: TokenClaimNewEmail carries the requested replacement email in email-change
+    tokens.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-auth-token-secret
   layer: data_items
   subject:
@@ -226,11 +245,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: AuthToken.Secret is a random signing key combined with tokenKey to mint JWT credentials.
+  rationale: AuthToken.Secret is a random signing key combined with tokenKey to mint
+    JWT credentials.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-external-provider-id
   layer: data_items
   subject:
@@ -255,11 +277,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: ProviderId stores the external OAuth provider's subject identifier for the linked account.
+  rationale: ProviderId stores the external OAuth provider's subject identifier for
+    the linked account.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-plain-password-transient
   layer: data_items
   subject:
@@ -284,11 +309,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: PasswordFieldValue.Plain holds the supplied password before bcrypt hashing on write.
+  rationale: PasswordFieldValue.Plain holds the supplied password before bcrypt hashing
+    on write.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-verified-flag
   layer: data_items
   subject:
@@ -301,11 +329,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: verified is a boolean account state flag, not identity or credential content.
+  rationale: verified is a boolean account state flag, not identity or credential
+    content.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-email-visibility
   layer: data_items
   subject:
@@ -322,7 +353,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-auth-origin-fingerprint
   layer: data_items
   subject:
@@ -335,11 +368,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: fingerprint is a device identifier for auth alerts, not a taxonomy identity or credential item.
+  rationale: fingerprint is a device identifier for auth alerts, not a taxonomy identity
+    or credential item.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-collection-ref
   layer: data_items
   subject:
@@ -356,4 +392,6 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

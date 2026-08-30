@@ -20,11 +20,14 @@ annotations:
     - Sources/Vapor/Authentication/GuardMiddleware.swift
     - Sources/Vapor/Authentication/RedirectMiddleware.swift
     - Sources/Vapor/Authentication/SessionAuthenticatable.swift
-  rationale: username is stored on BasicAuthorization and serialized back into the Authorization header.
+  rationale: username is stored on BasicAuthorization and serialized back into the
+    Authorization header.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: vapor-basic-password-item
   layer: data_items
   subject:
@@ -46,11 +49,14 @@ annotations:
     - Sources/Vapor/Authentication/GuardMiddleware.swift
     - Sources/Vapor/Authentication/RedirectMiddleware.swift
     - Sources/Vapor/Authentication/SessionAuthenticatable.swift
-  rationale: password is a credential field carried in BasicAuthorization and encoded into the Authorization header.
+  rationale: password is a credential field carried in BasicAuthorization and encoded
+    into the Authorization header.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: vapor-bearer-token-item
   layer: data_items
   subject:
@@ -72,11 +78,14 @@ annotations:
     - Sources/Vapor/Authentication/GuardMiddleware.swift
     - Sources/Vapor/Authentication/RedirectMiddleware.swift
     - Sources/Vapor/Authentication/SessionAuthenticatable.swift
-  rationale: token is the bearer credential value set and read from the Authorization header.
+  rationale: token is the bearer credential value set and read from the Authorization
+    header.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: vapor-session-id-item
   layer: data_items
   subject:
@@ -89,11 +98,14 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: sessionID is an associatedtype with no source-fixed identity or token type.
+  rationale: sessionID is an associatedtype with no source-fixed identity or token
+    type.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: vapor-realm-not-pii-item
   layer: data_items
   subject:
@@ -106,8 +118,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: realm is a static WWW-Authenticate challenge label, not a stored personal data field.
+  rationale: realm is a static WWW-Authenticate challenge label, not a stored personal
+    data field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -20,11 +20,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: validates_presence_of and validates_uniqueness_of :login mark login as the account identifier.
+  rationale: validates_presence_of and validates_uniqueness_of :login mark login as
+    the account identifier.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-firstname-signal
   layer: pii_signals
   subject:
@@ -50,7 +53,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-lastname-signal
   layer: pii_signals
   subject:
@@ -76,7 +81,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-email-address-signal
   layer: pii_signals
   subject:
@@ -98,11 +105,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: validates_format_of :address with URI::MailTo::EMAIL_REGEXP is an explicit email-address signal.
+  rationale: validates_format_of :address with URI::MailTo::EMAIL_REGEXP is an explicit
+    email-address signal.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-api-token-signal
   layer: pii_signals
   subject:
@@ -127,7 +137,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-hashed-password-signal
   layer: pii_signals
   subject:
@@ -149,11 +161,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: salt_password stores SHA1(salt + SHA1(password)) in hashed_password as the password verifier.
+  rationale: salt_password stores SHA1(salt + SHA1(password)) in hashed_password as
+    the password verifier.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-ldap-attr-mail-signal
   layer: pii_signals
   subject:
@@ -175,11 +190,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: LDAP search requests self.attr_mail as an email attribute mapped from the external directory.
+  rationale: LDAP search requests self.attr_mail as an email attribute mapped from
+    the external directory.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-mail-notification-not-email
   layer: pii_signals
   subject:
@@ -192,8 +210,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: MAIL_NOTIFICATION_OPTIONS are notification scope labels, not stored email addresses.
+  rationale: MAIL_NOTIFICATION_OPTIONS are notification scope labels, not stored email
+    addresses.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

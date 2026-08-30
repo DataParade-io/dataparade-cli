@@ -20,11 +20,14 @@ annotations:
     - Sources/Vapor/Authentication/GuardMiddleware.swift
     - Sources/Vapor/Authentication/RedirectMiddleware.swift
     - Sources/Vapor/Authentication/SessionAuthenticatable.swift
-  rationale: BasicAuthorization.username is a live login identifier parsed from the Authorization header and may be an email address.
+  rationale: BasicAuthorization.username is a live login identifier parsed from the
+    Authorization header and may be an email address.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: vapor-password-signal
   layer: pii_signals
   subject:
@@ -46,11 +49,14 @@ annotations:
     - Sources/Vapor/Authentication/GuardMiddleware.swift
     - Sources/Vapor/Authentication/RedirectMiddleware.swift
     - Sources/Vapor/Authentication/SessionAuthenticatable.swift
-  rationale: BasicAuthorization.password holds the plaintext credential decoded from the Basic auth header.
+  rationale: BasicAuthorization.password holds the plaintext credential decoded from
+    the Basic auth header.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: vapor-bearer-token-signal
   layer: pii_signals
   subject:
@@ -72,11 +78,14 @@ annotations:
     - Sources/Vapor/Authentication/GuardMiddleware.swift
     - Sources/Vapor/Authentication/RedirectMiddleware.swift
     - Sources/Vapor/Authentication/SessionAuthenticatable.swift
-  rationale: BearerAuthorization.token is the bearer secret extracted from the Authorization header.
+  rationale: BearerAuthorization.token is the bearer secret extracted from the Authorization
+    header.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: vapor-realm-not-pii
   layer: pii_signals
   subject:
@@ -89,8 +98,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The default BasicAuthenticator realm string is a static challenge label, not a personal identifier or email address.
+  rationale: The default BasicAuthenticator realm string is a static challenge label,
+    not a personal identifier or email address.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

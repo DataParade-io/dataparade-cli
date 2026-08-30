@@ -25,11 +25,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: AccountManagement implements in-codebase customer authentication, password reset, and account activation.
+  rationale: AccountManagement implements in-codebase customer authentication, password
+    reset, and account activation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-authentication-model-auth-service
   layer: components
   subject:
@@ -56,11 +59,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: The Authentication model validates password hashes and enforces account lockout during login.
+  rationale: The Authentication model validates password hashes and enforces account
+    lockout during login.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-customer-entity-database
   layer: components
   subject:
@@ -87,11 +93,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Customer resource model is the EAV entity mapped to the customer database tables.
+  rationale: Customer resource model is the EAV entity mapped to the customer database
+    tables.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-login-post-api
   layer: components
   subject:
@@ -118,11 +127,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: LoginPost is the storefront HTTP POST handler that accepts customer login credentials.
+  rationale: LoginPost is the storefront HTTP POST handler that accepts customer login
+    credentials.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-ajax-login-api
   layer: components
   subject:
@@ -149,11 +161,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: The Ajax Login controller exposes a JSON login endpoint for XHR authentication requests.
+  rationale: The Ajax Login controller exposes a JSON login endpoint for XHR authentication
+    requests.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-webapi-customers-api
   layer: components
   subject:
@@ -180,11 +195,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: webapi.xml declares REST routes such as POST /V1/customers for account creation and management.
+  rationale: webapi.xml declares REST routes such as POST /V1/customers for account
+    creation and management.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-customer-actor
   layer: components
   subject:
@@ -211,11 +229,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: CustomerInterface models the storefront end-user account, not an admin or service identity.
+  rationale: CustomerInterface models the storefront end-user account, not an admin
+    or service identity.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-not-auth0
   layer: components
   subject:
@@ -228,11 +249,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Login flows delegate to local AccountManagement authentication. The reviewed scope has no Auth0 or external IdP integration.
+  rationale: Login flows delegate to local AccountManagement authentication. The reviewed
+    scope has no Auth0 or external IdP integration.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-not-sendgrid
   layer: components
   subject:
@@ -245,11 +269,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Password-reset email uses Magento TransportBuilder. No SendGrid or other email vendor SDK appears in this scope.
+  rationale: Password-reset email uses Magento TransportBuilder. No SendGrid or other
+    email vendor SDK appears in this scope.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-session-not-cache
   layer: components
   subject:
@@ -262,8 +289,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Customer Session extends SessionManager for PHP session state, not an in-memory cache layer like Redis.
+  rationale: Customer Session extends SessionManager for PHP session state, not an
+    in-memory cache layer like Redis.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

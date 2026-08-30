@@ -21,11 +21,14 @@ annotations:
     - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
     - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
     - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
-  rationale: Person.firstName is a persisted given name on Owner (and other person subtypes).
+  rationale: Person.firstName is a persisted given name on Owner (and other person
+    subtypes).
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spring-petclinic-owner-last-name
   layer: data_items
   subject:
@@ -48,11 +51,14 @@ annotations:
     - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
     - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
     - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
-  rationale: Person.lastName is a persisted family name used for owner search and display.
+  rationale: Person.lastName is a persisted family name used for owner search and
+    display.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spring-petclinic-owner-address
   layer: data_items
   subject:
@@ -79,7 +85,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spring-petclinic-owner-city
   layer: data_items
   subject:
@@ -106,7 +114,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spring-petclinic-owner-telephone
   layer: data_items
   subject:
@@ -129,11 +139,14 @@ annotations:
     - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
     - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
     - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
-  rationale: Owner.telephone is validated as a 10-digit phone number on the customer record.
+  rationale: Owner.telephone is validated as a 10-digit phone number on the customer
+    record.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spring-petclinic-pet-name-not-person
   layer: data_items
   subject:
@@ -146,11 +159,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: NamedEntity.name on Pet is the animal's name, not a human person_name field.
+  rationale: NamedEntity.name on Pet is the animal's name, not a human person_name
+    field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spring-petclinic-pet-birthdate-not-human
   layer: data_items
   subject:
@@ -163,8 +179,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Pet.birthDate is the animal's date of birth, not a human date_of_birth field.
+  rationale: Pet.birthDate is the animal's date of birth, not a human date_of_birth
+    field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

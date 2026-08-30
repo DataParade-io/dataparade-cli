@@ -27,11 +27,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: Customer email is required, unique, and used for account lookup and order association.
+  rationale: Customer email is required, unique, and used for account lookup and order
+    association.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-customer-first-name
   layer: data_items
   subject:
@@ -64,7 +67,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-customer-last-name
   layer: data_items
   subject:
@@ -97,7 +102,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-customer-phone
   layer: data_items
   subject:
@@ -130,7 +137,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-address-street
   layer: data_items
   subject:
@@ -163,7 +172,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-address-zipcode
   layer: data_items
   subject:
@@ -196,7 +207,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-order-email
   layer: data_items
   subject:
@@ -229,7 +242,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-payment-response-code
   layer: data_items
   subject:
@@ -258,11 +273,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: response_code is the persisted gateway transaction identifier aliased as transaction_id.
+  rationale: response_code is the persisted gateway transaction identifier aliased
+    as transaction_id.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-credit-card-last-digits
   layer: data_items
   subject:
@@ -295,7 +313,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-oauth-access-token
   layer: data_items
   subject:
@@ -324,11 +344,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: UserIdentity persists encrypted OAuth access tokens when refreshing provider logins.
+  rationale: UserIdentity persists encrypted OAuth access tokens when refreshing provider
+    logins.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-gateway-payment-profile-id
   layer: data_items
   subject:
@@ -357,11 +380,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: gateway_payment_profile_id uniquely identifies a saved payment source at the gateway.
+  rationale: gateway_payment_profile_id uniquely identifies a saved payment source
+    at the gateway.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-gateway-customer-profile-id
   layer: data_items
   subject:
@@ -390,11 +416,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: profile_id is the gateway customer token linking a buyer to saved payment methods.
+  rationale: profile_id is the gateway customer token linking a buyer to saved payment
+    methods.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-accepts-email-marketing-not-pii
   layer: data_items
   subject:
@@ -407,11 +436,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: accepts_email_marketing is a marketing consent flag, not a stored personal data field.
+  rationale: accepts_email_marketing is a marketing consent flag, not a stored personal
+    data field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-cc-type-not-card-number
   layer: data_items
   subject:
@@ -424,8 +456,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: cc_type/brand records the card network, not the full card number or last-four digits.
+  rationale: cc_type/brand records the card network, not the full card number or last-four
+    digits.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

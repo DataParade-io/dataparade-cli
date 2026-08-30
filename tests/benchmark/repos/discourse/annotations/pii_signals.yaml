@@ -30,11 +30,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: "validates :email, presence: true marks email as required identity data on UserEmail records."
+  rationale: 'validates :email, presence: true marks email as required identity data
+    on UserEmail records.'
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-username-schema-signal
   layer: pii_signals
   subject:
@@ -70,7 +73,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-unhashed-auth-token-signal
   layer: pii_signals
   subject:
@@ -102,11 +107,14 @@ annotations:
     - config/initializers/002-rails_failover.rb
     - config/routes.rb
     - config/site_settings.yml
-  rationale: unhashed_auth_token holds the live session bearer value separate from the stored hash.
+  rationale: unhashed_auth_token holds the live session bearer value separate from
+    the stored hash.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-raw-password-signal
   layer: pii_signals
   subject:
@@ -142,7 +150,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-totp-provisioning-signal
   layer: pii_signals
   subject:
@@ -178,7 +188,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-google-client-secret-not-email
   layer: pii_signals
   subject:
@@ -191,11 +203,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: google_oauth2_client_secret is an OAuth client credential marked secret, not an email address.
+  rationale: google_oauth2_client_secret is an OAuth client credential marked secret,
+    not an email address.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: discourse-bio-raw-ambiguous-signal
   layer: pii_signals
   subject:
@@ -208,8 +223,11 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: bio_raw may contain personal text but the column declaration does not require a person name.
+  rationale: bio_raw may contain personal text but the column declaration does not
+    require a person name.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

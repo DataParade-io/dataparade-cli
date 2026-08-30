@@ -19,11 +19,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: Customer.Email is a persisted account email also embedded in ClaimTypes.Email during sign-in.
+  rationale: Customer.Email is a persisted account email also embedded in ClaimTypes.Email
+    during sign-in.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-phone-signal
   layer: pii_signals
   subject:
@@ -44,11 +47,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: Customer.Phone is a stored phone number and is copied into ClaimTypes.MobilePhone on authentication.
+  rationale: Customer.Phone is a stored phone number and is copied into ClaimTypes.MobilePhone
+    on authentication.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-username-signal
   layer: pii_signals
   subject:
@@ -69,11 +75,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: Customer.Username is the login identifier when usernames are enabled and is written to ClaimTypes.Name.
+  rationale: Customer.Username is the login identifier when usernames are enabled
+    and is written to ClaimTypes.Name.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-failed-login-attempts-not-pii
   layer: pii_signals
   subject:
@@ -86,8 +95,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: FailedLoginAttempts is an account lockout counter, not a personal identifier or contact field.
+  rationale: FailedLoginAttempts is an account lockout counter, not a personal identifier
+    or contact field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

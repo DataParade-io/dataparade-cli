@@ -16,11 +16,14 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: _load_user reads session["_user_id"] and passes it to the application user_loader callback.
+  rationale: _load_user reads session["_user_id"] and passes it to the application
+    user_loader callback.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-cookie-to-user-loader
   layer: data_flows
   subject:
@@ -38,11 +41,14 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: The remember-me cookie is decoded to a user id, written into the session, then loaded via user_loader.
+  rationale: The remember-me cookie is decoded to a user id, written into the session,
+    then loaded via user_loader.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-session-to-remember-cookie
   layer: data_flows
   subject:
@@ -60,8 +66,11 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: _set_cookie encodes session["_user_id"] into the remember_token cookie on the HTTP response.
+  rationale: _set_cookie encodes session["_user_id"] into the remember_token cookie
+    on the HTTP response.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

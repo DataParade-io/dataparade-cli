@@ -24,7 +24,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-mail-signal
   layer: pii_signals
   subject:
@@ -46,11 +48,14 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: mail is an email base field with UserMailUnique and UserMailRequired constraints.
+  rationale: mail is an email base field with UserMailUnique and UserMailRequired
+    constraints.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-pass-signal
   layer: pii_signals
   subject:
@@ -76,7 +81,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-init-email-signal
   layer: pii_signals
   subject:
@@ -102,7 +109,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-uid-signal
   layer: pii_signals
   subject:
@@ -128,7 +137,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-one-time-hash-signal
   layer: pii_signals
   subject:
@@ -150,11 +161,14 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: hash in generateOneTimeLoginUrl is the one-time login bearer code in password-reset URLs.
+  rationale: hash in generateOneTimeLoginUrl is the one-time login bearer code in
+    password-reset URLs.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-timezone-not-email-signal
   layer: pii_signals
   subject:
@@ -167,11 +181,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: timezone is a locale preference string, not an email address despite appearing near mail in baseFieldDefinitions.
+  rationale: timezone is a locale preference string, not an email address despite
+    appearing near mail in baseFieldDefinitions.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-csrf-token-not-access-token
   layer: pii_signals
   subject:
@@ -184,8 +201,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: csrf_token is a CSRF form-protection value, not a bearer access token for API authorization.
+  rationale: csrf_token is a CSRF form-protection value, not a bearer access token
+    for API authorization.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

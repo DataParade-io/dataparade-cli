@@ -24,7 +24,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-user-firstname
   layer: data_items
   subject:
@@ -50,7 +52,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-user-lastname
   layer: data_items
   subject:
@@ -76,7 +80,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-email-address
   layer: data_items
   subject:
@@ -98,11 +104,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: EmailAddress validates address with URI::MailTo::EMAIL_REGEXP as a stored email string.
+  rationale: EmailAddress validates address with URI::MailTo::EMAIL_REGEXP as a stored
+    email string.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-user-mail-accessor
   layer: data_items
   subject:
@@ -128,7 +137,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-hashed-password
   layer: data_items
   subject:
@@ -150,11 +161,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: salt_password assigns SHA1(salt + SHA1(password)) to hashed_password as the stored verifier.
+  rationale: salt_password assigns SHA1(salt + SHA1(password)) to hashed_password
+    as the stored verifier.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-plain-password
   layer: data_items
   subject:
@@ -176,11 +190,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: password is a transient credential supplied during login and hashed before persistence.
+  rationale: password is a transient credential supplied during login and hashed before
+    persistence.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-api-key
   layer: data_items
   subject:
@@ -202,11 +219,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: api_key returns api_token.value, a bearer credential used to access the API.
+  rationale: api_key returns api_token.value, a bearer credential used to access the
+    API.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-token-value
   layer: data_items
   subject:
@@ -228,11 +248,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: generate_new_token assigns Token.generate_token_value to value, the stored bearer secret for session and API tokens.
+  rationale: generate_new_token assigns Token.generate_token_value to value, the stored
+    bearer secret for session and API tokens.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-twofa-totp-key
   layer: data_items
   subject:
@@ -254,11 +277,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: twofa_totp_key is stored ciphered and backs two-factor authentication secrets.
+  rationale: twofa_totp_key is stored ciphered and backs two-factor authentication
+    secrets.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-auth-source-password
   layer: data_items
   subject:
@@ -280,11 +306,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: account_password is a ciphered bind credential for external auth source connections.
+  rationale: account_password is a ciphered bind credential for external auth source
+    connections.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-salt
   layer: data_items
   subject:
@@ -301,7 +330,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-mail-notification
   layer: data_items
   subject:
@@ -314,11 +345,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: mail_notification is a notification preference enum, not identity or credential content.
+  rationale: mail_notification is a notification preference enum, not identity or
+    credential content.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-auth-source-id
   layer: data_items
   subject:
@@ -331,8 +365,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: auth_source_id identifies the configured authentication backend, not the person.
+  rationale: auth_source_id identifies the configured authentication backend, not
+    the person.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

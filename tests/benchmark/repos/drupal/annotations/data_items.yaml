@@ -24,7 +24,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-name
   layer: data_items
   subject:
@@ -50,7 +52,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-mail
   layer: data_items
   subject:
@@ -76,7 +80,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-pass
   layer: data_items
   subject:
@@ -102,7 +108,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-init-email
   layer: data_items
   subject:
@@ -128,7 +136,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-get-email
   layer: data_items
   subject:
@@ -154,7 +164,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-get-account-name
   layer: data_items
   subject:
@@ -180,7 +192,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-login-pass-credential
   layer: data_items
   subject:
@@ -202,11 +216,14 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: The login form pass element accepts the plaintext password submitted by the user.
+  rationale: The login form pass element accepts the plaintext password submitted
+    by the user.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-http-login-pass
   layer: data_items
   subject:
@@ -228,11 +245,14 @@ annotations:
     - core/modules/user/src/Form/UserLoginForm.php
     - core/modules/user/src/LoginFinalizer.php
     - core/modules/user/src/OneTimeAuthentication.php
-  rationale: credentials['pass'] is the plaintext password from the JSON login request body.
+  rationale: credentials['pass'] is the plaintext password from the JSON login request
+    body.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-one-time-hash
   layer: data_items
   subject:
@@ -258,7 +278,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-status-not-pii
   layer: data_items
   subject:
@@ -275,7 +297,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-created-not-pii
   layer: data_items
   subject:
@@ -292,7 +316,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-csrf-token-not-pii
   layer: data_items
   subject:
@@ -305,11 +331,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: csrf_token is a CSRF protection value returned after login, not stored personal data.
+  rationale: csrf_token is a CSRF protection value returned after login, not stored
+    personal data.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-timezone-ambiguous
   layer: data_items
   subject:
@@ -322,11 +351,14 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: timezone may imply user location but is a preference string without a taxonomy label.
+  rationale: timezone may imply user location but is a preference string without a
+    taxonomy label.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: drupal-logout-token-ambiguous
   layer: data_items
   subject:
@@ -339,8 +371,11 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: logout_token is a CSRF token for the logout endpoint; whether it qualifies as access_token is policy-dependent.
+  rationale: logout_token is a CSRF token for the logout endpoint; whether it qualifies
+    as access_token is policy-dependent.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

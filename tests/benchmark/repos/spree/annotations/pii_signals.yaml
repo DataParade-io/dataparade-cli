@@ -31,7 +31,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-address-phone-signal
   layer: pii_signals
   subject:
@@ -64,7 +66,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-address-firstname-signal
   layer: pii_signals
   subject:
@@ -97,7 +101,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-address-street-signal
   layer: pii_signals
   subject:
@@ -130,7 +136,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-oauth-access-token-signal
   layer: pii_signals
   subject:
@@ -159,11 +167,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: UserIdentity documents encrypted OAuth access_token storage on the identity row.
+  rationale: UserIdentity documents encrypted OAuth access_token storage on the identity
+    row.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-credit-card-last-digits-signal
   layer: pii_signals
   subject:
@@ -192,11 +203,14 @@ annotations:
     - spree/core/app/models/spree/gateway_customer.rb
     - spree/core/app/models/spree/user_identity.rb
     - spree/core/app/services/spree/orders/create_user_account.rb
-  rationale: set_last_digits derives last_digits from the card number, a card-number PII signal.
+  rationale: set_last_digits derives last_digits from the card number, a card-number
+    PII signal.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-accepts-marketing-not-email-signal
   layer: pii_signals
   subject:
@@ -209,11 +223,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: accepts_email_marketing is a boolean consent flag, not an email address field.
+  rationale: accepts_email_marketing is a boolean consent flag, not an email address
+    field.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: spree-cc-type-not-card-number-signal
   layer: pii_signals
   subject:
@@ -226,8 +243,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: cc_type/brand stores the card network label, not a card number or last-four value.
+  rationale: cc_type/brand stores the card network label, not a card number or last-four
+    value.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

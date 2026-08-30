@@ -42,11 +42,14 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: access_token is stored on Session and propagated to Authorization headers via fetchWithAuth.
+  rationale: access_token is stored on Session and propagated to Authorization headers
+    via fetchWithAuth.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-refresh-token-item
   layer: data_items
   subject:
@@ -90,11 +93,14 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: refresh_token is persisted in the session and posted to the refresh grant endpoint; it is a credential secret, not the API bearer access_token.
+  rationale: refresh_token is persisted in the session and posted to the refresh grant
+    endpoint; it is a credential secret, not the API bearer access_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-user-id-item
   layer: data_items
   subject:
@@ -142,7 +148,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-email-item
   layer: data_items
   subject:
@@ -190,7 +198,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: supabase-js-apikey-not-pii
   layer: data_items
   subject:
@@ -207,4 +217,6 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

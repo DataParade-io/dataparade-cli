@@ -29,7 +29,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-customer-email
   layer: data_items
   subject:
@@ -60,7 +62,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-customer-firstname
   layer: data_items
   subject:
@@ -91,7 +95,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-customer-lastname
   layer: data_items
   subject:
@@ -122,7 +128,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-customer-dob
   layer: data_items
   subject:
@@ -153,7 +161,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-address-street
   layer: data_items
   subject:
@@ -184,7 +194,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-address-telephone
   layer: data_items
   subject:
@@ -215,7 +227,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-address-customer-id
   layer: data_items
   subject:
@@ -246,7 +260,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-password-hash
   layer: data_items
   subject:
@@ -273,11 +289,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: getPasswordHash retrieves the stored password verifier hash used during authentication.
+  rationale: getPasswordHash retrieves the stored password verifier hash used during
+    authentication.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-rp-token
   layer: data_items
   subject:
@@ -308,7 +327,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-login-password
   layer: data_items
   subject:
@@ -335,11 +356,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: login['password'] is the plaintext credential submitted on the login form.
+  rationale: login['password'] is the plaintext credential submitted on the login
+    form.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-confirmation-not-pii
   layer: data_items
   subject:
@@ -352,11 +376,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: CONFIRMATION is an account-activation key, not a personal data category in the taxonomy.
+  rationale: CONFIRMATION is an account-activation key, not a personal data category
+    in the taxonomy.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-group-id-not-pii
   layer: data_items
   subject:
@@ -373,7 +400,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-taxvat-ambiguous
   layer: data_items
   subject:
@@ -386,11 +415,14 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: TAXVAT may hold a VAT or tax ID that can identify a person or business, but taxonomy treatment is unspecified.
+  rationale: TAXVAT may hold a VAT or tax ID that can identify a person or business,
+    but taxonomy treatment is unspecified.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-middlename-ambiguous
   layer: data_items
   subject:
@@ -403,8 +435,11 @@ annotations:
   expected:
     status: ambiguous
     labels: []
-  rationale: MIDDLENAME may be part of a person's name but is optional and may be empty.
+  rationale: MIDDLENAME may be part of a person's name but is optional and may be
+    empty.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -19,11 +19,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: User.email is the login identifier validated by Joi and queried case-insensitively during local authentication.
+  rationale: User.email is the login identifier validated by Joi and queried case-insensitively
+    during local authentication.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-password-signal
   layer: pii_signals
   subject:
@@ -44,11 +47,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: User.password stores the argon2 password hash verified by LocalAuthDriver.verify during login.
+  rationale: User.password stores the argon2 password hash verified by LocalAuthDriver.verify
+    during login.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-external-identifier-signal
   layer: pii_signals
   subject:
@@ -69,11 +75,14 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: external_identifier links a Directus user to an external SSO identity provider subject.
+  rationale: external_identifier links a Directus user to an external SSO identity
+    provider subject.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: directus-provider-not-pii
   layer: pii_signals
   subject:
@@ -86,8 +95,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: provider names the configured authentication driver, not a person or credential.
+  rationale: provider names the configured authentication driver, not a person or
+    credential.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

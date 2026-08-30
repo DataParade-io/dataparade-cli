@@ -28,11 +28,14 @@ annotations:
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
-  rationale: User is the site member identity Orchard authenticates and persists through ASP.NET Core Identity.
+  rationale: User is the site member identity Orchard authenticates and persists through
+    ASP.NET Core Identity.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-identity-auth-service
   layer: components
   subject:
@@ -62,11 +65,14 @@ annotations:
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
-  rationale: UserService implements local login, registration, and password reset via ASP.NET Core Identity.
+  rationale: UserService implements local login, registration, and password reset
+    via ASP.NET Core Identity.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-user-database
   layer: components
   subject:
@@ -100,7 +106,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-openid-auth-service
   layer: components
   subject:
@@ -134,7 +142,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-session-cache
   layer: components
   subject:
@@ -168,7 +178,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-password-reset-provider
   layer: components
   subject:
@@ -198,11 +210,14 @@ annotations:
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Models/OpenIdAuthorization.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdTokenStore.cs
     - src/OrchardCore/OrchardCore.OpenId.Core/YesSql/Stores/OpenIdApplicationStore.cs
-  rationale: PasswordResetTokenProvider issues protected reset tokens as an internal Identity service.
+  rationale: PasswordResetTokenProvider issues protected reset tokens as an internal
+    Identity service.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-not-auth0
   layer: components
   subject:
@@ -215,11 +230,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: UserService authenticates against the local UserManager store, not an Auth0 tenant.
+  rationale: UserService authenticates against the local UserManager store, not an
+    Auth0 tenant.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: orchard-not-stripe
   layer: components
   subject:
@@ -232,8 +250,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed Users and OpenId files handle identity only; they do not call Stripe.
+  rationale: The reviewed Users and OpenId files handle identity only; they do not
+    call Stripe.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

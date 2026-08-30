@@ -22,11 +22,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wp_signon authenticates credentials then calls wp_set_auth_cookie on success.
+  rationale: wp_signon authenticates credentials then calls wp_set_auth_cookie on
+    success.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-password-to-hash
   layer: data_flows
   subject:
@@ -50,11 +53,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wp_insert_user hashes userdata user_pass with wp_hash_password before persisting new users.
+  rationale: wp_insert_user hashes userdata user_pass with wp_hash_password before
+    persisting new users.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-session-to-usermeta
   layer: data_flows
   subject:
@@ -78,11 +84,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: update_sessions writes session verifiers to the session_tokens user meta key.
+  rationale: update_sessions writes session verifiers to the session_tokens user meta
+    key.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-token-to-auth-cookie
   layer: data_flows
   subject:
@@ -106,11 +115,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wp_set_auth_cookie creates or reuses a session token and encodes it into auth and logged_in cookies.
+  rationale: wp_set_auth_cookie creates or reuses a session token and encodes it into
+    auth and logged_in cookies.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-authenticate-check-password
   layer: data_flows
   subject:
@@ -134,11 +146,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wp_authenticate_username_password compares the submitted password against user_pass via wp_check_password.
+  rationale: wp_authenticate_username_password compares the submitted password against
+    user_pass via wp_check_password.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-insert-user-database
   layer: data_flows
   subject:
@@ -162,11 +177,14 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: wp_insert_user inserts the prepared user row into $wpdb->users and reads insert_id.
+  rationale: wp_insert_user inserts the prepared user row into $wpdb->users and reads
+    insert_id.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: wordpress-rest-email-to-user
   layer: data_flows
   subject:
@@ -190,8 +208,11 @@ annotations:
     - src/wp-includes/cache.php
     - src/wp-includes/class-wp-object-cache.php
     - src/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php
-  rationale: prepare_item_for_database assigns request email onto prepared_user.user_email for REST updates.
+  rationale: prepare_item_for_database assigns request email onto prepared_user.user_email
+    for REST updates.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

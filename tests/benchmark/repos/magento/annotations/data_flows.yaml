@@ -29,7 +29,9 @@ annotations:
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-ajax-login-to-authenticate
   layer: data_flows
   subject:
@@ -56,11 +58,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: The Ajax login controller decodes JSON credentials and forwards them to authenticate.
+  rationale: The Ajax login controller decodes JSON credentials and forwards them
+    to authenticate.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-authenticate-to-session
   layer: data_flows
   subject:
@@ -87,11 +92,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: After successful authentication, LoginPost calls setCustomerDataAsLoggedIn to persist the customer in session.
+  rationale: After successful authentication, LoginPost calls setCustomerDataAsLoggedIn
+    to persist the customer in session.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-authenticate-email-to-repository
   layer: data_flows
   subject:
@@ -118,11 +126,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: Authenticate loads the customer record by email via customerRepository->get before password validation.
+  rationale: Authenticate loads the customer record by email via customerRepository->get
+    before password validation.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-reset-token-to-repository
   layer: data_flows
   subject:
@@ -149,11 +160,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: GetCustomerByToken filters the customer repository by rp_token to resolve the account for password reset.
+  rationale: GetCustomerByToken filters the customer repository by rp_token to resolve
+    the account for password reset.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-initiate-reset-to-email
   layer: data_flows
   subject:
@@ -180,11 +194,14 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: initiatePasswordReset generates an rp_token and dispatches password reminder or reset confirmation email.
+  rationale: initiatePasswordReset generates an rp_token and dispatches password reminder
+    or reset confirmation email.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: magento-reset-password-to-database
   layer: data_flows
   subject:
@@ -211,8 +228,11 @@ annotations:
     - app/code/Magento/Customer/Controller/Account/LoginPost.php
     - app/code/Magento/Customer/Controller/Ajax/Login.php
     - app/code/Magento/Customer/etc/webapi.xml
-  rationale: resetPassword writes a new password hash and clears the rp_token before saving the customer to the database.
+  rationale: resetPassword writes a new password hash and clears the rp_token before
+    saving the customer to the database.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -25,11 +25,14 @@ annotations:
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
-  rationale: Every TransactionInterface exposes its target DatabaseApi as db, binding work units to a database instance.
+  rationale: Every TransactionInterface exposes its target DatabaseApi as db, binding
+    work units to a database instance.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-insert-to-database
   layer: data_flows
   subject:
@@ -56,11 +59,14 @@ annotations:
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
-  rationale: InsertStatement.prepareSQL delegates to transaction.db.dialect.functionProvider.insert, sending row values to the database dialect.
+  rationale: InsertStatement.prepareSQL delegates to transaction.db.dialect.functionProvider.insert,
+    sending row values to the database dialect.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-select-to-result
   layer: data_flows
   subject:
@@ -87,11 +93,14 @@ annotations:
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
     - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
-  rationale: AbstractQuery is typed as Statement<ResultApi>, modeling SELECT execution that returns database result rows.
+  rationale: AbstractQuery is typed as Statement<ResultApi>, modeling SELECT execution
+    that returns database result rows.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: exposed-not-customer-email-flow
   layer: data_flows
   subject:
@@ -104,8 +113,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: InsertStatement accepts arbitrary table columns; the ORM core does not define or route customer email fields.
+  rationale: InsertStatement accepts arbitrary table columns; the ORM core does not
+    define or route customer email fields.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -16,11 +16,14 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: LoginManager is in-codebase session/cookie authentication, not an external identity vendor.
+  rationale: LoginManager is in-codebase session/cookie authentication, not an external
+    identity vendor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-customer-actor
   layer: components
   subject:
@@ -38,11 +41,14 @@ annotations:
     - src/flask_login/mixins.py
     - src/flask_login/login_manager.py
     - src/flask_login/config.py
-  rationale: UserMixin is the end-user identity Flask-Login authenticates; it is not a staff or service account type.
+  rationale: UserMixin is the end-user identity Flask-Login authenticates; it is not
+    a staff or service account type.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: flask-login-not-auth0
   layer: components
   subject:
@@ -55,8 +61,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: This library implements local session login. The reviewed files do not integrate Auth0 or another external IdP.
+  rationale: This library implements local session login. The reviewed files do not
+    integrate Auth0 or another external IdP.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

@@ -20,11 +20,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: database.yml.example declares a MySQL database named redmine that stores users, tokens, and email addresses.
+  rationale: database.yml.example declares a MySQL database named redmine that stores
+    users, tokens, and email addresses.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-user-auth-service
   layer: components
   subject:
@@ -46,11 +49,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: User.try_to_login and check_password implement in-codebase password and session authentication.
+  rationale: User.try_to_login and check_password implement in-codebase password and
+    session authentication.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-token-auth-service
   layer: components
   subject:
@@ -72,11 +78,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: Token registers api, session, autologin, and recovery actions used to authenticate users without an external IdP.
+  rationale: Token registers api, session, autologin, and recovery actions used to
+    authenticate users without an external IdP.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-auth-source-service
   layer: components
   subject:
@@ -98,11 +107,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: AuthSource.authenticate orchestrates on-the-fly registration against configured auth backends inside Redmine.
+  rationale: AuthSource.authenticate orchestrates on-the-fly registration against
+    configured auth backends inside Redmine.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-employee-actor
   layer: components
   subject:
@@ -124,11 +136,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: User is the internal staff account Redmine authenticates and authorizes for project work.
+  rationale: User is the internal staff account Redmine authenticates and authorizes
+    for project work.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-admin-actor
   layer: components
   subject:
@@ -150,11 +165,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: The admin scope and admin? gate elevated operator privileges distinct from regular users.
+  rationale: The admin scope and admin? gate elevated operator privileges distinct
+    from regular users.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-ldap-auth-provider
   layer: components
   subject:
@@ -176,11 +194,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: AuthSourceLdap.authenticate binds to an external LDAP directory the codebase calls but does not own.
+  rationale: AuthSourceLdap.authenticate binds to an external LDAP directory the codebase
+    calls but does not own.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-database-config
   layer: components
   subject:
@@ -202,11 +223,14 @@ annotations:
     - app/models/auth_source_ldap.rb
     - app/models/principal.rb
     - config/database.yml.example
-  rationale: database.yml.example is the declared configuration source for database connection credentials and adapter settings.
+  rationale: database.yml.example is the declared configuration source for database
+    connection credentials and adapter settings.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-not-auth0
   layer: components
   subject:
@@ -219,11 +243,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: Doorkeeper is configured with an empty block and the reviewed auth models do not integrate Auth0.
+  rationale: Doorkeeper is configured with an empty block and the reviewed auth models
+    do not integrate Auth0.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: redmine-not-stripe
   layer: components
   subject:
@@ -236,8 +263,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed User and auth models handle login and tokens only; they do not call Stripe or another payment vendor.
+  rationale: The reviewed User and auth models handle login and tokens only; they
+    do not call Stripe or another payment vendor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

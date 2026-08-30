@@ -23,11 +23,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: DefaultDBConnect opens a SQLite database that persists auth records, password hashes, and tokens.
+  rationale: DefaultDBConnect opens a SQLite database that persists auth records,
+    password hashes, and tokens.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-record-auth-service
   layer: components
   subject:
@@ -52,11 +55,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: Record.ValidatePassword and SetPassword implement in-codebase password authentication for auth collections.
+  rationale: Record.ValidatePassword and SetPassword implement in-codebase password
+    authentication for auth collections.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-jwt-auth-service
   layer: components
   subject:
@@ -81,11 +87,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: NewAuthToken signs JWT auth tokens from record id and collection settings inside the codebase.
+  rationale: NewAuthToken signs JWT auth tokens from record id and collection settings
+    inside the codebase.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-auth-collection-options
   layer: components
   subject:
@@ -110,11 +119,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: collectionAuthOptions configures PasswordAuth, MFA, OTP, and token secrets for auth collections.
+  rationale: collectionAuthOptions configures PasswordAuth, MFA, OTP, and token secrets
+    for auth collections.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-customer-actor
   layer: components
   subject:
@@ -139,11 +151,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: Auth collection Record holds email and password for end-user accounts authenticated by PocketBase.
+  rationale: Auth collection Record holds email and password for end-user accounts
+    authenticated by PocketBase.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-oauth-auth-provider
   layer: components
   subject:
@@ -168,11 +183,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: ExternalAuth validates provider against auth.Providers, wiring OAuth2 identity vendors such as Google.
+  rationale: ExternalAuth validates provider against auth.Providers, wiring OAuth2
+    identity vendors such as Google.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-auth-origin-service
   layer: components
   subject:
@@ -197,11 +215,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: AuthOrigin tracks device fingerprints for auth alerts, an internal service module rather than an HTTP entry point.
+  rationale: AuthOrigin tracks device fingerprints for auth alerts, an internal service
+    module rather than an HTTP entry point.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-token-config
   layer: components
   subject:
@@ -226,11 +247,14 @@ annotations:
     - core/collection_model_auth_options.go
     - core/external_auth_model.go
     - core/auth_origin_model.go
-  rationale: setDefaultAuthOptions seeds AuthToken.Secret and Duration configuration used when signing JWTs.
+  rationale: setDefaultAuthOptions seeds AuthToken.Secret and Duration configuration
+    used when signing JWTs.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-not-auth0
   layer: components
   subject:
@@ -243,11 +267,14 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: ExternalAuth validates against auth.Providers in core; Auth0 is not referenced in the reviewed auth files.
+  rationale: ExternalAuth validates against auth.Providers in core; Auth0 is not referenced
+    in the reviewed auth files.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: pocketbase-not-stripe
   layer: components
   subject:
@@ -260,8 +287,11 @@ annotations:
   expected:
     status: negative
     labels: []
-  rationale: The reviewed auth and db modules implement identity only; they do not integrate Stripe or another payment vendor.
+  rationale: The reviewed auth and db modules implement identity only; they do not
+    integrate Stripe or another payment vendor.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'

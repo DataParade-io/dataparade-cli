@@ -19,11 +19,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: ValidateCustomerAsync looks up the customer by username or email and loads the stored password hash before authentication proceeds.
+  rationale: ValidateCustomerAsync looks up the customer by username or email and
+    loads the stored password hash before authentication proceeds.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-signin-to-cookie-claims
   layer: data_flows
   subject:
@@ -44,11 +47,14 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: SignInAsync copies username, email, and phone from the Customer record into authentication claims written to the session cookie.
+  rationale: SignInAsync copies username, email, and phone from the Customer record
+    into authentication claims written to the session cookie.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
 - id: nopcommerce-cookie-claim-to-customer-lookup
   layer: data_flows
   subject:
@@ -69,8 +75,11 @@ annotations:
     - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
     - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: GetAuthenticatedCustomerAsync reads the username or email claim from the cookie principal and reloads the customer from CustomerService.
+  rationale: GetAuthenticatedCustomerAsync reads the username or email claim from
+    the cookie principal and reloads the customer from CustomerService.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30
-    review_state: proposed
+    review_state: accepted
+    reviewed_by: grok-4.6-refine
+    reviewed_at: '2026-08-30'
