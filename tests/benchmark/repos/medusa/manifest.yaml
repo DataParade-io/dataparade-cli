@@ -3,8 +3,7 @@ commit: f7317903600e5b64f06c21c29a73e0e569d2fe3a
 license: MIT
 scope:
   include:
-    - packages/medusa/src/models/
-    - packages/medusa/src/services/
+    - packages/medusa/src/modules/
 coverage:
   layers: [data_items, components, data_flows, raw_hits, mentions]
   languages:

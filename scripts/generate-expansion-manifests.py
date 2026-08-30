@@ -44,7 +44,7 @@ REPOS = [
     ("drupal", "drupal/drupal", "141cdc1f0a359bbb277bdc08c67ba03784a9fae1", "GPL-2.0-or-later",
      ["core/modules/user/"], ["php"], ["cms", "identity"]),
     ("medusa", "medusajs/medusa", "f7317903600e5b64f06c21c29a73e0e569d2fe3a", "MIT",
-     ["packages/medusa/src/models/", "packages/medusa/src/services/"], ["typescript"], ["ecommerce", "identity"]),
+     ["packages/medusa/src/modules/"], ["typescript"], ["ecommerce", "identity"]),
 ]
 
 
