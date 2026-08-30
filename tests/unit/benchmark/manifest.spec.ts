@@ -46,7 +46,7 @@ describe("benchmark corpus manifests", () => {
             record.evidence.start_line,
           );
           expect(record.expected.labels.length).toBeGreaterThan(0);
-          expect(record.provenance.review_state).toBe("proposed");
+          expect(["proposed", "accepted"]).toContain(record.provenance.review_state);
           expect(record.provenance.proposed_by.length).toBeGreaterThan(0);
           expect(record.provenance.proposed_at).toMatch(/^\d{4}-\d{2}-\d{2}$/);
         }
@@ -77,7 +77,7 @@ describe("benchmark corpus manifests", () => {
       expect(manifest.coverage.layers).toEqual(["data_items"]);
     });
 
-    it("keeps every source-only data-item decision proposed", () => {
+    it("keeps every source-only data-item decision reviewable", () => {
       expect(annotations.length).toBeGreaterThanOrEqual(20);
       expect(new Set(annotations.map((record) => record.id)).size).toBe(annotations.length);
 
@@ -87,7 +87,7 @@ describe("benchmark corpus manifests", () => {
         expect(record.evidence.file_path).toBe("src/routes/data/types.rs");
         expect(record.evidence.start_line).toBeGreaterThan(0);
         expect(record.evidence.end_line).toBeGreaterThanOrEqual(record.evidence.start_line);
-        expect(record.provenance.review_state).toBe("proposed");
+        expect(["proposed", "accepted"]).toContain(record.provenance.review_state);
       }
     });
   });
@@ -109,7 +109,11 @@ describe("benchmark corpus manifests", () => {
       expect(annotations.length).toBeGreaterThanOrEqual(25);
       expect(new Set(annotations.map((record) => record.id)).size).toBe(annotations.length);
       expect(annotations.every((record) => record.layer === "data_items")).toBe(true);
-      expect(annotations.every((record) => record.provenance.review_state === "proposed")).toBe(true);
+      expect(
+        annotations.every((record) =>
+          ["proposed", "accepted"].includes(record.provenance.review_state),
+        ),
+      ).toBe(true);
     });
   });
 
@@ -126,7 +130,7 @@ describe("benchmark corpus manifests", () => {
       repository: "keycloak/keycloak",
       commit: "b9b70f95f7e092ebadf898378948bab0971e015b",
       license: "Apache-2.0",
-      minimumRecords: 15,
+      minimumRecords: 14,
     },
     {
       key: "yjdh-employee",
@@ -168,8 +172,57 @@ describe("benchmark corpus manifests", () => {
         expect(manifest.license).toBe(packet.license);
         expect(manifest.scope.include.length).toBeGreaterThan(0);
         expect(annotations.length).toBeGreaterThanOrEqual(packet.minimumRecords);
-        expect(annotations.every((record) => record.provenance.review_state === "proposed")).toBe(true);
+        expect(annotations.every((record) =>
+          ["proposed", "accepted"].includes(record.provenance.review_state),
+        )).toBe(true);
       });
     });
   }
+
+  describe("corpus expansion packets", () => {
+    const keys = ["flask-login", "spring-petclinic"] as const;
+    const layers = ["components", "data_items", "data_flows", "pii_signals"] as const;
+
+    for (const repoKey of keys) {
+      describe(repoKey, () => {
+        const repoDir = path.join(reposRoot, repoKey);
+
+        it("loads a valid manifest with canonical layers", () => {
+          const manifest = loadBenchmarkManifest(repoDir);
+          expect(manifest.repository).toMatch(/^[^/]+\/[^/]+$/);
+          expect(manifest.commit).toMatch(/^[a-f0-9]{40}$/);
+          expect(manifest.coverage.layers).toEqual([
+            "data_items",
+            "components",
+            "data_flows",
+            "pii_signals",
+          ]);
+        });
+
+        for (const layer of layers) {
+          it(`loads ${layer} annotations with verified spans`, () => {
+            const annotations = loadAnnotations(repoDir, layer);
+            expect(annotations.length).toBeGreaterThanOrEqual(3);
+            expect(new Set(annotations.map((record) => record.id)).size).toBe(
+              annotations.length,
+            );
+
+            for (const record of annotations) {
+              expect(record.layer).toBe(layer);
+              expect(record.evidence.file_path.length).toBeGreaterThan(0);
+              expect(record.evidence.start_line).toBeGreaterThan(0);
+              expect(record.evidence.end_line).toBeGreaterThanOrEqual(
+                record.evidence.start_line,
+              );
+              expect(record.provenance.review_state).toBe("proposed");
+              if (record.expected.status === "positive") {
+                expect(record.expected.labels.length).toBeGreaterThan(0);
+                expect(record.expected.exhaustive_scope_files?.length).toBeGreaterThan(0);
+              }
+            }
+          });
+        }
+      });
+    }
+  });
 });

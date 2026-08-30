@@ -1,0 +1,200 @@
+annotations:
+- id: redmine-login-identifier-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: login
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 126
+    end_line: 127
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: validates_presence_of and validates_uniqueness_of :login mark login as the account identifier.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-firstname-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: firstname
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 126
+    end_line: 126
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: validates_presence_of :firstname requires a personal given name on each user record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-lastname-signal
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: lastname
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 126
+    end_line: 126
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: validates_presence_of :lastname requires a personal family name on each user record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-email-address-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: address
+  evidence:
+    file_path: app/models/email_address.rb
+    start_line: 32
+    end_line: 33
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: validates_format_of :address with URI::MailTo::EMAIL_REGEXP is an explicit email-address signal.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-api-token-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: api
+  evidence:
+    file_path: app/models/token.rb
+    start_line: 39
+    end_line: 39
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: add_action :api registers the API bearer token action used by User#api_key.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-hashed-password-signal
+  layer: pii_signals
+  subject:
+    key: pii:password_verifier
+    name: hashed_password
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 358
+    end_line: 361
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: salt_password stores SHA1(salt + SHA1(password)) in hashed_password as the password verifier.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-ldap-attr-mail-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: attr_mail
+  evidence:
+    file_path: app/models/auth_source_ldap.rb
+    start_line: 102
+    end_line: 102
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: LDAP search requests self.attr_mail as an email attribute mapped from the external directory.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-mail-notification-not-email
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: mail_notification
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 85
+    end_line: 93
+  expected:
+    status: negative
+    labels: []
+  rationale: MAIL_NOTIFICATION_OPTIONS are notification scope labels, not stored email addresses.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

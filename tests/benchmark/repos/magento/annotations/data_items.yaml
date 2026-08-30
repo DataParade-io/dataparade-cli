@@ -1,0 +1,410 @@
+annotations:
+- id: magento-customer-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: ID
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 19
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: ID is the primary customer entity identifier.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-customer-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: EMAIL
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 25
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: EMAIL is the customer's login and contact email address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-customer-firstname
+  layer: data_items
+  subject:
+    key: data_item:firstname
+    name: FIRSTNAME
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: FIRSTNAME stores the customer's given name.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-customer-lastname
+  layer: data_items
+  subject:
+    key: data_item:lastname
+    name: LASTNAME
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 29
+    end_line: 29
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: LASTNAME stores the customer's family name.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-customer-dob
+  layer: data_items
+  subject:
+    key: data_item:dob
+    name: DOB
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - date_of_birth
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: DOB holds the customer's date of birth.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-address-street
+  layer: data_items
+  subject:
+    key: data_item:street
+    name: STREET
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - street_address
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: STREET is the multi-line street address on customer addresses.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-address-telephone
+  layer: data_items
+  subject:
+    key: data_item:telephone
+    name: TELEPHONE
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: TELEPHONE stores the contact phone number on an address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-address-customer-id
+  layer: data_items
+  subject:
+    key: data_item:customer_id
+    name: CUSTOMER_ID
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/AddressInterface.php
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: CUSTOMER_ID links an address record to its owning customer account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-password-hash
+  layer: data_items
+  subject:
+    key: data_item:password_hash
+    name: password_hash
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Authentication.php
+    start_line: 172
+    end_line: 172
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: getPasswordHash retrieves the stored password verifier hash used during authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-rp-token
+  layer: data_items
+  subject:
+    key: data_item:rp_token
+    name: rp_token
+  evidence:
+    file_path: app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    start_line: 61
+    end_line: 61
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: rp_token is the reset-password link token emailed to customers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-login-password
+  layer: data_items
+  subject:
+    key: data_item:password
+    name: password
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/LoginPost.php
+    start_line: 189
+    end_line: 189
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: login['password'] is the plaintext credential submitted on the login form.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-confirmation-not-pii
+  layer: data_items
+  subject:
+    key: data_item:confirmation
+    name: CONFIRMATION
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 20
+    end_line: 20
+  expected:
+    status: negative
+    labels: []
+  rationale: CONFIRMATION is an account-activation key, not a personal data category in the taxonomy.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-group-id-not-pii
+  layer: data_items
+  subject:
+    key: data_item:group_id
+    name: GROUP_ID
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 28
+    end_line: 28
+  expected:
+    status: negative
+    labels: []
+  rationale: GROUP_ID is a customer-segment identifier, not personal identity data.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-taxvat-ambiguous
+  layer: data_items
+  subject:
+    key: data_item:taxvat
+    name: TAXVAT
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 34
+    end_line: 34
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: TAXVAT may hold a VAT or tax ID that can identify a person or business, but taxonomy treatment is unspecified.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-middlename-ambiguous
+  layer: data_items
+  subject:
+    key: data_item:middlename
+    name: MIDDLENAME
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 30
+    end_line: 30
+  expected:
+    status: ambiguous
+    labels: []
+  rationale: MIDDLENAME may be part of a person's name but is optional and may be empty.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

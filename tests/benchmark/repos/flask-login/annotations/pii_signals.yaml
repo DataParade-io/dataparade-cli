@@ -1,0 +1,62 @@
+annotations:
+- id: flask-login-user-id-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: user_identifier
+  evidence:
+    file_path: src/flask_login/login_manager.py
+    start_line: 321
+    end_line: 321
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - src/flask_login/mixins.py
+    - src/flask_login/login_manager.py
+    - src/flask_login/config.py
+  rationale: session.get("_user_id") is a live identifier used to restore the authenticated user.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: flask-login-remember-token-name-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: remember_token
+  evidence:
+    file_path: src/flask_login/config.py
+    start_line: 3
+    end_line: 4
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - src/flask_login/mixins.py
+    - src/flask_login/login_manager.py
+    - src/flask_login/config.py
+  rationale: COOKIE_NAME documents the remember_token cookie that carries a re-authentication secret.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: flask-login-flash-message-not-email
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: LOGIN_MESSAGE
+  evidence:
+    file_path: src/flask_login/config.py
+    start_line: 18
+    end_line: 19
+  expected:
+    status: negative
+    labels: []
+  rationale: The default login flash text is not an email address or other PII field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

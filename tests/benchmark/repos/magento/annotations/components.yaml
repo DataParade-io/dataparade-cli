@@ -1,0 +1,269 @@
+annotations:
+- id: magento-account-management-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: AccountManagement
+  evidence:
+    file_path: app/code/Magento/Customer/Model/AccountManagement.php
+    start_line: 71
+    end_line: 71
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: AccountManagement implements in-codebase customer authentication, password reset, and account activation.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-authentication-model-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: Authentication
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Authentication.php
+    start_line: 20
+    end_line: 20
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: The Authentication model validates password hashes and enforces account lockout during login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-customer-entity-database
+  layer: components
+  subject:
+    key: asset:database
+    name: customer
+  evidence:
+    file_path: app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    start_line: 38
+    end_line: 39
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: Customer resource model is the EAV entity mapped to the customer database tables.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-login-post-api
+  layer: components
+  subject:
+    key: asset:api
+    name: LoginPost
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/LoginPost.php
+    start_line: 33
+    end_line: 33
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: LoginPost is the storefront HTTP POST handler that accepts customer login credentials.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-ajax-login-api
+  layer: components
+  subject:
+    key: asset:api
+    name: AjaxLogin
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Ajax/Login.php
+    start_line: 27
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: The Ajax Login controller exposes a JSON login endpoint for XHR authentication requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-webapi-customers-api
+  layer: components
+  subject:
+    key: asset:api
+    name: CustomerWebapi
+  evidence:
+    file_path: app/code/Magento/Customer/etc/webapi.xml
+    start_line: 125
+    end_line: 129
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: webapi.xml declares REST routes such as POST /V1/customers for account creation and management.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-customer-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: Customer
+  evidence:
+    file_path: app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    start_line: 9
+    end_line: 14
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - app/code/Magento/Customer/Api/Data/CustomerInterface.php
+    - app/code/Magento/Customer/Api/Data/AddressInterface.php
+    - app/code/Magento/Customer/Api/AccountManagementInterface.php
+    - app/code/Magento/Customer/Model/AccountManagement.php
+    - app/code/Magento/Customer/Model/AccountManagement/Authenticate.php
+    - app/code/Magento/Customer/Model/Authentication.php
+    - app/code/Magento/Customer/Model/Session.php
+    - app/code/Magento/Customer/Model/ResourceModel/Customer.php
+    - app/code/Magento/Customer/Model/ForgotPasswordToken/GetCustomerByToken.php
+    - app/code/Magento/Customer/Controller/Account/LoginPost.php
+    - app/code/Magento/Customer/Controller/Ajax/Login.php
+    - app/code/Magento/Customer/etc/webapi.xml
+  rationale: CustomerInterface models the storefront end-user account, not an admin or service identity.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: app/code/Magento/Customer/Controller/Account/LoginPost.php
+    start_line: 33
+    end_line: 33
+  expected:
+    status: negative
+    labels: []
+  rationale: Login flows delegate to local AccountManagement authentication. The reviewed scope has no Auth0 or external IdP integration.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-not-sendgrid
+  layer: components
+  subject:
+    key: third_party:sendgrid
+    name: SendGrid
+  evidence:
+    file_path: app/code/Magento/Customer/Model/AccountManagement.php
+    start_line: 50
+    end_line: 50
+  expected:
+    status: negative
+    labels: []
+  rationale: Password-reset email uses Magento TransportBuilder. No SendGrid or other email vendor SDK appears in this scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: magento-session-not-cache
+  layer: components
+  subject:
+    key: asset:cache
+    name: CustomerSession
+  evidence:
+    file_path: app/code/Magento/Customer/Model/Session.php
+    start_line: 28
+    end_line: 28
+  expected:
+    status: negative
+    labels: []
+  rationale: Customer Session extends SessionManager for PHP session state, not an in-memory cache layer like Redis.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

@@ -1,0 +1,122 @@
+annotations:
+- id: vapor-basic-header-to-credentials
+  layer: data_flows
+  subject:
+    key: flow:authorization-header->basic-authorization
+    name: Authorization header to BasicAuthorization
+  evidence:
+    file_path: Sources/Vapor/Authentication/BasicAuthorization.swift
+    start_line: 25
+    end_line: 47
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - Sources/Vapor/Authentication/Authentication.swift
+    - Sources/Vapor/Authentication/Authenticator.swift
+    - Sources/Vapor/Authentication/BasicAuthorization.swift
+    - Sources/Vapor/Authentication/BearerAuthorization.swift
+    - Sources/Vapor/Authentication/GuardMiddleware.swift
+    - Sources/Vapor/Authentication/RedirectMiddleware.swift
+    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
+  rationale: The Authorization header is decoded from Base64 into username and password fields on BasicAuthorization.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-bearer-header-to-token
+  layer: data_flows
+  subject:
+    key: flow:authorization-header->bearer-authorization
+    name: Authorization header to BearerAuthorization
+  evidence:
+    file_path: Sources/Vapor/Authentication/BearerAuthorization.swift
+    start_line: 16
+    end_line: 29
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - Sources/Vapor/Authentication/Authentication.swift
+    - Sources/Vapor/Authentication/Authenticator.swift
+    - Sources/Vapor/Authentication/BasicAuthorization.swift
+    - Sources/Vapor/Authentication/BearerAuthorization.swift
+    - Sources/Vapor/Authentication/GuardMiddleware.swift
+    - Sources/Vapor/Authentication/RedirectMiddleware.swift
+    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
+  rationale: The Bearer scheme in the Authorization header is parsed into a BearerAuthorization token value.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-session-id-to-authenticator
+  layer: data_flows
+  subject:
+    key: flow:session->session-authenticator
+    name: Session ID to SessionAuthenticator
+  evidence:
+    file_path: Sources/Vapor/Authentication/SessionAuthenticatable.swift
+    start_line: 12
+    end_line: 16
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - Sources/Vapor/Authentication/Authentication.swift
+    - Sources/Vapor/Authentication/Authenticator.swift
+    - Sources/Vapor/Authentication/BasicAuthorization.swift
+    - Sources/Vapor/Authentication/BearerAuthorization.swift
+    - Sources/Vapor/Authentication/GuardMiddleware.swift
+    - Sources/Vapor/Authentication/RedirectMiddleware.swift
+    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
+  rationale: SessionAuthenticator reads the session-authenticated user ID and passes it to authenticate(sessionID:for:).
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-user-to-session-store
+  layer: data_flows
+  subject:
+    key: flow:authenticatable->session
+    name: Authenticatable to session storage
+  evidence:
+    file_path: Sources/Vapor/Authentication/SessionAuthenticatable.swift
+    start_line: 60
+    end_line: 63
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - Sources/Vapor/Authentication/Authentication.swift
+    - Sources/Vapor/Authentication/Authenticator.swift
+    - Sources/Vapor/Authentication/BasicAuthorization.swift
+    - Sources/Vapor/Authentication/BearerAuthorization.swift
+    - Sources/Vapor/Authentication/GuardMiddleware.swift
+    - Sources/Vapor/Authentication/RedirectMiddleware.swift
+    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
+  rationale: authenticate(_:) writes the SessionAuthenticatable sessionID into session data for later requests.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-bearer-authenticator-not-database
+  layer: data_flows
+  subject:
+    key: flow:bearer->database
+    name: Bearer token to database
+  evidence:
+    file_path: Sources/Vapor/Authentication/Authenticator.swift
+    start_line: 107
+    end_line: 111
+  expected:
+    status: negative
+    labels: []
+  rationale: BearerAuthenticator only parses the header and delegates to authenticate(bearer:for:). No database read or write occurs in the scoped files.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

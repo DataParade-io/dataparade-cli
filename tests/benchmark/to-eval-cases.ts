@@ -79,6 +79,9 @@ export function annotationToEvalCase(
       labels: [...annotation.expected.labels],
     },
     rationale: annotation.rationale,
+    ...(annotation.expected.exhaustive_scope_files !== undefined
+      ? { exhaustiveScopeFiles: [...annotation.expected.exhaustive_scope_files] }
+      : {}),
   };
 }
 

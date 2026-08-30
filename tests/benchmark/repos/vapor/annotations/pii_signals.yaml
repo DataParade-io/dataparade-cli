@@ -1,0 +1,96 @@
+annotations:
+- id: vapor-username-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: username
+  evidence:
+    file_path: Sources/Vapor/Authentication/BasicAuthorization.swift
+    start_line: 10
+    end_line: 11
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - Sources/Vapor/Authentication/Authentication.swift
+    - Sources/Vapor/Authentication/Authenticator.swift
+    - Sources/Vapor/Authentication/BasicAuthorization.swift
+    - Sources/Vapor/Authentication/BearerAuthorization.swift
+    - Sources/Vapor/Authentication/GuardMiddleware.swift
+    - Sources/Vapor/Authentication/RedirectMiddleware.swift
+    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
+  rationale: BasicAuthorization.username is a live login identifier parsed from the Authorization header and may be an email address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-password-signal
+  layer: pii_signals
+  subject:
+    key: pii:password
+    name: password
+  evidence:
+    file_path: Sources/Vapor/Authentication/BasicAuthorization.swift
+    start_line: 13
+    end_line: 14
+  expected:
+    status: positive
+    labels:
+    - password
+    exhaustive_scope_files:
+    - Sources/Vapor/Authentication/Authentication.swift
+    - Sources/Vapor/Authentication/Authenticator.swift
+    - Sources/Vapor/Authentication/BasicAuthorization.swift
+    - Sources/Vapor/Authentication/BearerAuthorization.swift
+    - Sources/Vapor/Authentication/GuardMiddleware.swift
+    - Sources/Vapor/Authentication/RedirectMiddleware.swift
+    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
+  rationale: BasicAuthorization.password holds the plaintext credential decoded from the Basic auth header.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-bearer-token-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: token
+  evidence:
+    file_path: Sources/Vapor/Authentication/BearerAuthorization.swift
+    start_line: 5
+    end_line: 6
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - Sources/Vapor/Authentication/Authentication.swift
+    - Sources/Vapor/Authentication/Authenticator.swift
+    - Sources/Vapor/Authentication/BasicAuthorization.swift
+    - Sources/Vapor/Authentication/BearerAuthorization.swift
+    - Sources/Vapor/Authentication/GuardMiddleware.swift
+    - Sources/Vapor/Authentication/RedirectMiddleware.swift
+    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
+  rationale: BearerAuthorization.token is the bearer secret extracted from the Authorization header.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-realm-not-pii
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: realm
+  evidence:
+    file_path: Sources/Vapor/Authentication/Authenticator.swift
+    start_line: 66
+    end_line: 67
+  expected:
+    status: negative
+    labels: []
+  rationale: The default BasicAuthenticator realm string is a static challenge label, not a personal identifier or email address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

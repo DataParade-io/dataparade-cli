@@ -1,0 +1,213 @@
+annotations:
+- id: auth0-express-access-token-item
+  layer: data_items
+  subject:
+    key: data_item:access_token
+    name: access_token
+  evidence:
+    file_path: lib/context.js
+    start_line: 270
+    end_line: 270
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: session.access_token is persisted after refresh and exposed via req.oidc.accessToken.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: auth0-express-refresh-token-item
+  layer: data_items
+  subject:
+    key: data_item:refresh_token
+    name: refresh_token
+  evidence:
+    file_path: lib/context.js
+    start_line: 274
+    end_line: 274
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: refresh_token is stored in the session and sent to the token endpoint on refresh.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: auth0-express-id-token-item
+  layer: data_items
+  subject:
+    key: data_item:id_token
+    name: id_token
+  evidence:
+    file_path: lib/context.js
+    start_line: 1083
+    end_line: 1083
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: id_token is written into the session at callback and decoded for user claims.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: auth0-express-sub-item
+  layer: data_items
+  subject:
+    key: data_item:sub
+    name: sub
+  evidence:
+    file_path: lib/context.js
+    start_line: 1120
+    end_line: 1120
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: previousSub from req.oidc.user.sub compares the authenticated subject across logins.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: auth0-express-sid-item
+  layer: data_items
+  subject:
+    key: data_item:sid
+    name: sid
+  evidence:
+    file_path: lib/context.js
+    start_line: 1097
+    end_line: 1097
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: session.sid stores the Auth0 session identifier separately because refresh ID tokens may omit sid.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: auth0-express-login-route-not-pii
+  layer: data_items
+  subject:
+    key: data_item:login_route
+    name: routes.login
+  evidence:
+    file_path: lib/config.js
+    start_line: 264
+    end_line: 267
+  expected:
+    status: negative
+    labels: []
+  rationale: routes.login is a static route path default, not a personal data item.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

@@ -1,0 +1,221 @@
+annotations:
+- id: pocketbase-password-to-bcrypt-hash
+  layer: data_flows
+  subject:
+    key: flow:password->bcrypt_hash
+    name: password to bcrypt hash
+  evidence:
+    file_path: core/field_password.go
+    start_line: 286
+    end_line: 306
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: setValue hashes PasswordFieldValue.Plain with bcrypt and stores the result in the record raw value.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-hash-to-database
+  layer: data_flows
+  subject:
+    key: flow:password_hash->database
+    name: password hash to database
+  evidence:
+    file_path: core/field_password.go
+    start_line: 150
+    end_line: 153
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: DriverValue exports fp.Hash to the database column when an auth record is saved.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-email-to-verification-token
+  layer: data_flows
+  subject:
+    key: flow:email->verification_token
+    name: email to verification token
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 86
+    end_line: 94
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: NewVerificationToken embeds m.Email() into JWT claims before signing the verification token.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-token-key-to-jwt
+  layer: data_flows
+  subject:
+    key: flow:tokenKey->jwt
+    name: tokenKey to JWT
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 56
+    end_line: 72
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: newAuthToken combines TokenKey with AuthToken.Secret to sign JWT claims into an auth bearer token.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-set-email-to-record
+  layer: data_flows
+  subject:
+    key: flow:set_email->record
+    name: SetEmail to record
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 10
+    end_line: 12
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: SetEmail writes the supplied address into the auth record email field for persistence.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-password-change-deletes-auth-origins
+  layer: data_flows
+  subject:
+    key: flow:password->delete_auth_origins
+    name: password change to delete auth origins
+  evidence:
+    file_path: core/auth_origin_model.go
+    start_line: 122
+    end_line: 125
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: On password hash change, DeleteAllAuthOriginsByRecord clears stored device fingerprints for the auth record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-validate-password-flow
+  layer: data_flows
+  subject:
+    key: flow:plain_password->validate
+    name: plain password to ValidatePassword
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 78
+    end_line: 84
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: ValidatePassword passes the supplied password to PasswordFieldValue.Validate for bcrypt comparison.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-not-payment-flow
+  layer: data_flows
+  subject:
+    key: flow:record->stripe
+    name: Record to Stripe
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 46
+    end_line: 48
+  expected:
+    status: negative
+    labels: []
+  rationale: NewAuthToken issues JWT credentials only; the reviewed core auth scope has no payment processing flow.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

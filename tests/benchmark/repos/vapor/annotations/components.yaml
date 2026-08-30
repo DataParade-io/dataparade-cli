@@ -1,0 +1,87 @@
+annotations:
+- id: vapor-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: Request.Authentication
+  evidence:
+    file_path: Sources/Vapor/Authentication/Authentication.swift
+    start_line: 13
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - Sources/Vapor/Authentication/Authentication.swift
+    - Sources/Vapor/Authentication/Authenticator.swift
+    - Sources/Vapor/Authentication/BasicAuthorization.swift
+    - Sources/Vapor/Authentication/BearerAuthorization.swift
+    - Sources/Vapor/Authentication/GuardMiddleware.swift
+    - Sources/Vapor/Authentication/RedirectMiddleware.swift
+    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
+  rationale: Request.Authentication stores authenticated instances per request; it is in-codebase session/auth state, not an external IdP.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-customer-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: User
+  evidence:
+    file_path: Sources/Vapor/Authentication/Authenticator.swift
+    start_line: 4
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - Sources/Vapor/Authentication/Authentication.swift
+    - Sources/Vapor/Authentication/Authenticator.swift
+    - Sources/Vapor/Authentication/BasicAuthorization.swift
+    - Sources/Vapor/Authentication/BearerAuthorization.swift
+    - Sources/Vapor/Authentication/GuardMiddleware.swift
+    - Sources/Vapor/Authentication/RedirectMiddleware.swift
+    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
+  rationale: Authenticatable is the end-user identity type that middleware authenticates and stores on the request.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: Sources/Vapor/Authentication/Authentication.swift
+    start_line: 13
+    end_line: 15
+  expected:
+    status: negative
+    labels: []
+  rationale: Vapor Authentication provides local request-scoped auth primitives. The scoped files do not integrate Auth0 or another external identity provider.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: vapor-not-supabase
+  layer: components
+  subject:
+    key: third_party:supabase
+    name: Supabase
+  evidence:
+    file_path: Sources/Vapor/Authentication/SessionAuthenticatable.swift
+    start_line: 12
+    end_line: 16
+  expected:
+    status: negative
+    labels: []
+  rationale: SessionAuthenticator reads a local session ID and authenticates in-process. There is no Supabase or other BaaS integration in scope.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

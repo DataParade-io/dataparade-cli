@@ -1,0 +1,267 @@
+annotations:
+- id: pocketbase-sqlite-database
+  layer: components
+  subject:
+    key: asset:database
+    name: data.db
+  evidence:
+    file_path: core/db_connect.go
+    start_line: 10
+    end_line: 19
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: DefaultDBConnect opens a SQLite database that persists auth records, password hashes, and tokens.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-record-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: Record
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 75
+    end_line: 84
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: Record.ValidatePassword and SetPassword implement in-codebase password authentication for auth collections.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-jwt-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: NewAuthToken
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 46
+    end_line: 72
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: NewAuthToken signs JWT auth tokens from record id and collection settings inside the codebase.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-auth-collection-options
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: collectionAuthOptions
+  evidence:
+    file_path: core/collection_model_auth_options.go
+    start_line: 128
+    end_line: 143
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: collectionAuthOptions configures PasswordAuth, MFA, OTP, and token secrets for auth collections.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-customer-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: Record
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 5
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: Auth collection Record holds email and password for end-user accounts authenticated by PocketBase.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-oauth-auth-provider
+  layer: components
+  subject:
+    key: third_party:google_auth
+    name: google
+  evidence:
+    file_path: core/external_auth_model.go
+    start_line: 126
+    end_line: 134
+  expected:
+    status: positive
+    labels:
+    - auth_provider
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: ExternalAuth validates provider against auth.Providers, wiring OAuth2 identity vendors such as Google.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-auth-origin-service
+  layer: components
+  subject:
+    key: asset:service
+    name: AuthOrigin
+  evidence:
+    file_path: core/auth_origin_model.go
+    start_line: 91
+    end_line: 98
+  expected:
+    status: positive
+    labels:
+    - service
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: AuthOrigin tracks device fingerprints for auth alerts, an internal service module rather than an HTTP entry point.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-token-config
+  layer: components
+  subject:
+    key: asset:config
+    name: AuthToken
+  evidence:
+    file_path: core/collection_model_auth_options.go
+    start_line: 74
+    end_line: 76
+  expected:
+    status: positive
+    labels:
+    - config
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: setDefaultAuthOptions seeds AuthToken.Secret and Duration configuration used when signing JWTs.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: core/external_auth_model.go
+    start_line: 126
+    end_line: 134
+  expected:
+    status: negative
+    labels: []
+  rationale: ExternalAuth validates against auth.Providers in core; Auth0 is not referenced in the reviewed auth files.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-not-stripe
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 75
+    end_line: 84
+  expected:
+    status: negative
+    labels: []
+  rationale: The reviewed auth and db modules implement identity only; they do not integrate Stripe or another payment vendor.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

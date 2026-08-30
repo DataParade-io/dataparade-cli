@@ -1,0 +1,170 @@
+annotations:
+- id: spring-petclinic-owner-first-name
+  layer: data_items
+  subject:
+    key: data_item:firstName
+    name: firstName
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/model/Person.java
+    start_line: 31
+    end_line: 34
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: Person.firstName is a persisted given name on Owner (and other person subtypes).
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-owner-last-name
+  layer: data_items
+  subject:
+    key: data_item:lastName
+    name: lastName
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/model/Person.java
+    start_line: 36
+    end_line: 39
+  expected:
+    status: positive
+    labels:
+    - person_name
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: Person.lastName is a persisted family name used for owner search and display.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-owner-address
+  layer: data_items
+  subject:
+    key: data_item:address
+    name: address
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    start_line: 51
+    end_line: 53
+  expected:
+    status: positive
+    labels:
+    - street_address
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: Owner.address is a required street address column on the customer record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-owner-city
+  layer: data_items
+  subject:
+    key: data_item:city
+    name: city
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    start_line: 55
+    end_line: 57
+  expected:
+    status: positive
+    labels:
+    - city
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: Owner.city is a required city column on the customer address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-owner-telephone
+  layer: data_items
+  subject:
+    key: data_item:telephone
+    name: telephone
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    start_line: 59
+    end_line: 62
+  expected:
+    status: positive
+    labels:
+    - phone_number
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: Owner.telephone is validated as a 10-digit phone number on the customer record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-pet-name-not-person
+  layer: data_items
+  subject:
+    key: data_item:name
+    name: name
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    start_line: 33
+    end_line: 35
+  expected:
+    status: negative
+    labels: []
+  rationale: NamedEntity.name on Pet is the animal's name, not a human person_name field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-pet-birthdate-not-human
+  layer: data_items
+  subject:
+    key: data_item:birthDate
+    name: birthDate
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    start_line: 48
+    end_line: 50
+  expected:
+    status: negative
+    labels: []
+  rationale: Pet.birthDate is the animal's date of birth, not a human date_of_birth field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

@@ -1,0 +1,126 @@
+annotations:
+- id: spring-petclinic-owners-database
+  layer: components
+  subject:
+    key: asset:database
+    name: owners
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    start_line: 47
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: Owner is a JPA @Entity mapped to the owners table, a persistent SQL store for customer records.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-owner-api
+  layer: components
+  subject:
+    key: asset:api
+    name: OwnerController
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    start_line: 48
+    end_line: 57
+  expected:
+    status: positive
+    labels:
+    - api
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: OwnerController is a Spring MVC @Controller exposing HTTP routes that create, find, and persist owners.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-vets-cache
+  layer: components
+  subject:
+    key: asset:cache
+    name: vets
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    start_line: 35
+    end_line: 37
+  expected:
+    status: positive
+    labels:
+    - cache
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: CacheConfiguration creates a JCache named vets, used as an in-memory cache rather than the primary store.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-customer-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: Owner
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    start_line: 47
+    end_line: 49
+  expected:
+    status: positive
+    labels:
+    - customer
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: Owner is the clinic's customer/end-user entity, not an employee or service account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-not-stripe
+  layer: components
+  subject:
+    key: third_party:stripe
+    name: Stripe
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    start_line: 48
+    end_line: 57
+  expected:
+    status: negative
+    labels: []
+  rationale: The reviewed owner/vet files persist to JPA and a local cache. They do not call Stripe or another payment vendor.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

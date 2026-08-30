@@ -1,0 +1,221 @@
+annotations:
+- id: pocketbase-email-field-type-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: core/field_email.go
+    start_line: 24
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: EmailField is declared for storing a single email string address on auth records.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-field-name-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: FieldNameEmail
+  evidence:
+    file_path: core/field.go
+    start_line: 24
+    end_line: 24
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: FieldNameEmail names the canonical auth collection email column used across record and token code.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-password-bcrypt-signal
+  layer: pii_signals
+  subject:
+    key: pii:password_verifier
+    name: password
+  evidence:
+    file_path: core/field_password.go
+    start_line: 32
+    end_line: 33
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: PasswordField documents bcrypt hashed strings for the auth collection password system field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-jwt-auth-token-signal
+  layer: pii_signals
+  subject:
+    key: pii:access_token
+    name: auth
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 12
+    end_line: 13
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: TokenTypeAuth labels the JWT bearer tokens returned by NewAuthToken.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-record-id-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: id
+  evidence:
+    file_path: core/db_model.go
+    start_line: 19
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: BaseModel.Id is the primary key copied into TokenClaimId JWT claims.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-token-claim-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: TokenClaimEmail
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 25
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: TokenClaimEmail names the JWT claim carrying the account email in verification and reset flows.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-token-key-signal
+  layer: pii_signals
+  subject:
+    key: pii:credential_secret
+    name: tokenKey
+  evidence:
+    file_path: core/field.go
+    start_line: 27
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: FieldNameTokenKey identifies the per-record secret mixed into JWT signing keys.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-verified-not-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: verified
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 25
+    end_line: 27
+  expected:
+    status: negative
+    labels: []
+  rationale: Verified() returns a boolean verification flag, not an email address field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

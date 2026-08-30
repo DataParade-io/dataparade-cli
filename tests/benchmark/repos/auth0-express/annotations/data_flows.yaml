@@ -1,0 +1,174 @@
+annotations:
+- id: auth0-express-callback-to-session
+  layer: data_flows
+  subject:
+    key: flow:oidc-callback->session
+    name: OIDC callback to session
+  evidence:
+    file_path: lib/context.js
+    start_line: 1082
+    end_line: 1090
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: callback builds a session object from the token response and persists id_token, access_token, and refresh_token.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: auth0-express-refresh-to-token-endpoint
+  layer: data_flows
+  subject:
+    key: flow:refresh-token->token-endpoint
+    name: Refresh token to token endpoint
+  evidence:
+    file_path: lib/context.js
+    start_line: 260
+    end_line: 284
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: refresh calls refreshTokenGrant with the stored refresh_token and writes new tokens back into the session.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: auth0-express-cookie-to-session
+  layer: data_flows
+  subject:
+    key: flow:session-cookie->session
+    name: Session cookie to session object
+  evidence:
+    file_path: lib/appSession.js
+    start_line: 332
+    end_line: 360
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: Incoming session cookies are decrypted and parsed into the request session object on each request.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: auth0-express-login-to-idp
+  layer: data_flows
+  subject:
+    key: flow:login->auth0
+    name: Login redirect to Auth0
+  evidence:
+    file_path: lib/context.js
+    start_line: 817
+    end_line: 824
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - lib/appSession.js
+    - lib/client.js
+    - lib/config.js
+    - lib/context.js
+    - lib/cookies.js
+    - lib/crypto.js
+    - lib/debug.js
+    - lib/errors.js
+    - lib/hooks/backchannelLogout/isLoggedOut.js
+    - lib/hooks/backchannelLogout/onLogIn.js
+    - lib/hooks/backchannelLogout/onLogoutToken.js
+    - lib/hooks/getLoginState.js
+    - lib/once.js
+    - lib/tokenset.js
+    - lib/transientHandler.js
+    - lib/utils/epoch.js
+    - lib/utils/oidcError.js
+    - lib/utils/promisifyCompat.js
+    - lib/utils/sessionExpiry.js
+    - lib/weakCache.js
+  rationale: login builds an authorization URL and redirects the browser to the Auth0 authorization server.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: auth0-express-userinfo-not-in-callback
+  layer: data_flows
+  subject:
+    key: flow:callback->userinfo
+    name: Callback to userinfo endpoint
+  evidence:
+    file_path: lib/context.js
+    start_line: 1054
+    end_line: 1068
+  expected:
+    status: negative
+    labels: []
+  rationale: authorizationCodeGrant exchanges the code for tokens directly. fetchUserInfo is a separate optional call, not part of the default callback flow shown here.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

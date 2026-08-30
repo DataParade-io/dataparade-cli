@@ -5,7 +5,7 @@ scope:
   include:
     - core/modules/user/
 coverage:
-  layers: [data_items, components, data_flows, raw_hits, mentions]
+  layers: [data_items, components, data_flows, pii_signals]
   languages:
     - php
   domains:

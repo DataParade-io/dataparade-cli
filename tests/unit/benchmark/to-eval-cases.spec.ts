@@ -19,8 +19,8 @@ describe("benchmark to eval cases", () => {
       annotations = loadAnnotations(repoDir, "components");
     });
 
-    it("excludes proposed annotations by default", () => {
-      expect(annotationsToEvalCases(annotations, fixture)).toEqual([]);
+    it("includes accepted annotations by default", () => {
+      expect(annotationsToEvalCases(annotations, fixture)).toHaveLength(2);
     });
 
     it("maps proposed annotations when includeProposed is true", () => {
@@ -54,6 +54,7 @@ describe("benchmark to eval cases", () => {
         },
         expected: { status: "positive", labels: ["database"] },
         rationale: expect.stringContaining("PiiData Django model"),
+        exhaustiveScopeFiles: ["app/checker_client.py", "app/models.py"],
       });
       expect(databaseCase?.expected).not.toHaveProperty("documentedGap");
     });
@@ -83,21 +84,21 @@ describe("benchmark to eval cases", () => {
       annotations = loadAnnotations(repoDir, "components");
     });
 
-    it("includes only accepted by default", () => {
-      expect(annotationsToEvalCases(annotations, fixture)).toEqual([]);
+    it("includes accepted by default", () => {
+      expect(annotationsToEvalCases(annotations, fixture)).toHaveLength(2);
     });
 
     it("includes proposed when reviewStates includes proposed", () => {
       const cases = annotationsToEvalCases(annotations, fixture, {
         reviewStates: ["proposed"],
       });
-      expect(cases).toHaveLength(2);
+      expect(cases).toHaveLength(0);
     });
 
     it("reviewStates overrides includeProposed", () => {
       const cases = annotationsToEvalCases(annotations, fixture, {
         includeProposed: true,
-        reviewStates: ["accepted"],
+        reviewStates: ["proposed"],
       });
       expect(cases).toEqual([]);
     });
@@ -155,8 +156,8 @@ describe("benchmark to eval cases", () => {
       annotations = loadAnnotations(repoDir, "components");
     });
 
-    it("excludes proposed annotations by default", () => {
-      expect(annotationsToEvalCases(annotations, fixture)).toEqual([]);
+    it("includes accepted annotations by default", () => {
+      expect(annotationsToEvalCases(annotations, fixture)).toHaveLength(1);
     });
 
     it("maps proposed annotations when includeProposed is true", () => {

@@ -1,0 +1,359 @@
+annotations:
+- id: pocketbase-record-id
+  layer: data_items
+  subject:
+    key: data_item:id
+    name: Id
+  evidence:
+    file_path: core/db_model.go
+    start_line: 19
+    end_line: 21
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: BaseModel.Id is the primary key embedded in JWT TokenClaimId for auth records.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-email-field
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: email
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 5
+    end_line: 8
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: Record.Email returns the auth collection email field used as the account address.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-password-hash
+  layer: data_items
+  subject:
+    key: data_item:password
+    name: password
+  evidence:
+    file_path: core/field_password.go
+    start_line: 311
+    end_line: 314
+  expected:
+    status: positive
+    labels:
+    - password_verifier
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: PasswordFieldValue.Hash stores the bcrypt verifier persisted to the database.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-token-key
+  layer: data_items
+  subject:
+    key: data_item:tokenKey
+    name: tokenKey
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 35
+    end_line: 37
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: TokenKey is combined with collection token secrets to sign JWT auth tokens.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-jwt-auth-token
+  layer: data_items
+  subject:
+    key: data_item:auth_token
+    name: auth_token
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 46
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - access_token
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: NewAuthToken returns a signed JWT bearer credential for authenticated API access.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-token-claim-email
+  layer: data_items
+  subject:
+    key: data_item:email
+    name: TokenClaimEmail
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 25
+    end_line: 25
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: TokenClaimEmail is embedded in verification and password-reset JWT payloads carrying the account email.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-token-claim-new-email
+  layer: data_items
+  subject:
+    key: data_item:newEmail
+    name: TokenClaimNewEmail
+  evidence:
+    file_path: core/record_tokens.go
+    start_line: 26
+    end_line: 26
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: TokenClaimNewEmail carries the requested replacement email in email-change tokens.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-auth-token-secret
+  layer: data_items
+  subject:
+    key: data_item:secret
+    name: Secret
+  evidence:
+    file_path: core/collection_model_auth_options.go
+    start_line: 74
+    end_line: 75
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: AuthToken.Secret is a random signing key combined with tokenKey to mint JWT credentials.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-external-provider-id
+  layer: data_items
+  subject:
+    key: data_item:providerId
+    name: providerId
+  evidence:
+    file_path: core/external_auth_model.go
+    start_line: 101
+    end_line: 104
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: ProviderId stores the external OAuth provider's subject identifier for the linked account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-plain-password-transient
+  layer: data_items
+  subject:
+    key: data_item:password
+    name: Plain
+  evidence:
+    file_path: core/field_password.go
+    start_line: 311
+    end_line: 314
+  expected:
+    status: positive
+    labels:
+    - credential_secret
+    exhaustive_scope_files:
+    - core/record_model_auth.go
+    - core/record_tokens.go
+    - core/field_password.go
+    - core/field_email.go
+    - core/field.go
+    - core/db_model.go
+    - core/db_connect.go
+    - core/collection_model_auth_options.go
+    - core/external_auth_model.go
+    - core/auth_origin_model.go
+  rationale: PasswordFieldValue.Plain holds the supplied password before bcrypt hashing on write.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-verified-flag
+  layer: data_items
+  subject:
+    key: data_item:verified
+    name: verified
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 25
+    end_line: 27
+  expected:
+    status: negative
+    labels: []
+  rationale: verified is a boolean account state flag, not identity or credential content.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-email-visibility
+  layer: data_items
+  subject:
+    key: data_item:emailVisibility
+    name: emailVisibility
+  evidence:
+    file_path: core/record_model_auth.go
+    start_line: 15
+    end_line: 17
+  expected:
+    status: negative
+    labels: []
+  rationale: emailVisibility controls API exposure of email, not the email value itself.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-auth-origin-fingerprint
+  layer: data_items
+  subject:
+    key: data_item:fingerprint
+    name: fingerprint
+  evidence:
+    file_path: core/auth_origin_model.go
+    start_line: 91
+    end_line: 94
+  expected:
+    status: negative
+    labels: []
+  rationale: fingerprint is a device identifier for auth alerts, not a taxonomy identity or credential item.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: pocketbase-collection-ref
+  layer: data_items
+  subject:
+    key: data_item:collectionRef
+    name: collectionRef
+  evidence:
+    file_path: core/external_auth_model.go
+    start_line: 71
+    end_line: 74
+  expected:
+    status: negative
+    labels: []
+  rationale: collectionRef identifies the auth collection schema, not the end user.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

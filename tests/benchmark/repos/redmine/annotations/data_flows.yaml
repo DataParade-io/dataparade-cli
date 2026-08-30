@@ -1,0 +1,200 @@
+annotations:
+- id: redmine-login-to-check-password
+  layer: data_flows
+  subject:
+    key: flow:login->check_password
+    name: Login to check_password
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 231
+    end_line: 241
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: try_to_login! passes the supplied login and password to find_by_login and check_password? for authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-mail-to-email-address
+  layer: data_flows
+  subject:
+    key: flow:mail->email_address
+    name: mail to email_address
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 207
+    end_line: 209
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: User#mail= writes the supplied address onto the associated EmailAddress record.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-password-to-hashed-password
+  layer: data_flows
+  subject:
+    key: flow:password->hashed_password
+    name: password to hashed_password
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 181
+    end_line: 185
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: before_save update_hashed_password calls salt_password to hash the transient password into hashed_password.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-ldap-to-user-create
+  layer: data_flows
+  subject:
+    key: flow:auth_source->user
+    name: AuthSource to User
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 245
+    end_line: 250
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: When no local user exists, AuthSource.authenticate attrs flow into a new User record on first login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-session-token-create
+  layer: data_flows
+  subject:
+    key: flow:user->session_token
+    name: User to session token
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 465
+    end_line: 467
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: generate_session_token creates a Token row and returns its value for session authentication.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-email-change-destroys-recovery-tokens
+  layer: data_flows
+  subject:
+    key: flow:email_address->destroy_tokens
+    name: EmailAddress to destroy_tokens
+  evidence:
+    file_path: app/models/email_address.rb
+    start_line: 144
+    end_line: 148
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: destroy_tokens deletes recovery tokens when an email address changes, propagating identity updates into token state.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-external-auth-to-check-password
+  layer: data_flows
+  subject:
+    key: flow:auth_source->check_password
+    name: AuthSource to check_password
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 349
+    end_line: 351
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - app/models/user.rb
+    - app/models/email_address.rb
+    - app/models/token.rb
+    - app/models/auth_source.rb
+    - app/models/auth_source_ldap.rb
+    - app/models/principal.rb
+    - config/database.yml.example
+  rationale: For LDAP-backed users, check_password? delegates login and password to auth_source.authenticate.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: redmine-not-payment-flow
+  layer: data_flows
+  subject:
+    key: flow:user->stripe
+    name: User to Stripe
+  evidence:
+    file_path: app/models/user.rb
+    start_line: 457
+    end_line: 461
+  expected:
+    status: negative
+    labels: []
+  rationale: api_key issues API tokens only; the reviewed auth scope has no payment or card-processing flow.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

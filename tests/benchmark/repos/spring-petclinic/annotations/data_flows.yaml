@@ -1,0 +1,82 @@
+annotations:
+- id: spring-petclinic-owner-create-to-db
+  layer: data_flows
+  subject:
+    key: flow:owner-controller->owner-repository
+    name: OwnerController to OwnerRepository
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    start_line: 77
+    end_line: 86
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: processCreationForm takes an HTTP-posted Owner and persists it with owners.save, sending customer PII to the database.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-owner-find-to-db
+  layer: data_flows
+  subject:
+    key: flow:owner-controller->find-by-last-name
+    name: Owner search to repository
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    start_line: 94
+    end_line: 107
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: processFindForm takes lastName from the HTTP form and queries the owner repository, returning matching customer records.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: spring-petclinic-vets-to-cache
+  layer: data_flows
+  subject:
+    key: flow:vet-repository->vets-cache
+    name: VetRepository to vets cache
+  evidence:
+    file_path: src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+    start_line: 44
+    end_line: 46
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+    - src/main/java/org/springframework/samples/petclinic/model/Person.java
+    - src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+    - src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+    - src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+    - src/main/java/org/springframework/samples/petclinic/system/CacheConfiguration.java
+    - src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java
+  rationale: VetRepository.findAll is @Cacheable("vets"), so database vet records flow into the JCache named vets.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

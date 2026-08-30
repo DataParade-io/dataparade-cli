@@ -152,6 +152,14 @@ function validateAnnotation(
     expected: {
       status: status as AnnotationRecord["expected"]["status"],
       labels,
+      ...(Array.isArray(expected.exhaustive_scope_files)
+        ? {
+            exhaustive_scope_files: isStringArray(
+              expected.exhaustive_scope_files,
+              `${prefix}:expected.exhaustive_scope_files`,
+            ),
+          }
+        : {}),
     },
     provenance: {
       proposed_by: isNonEmptyString(

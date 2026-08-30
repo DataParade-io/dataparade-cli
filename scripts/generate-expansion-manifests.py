@@ -28,7 +28,7 @@ REPOS = [
     ("directus", "directus/directus", "a6c460a765c590c15b2e4d71e820247cbc25179e", "LicenseRef-Proprietary",
      ["api/"], ["typescript"], ["baas", "identity"]),
     ("spree", "spree/spree", "e6e9823b79177d49e1682e31482a9da5d9139140", "BSD-3-Clause",
-     ["core/app/models/"], ["ruby"], ["ecommerce", "identity"]),
+     ["core/"], ["ruby"], ["ecommerce", "identity"]),
     ("strapi", "strapi/strapi", "aaff8e8faf9f84c899eda58fe7477633aa35b817", "MIT",
      ["packages/core/"], ["typescript"], ["cms", "identity"]),
     ("flask-login", "maxcountryman/flask-login", "c8bba84b9ba6768e878317fc46c54bd13fa1ac07", "MIT",
@@ -64,7 +64,7 @@ def main():
             lines.append(f"    - {path}")
         lines += [
             "coverage:",
-            "  layers: [data_items, components, data_flows, raw_hits, mentions]",
+            "  layers: [data_items, components, data_flows, pii_signals]",
             "  languages:",
         ]
         for lang in languages:
