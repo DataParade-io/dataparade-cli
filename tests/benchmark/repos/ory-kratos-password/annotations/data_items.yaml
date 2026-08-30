@@ -18,7 +18,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: ory-password-migration-hook
   layer: data_items
   subject:

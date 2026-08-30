@@ -20,7 +20,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: vgs-django-third-party-checkr
   layer: components
   subject:
@@ -42,4 +42,4 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted

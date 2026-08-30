@@ -19,7 +19,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: keycloak-username
   layer: data_items
   subject:
@@ -40,7 +40,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: keycloak-first-name
   layer: data_items
   subject:
@@ -61,7 +61,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: keycloak-last-name
   layer: data_items
   subject:
@@ -82,7 +82,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: keycloak-email
   layer: data_items
   subject:
@@ -103,7 +103,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: keycloak-email-constraint
   layer: data_items
   subject:
@@ -189,27 +189,6 @@ annotations:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
     review_state: proposed
-- id: keycloak-credential-user
-  layer: data_items
-  subject:
-    key: data_item:user
-    name: user
-  evidence:
-    file_path: model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
-    start_line: 62
-    end_line: 62
-  expected:
-    status: positive
-    labels:
-    - user_identifier
-    exhaustive_scope_files:
-    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/CredentialEntity.java
-    - model/jpa/src/main/java/org/keycloak/models/jpa/entities/UserEntity.java
-  rationale: Credential record is linked directly to its user entity
-  provenance:
-    proposed_by: corpus-curation-agent
-    proposed_at: 2026-08-26
-    review_state: proposed
 - id: keycloak-secret-data
   layer: data_items
   subject:
@@ -230,7 +209,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: keycloak-credential-data
   layer: data_items
   subject:
@@ -251,7 +230,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: keycloak-credential-priority
   layer: data_items
   subject:

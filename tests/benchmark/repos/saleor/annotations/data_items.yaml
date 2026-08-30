@@ -18,7 +18,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-address-last-name
   layer: data_items
   subject:
@@ -38,7 +38,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-company-name
   layer: data_items
   subject:
@@ -75,7 +75,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-street-2
   layer: data_items
   subject:
@@ -95,7 +95,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-city
   layer: data_items
   subject:
@@ -115,7 +115,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-city-area
   layer: data_items
   subject:
@@ -135,7 +135,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-postal-code
   layer: data_items
   subject:
@@ -155,7 +155,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-country
   layer: data_items
   subject:
@@ -192,7 +192,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-phone
   layer: data_items
   subject:
@@ -212,7 +212,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-user-email
   layer: data_items
   subject:
@@ -232,7 +232,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-user-first-name
   layer: data_items
   subject:
@@ -252,7 +252,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-user-last-name
   layer: data_items
   subject:
@@ -272,7 +272,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-user-note
   layer: data_items
   subject:
@@ -377,7 +377,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: saleor-customer-note-content
   layer: data_items
   subject:
@@ -431,4 +431,4 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted

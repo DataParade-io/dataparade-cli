@@ -20,7 +20,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-user-first-name
   layer: data_items
   subject:
@@ -42,7 +42,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-user-last-name
   layer: data_items
   subject:
@@ -64,7 +64,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-user-email
   layer: data_items
   subject:
@@ -86,7 +86,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-user-avatar
   layer: data_items
   subject:
@@ -142,7 +142,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-company-name
   layer: data_items
   subject:
@@ -181,7 +181,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-customer-last-name
   layer: data_items
   subject:
@@ -203,7 +203,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-customer-email
   layer: data_items
   subject:
@@ -225,7 +225,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-customer-phone
   layer: data_items
   subject:
@@ -247,7 +247,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-has-account
   layer: data_items
   subject:
@@ -337,7 +337,7 @@ annotations:
   provenance:
     proposed_by: corpus-curation-agent
     proposed_at: 2026-08-26
-    review_state: proposed
+    review_state: accepted
 - id: medusa-invite-token
   layer: data_items
   subject:
