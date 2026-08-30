@@ -3,8 +3,7 @@ commit: 73612b18663c0145dcca8611904b7f21b5f84552
 license: MIT
 scope:
   include:
-    - ghost/server/services/members/
-    - ghost/server/models/
+    - ghost/
 coverage:
   layers: [data_items, components, data_flows, raw_hits, mentions]
   languages:

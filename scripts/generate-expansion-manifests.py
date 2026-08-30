@@ -24,7 +24,7 @@ REPOS = [
     ("pocketbase", "pocketbase/pocketbase", "bc8ffed4e7265a70a6e8de76c0b0b48b945e19ef", "MIT",
      ["core/"], ["go"], ["baas", "identity"]),
     ("ghost", "TryGhost/Ghost", "73612b18663c0145dcca8611904b7f21b5f84552", "MIT",
-     ["ghost/server/services/members/", "ghost/server/models/"], ["javascript"], ["cms", "identity"]),
+     ["ghost/"], ["javascript"], ["cms", "identity"]),
     ("directus", "directus/directus", "a6c460a765c590c15b2e4d71e820247cbc25179e", "LicenseRef-Proprietary",
      ["api/"], ["typescript"], ["baas", "identity"]),
     ("spree", "spree/spree", "e6e9823b79177d49e1682e31482a9da5d9139140", "BSD-3-Clause",
