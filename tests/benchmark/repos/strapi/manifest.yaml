@@ -1,0 +1,17 @@
+repository: strapi/strapi
+commit: aaff8e8faf9f84c899eda58fe7477633aa35b817
+license: MIT
+scope:
+  include:
+    - packages/core/server/services/
+    - packages/core/server/types/
+coverage:
+  layers: [data_items, components, data_flows, raw_hits, mentions]
+  languages:
+    - typescript
+  domains:
+    - cms
+    - identity
+selection_rationale: >-
+  Corpus expansion repo covering typescript with PII/credential/flow patterns.
+annotation_version: 1

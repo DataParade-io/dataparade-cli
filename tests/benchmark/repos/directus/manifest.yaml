@@ -1,0 +1,16 @@
+repository: directus/directus
+commit: a6c460a765c590c15b2e4d71e820247cbc25179e
+license: LicenseRef-Proprietary
+scope:
+  include:
+    - src/server/services/
+coverage:
+  layers: [data_items, components, data_flows, raw_hits, mentions]
+  languages:
+    - typescript
+  domains:
+    - baas
+    - identity
+selection_rationale: >-
+  Corpus expansion repo covering typescript with PII/credential/flow patterns.
+annotation_version: 1
