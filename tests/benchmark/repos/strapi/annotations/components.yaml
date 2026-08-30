@@ -1,0 +1,118 @@
+annotations:
+- id: strapi-admin-users-database
+  layer: components
+  subject:
+    key: asset:database
+    name: admin_users
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 2
+    end_line: 2
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: The admin::user content type maps to the admin_users table, the persistent store for Strapi admin accounts.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: strapi-sessions-database
+  layer: components
+  subject:
+    key: asset:database
+    name: strapi_sessions
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/session.ts
+    start_line: 2
+    end_line: 2
+  expected:
+    status: positive
+    labels:
+    - database
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: The admin::session content type maps to strapi_sessions, storing refresh tokens and session metadata.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: strapi-auth-service
+  layer: components
+  subject:
+    key: asset:auth_service
+    name: auth
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 87
+    end_line: 87
+  expected:
+    status: positive
+    labels:
+    - auth_service
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: The auth service hashes passwords and validates admin credentials against admin_users via strapi.db.query.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: strapi-admin-actor
+  layer: components
+  subject:
+    key: actor:user
+    name: User
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 5
+    end_line: 5
+  expected:
+    status: positive
+    labels:
+    - admin
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: The admin::user content type represents Strapi admin-panel operators with role relations, not public API consumers.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: strapi-not-auth0
+  layer: components
+  subject:
+    key: third_party:auth0
+    name: Auth0
+  evidence:
+    file_path: packages/core/admin/server/src/controllers/authentication.ts
+    start_line: 46
+    end_line: 46
+  expected:
+    status: negative
+    labels: []
+  rationale: The reviewed admin authentication flow uses passport local strategy and session cookies, not Auth0.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

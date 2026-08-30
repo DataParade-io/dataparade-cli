@@ -1,0 +1,93 @@
+annotations:
+- id: strapi-email-signal
+  layer: pii_signals
+  subject:
+    key: pii:email_address
+    name: email
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 39
+    end_line: 40
+  expected:
+    status: positive
+    labels:
+    - email_address
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: The email attribute is declared type email, required, and used as the passport usernameField for login.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: strapi-password-type-signal
+  layer: pii_signals
+  subject:
+    key: pii:password
+    name: password
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 47
+    end_line: 48
+  expected:
+    status: positive
+    labels:
+    - password
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: The password attribute is declared type password and compared with bcrypt during checkCredentials.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: strapi-session-user-id-signal
+  layer: pii_signals
+  subject:
+    key: pii:user_identifier
+    name: userId
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/session.ts
+    start_line: 25
+    end_line: 27
+  expected:
+    status: positive
+    labels:
+    - user_identifier
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: session.userId links each stored session row to its owning admin user account.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: strapi-prefered-language-not-pii
+  layer: pii_signals
+  subject:
+    key: pii:person_name
+    name: preferedLanguage
+  evidence:
+    file_path: packages/core/admin/server/src/content-types/User.ts
+    start_line: 103
+    end_line: 104
+  expected:
+    status: negative
+    labels: []
+  rationale: preferedLanguage is a locale preference string, not a person name or other PII field.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed

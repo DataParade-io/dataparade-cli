@@ -1,0 +1,76 @@
+annotations:
+- id: strapi-login-to-check-credentials
+  layer: data_flows
+  subject:
+    key: flow:login->check-credentials
+    name: Login to checkCredentials
+  evidence:
+    file_path: packages/core/admin/server/src/services/passport/local-strategy.ts
+    start_line: 14
+    end_line: 15
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: The local passport strategy forwards email and password to auth.checkCredentials for verification.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: strapi-credentials-to-db-query
+  layer: data_flows
+  subject:
+    key: flow:credentials->admin_users
+    name: Credentials to admin_users
+  evidence:
+    file_path: packages/core/admin/server/src/services/auth.ts
+    start_line: 88
+    end_line: 88
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: checkCredentials queries admin::user by email to load the stored password hash before bcrypt comparison.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
+- id: strapi-login-to-session-cookie
+  layer: data_flows
+  subject:
+    key: flow:login->refresh-cookie
+    name: Login to refresh cookie
+  evidence:
+    file_path: packages/core/admin/server/src/controllers/authentication.ts
+    start_line: 86
+    end_line: 98
+  expected:
+    status: positive
+    labels:
+    - data_flow
+    exhaustive_scope_files:
+    - packages/core/admin/server/src/content-types/User.ts
+    - packages/core/admin/server/src/content-types/session.ts
+    - packages/core/admin/server/src/services/auth.ts
+    - packages/core/admin/server/src/services/token.ts
+    - packages/core/admin/server/src/controllers/authentication.ts
+    - packages/core/admin/server/src/services/passport/local-strategy.ts
+  rationale: After passport authenticates the user, the login handler generates a refresh token and sets it on the HTTP response cookie.
+  provenance:
+    proposed_by: composer-2.5-swarm
+    proposed_at: 2026-08-30
+    review_state: proposed
