@@ -9,7 +9,7 @@ import {
   stagingDirectoryName,
   type MaterializeConcurrencyAction,
   type SafeHeadReadResult,
-} from "./materialize-paths";
+} from "./materialize-paths.ts";
 
 export interface LockMetadata {
   pid: number;
