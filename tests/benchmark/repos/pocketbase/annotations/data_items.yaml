@@ -35,8 +35,8 @@ annotations:
     name: email
   evidence:
     file_path: core/record_model_auth.go
-    start_line: 5
-    end_line: 8
+    start_line: 7
+    end_line: 7
   expected:
     status: positive
     labels:
@@ -64,8 +64,8 @@ annotations:
     name: password
   evidence:
     file_path: core/field_password.go
-    start_line: 311
-    end_line: 314
+    start_line: 313
+    end_line: 313
   expected:
     status: positive
     labels:
@@ -122,8 +122,8 @@ annotations:
     name: auth_token
   evidence:
     file_path: core/record_tokens.go
-    start_line: 46
-    end_line: 48
+    start_line: 72
+    end_line: 72
   expected:
     status: positive
     labels:
@@ -267,7 +267,7 @@ annotations:
     name: Plain
   evidence:
     file_path: core/field_password.go
-    start_line: 311
+    start_line: 314
     end_line: 314
   expected:
     status: positive

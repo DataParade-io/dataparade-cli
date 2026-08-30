@@ -36,7 +36,7 @@ annotations:
   expected:
     status: positive
     labels:
-    - password
+    - password_verifier
     exhaustive_scope_files:
     - api/src/auth/auth.ts
     - api/src/auth/drivers/local.ts

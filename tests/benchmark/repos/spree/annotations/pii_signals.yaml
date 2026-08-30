@@ -139,7 +139,7 @@ annotations:
   evidence:
     file_path: spree/core/app/models/spree/user_identity.rb
     start_line: 18
-    end_line: 19
+    end_line: 18
   expected:
     status: positive
     labels:

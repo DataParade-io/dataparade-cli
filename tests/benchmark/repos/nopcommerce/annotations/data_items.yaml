@@ -159,17 +159,9 @@ annotations:
     start_line: 21
     end_line: 21
   expected:
-    status: positive
-    labels:
-    - password
-    exhaustive_scope_files:
-    - src/Libraries/Nop.Core/Domain/Customers/Customer.cs
-    - src/Libraries/Nop.Core/Domain/Customers/CustomerPassword.cs
-    - src/Libraries/Nop.Core/Domain/Customers/ExternalAuthenticationRecord.cs
-    - src/Libraries/Nop.Services/Authentication/CookieAuthenticationService.cs
-    - src/Libraries/Nop.Services/Customers/CustomerRegistrationService.cs
-    - src/Libraries/Nop.Services/Customers/CustomerService.cs
-  rationale: CustomerPassword.Password stores the hashed or encrypted credential checked during ValidateCustomerAsync.
+    status: ambiguous
+    labels: []
+  rationale: CustomerPassword.Password has no source-fixed type; PasswordFormat defaults to Clear and may store plaintext or a hash.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

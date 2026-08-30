@@ -273,7 +273,7 @@ annotations:
     name: key
   evidence:
     file_path: app/models/user_api_key.rb
-    start_line: 28
+    start_line: 32
     end_line: 32
   expected:
     status: positive

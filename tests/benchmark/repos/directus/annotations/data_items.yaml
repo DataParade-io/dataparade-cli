@@ -111,7 +111,7 @@ annotations:
   expected:
     status: positive
     labels:
-    - password
+    - password_verifier
     exhaustive_scope_files:
     - api/src/auth/auth.ts
     - api/src/auth/drivers/local.ts
@@ -136,7 +136,7 @@ annotations:
   expected:
     status: positive
     labels:
-    - access_token
+    - credential_secret
     exhaustive_scope_files:
     - api/src/auth/auth.ts
     - api/src/auth/drivers/local.ts
@@ -144,7 +144,7 @@ annotations:
     - api/src/services/authentication.ts
     - api/src/services/users.ts
     - api/src/types/auth.ts
-  rationale: The refresh token inserted into directus_sessions is the bearer credential used to obtain new access tokens.
+  rationale: The refresh token inserted into directus_sessions is a credential used to obtain new access tokens, not the access token itself.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

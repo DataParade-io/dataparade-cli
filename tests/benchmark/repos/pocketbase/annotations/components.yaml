@@ -122,8 +122,8 @@ annotations:
     name: Record
   evidence:
     file_path: core/record_model_auth.go
-    start_line: 5
-    end_line: 8
+    start_line: 75
+    end_line: 77
   expected:
     status: positive
     labels:

@@ -71,7 +71,7 @@ annotations:
   expected:
     status: positive
     labels:
-    - password
+    - password_verifier
     exhaustive_scope_files:
     - ghost/core/core/server/models/member.js
     - ghost/core/core/server/models/user.js

@@ -37,7 +37,7 @@ annotations:
   expected:
     status: positive
     labels:
-    - password
+    - credential_secret
     exhaustive_scope_files:
     - Sources/Vapor/Authentication/Authentication.swift
     - Sources/Vapor/Authentication/Authenticator.swift
@@ -87,18 +87,9 @@ annotations:
     start_line: 48
     end_line: 49
   expected:
-    status: positive
-    labels:
-    - user_identifier
-    exhaustive_scope_files:
-    - Sources/Vapor/Authentication/Authentication.swift
-    - Sources/Vapor/Authentication/Authenticator.swift
-    - Sources/Vapor/Authentication/BasicAuthorization.swift
-    - Sources/Vapor/Authentication/BearerAuthorization.swift
-    - Sources/Vapor/Authentication/GuardMiddleware.swift
-    - Sources/Vapor/Authentication/RedirectMiddleware.swift
-    - Sources/Vapor/Authentication/SessionAuthenticatable.swift
-  rationale: sessionID is the stable identifier persisted in the session to reload the authenticated user.
+    status: ambiguous
+    labels: []
+  rationale: sessionID is an associatedtype with no source-fixed identity or token type.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

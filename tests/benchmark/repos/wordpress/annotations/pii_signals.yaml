@@ -7,7 +7,7 @@ annotations:
   evidence:
     file_path: src/wp-includes/user.php
     start_line: 33
-    end_line: 34
+    end_line: 33
   expected:
     status: positive
     labels:
@@ -163,12 +163,12 @@ annotations:
     name: user_pass
   evidence:
     file_path: src/wp-includes/class-wp-user.php
-    start_line: 14
-    end_line: 15
+    start_line: 25
+    end_line: 25
   expected:
     status: negative
     labels: []
-  rationale: The class docblock states user_pass is hashed with bcrypt by default, not stored as plaintext.
+  rationale: WP_User.user_pass is the stored bcrypt (or legacy) hash, not a plaintext credential_secret.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

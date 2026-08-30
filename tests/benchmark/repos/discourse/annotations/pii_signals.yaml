@@ -114,7 +114,7 @@ annotations:
     name: password
   evidence:
     file_path: app/models/user_password.rb
-    start_line: 21
+    start_line: 25
     end_line: 25
   expected:
     status: positive
@@ -150,7 +150,7 @@ annotations:
     name: totp_provisioning_uri
   evidence:
     file_path: app/models/user_second_factor.rb
-    start_line: 33
+    start_line: 34
     end_line: 34
   expected:
     status: positive

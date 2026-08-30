@@ -37,7 +37,7 @@ annotations:
   expected:
     status: positive
     labels:
-    - password
+    - credential_secret
     exhaustive_scope_files:
     - Sources/Vapor/Authentication/Authentication.swift
     - Sources/Vapor/Authentication/Authenticator.swift

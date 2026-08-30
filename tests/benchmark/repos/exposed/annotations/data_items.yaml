@@ -9,24 +9,9 @@ annotations:
     start_line: 20
     end_line: 29
   expected:
-    status: positive
-    labels:
-    - user_identifier
-    exhaustive_scope_files:
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseApi.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/DatabaseConfig.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Transaction.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/TransactionInterface.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/transactions/DatabasesManager.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/AbstractQuery.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/StatementBuilder.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/Statement.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/statements/InsertStatement.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/ResultRow.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/Schema.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/vendors/Keywords.kt
-    - exposed-core/src/main/kotlin/org/jetbrains/exposed/v1/core/dao/id/EntityID.kt
-  rationale: EntityID.value is the stored primary-key identifier for a row in an IdTable.
+    status: ambiguous
+    labels: []
+  rationale: EntityID.value is a generic identity wrapper with no source-fixed person or credential type.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

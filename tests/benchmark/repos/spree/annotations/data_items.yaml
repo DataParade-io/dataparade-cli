@@ -39,8 +39,8 @@ annotations:
     name: first_name
   evidence:
     file_path: spree/core/app/models/concerns/spree/customer_methods.rb
-    start_line: 48
-    end_line: 48
+    start_line: 146
+    end_line: 146
   expected:
     status: positive
     labels:
@@ -72,8 +72,8 @@ annotations:
     name: last_name
   evidence:
     file_path: spree/core/app/models/concerns/spree/customer_methods.rb
-    start_line: 48
-    end_line: 48
+    start_line: 147
+    end_line: 147
   expected:
     status: positive
     labels:
@@ -303,8 +303,8 @@ annotations:
     name: access_token
   evidence:
     file_path: spree/core/app/models/spree/user_identity.rb
-    start_line: 50
-    end_line: 54
+    start_line: 52
+    end_line: 52
   expected:
     status: positive
     labels:

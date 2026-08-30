@@ -86,7 +86,7 @@ annotations:
   expected:
     status: positive
     labels:
-    - password
+    - password_verifier
     exhaustive_scope_files:
     - packages/core/admin/server/src/content-types/User.ts
     - packages/core/admin/server/src/content-types/session.ts
@@ -159,17 +159,9 @@ annotations:
     start_line: 32
     end_line: 35
   expected:
-    status: positive
-    labels:
-    - access_token
-    exhaustive_scope_files:
-    - packages/core/admin/server/src/content-types/User.ts
-    - packages/core/admin/server/src/content-types/session.ts
-    - packages/core/admin/server/src/services/auth.ts
-    - packages/core/admin/server/src/services/token.ts
-    - packages/core/admin/server/src/controllers/authentication.ts
-    - packages/core/admin/server/src/services/passport/local-strategy.ts
-  rationale: sessionId is the unique session identifier stored with each refresh token row.
+    status: ambiguous
+    labels: []
+  rationale: sessionId uniquely identifies a session row; whether it is an access_token is not source-fixed.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

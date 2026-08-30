@@ -48,31 +48,9 @@ annotations:
     start_line: 1083
     end_line: 1083
   expected:
-    status: positive
-    labels:
-    - access_token
-    exhaustive_scope_files:
-    - lib/appSession.js
-    - lib/client.js
-    - lib/config.js
-    - lib/context.js
-    - lib/cookies.js
-    - lib/crypto.js
-    - lib/debug.js
-    - lib/errors.js
-    - lib/hooks/backchannelLogout/isLoggedOut.js
-    - lib/hooks/backchannelLogout/onLogIn.js
-    - lib/hooks/backchannelLogout/onLogoutToken.js
-    - lib/hooks/getLoginState.js
-    - lib/once.js
-    - lib/tokenset.js
-    - lib/transientHandler.js
-    - lib/utils/epoch.js
-    - lib/utils/oidcError.js
-    - lib/utils/promisifyCompat.js
-    - lib/utils/sessionExpiry.js
-    - lib/weakCache.js
-  rationale: id_token is an OIDC identity JWT stored in the session after login and used for user claims.
+    status: ambiguous
+    labels: []
+  rationale: id_token is an OIDC identity JWT stored in the session after login; it is not a source-fixed API access_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

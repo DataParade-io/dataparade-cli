@@ -59,7 +59,7 @@ annotations:
   expected:
     status: positive
     labels:
-    - access_token
+    - credential_secret
     exhaustive_scope_files:
     - packages/core/auth-js/src/AuthAdminApi.ts
     - packages/core/auth-js/src/AuthClient.ts
@@ -90,7 +90,7 @@ annotations:
     - packages/core/supabase-js/src/lib/fetch.ts
     - packages/core/supabase-js/src/lib/helpers.ts
     - packages/core/supabase-js/src/lib/types.ts
-  rationale: refresh_token is persisted in the session and posted to the refresh grant endpoint.
+  rationale: refresh_token is persisted in the session and posted to the refresh grant endpoint; it is a credential secret, not the API bearer access_token.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

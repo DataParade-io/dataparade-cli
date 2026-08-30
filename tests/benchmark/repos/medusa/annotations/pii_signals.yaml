@@ -43,22 +43,9 @@ annotations:
     start_line: 1
     end_line: 1
   expected:
-    status: positive
-    labels:
-    - password
-    exhaustive_scope_files:
-    - packages/medusa/src/modules/auth.ts
-    - packages/medusa/src/modules/auth-emailpass.ts
-    - packages/medusa/src/modules/auth-google.ts
-    - packages/medusa/src/modules/auth-github.ts
-    - packages/medusa/src/modules/auth-oidc.ts
-    - packages/medusa/src/modules/customer.ts
-    - packages/medusa/src/modules/user.ts
-    - packages/medusa/src/modules/order.ts
-    - packages/medusa/src/modules/payment.ts
-    - packages/medusa/src/modules/payment-stripe.ts
-    - packages/medusa/src/modules/notification-sendgrid.ts
-  rationale: auth-emailpass.ts registers the email/password authentication provider used for credential-based login.
+    status: negative
+    labels: []
+  rationale: auth-emailpass.ts only re-exports EmailPassAuthProvider; it does not declare a password field or credential value.
   provenance:
     proposed_by: composer-2.5-swarm
     proposed_at: 2026-08-30

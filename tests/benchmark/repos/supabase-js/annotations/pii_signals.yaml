@@ -6,8 +6,8 @@ annotations:
     name: email
   evidence:
     file_path: packages/core/auth-js/src/GoTrueClient.ts
-    start_line: 1232
-    end_line: 1237
+    start_line: 1236
+    end_line: 1236
   expected:
     status: positive
     labels:
@@ -54,12 +54,12 @@ annotations:
     name: password
   evidence:
     file_path: packages/core/auth-js/src/GoTrueClient.ts
-    start_line: 1236
+    start_line: 1237
     end_line: 1237
   expected:
     status: positive
     labels:
-    - password
+    - credential_secret
     exhaustive_scope_files:
     - packages/core/auth-js/src/AuthAdminApi.ts
     - packages/core/auth-js/src/AuthClient.ts
