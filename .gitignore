@@ -1,10 +1,6 @@
-# Managed local worktrees
-worktrees/
-
 # compiled output
 dist/
 outputs/
-node_modules/
 
 # Local default scan outputs (regenerated on every scan; use --output or outputs/)
 dataflow.json
@@ -14,16 +10,3 @@ scan-frontend-summary.json
 .env
 .env.example
 .env.*.example
-
-# Kanbus caches (issues/events under project/ are tracked)
-project/.overlay/
-project/.cache/
-
-# Local agent desk notes (Jira sync, host-specific)
-AGENTS.local.md
-
-# Benchmark corpus materialized clones (local development only)
-tests/benchmark/.cache/
-
-# Local Plexus corpus evaluation workspace
-.plexus-corpus-eval/

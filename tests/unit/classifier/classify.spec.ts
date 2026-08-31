@@ -1315,6 +1315,82 @@ describe("classifier/dedupe & application asset - DP-P0-CLI-204", () => {
       expect(auth0?.properties.authentication_method).toBe("jwt");
       expect(auth0?.type).toBe("third_party");
     });
+
+    it("merges auth_service into HTTP API instead of database when no IdP or main app", () => {
+      const components: DetectedComponent[] = [
+        makeComponent({
+          id: "api_1",
+          name: "API",
+          type: "asset",
+          subType: "api",
+          properties: {
+            section_id: "root",
+            isSectionApiNode: true,
+          },
+          detectedFrom: [
+            {
+              pattern: "express_route",
+              sourceLocation: makeLocation({ filePath: "routes/web.php" }),
+            },
+          ],
+        }),
+        makeComponent({
+          id: "db_1",
+          name: "Eloquent",
+          type: "asset",
+          subType: "database",
+          properties: { section_id: "root", client: "eloquent" },
+        }),
+        makeComponent({
+          id: "auth_1",
+          name: "Laravel Socialite",
+          type: "asset",
+          subType: "auth_service",
+          properties: {
+            section_id: "root",
+            strategy: "oauth2",
+            authentication_method: "oauth_2_0",
+          },
+        }),
+      ];
+
+      const compacted = compactAuthServiceComponents(components);
+      expect(compacted.find((c) => c.id === "auth_1")).toBeUndefined();
+
+      const api = compacted.find((c) => c.id === "api_1");
+      expect(api).toBeDefined();
+      expect(api?.properties.strategy).toBe("oauth2");
+      expect(api?.properties.authentication_method).toBe("oauth_2_0");
+      expect(api?.subType).toBe("api");
+
+      const db = compacted.find((c) => c.id === "db_1");
+      expect(db?.detectedFrom.some((r) => r.pattern === "auth_middleware")).toBe(
+        false,
+      );
+    });
+
+    it("keeps auth_service standalone when only database assets exist in section", () => {
+      const components: DetectedComponent[] = [
+        makeComponent({
+          id: "db_1",
+          name: "Eloquent",
+          type: "asset",
+          subType: "database",
+          properties: { section_id: "root", client: "eloquent" },
+        }),
+        makeComponent({
+          id: "auth_1",
+          name: "Laravel Socialite",
+          type: "asset",
+          subType: "auth_service",
+          properties: { section_id: "root", strategy: "oauth2" },
+        }),
+      ];
+
+      const compacted = compactAuthServiceComponents(components);
+      expect(compacted.find((c) => c.id === "auth_1")).toBeDefined();
+      expect(compacted.find((c) => c.id === "db_1")).toBeDefined();
+    });
   });
 
   it("merges third_party components by serviceName even when names differ", () => {

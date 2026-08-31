@@ -524,6 +524,80 @@ function isAuthProviderThirdParty(component: DetectedComponent): boolean {
   return normalizedService.includes("auth0") || normalizedName.includes("auth0");
 }
 
+const AUTH_MERGE_EXCLUDED_SUBTYPES = new Set([
+  "database",
+  "file_storage",
+  "config",
+]);
+
+function isBadAuthMergeTarget(component: DetectedComponent): boolean {
+  if (component.type !== "asset") return true;
+  const subType = component.subType ?? "";
+  if (AUTH_MERGE_EXCLUDED_SUBTYPES.has(subType)) return true;
+  if (typeof component.properties?.managed_by_provider === "string") return true;
+  return false;
+}
+
+function isMainApplicationAsset(component: DetectedComponent): boolean {
+  return (
+    component.type === "asset" &&
+    (component.properties?.isMainApplication === true ||
+      component.properties?.isMainApplication === "true")
+  );
+}
+
+function httpApiAssetRank(component: DetectedComponent): number {
+  let score = 0;
+  if (
+    component.properties?.isSectionApiNode === true ||
+    component.properties?.isSectionApiNode === "true"
+  ) {
+    score += 4;
+  }
+  if (component.detectedFrom.some((ref) => ref.pattern === "express_route")) {
+    score += 2;
+  }
+  const name = (component.name || "").trim();
+  if (name === "API" || name.endsWith(" API")) score += 1;
+  return score;
+}
+
+/**
+ * Pick where in-app auth middleware should fold when compacting auth_service nodes.
+ * Prefer IdP third parties and HTTP API surfaces; never database/storage/config.
+ * Returns undefined when no safe target exists (auth_service nodes stay standalone).
+ */
+export function findAuthCompactionTarget(
+  sectionComponents: DetectedComponent[],
+): DetectedComponent | undefined {
+  const authThirdParty = sectionComponents.find(isAuthProviderThirdParty);
+  if (authThirdParty) return authThirdParty;
+
+  const mainApp = sectionComponents.find(isMainApplicationAsset);
+  if (mainApp && !isBadAuthMergeTarget(mainApp)) return mainApp;
+
+  const apiCandidates = sectionComponents
+    .filter(
+      (c) => c.type === "asset" && c.subType === "api" && !isBadAuthMergeTarget(c),
+    )
+    .sort(
+      (a, b) =>
+        httpApiAssetRank(b) - httpApiAssetRank(a) ||
+        a.name.localeCompare(b.name),
+    );
+  if (apiCandidates[0]) return apiCandidates[0];
+
+  const serviceOrApp = sectionComponents.find(
+    (c) =>
+      c.type === "asset" &&
+      (c.subType === "service" || c.subType === "application") &&
+      !isBadAuthMergeTarget(c),
+  );
+  if (serviceOrApp) return serviceOrApp;
+
+  return undefined;
+}
+
 function mergeAuthServiceIntoTarget(
   authService: DetectedComponent,
   target: DetectedComponent,
@@ -593,15 +667,7 @@ export function compactAuthServiceComponents(
     );
     if (authServices.length === 0) continue;
 
-    const authThirdParty = sectionComponents.find(isAuthProviderThirdParty);
-    const mainApp = sectionComponents.find(
-      (c) =>
-        c.type === "asset" &&
-        (c.properties?.isMainApplication === true ||
-          c.properties?.isMainApplication === "true"),
-    );
-    const fallbackAsset = sectionComponents.find((c) => c.type === "asset");
-    const mergeTarget = authThirdParty ?? mainApp ?? fallbackAsset;
+    const mergeTarget = findAuthCompactionTarget(sectionComponents);
     if (!mergeTarget) continue;
 
     let nextTarget = replacementById.get(mergeTarget.id) ?? mergeTarget;

@@ -27,6 +27,7 @@ services:
     patternId: external_api_call
     importFragments:
       - stripe
+      - stripe/stripe-php
     confidence: 0.85
     url_host_patterns:
       - stripe.com
@@ -35,6 +36,7 @@ services:
     patternId: external_api_call
     importFragments:
       - sendgrid
+      - sendgrid/sendgrid
     confidence: 0.85
     url_host_patterns:
       - sendgrid.com
@@ -42,6 +44,7 @@ services:
     patternId: external_api_call
     importFragments:
       - twilio
+      - twilio/sdk
     confidence: 0.85
     url_host_patterns:
       - twilio.com
@@ -94,6 +97,10 @@ services:
       - awssdk
       - amazon.
       - aws/
+      - aws/aws-sdk-php
+      # PHP Flysystem S3 adapter (BookStack, Laravel filesystems, etc.)
+      - league/flysystem-aws-s3-v3
+      - flysystem-aws-s3
     confidence: 0.85
     url_host_patterns:
       - amazonaws.com
@@ -103,6 +110,7 @@ services:
     importFragments:
       - "@auth0/"
       - "auth0"
+      - auth0/auth0-php
     confidence: 0.85
     url_host_patterns:
       - auth0.com
@@ -111,6 +119,7 @@ services:
     patternId: external_api_call
     importFragments:
       - firebase
+      - kreait/firebase-php
     confidence: 0.85
     url_host_patterns:
       - firebase.com
@@ -165,6 +174,7 @@ services:
     importFragments:
       - "@sentry/"
       - sentry
+      - sentry/sentry
     confidence: 0.85
     url_host_patterns:
       - sentry.io

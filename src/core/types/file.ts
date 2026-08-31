@@ -8,6 +8,7 @@ export type FileLanguage =
   | "cpp"
   | "csharp"
   | "go"
+  | "php"
   | "java"
   | "kotlin"
   | "terraform"

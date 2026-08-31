@@ -172,6 +172,8 @@ async function walkForManifests(
     // go.mod is the canonical Go module root, so it maps exactly onto a
     // service boundary in a multi-module repository.
     const isGoModule = lower === "go.mod";
+    // composer.json is the Composer package root for PHP services.
+    const isComposerManifest = lower === "composer.json";
     // Maven and Gradle both place a build file at each module root, and on the
     // JVM a module is the deployable unit — unlike `CMakeLists.txt`, one build
     // file per directory *is* the service boundary. `settings.gradle` marks the
@@ -193,6 +195,7 @@ async function walkForManifests(
       !isPipfile &&
       !isDotnetProject &&
       !isGoModule &&
+      !isComposerManifest &&
       !isJvmManifest &&
       !isCppManifest
     ) {

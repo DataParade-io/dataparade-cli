@@ -100,8 +100,7 @@ export function runClassifierPhase(
 ): DetectedComponent[] {
   const classified = classifyRawFindings(findings);
   const dedupedComponents = dedupeComponents(classified);
-  const compactedAuthComponents = compactAuthServiceComponents(dedupedComponents);
-  const mergedDbComponents = mergeDatabaseAssetsByType(compactedAuthComponents);
+  const mergedDbComponents = mergeDatabaseAssetsByType(dedupedComponents);
 
   const withPerSectionApplication = injectApplicationAssetsPerSectionIfMissing(
     mergedDbComponents,
@@ -115,8 +114,9 @@ export function runClassifierPhase(
   const enhanced = enhanceComponents(withApplication);
   const mergedFrameworkHelpers = collapseManifestFrontendFrameworkAssets(enhanced);
   const withSectionApiNodes = synthesizeSectionApiNodes(mergedFrameworkHelpers);
+  const compactedAuthComponents = compactAuthServiceComponents(withSectionApiNodes);
 
-  return injectActorIfMissing(withSectionApiNodes).filter(
+  return injectActorIfMissing(compactedAuthComponents).filter(
     (component) => component.confidence >= options.minimumConfidence,
   );
 }

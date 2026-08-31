@@ -1,6 +1,6 @@
 {
   "name": "@dataparade/cli",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "dataPARADE CLI — scan codebases for privacy and security data flows",
   "publishConfig": {
     "access": "public",
@@ -53,14 +53,8 @@
     "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
     "pretest": "pnpm run build",
     "test": "jest",
-    "test:features": "cucumber-js",
-    "eval:components": "jest tests/eval/layers/components/eval.test.ts",
-    "eval:pii-signals": "jest tests/eval/layers/pii-signals/eval.test.ts",
-    "eval:data-flows": "jest tests/eval/layers/data-flows/eval.test.ts",
     "scan": "node dist/bin/cli.js scan",
-    "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js",
-    "benchmark:materialize": "node --experimental-strip-types tests/benchmark/scripts/materialize-repo.mjs",
-    "benchmark:run": "pnpm run build && node dist/tests/benchmark/run-benchmark.js"
+    "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js"
   },
   "dependencies": {
     "@sentry/node": "^10.38.0",
@@ -72,7 +66,6 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^12.9.0",
     "@eslint/js": "^9.18.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.0.0",
@@ -80,7 +73,6 @@
     "globals": "^15.14.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2",
     "typescript-eslint": "^8.20.0"
   },
   "files": [
@@ -89,6 +81,5 @@
     "LICENSE",
     "README.md",
     "package.json"
-  ],
-  "packageManager": "pnpm@11.23.0+sha512.f00082e5b283a199b74e079da28d155c008fe232f44c8a06ea7ddfa014ecf719fc362f790ecc67b28106ddac2afb24c49a9a079159da560b2ce7d1e98efd11af"
+  ]
 }

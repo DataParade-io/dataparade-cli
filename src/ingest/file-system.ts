@@ -97,6 +97,10 @@ function getFileLanguage(filePath: string): FileLanguage | undefined {
     return "go";
   }
 
+  if (ext === ".php" || ext === ".phtml") {
+    return "php";
+  }
+
   if (ext === ".java") {
     return "java";
   }

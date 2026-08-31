@@ -34,6 +34,7 @@ function normalizeLanguages(
     "cpp",
     "csharp",
     "go",
+    "php",
     "java",
     "kotlin",
     "terraform",

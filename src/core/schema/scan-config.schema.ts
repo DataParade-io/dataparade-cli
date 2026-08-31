@@ -14,6 +14,7 @@ const fileLanguageEnum = z.enum([
   "cpp",
   "csharp",
   "go",
+  "php",
   "java",
   "kotlin",
   "terraform",

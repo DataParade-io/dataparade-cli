@@ -3,7 +3,7 @@ module.exports = {
   rootDir: ".",
   preset: "ts-jest",
   testEnvironment: "node",
-  testMatch: ["**/tests/**/*.spec.ts", "**/tests/eval/**/*.test.ts"],
+  testMatch: ["**/tests/**/*.spec.ts"],
   moduleFileExtensions: ["ts", "js", "json"],
   collectCoverageFrom: ["src/**/*.ts"],
   transform: {

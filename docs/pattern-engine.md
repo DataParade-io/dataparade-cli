@@ -22,15 +22,15 @@ Analyzers typically call `matchPatterns` and then **filter** down to the `patter
 
 When adapting a language, populate:
 
-- `language`: `"typescript"` | `"javascript"` | `"python"` | `"go"` | `"java"` | `"kotlin"` | `"cpp"` | `"csharp"` (the engine branches on this)
+- `language`: `"typescript"` | `"javascript"` | `"python"` | `"go"` | `"php"` | `"java"` | `"kotlin"` | `"cpp"` | `"csharp"` (the engine branches on this)
 - `file`: `FileInfo` (must include `path`, `content`, `language`)
 - `imports?`: import-derived tokens for import-based matchers:
   - `{ module: string; names: string[] }`
 - `normalizedPath?`: normalized file path used for route heuristics (Next/React, etc.)
 - `functions?`: function/method entries with decorators (used by some route/auth detectors)
-- `moduleLevelCalls?`: call sites with `{ callee, argumentsSnippet, location }` (used by Python, Go, JVM, C++, and C# external API matching)
+- `moduleLevelCalls?`: call sites with `{ callee, argumentsSnippet, location }` (used by Python, Go, PHP, JVM, C++, and C# external API matching)
 - `types?`: declared types with `{ name, kind?, baseTypes?, decorators?, location }` (used by C# controller/DbContext detection)
-- `strippedContent?`: source with comments blanked out and layout preserved, supplied by the C-family analyzers (Go, Java/Kotlin, C++, C#) so line-based rules never match commented-out code
+- `strippedContent?`: source with comments blanked out and layout preserved, supplied by the C-family and PHP analyzers (Go, PHP, Java/Kotlin, C++, C#) so line-based rules never match commented-out code
 
 ### TypeScript/JavaScript external HTTP matching opt-in
 
@@ -50,6 +50,7 @@ The shared engine loads a unified config (via `loadUnifiedPatternConfig()`) that
 - TypeScript/JavaScript routes/db/auth/env/config: `cli/patterns/typescript.patterns.yaml`
 - Python routes/db/auth/env/config/external APIs: `cli/patterns/python.patterns.yaml`
 - Go routes/serverless/db/auth/env/config/external APIs: `cli/patterns/go.patterns.yaml`
+- PHP routes/serverless/db/auth/env/config/external APIs: `cli/patterns/php.patterns.yaml`
 - Java/Kotlin routes/serverless/db/auth/env/config/external APIs: `cli/patterns/jvm.patterns.yaml`
 - C++ routes/db/auth/env/config/external APIs: `cli/patterns/cpp.patterns.yaml`
 - C#/.NET routes/serverless/db/auth/env/config/external APIs: `cli/patterns/csharp.patterns.yaml`
@@ -62,7 +63,7 @@ Typical analyzer shape:
 2. Call `matchPatterns(ctx)`.
 3. Filter returned findings by the patternIds this analyzer owns.
 4. Let property-detection (`getPropertiesFromFinding`) enrich component properties.
-   (In this repo, the TypeScript/JavaScript, Python, Go, Java/Kotlin, C++, and C# analyzers all apply this YAML-driven enrichment step.)
+   (In this repo, the TypeScript/JavaScript, Python, Go, PHP, Java/Kotlin, C++, and C# analyzers all apply this YAML-driven enrichment step.)
 
 ## Reference adapters
 

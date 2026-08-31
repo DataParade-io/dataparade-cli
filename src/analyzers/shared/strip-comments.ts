@@ -161,8 +161,9 @@ export function stripCommentsPreservingLayout(
       continue;
     }
 
-    // Python / shell line comment.
-    if (options.hashComments && ch === "#") {
+    // Python / shell / PHP `#` line comment.
+    // PHP 8 attributes use `#[...]`; do not treat that as a comment.
+    if (options.hashComments && ch === "#" && next !== "[") {
       let end = i;
       while (end < length && chars[end] !== "\n") end += 1;
       blankOut(chars, i, end);

@@ -1,0 +1,311 @@
+# PHP pattern config. All entries share: patternId, optional confidence (default 0.8).
+#
+# `importNamespaces` matches a `use` namespace exactly or as a prefix, so
+# `Illuminate\Support` also matches `Illuminate\Support\Facades\Route`.
+# `packageNames` matches Composer package names from composer.json
+# (`guzzlehttp/guzzle`). The two spaces stay disjoint: namespaces use `\`,
+# Composer packages use `/`.
+
+db_clients:
+  - id: pdo
+    patternId: database_connection
+    databaseType: sql
+    importNamespaces:
+      - PDO
+    callNames:
+      - "new PDO"
+      - PDO::__construct
+    confidence: 0.9
+
+  - id: eloquent
+    patternId: database_connection
+    databaseType: sql
+    importNamespaces:
+      - Illuminate\Database
+      - Illuminate\Support\Facades\DB
+    packageNames:
+      - illuminate/database
+      - laravel/framework
+    callNames:
+      - DB::connection
+      - DB::table
+      - "Eloquent::"
+    confidence: 0.9
+
+  - id: doctrine_dbal
+    patternId: database_connection
+    databaseType: sql
+    importNamespaces:
+      - Doctrine\DBAL
+      - Doctrine\ORM
+    packageNames:
+      - doctrine/dbal
+      - doctrine/orm
+    callNames:
+      - DriverManager::getConnection
+      - EntityManager::create
+    confidence: 0.9
+
+  - id: mysqli
+    patternId: database_connection
+    databaseType: mysql
+    callNames:
+      - mysqli_connect
+      - "new mysqli"
+    confidence: 0.85
+
+  - id: predis
+    patternId: database_connection
+    databaseType: redis
+    importNamespaces:
+      - Predis
+    packageNames:
+      - predis/predis
+    callNames:
+      - "new Client"
+      - Predis\Client
+    confidence: 0.85
+
+  - id: mongodb_php
+    patternId: database_connection
+    databaseType: mongodb
+    importNamespaces:
+      - MongoDB
+    packageNames:
+      - mongodb/mongodb
+    confidence: 0.85
+
+pdo_dsn:
+  patternId: database_connection
+  regex: 'new\s+\\?PDO\s*\(\s*["'']([^"'']+)["'']'
+  name: pdo_dsn
+  confidence: 0.9
+  drivers:
+    mysql: mysql
+    pgsql: postgres
+    postgres: postgres
+    postgresql: postgres
+    sqlite: sqlite
+    sqlsrv: mssql
+    dblib: mssql
+    oci: oracle
+  defaultDatabaseType: sql
+
+auth:
+  libraries:
+    - id: laravel_sanctum
+      patternId: auth_middleware
+      importNamespaces:
+        - Laravel\Sanctum
+      packageNames:
+        - laravel/sanctum
+      strategy: sanctum
+      confidence: 0.9
+
+    - id: laravel_passport
+      patternId: auth_middleware
+      importNamespaces:
+        - Laravel\Passport
+      packageNames:
+        - laravel/passport
+      strategy: oauth2
+      confidence: 0.9
+
+    - id: laravel_socialite
+      patternId: auth_middleware
+      importNamespaces:
+        - Laravel\Socialite
+        - SocialiteProviders
+      packageNames:
+        - laravel/socialite
+      callNames:
+        - Socialite::driver
+      strategy: oauth2
+      confidence: 0.9
+
+    - id: league_oauth2_client
+      patternId: auth_middleware
+      importNamespaces:
+        - League\OAuth2\Client
+      packageNames:
+        - league/oauth2-client
+      callNames:
+        - "new AbstractProvider"
+        - ->getAccessToken
+        - ->getAuthorizationUrl
+      strategy: oauth2
+      confidence: 0.9
+
+    - id: firebase_jwt
+      patternId: auth_middleware
+      importNamespaces:
+        - Firebase\JWT
+      packageNames:
+        - firebase/php-jwt
+      callNames:
+        - JWT::encode
+        - JWT::decode
+      strategy: jwt
+      confidence: 0.9
+
+    - id: symfony_security
+      patternId: auth_middleware
+      importNamespaces:
+        - Symfony\Component\Security
+      packageNames:
+        - symfony/security-bundle
+        - symfony/security-http
+      strategy: session
+      confidence: 0.85
+
+    - id: bearer_token_header
+      patternId: auth_middleware
+      contentRegexes:
+        - '["'']Authorization["'']'
+        - '\$\_SERVER\[["'']HTTP_AUTHORIZATION["'']\]'
+      strategy: bearer_token
+      confidence: 0.7
+
+routes:
+  frameworks:
+    # Laravel route files usually call the Route facade with no `use` import
+    # (class alias). Leave namespaces empty so Route::get(...) always matches.
+    - id: laravel
+      patternId: express_route
+      confidence: 0.9
+      routeRegexes:
+        - regex: '\bRoute::(get|post|put|patch|delete|options|any|match)\s*\(\s*["'']([^"'']+)["'']'
+          methodGroup: 1
+          pathGroup: 2
+
+    # Symfony route attributes/annotations are distinctive enough without a gate.
+    - id: symfony
+      patternId: express_route
+      confidence: 0.85
+      routeRegexes:
+        # Attribute / annotation style: #[Route('/path', methods: ['GET'])]
+        - regex: '#\[Route\s*\(\s*["'']([^"'']+)["'']'
+          pathGroup: 1
+        - regex: '@Route\s*\(\s*["'']([^"'']+)["'']'
+          pathGroup: 1
+
+    - id: slim
+      patternId: express_route
+      importNamespaces:
+        - Slim\App
+        - Slim\Routing
+      packageNames:
+        - slim/slim
+      confidence: 0.9
+      routeRegexes:
+        - regex: '(?:^|[^A-Za-z0-9_])\$[A-Za-z_]\w*->(get|post|put|patch|delete|options|any|map)\s*\(\s*["'']([^"'']+)["'']'
+          methodGroup: 1
+          pathGroup: 2
+
+serverless:
+  handlers:
+    - id: bref_lambda
+      patternId: lambda_handler
+      importNamespaces:
+        - Bref\Context
+        - Bref\Event
+      packageNames:
+        - bref/bref
+      confidence: 0.85
+
+env_config:
+  envVariable:
+    patternId: env_variable
+    # getenv("KEY"), $_ENV["KEY"], $_SERVER["KEY"], env("KEY") (Laravel helper)
+    regex: '(?:getenv|env)\s*\(\s*["'']([^"'']+)["'']|\$\_(?:ENV|SERVER)\s*\[\s*["'']([^"'']+)["'']\s*\]'
+    confidence: 0.85
+
+  configLoaders:
+    patternId: config_file
+    confidence: 0.85
+    loaders:
+      - id: vlucas_phpdotenv
+        importNamespaces:
+          - Dotenv
+        packageNames:
+          - vlucas/phpdotenv
+        callNames:
+          - Dotenv::createImmutable
+          - Dotenv::createMutable
+          - ->load
+      - id: laravel_config
+        importNamespaces:
+          - Illuminate\Support\Facades\Config
+        callNames:
+          - config
+          - Config::get
+
+  configFile:
+    patternId: config_file
+    fileNameRegex: '(^|/)(config|configuration|settings)\.php$'
+    name: php_config
+    confidence: 0.75
+
+external_apis:
+  httpClients:
+    - id: guzzle
+      patternId: external_api_call
+      clientName: guzzle
+      importNamespaces:
+        - GuzzleHttp
+      packageNames:
+        - guzzlehttp/guzzle
+      callNames:
+        - "->request"
+        - "->get"
+        - "->post"
+        - "->put"
+        - "->patch"
+        - "->delete"
+        - "->head"
+      urlRegex: '["''](https?:\/\/[^"'']+)["'']'
+      confidence: 0.9
+
+    - id: curl
+      patternId: external_api_call
+      clientName: curl
+      callNames:
+        - curl_setopt
+        - curl_exec
+        - curl_init
+      urlRegex: '["''](https?:\/\/[^"'']+)["'']'
+      confidence: 0.85
+
+    - id: symfony_http_client
+      patternId: external_api_call
+      clientName: symfony_http_client
+      importNamespaces:
+        - Symfony\Component\HttpClient
+        - Symfony\Contracts\HttpClient
+      packageNames:
+        - symfony/http-client
+      callNames:
+        - "->request"
+        - HttpClient::create
+      urlRegex: '["''](https?:\/\/[^"'']+)["'']'
+      confidence: 0.85
+
+    # SDK / Flysystem presence is enough (no HTTP URL on every call).
+    - id: aws_s3
+      patternId: external_api_call
+      clientName: aws
+      emitOnPresence: true
+      importNamespaces:
+        - Aws\S3
+        - League\Flysystem\AwsS3V3
+      packageNames:
+        - aws/aws-sdk-php
+        - league/flysystem-aws-s3-v3
+      callNames:
+        - "new S3Client"
+        - "new AwsS3V3Adapter"
+        - putObject
+        - getObject
+        - createMultipartUpload
+      urlRegex: '["''](https?:\/\/[^"'']+)["'']'
+      confidence: 0.85

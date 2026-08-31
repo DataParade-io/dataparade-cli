@@ -12,6 +12,8 @@ import type { PythonPatternConfig } from "../analyzers/python/python-detection-c
 import { loadPythonPatternConfig } from "../analyzers/python/python-detection-config";
 import type { GoPatternConfig } from "../analyzers/go/go-detection-config";
 import { loadGoPatternConfig } from "../analyzers/go/go-detection-config";
+import type { PhpPatternConfig } from "../analyzers/php/php-detection-config";
+import { loadPhpPatternConfig } from "../analyzers/php/php-detection-config";
 import type { JvmPatternConfig } from "../analyzers/jvm/jvm-detection-config";
 import { loadJvmPatternConfig } from "../analyzers/jvm/jvm-detection-config";
 import type { CppPatternConfig } from "../analyzers/cpp/cpp-detection-config";
@@ -29,6 +31,7 @@ export interface UnifiedPatternConfig {
   classifier: ClassifierConfig;
   python: PythonPatternConfig;
   go: GoPatternConfig;
+  php: PhpPatternConfig;
   jvm: JvmPatternConfig;
   cpp: CppPatternConfig;
   csharp: CSharpPatternConfig;
@@ -138,6 +141,35 @@ function validateUnifiedPatternConfig(unified: UnifiedPatternConfig): void {
     emittedPatternIds.add(String(unified.go.envConfig.configFile.patternId));
   }
   for (const c of unified.go.externalApis.httpClients) {
+    emittedPatternIds.add(String(c.patternId));
+  }
+
+  // PHP.
+  for (const db of unified.php.dbClients) {
+    emittedPatternIds.add(String(db.patternId));
+  }
+  if (unified.php.pdoDsn) {
+    emittedPatternIds.add(String(unified.php.pdoDsn.patternId));
+  }
+  for (const lib of unified.php.auth.libraries) {
+    emittedPatternIds.add(String(lib.patternId));
+  }
+  for (const fw of unified.php.routes.frameworks) {
+    emittedPatternIds.add(String(fw.patternId));
+  }
+  for (const handler of unified.php.serverless.handlers) {
+    emittedPatternIds.add(String(handler.patternId));
+  }
+  if (unified.php.envConfig.envVariable) {
+    emittedPatternIds.add(String(unified.php.envConfig.envVariable.patternId));
+  }
+  if (unified.php.envConfig.configLoaders) {
+    emittedPatternIds.add(String(unified.php.envConfig.configLoaders.patternId));
+  }
+  if (unified.php.envConfig.configFile) {
+    emittedPatternIds.add(String(unified.php.envConfig.configFile.patternId));
+  }
+  for (const c of unified.php.externalApis.httpClients) {
     emittedPatternIds.add(String(c.patternId));
   }
 
@@ -291,6 +323,7 @@ export function loadUnifiedPatternConfig(): UnifiedPatternConfig {
   const classifier = loadClassifierConfig();
   const python = loadPythonPatternConfig();
   const go = loadGoPatternConfig();
+  const php = loadPhpPatternConfig();
   const jvm = loadJvmPatternConfig();
   const cpp = loadCppPatternConfig();
   const csharp = loadCSharpPatternConfig();
@@ -304,6 +337,7 @@ export function loadUnifiedPatternConfig(): UnifiedPatternConfig {
     classifier,
     python,
     go,
+    php,
     jvm,
     cpp,
     csharp,

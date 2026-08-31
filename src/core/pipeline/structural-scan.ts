@@ -25,6 +25,7 @@ import {
 import { runTerraformShowJsonSync } from "../../analyzers/terraform/terraform-exec";
 import { parsePythonModule } from "../../analyzers/python/parser";
 import { parseGoSourceFile } from "../../analyzers/go/parser";
+import { parsePhpSourceFile } from "../../analyzers/php/parser";
 import { parseJvmSourceFile } from "../../analyzers/jvm/parser";
 import { parseCppTranslationUnit } from "../../analyzers/cpp/parser";
 import { parseCSharpCompilationUnit } from "../../analyzers/csharp/parser";
@@ -34,6 +35,9 @@ import {
 import {
   detectGoPatternsFromDependencyManifests,
 } from "../../analyzers/go/dependency-manifests";
+import {
+  detectPhpPatternsFromDependencyManifests,
+} from "../../analyzers/php/dependency-manifests";
 import {
   detectJvmPatternsFromDependencyManifests,
 } from "../../analyzers/jvm/dependency-manifests";
@@ -211,6 +215,21 @@ export async function runStructuralScanPhase(
   );
   if (goStats) languageStats.push(goStats);
 
+  const phpStats = collectLanguageParserStats(
+    files,
+    "php",
+    (file) => {
+      const unit = parsePhpSourceFile(file);
+      return {
+        functionsIndexed: unit.functions.length,
+        callsIndexed: unit.calls.length,
+        warnings: unit.warnings,
+      };
+    },
+    warn,
+  );
+  if (phpStats) languageStats.push(phpStats);
+
   // One parser, reported per language so the stats stay attributable.
   for (const jvmLanguage of ["java", "kotlin"] as const) {
     const jvmStats = collectLanguageParserStats(
@@ -360,6 +379,22 @@ export async function runStructuralScanPhase(
       const message =
         err instanceof Error ? err.message : "Unknown error parsing manifests.";
       warn(`go-manifests: ${message}`);
+    }
+  }
+
+  // Third-party service and dependency detection from Composer manifests.
+  if (!config.languages || config.languages.includes("php")) {
+    try {
+      findings.push(
+        ...(await detectPhpPatternsFromDependencyManifests(scanRootDir, {
+          onWarning: warn,
+          excludePaths: config.excludePaths,
+        })),
+      );
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Unknown error parsing manifests.";
+      warn(`php-manifests: ${message}`);
     }
   }
 
