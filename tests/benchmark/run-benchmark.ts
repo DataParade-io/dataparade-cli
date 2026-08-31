@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-import type { EvalCase, EvalScoreReport, FixtureScanResult } from "../eval/types";
-import { scoreEvalCases } from "../eval/score";
+import type { EvalCase, EvalLayer, EvalScoreReport, FixtureScanResult } from "../eval/types";
+import { scoreEvalCases, scoreEvalCasesByLayer } from "../eval/score";
 import { loadAnnotations, loadBenchmarkManifest } from "./manifest";
 import type { ReviewState } from "./schema";
 import { annotationsToEvalCases, type ToEvalCasesOptions } from "./to-eval-cases";
@@ -85,6 +85,7 @@ export interface BenchmarkRepoResult {
   evalCases: EvalCase[];
   scanResult: FixtureScanResult;
   score: EvalScoreReport;
+  layerScores: Partial<Record<EvalLayer, EvalScoreReport>>;
 }
 
 export interface RunBenchmarkOptions extends RunBenchmarkRepoOptions {
@@ -126,6 +127,7 @@ export async function runBenchmarkRepo(
       scanRepoByManifestLayers(key, root, manifest.coverage.layers));
   const scanResult = await scanFn(repoKey, materializedPath);
   const score = scoreEvalCases(evalCases, [scanResult]);
+  const layerScores = scoreEvalCasesByLayer(evalCases, [scanResult]);
 
   return {
     repoKey,
@@ -133,6 +135,7 @@ export async function runBenchmarkRepo(
     evalCases,
     scanResult,
     score,
+    layerScores,
   };
 }
 
@@ -153,19 +156,41 @@ function formatRate(value: number | null): string {
   return value === null ? "n/a" : `${(value * 100).toFixed(1)}%`;
 }
 
+function printScoreBlock(title: string, score: EvalScoreReport, evalCases: EvalCase[]): void {
+  console.log(title);
+  console.log(`  Eval cases: ${evalCases.length}`);
+  console.log(`  Recall: ${formatRate(score.scores.recall)}`);
+  console.log(`  Label accuracy: ${formatRate(score.scores.labelAccuracy)}`);
+  console.log(`  Correct-label recall: ${formatRate(score.scores.correctLabelRecall)}`);
+  console.log(`  Precision: ${formatRate(score.scores.precision)}`);
+  console.log(`  Negative pass rate: ${formatRate(score.scores.negativeCasePassRate)}`);
+  console.log(`  Unread cases: ${score.scores.unreadCount}`);
+}
+
 function printRepoResult(result: BenchmarkRepoResult): void {
-  const { repoKey, materializedPath, evalCases, scanResult, score } = result;
+  const { repoKey, materializedPath, evalCases, scanResult, score, layerScores } = result;
   console.log(`\n=== ${repoKey} ===`);
   console.log(`Materialized: ${materializedPath}`);
-  console.log(`Eval cases: ${evalCases.length}`);
   console.log(`Scanned files: ${scanResult.scannedFiles.length}`);
+  const findingsByLayer = new Map<string, number>();
+  for (const finding of scanResult.findings) {
+    const layer = finding.layer ?? "untagged";
+    findingsByLayer.set(layer, (findingsByLayer.get(layer) ?? 0) + 1);
+  }
   console.log(`Findings: ${scanResult.findings.length}`);
-  console.log(`Recall: ${formatRate(score.scores.recall)}`);
-  console.log(`Label accuracy: ${formatRate(score.scores.labelAccuracy)}`);
-  console.log(`Correct-label recall: ${formatRate(score.scores.correctLabelRecall)}`);
-  console.log(`Precision: ${formatRate(score.scores.precision)}`);
-  console.log(`Negative pass rate: ${formatRate(score.scores.negativeCasePassRate)}`);
-  console.log(`Unread cases: ${score.scores.unreadCount}`);
+  for (const [layer, count] of [...findingsByLayer.entries()].sort()) {
+    console.log(`  ${layer}: ${count}`);
+  }
+  printScoreBlock("Overall (per-layer findings; do not mix bags):", score, evalCases);
+  const layerOrder: EvalLayer[] = ["components", "data-flows", "pii-signals", "data-items"];
+  for (const layer of layerOrder) {
+    const layerScore = layerScores[layer];
+    if (!layerScore) {
+      continue;
+    }
+    const layerCases = evalCases.filter((entry) => entry.layer === layer);
+    printScoreBlock(`Layer ${layer}:`, layerScore, layerCases);
+  }
 
   const unreadCases = score.caseResults.filter((caseResult) => caseResult.unread);
   if (unreadCases.length > 0) {

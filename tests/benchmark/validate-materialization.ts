@@ -3,7 +3,7 @@ import path from "path";
 import { execSync } from "child_process";
 
 import type { BenchmarkManifest } from "./schema";
-import { isMaterializationComplete, readHeadSafely } from "./materialize-paths.ts";
+import { isMaterializationComplete, readHeadSafely } from "./materialize-paths";
 import { readSparseCheckoutContent } from "./materialize-orchestrator";
 
 export class MaterializationInvalidError extends Error {

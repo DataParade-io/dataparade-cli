@@ -100,7 +100,9 @@ pnpm run benchmark:run
 pnpm run benchmark:run --include-proposed vgs-django
 ```
 
-`benchmark:run` scans `tests/benchmark/.cache/repos/<key>@<commit>/`, loads **accepted** annotations by default, and scores via `tests/eval/score.ts`. It reports recall, label accuracy, precision (when exhaustive scopes exist), negative pass rate, and unread evidence files.
+`benchmark:run` materializes nothing. It scans `tests/benchmark/.cache/repos/<key>@<commit>/`, loads **accepted** annotations by default, and scores **each layer separately** via `tests/eval/score.ts` (see `tests/eval/README.md` for the identity and unread contract). The report prints overall denominators plus per-layer recall, label accuracy, precision, and unread counts.
+
+The corpus runner tags findings by layer (`scanRepoByManifestLayers`) so PII regex hits cannot pollute component precision. `pnpm run benchmark:run` compiles with `tsc` then executes `dist/tests/benchmark/run-benchmark.js`.
 
 **This script is not part of `pnpm test`.** Unit tests mock scans and use temporary fixtures — no network or git clones in CI.
 

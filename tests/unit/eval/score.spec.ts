@@ -179,4 +179,116 @@ describe("scoreEvalCases", () => {
     expect(report.scores.labelAccuracy).toBeNull();
     expect(report.scores.denominators.matchedPositives).toBe(0);
   });
+
+  it("matches data-items by identity without requiring span overlap", () => {
+    const evalCase = makeCase({
+      id: "ssn-item",
+      fixture: "fixture-a",
+      layer: "data-items",
+      subject: { key: "data_item:social_security_number" },
+      evidence: { file_path: "app.py", start_line: 40, end_line: 40 },
+      expected: { status: "positive", labels: ["national_identifier"] },
+    });
+    const finding = {
+      ...makeFinding("data_item:ssn", [{ file_path: "app.py", start_line: 5, end_line: 5 }]),
+      labels: ["social_security_number"],
+      layer: "data-items" as const,
+    };
+    const report = scoreEvalCases(
+      [evalCase],
+      [makeScan("fixture-a", [finding], ["app.py"])],
+    );
+
+    expect(report.caseResults[0]?.matched).toBe(true);
+    expect(report.caseResults[0]?.labelsCorrect).toBe(true);
+    expect(report.scores.recall).toBe(1);
+  });
+
+  it("does not let another layer's findings inflate precision", () => {
+    const componentCase = makeCase({
+      id: "db-positive",
+      fixture: "fixture-a",
+      layer: "components",
+      subject: { key: "asset:db" },
+      evidence: { file_path: "db.ts", start_line: 1, end_line: 1 },
+      exhaustiveScopeFiles: ["db.ts"],
+    });
+    const piiCase = makeCase({
+      id: "email-positive",
+      fixture: "fixture-a",
+      layer: "pii-signals",
+      subject: { key: "pii:email_address" },
+      evidence: { file_path: "db.ts", start_line: 2, end_line: 2 },
+      expected: { status: "positive", labels: ["email_address"] },
+      exhaustiveScopeFiles: ["db.ts"],
+    });
+    const componentFinding = {
+      ...makeFinding("asset:db", [{ file_path: "db.ts", start_line: 1, end_line: 1 }]),
+      layer: "components" as const,
+    };
+    const extraPiiFinding = {
+      ...makeFinding("pii_signal:username", [
+        { file_path: "db.ts", start_line: 9, end_line: 9 },
+      ]),
+      labels: ["username"],
+      layer: "pii-signals" as const,
+    };
+    const report = scoreEvalCases(
+      [componentCase, piiCase],
+      [makeScan("fixture-a", [componentFinding, extraPiiFinding], ["db.ts"])],
+    );
+
+    expect(report.scores.denominators.exhaustiveScopedFindings).toBe(2);
+    expect(report.scores.denominators.exhaustiveScopedMatches).toBe(1);
+    expect(report.scores.precision).toBe(0.5);
+    expect(report.caseResults.find((entry) => entry.caseId === "db-positive")?.matched).toBe(
+      true,
+    );
+    expect(report.caseResults.find((entry) => entry.caseId === "email-positive")?.matched).toBe(
+      false,
+    );
+  });
+
+  it("unions exhaustive scope files across annotations for a fixture layer", () => {
+    const first = makeCase({
+      id: "first",
+      fixture: "fixture-a",
+      subject: { key: "asset:db" },
+      evidence: { file_path: "a.ts", start_line: 1, end_line: 1 },
+      exhaustiveScopeFiles: ["a.ts"],
+    });
+    const second = makeCase({
+      id: "second",
+      fixture: "fixture-a",
+      subject: { key: "asset:cache" },
+      evidence: { file_path: "b.ts", start_line: 1, end_line: 1 },
+      exhaustiveScopeFiles: ["b.ts"],
+    });
+    const unmatchedOnB = makeFinding("asset:other", [
+      { file_path: "b.ts", start_line: 2, end_line: 2 },
+    ]);
+    const report = scoreEvalCases(
+      [first, second],
+      [makeScan("fixture-a", [unmatchedOnB], ["a.ts", "b.ts"])],
+    );
+
+    expect(report.scores.denominators.exhaustiveScopedFindings).toBe(1);
+    expect(report.scores.precision).toBe(0);
+  });
+
+  it("normalizes evidence paths when deciding unread", () => {
+    const evalCase = makeCase({
+      id: "posix-path",
+      fixture: "fixture-a",
+      subject: { key: "asset:db" },
+      evidence: { file_path: "./app/models.py", start_line: 1, end_line: 1 },
+    });
+    const report = scoreEvalCases(
+      [evalCase],
+      [makeScan("fixture-a", [], ["app/models.py"])],
+    );
+
+    expect(report.caseResults[0]?.unread).toBe(false);
+    expect(report.scores.denominators.evaluablePositives).toBe(1);
+  });
 });

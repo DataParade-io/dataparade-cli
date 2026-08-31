@@ -34,6 +34,20 @@ Subject keys use `${type}:${name.toLowerCase()}`, aligned with `tests/benchmark`
 
 Positives marked `documentedGap` remain in recall denominators as measured misses; CI gates may exclude them when asserting pass/fail. Metrics with empty denominators return `null`, not `1`.
 
+### Contract (corpus and fixtures share this scorer)
+
+- **Score per layer.** Corpus findings are tagged `components` / `data-flows` / `pii-signals` / `data-items`. Precision never treats another layer's hits as false positives.
+- **Unread** means the evidence path is absent from `scannedFiles` (paths compared after posix normalization). Exhaustive-scope membership does not mark a file as read.
+- **Exhaustive scopes union** every annotation's `exhaustiveScopeFiles` for that fixture+layer. Last-write-wins is a bug.
+- **Components and data-flows** match on exact `subject.key` (scanner naming is not rewritten here).
+- **PII signals and data-items** match gold taxonomy / field keys onto matcher rule ids (`pii:email_address` ↔ `pii_signal:email`, `data_item:social_security_number` ↔ `data_item:ssn`). See `identity.ts`.
+- **Data-items** are identity-only (no span overlap required). Other layers require overlapping evidence lines.
+- **Labels:** gold taxonomy labels may be parents of scanner rule labels (`person_name` is satisfied by `first_name`). Layer-generic labels such as `data_flow` are satisfied by any matched finding in that layer.
+
+## Identity (`identity.ts`)
+
+Gold keys stay independent of current scanner output. The harness translates matcher prefixes (`pii_signal:`, `data_item:<rule_id>`) onto gold prefixes (`pii:`, `data_item:<field>`). It does **not** alias vendor or asset names (`third_party:checkr` vs `asset:requests call` is a scanner issue).
+
 ## Running
 
 ```bash

@@ -50,6 +50,12 @@ export interface LayerFinding {
     start_line: number;
     end_line: number;
   }>;
+  /**
+   * When set, scoring only compares this finding to cases of the same layer.
+   * Untagged findings (fixture adapters) participate in every layer of the
+   * score call — fixture tests score one layer at a time.
+   */
+  layer?: EvalLayer;
 }
 
 export interface FixtureScanResult {
