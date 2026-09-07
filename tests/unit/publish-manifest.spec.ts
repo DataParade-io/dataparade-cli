@@ -14,7 +14,8 @@ describe("npm publish manifest", () => {
     expect(pkg.devDependencies?.typescript).toBeUndefined();
   });
 
-  it("includes patterns/ in published files (runtime YAML configs)", () => {
-    expect(pkg.files).toContain("patterns");
+  it("depends on @dataparade/scanner for deterministic scan engine", () => {
+    expect(pkg.dependencies?.["@dataparade/scanner"]).toBeDefined();
+    expect(pkg.files).not.toContain("patterns");
   });
 });

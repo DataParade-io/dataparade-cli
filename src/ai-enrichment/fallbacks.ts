@@ -1,34 +1,43 @@
-import type { DetectedComponent } from "../core/types/component";
-import type { DetectedDataFlow } from "../core/types/data-flow";
-import { appendTerraformBareProviderAttachmentFlows } from "../data-flow/terraform-flows";
+import type { DetectedComponent } from '../core/types/component';
+import type { DetectedDataFlow } from '../core/types/data-flow';
+import { appendTerraformBareProviderAttachmentFlows } from '@dataparade/scanner';
 import {
   loadProviderTopologyFallbackPolicy,
   loadProviderTopologyRules,
   type FallbackPolicy,
   type ManagedResourceRule,
   type ProviderTopologyRule,
-} from "./provider-topology-rules";
+} from './provider-topology-rules';
 import {
   terraformAssetBelongsToProviderRule,
   terraformAssetMatchesManagedServiceTopologyRule,
   terraformSectionMatchesManagedServiceTopologyRule,
-} from "./provider-topology-shared";
+} from './provider-topology-shared';
 
-function componentById(components: DetectedComponent[]): Map<string, DetectedComponent> {
+function componentById(
+  components: DetectedComponent[]
+): Map<string, DetectedComponent> {
   return new Map(components.map((component) => [component.id, component]));
 }
 
-function flowPairKey(flow: Pick<DetectedDataFlow, "sourceComponentId" | "targetComponentId">): string {
+function flowPairKey(
+  flow: Pick<DetectedDataFlow, 'sourceComponentId' | 'targetComponentId'>
+): string {
   return `${flow.sourceComponentId}::${flow.targetComponentId}`;
 }
 
-function preferFlow(existing: DetectedDataFlow, candidate: DetectedDataFlow): DetectedDataFlow {
-  const existingFallback = existing.id.startsWith("flow_fallback_");
-  const candidateFallback = candidate.id.startsWith("flow_fallback_");
+function preferFlow(
+  existing: DetectedDataFlow,
+  candidate: DetectedDataFlow
+): DetectedDataFlow {
+  const existingFallback = existing.id.startsWith('flow_fallback_');
+  const candidateFallback = candidate.id.startsWith('flow_fallback_');
   if (existingFallback !== candidateFallback) {
     return existingFallback ? candidate : existing;
   }
-  return (candidate.confidence ?? 0) > (existing.confidence ?? 0) ? candidate : existing;
+  return (candidate.confidence ?? 0) > (existing.confidence ?? 0)
+    ? candidate
+    : existing;
 }
 
 function dedupeDirectionalFlows(flows: DetectedDataFlow[]): DetectedDataFlow[] {
@@ -50,12 +59,14 @@ function dedupeDirectionalFlows(flows: DetectedDataFlow[]): DetectedDataFlow[] {
 }
 
 function unorderedFlowPairKey(
-  flow: Pick<DetectedDataFlow, "sourceComponentId" | "targetComponentId">,
+  flow: Pick<DetectedDataFlow, 'sourceComponentId' | 'targetComponentId'>
 ): string {
-  return [flow.sourceComponentId, flow.targetComponentId].sort().join("::");
+  return [flow.sourceComponentId, flow.targetComponentId].sort().join('::');
 }
 
-function enforceSingleDirectionPerPair(flows: DetectedDataFlow[]): DetectedDataFlow[] {
+function enforceSingleDirectionPerPair(
+  flows: DetectedDataFlow[]
+): DetectedDataFlow[] {
   const chosen = new Map<string, DetectedDataFlow>();
   const order: string[] = [];
   for (const flow of flows) {
@@ -74,7 +85,10 @@ function enforceSingleDirectionPerPair(flows: DetectedDataFlow[]): DetectedDataF
 }
 
 /** True for service sections (not root / unsectioned / global). */
-function isConcreteServiceSectionId(sectionId: string, policy: FallbackPolicy): boolean {
+function isConcreteServiceSectionId(
+  sectionId: string,
+  policy: FallbackPolicy
+): boolean {
   const sid = sectionId.trim();
   if (!sid) return false;
   if (policy.nonConcreteSectionIds.includes(sid.toLowerCase())) return false;
@@ -83,30 +97,31 @@ function isConcreteServiceSectionId(sectionId: string, policy: FallbackPolicy): 
 
 function sectionHasMainApplicationAsset(
   components: DetectedComponent[],
-  sectionId: string,
+  sectionId: string
 ): boolean {
   return components.some(
     (c) =>
-      c.type === "asset" &&
-      String(c.properties?.section_id ?? "") === sectionId &&
+      c.type === 'asset' &&
+      String(c.properties?.section_id ?? '') === sectionId &&
       (c.properties?.isMainApplication === true ||
-        c.properties?.isMainApplication === "true"),
+        c.properties?.isMainApplication === 'true')
   );
 }
 
-function getStringValues(
-  value: unknown,
-): string[] {
-  if (typeof value === "string") return [value.toLowerCase()];
+function getStringValues(value: unknown): string[] {
+  if (typeof value === 'string') return [value.toLowerCase()];
   if (!Array.isArray(value)) return [];
   return value
-    .filter((v): v is string => typeof v === "string")
+    .filter((v): v is string => typeof v === 'string')
     .map((v) => v.toLowerCase());
 }
 
-function componentMatchesProvider(component: DetectedComponent, keys: string[]): boolean {
+function componentMatchesProvider(
+  component: DetectedComponent,
+  keys: string[]
+): boolean {
   const serviceNameValues = getStringValues(component.properties?.serviceName);
-  const name = (component.name || "").trim().toLowerCase();
+  const name = (component.name || '').trim().toLowerCase();
   const corpus = new Set<string>([name, ...serviceNameValues]);
   return keys.some((k) => corpus.has(k) || name.includes(k));
 }
@@ -114,27 +129,31 @@ function componentMatchesProvider(component: DetectedComponent, keys: string[]):
 function isManagedResourceComponent(
   component: DetectedComponent,
   managedResource: ManagedResourceRule,
-  fallbackPolicy: FallbackPolicy,
+  fallbackPolicy: FallbackPolicy
 ): boolean {
-  if (!(component.type === "asset" && component.subType === "database")) return false;
+  if (!(component.type === 'asset' && component.subType === 'database'))
+    return false;
   const clients = getStringValues(component.properties?.client);
   const dbTypeValues = getStringValues(component.properties?.databaseType);
-  const name = (component.name || "").toLowerCase();
+  const name = (component.name || '').toLowerCase();
   const corpus = [...clients, ...dbTypeValues, name];
   const hints =
     managedResource.matchHints.length > 0
       ? managedResource.matchHints
       : fallbackPolicy.managedResourceMatchHintsByKind[managedResource.kind];
-  if (managedResource.kind === "database") {
+  if (managedResource.kind === 'database') {
     return corpus.some((v) => hints.some((hint) => v.includes(hint)));
   }
-  if (managedResource.kind === "cache") {
+  if (managedResource.kind === 'cache') {
     return corpus.some((v) => hints.some((hint) => v.includes(hint)));
   }
   return false;
 }
 
-function hasAnyClientMatch(component: DetectedComponent, keys: string[]): boolean {
+function hasAnyClientMatch(
+  component: DetectedComponent,
+  keys: string[]
+): boolean {
   if (keys.length === 0) return false;
   const clients = getStringValues(component.properties?.client);
   return clients.some((client) => keys.some((k) => client.includes(k)));
@@ -143,7 +162,7 @@ function hasAnyClientMatch(component: DetectedComponent, keys: string[]): boolea
 function hasDirectClientMatch(
   component: DetectedComponent,
   directKeys: string[],
-  viaKeys: string[],
+  viaKeys: string[]
 ): boolean {
   if (directKeys.length === 0) return false;
   const clients = getStringValues(component.properties?.client);
@@ -156,9 +175,16 @@ function hasDirectClientMatch(
 }
 
 function normalizeSectionId(raw: unknown): string {
-  const value = String(raw ?? "").trim().toLowerCase();
-  if (!value || value === "root" || value === "<unsectioned>" || value === "global") {
-    return "";
+  const value = String(raw ?? '')
+    .trim()
+    .toLowerCase();
+  if (
+    !value ||
+    value === 'root' ||
+    value === '<unsectioned>' ||
+    value === 'global'
+  ) {
+    return '';
   }
   return value;
 }
@@ -166,7 +192,7 @@ function normalizeSectionId(raw: unknown): string {
 function areSectionCompatible(
   source: DetectedComponent,
   provider: DetectedComponent,
-  target: DetectedComponent,
+  target: DetectedComponent
 ): boolean {
   const sourceSection = normalizeSectionId(source.properties?.section_id);
   const providerSection = normalizeSectionId(provider.properties?.section_id);
@@ -183,7 +209,7 @@ function areSectionCompatible(
 
 function areComponentsSectionCompatible(
   left: DetectedComponent,
-  right: DetectedComponent,
+  right: DetectedComponent
 ): boolean {
   const leftSection = normalizeSectionId(left.properties?.section_id);
   const rightSection = normalizeSectionId(right.properties?.section_id);
@@ -195,7 +221,7 @@ function areComponentsSectionCompatible(
 
 function providerUsageCorpus(
   provider: DetectedComponent,
-  flows: DetectedDataFlow[],
+  flows: DetectedDataFlow[]
 ): string[] {
   const corpus: string[] = [];
   const props = provider.properties ?? {};
@@ -215,7 +241,9 @@ function providerUsageCorpus(
     if (signal == null) continue;
     if (Array.isArray(signal)) {
       for (const item of signal) {
-        const text = String(item ?? "").trim().toLowerCase();
+        const text = String(item ?? '')
+          .trim()
+          .toLowerCase();
         if (text) corpus.push(text);
       }
       continue;
@@ -232,7 +260,11 @@ function providerUsageCorpus(
     if (fp) corpus.push(fp.toLowerCase());
   }
   for (const flow of flows) {
-    if (flow.targetComponentId !== provider.id && flow.sourceComponentId !== provider.id) continue;
+    if (
+      flow.targetComponentId !== provider.id &&
+      flow.sourceComponentId !== provider.id
+    )
+      continue;
     if (flow.description) corpus.push(flow.description.toLowerCase());
     for (const loc of flow.sourceLocations ?? []) {
       if (loc.filePath) corpus.push(loc.filePath.toLowerCase());
@@ -246,21 +278,35 @@ function hasUsageSignal(corpus: string[], signals: string[]): boolean {
   return signals.some((sig) => corpus.some((entry) => entry.includes(sig)));
 }
 
-function isPostgresLikeDatabase(component: DetectedComponent, policy: FallbackPolicy): boolean {
-  if (!(component.type === "asset" && component.subType === "database")) return false;
+function isPostgresLikeDatabase(
+  component: DetectedComponent,
+  policy: FallbackPolicy
+): boolean {
+  if (!(component.type === 'asset' && component.subType === 'database'))
+    return false;
   const clients = getStringValues(component.properties?.client);
-  const name = (component.name || "").toLowerCase();
+  const name = (component.name || '').toLowerCase();
   const corpus = [...clients, name];
-  return corpus.some((v) => policy.postgresLikeSignals.some((signal) => v.includes(signal)));
+  return corpus.some((v) =>
+    policy.postgresLikeSignals.some((signal) => v.includes(signal))
+  );
 }
 
-function isGenericLocalPgNode(component: DetectedComponent, policy: FallbackPolicy): boolean {
-  if (!(component.type === "asset" && component.subType === "database")) return false;
+function isGenericLocalPgNode(
+  component: DetectedComponent,
+  policy: FallbackPolicy
+): boolean {
+  if (!(component.type === 'asset' && component.subType === 'database'))
+    return false;
   if (component.properties?.managed_by_provider) return false;
-  const name = String(component.name ?? "").trim().toLowerCase();
+  const name = String(component.name ?? '')
+    .trim()
+    .toLowerCase();
   const clients = getStringValues(component.properties?.client);
   const genericName = policy.genericPgNodeNames.includes(name);
-  const genericClient = clients.some((v) => policy.genericPgClientSignals.includes(v));
+  const genericClient = clients.some((v) =>
+    policy.genericPgClientSignals.includes(v)
+  );
   return genericName || genericClient;
 }
 
@@ -268,15 +314,16 @@ function collapseGenericPgIntoManagedProviderNodes(
   components: DetectedComponent[],
   flows: DetectedDataFlow[],
   rulesByProviderServiceName: Map<string, ProviderTopologyRule>,
-  policy: FallbackPolicy,
+  policy: FallbackPolicy
 ): DetectedComponent[] {
   const managedBySection = new Map<string, string>();
   for (const component of components) {
-    if (component.properties?.managed_service_key !== "postgres") continue;
-    if (typeof component.properties?.managed_by_provider !== "string") continue;
+    if (component.properties?.managed_service_key !== 'postgres') continue;
+    if (typeof component.properties?.managed_by_provider !== 'string') continue;
     const sectionId = normalizeSectionId(component.properties?.section_id);
     if (!sectionId) continue;
-    if (!managedBySection.has(sectionId)) managedBySection.set(sectionId, component.id);
+    if (!managedBySection.has(sectionId))
+      managedBySection.set(sectionId, component.id);
   }
 
   const providersBySection = new Map<string, DetectedComponent[]>();
@@ -284,16 +331,18 @@ function collapseGenericPgIntoManagedProviderNodes(
   for (const component of components) {
     const sectionId = normalizeSectionId(component.properties?.section_id);
     if (!sectionId) continue;
-    if (component.type === "third_party") {
+    if (component.type === 'third_party') {
       const list = providersBySection.get(sectionId) ?? [];
       list.push(component);
       providersBySection.set(sectionId, list);
     }
-    const managedBy = String(component.properties?.managed_by_provider ?? "").trim();
+    const managedBy = String(
+      component.properties?.managed_by_provider ?? ''
+    ).trim();
     if (!managedBy) continue;
     managedChildrenByProvider.set(
       managedBy,
-      (managedChildrenByProvider.get(managedBy) ?? 0) + 1,
+      (managedChildrenByProvider.get(managedBy) ?? 0) + 1
     );
   }
 
@@ -307,27 +356,34 @@ function collapseGenericPgIntoManagedProviderNodes(
     if (!managedId || managedId === component.id) {
       const providers = providersBySection.get(sectionId) ?? [];
       const providerWithTopology = providers.find(
-        (provider) => (managedChildrenByProvider.get(provider.id) ?? 0) > 0,
+        (provider) => (managedChildrenByProvider.get(provider.id) ?? 0) > 0
       );
       if (!providerWithTopology) continue;
       const providerServiceName =
-        String(providerWithTopology.properties?.serviceName ?? providerWithTopology.name ?? "")
+        String(
+          providerWithTopology.properties?.serviceName ??
+            providerWithTopology.name ??
+            ''
+        )
           .trim()
-          .toLowerCase() || "provider";
+          .toLowerCase() || 'provider';
       const providerRule = rulesByProviderServiceName.get(providerServiceName);
-      const providerDisplay = providerDisplayFromServiceName(providerServiceName);
+      const providerDisplay =
+        providerDisplayFromServiceName(providerServiceName);
       component.name = `${providerDisplay} Pg`;
       component.properties = {
         ...component.properties,
         managed_by_provider: providerWithTopology.id,
-        managed_service_key: "postgres",
-        serviceName: providerWithTopology.properties?.serviceName ?? providerServiceName,
-        generated_by: "provider_topology_fallback",
+        managed_service_key: 'postgres',
+        serviceName:
+          providerWithTopology.properties?.serviceName ?? providerServiceName,
+        generated_by: 'provider_topology_fallback',
       };
       // Drop pre-collapse local DB flows for this node; keep provider->managed link only.
       for (const flow of flows) {
         const touchesComponent =
-          flow.sourceComponentId === component.id || flow.targetComponentId === component.id;
+          flow.sourceComponentId === component.id ||
+          flow.targetComponentId === component.id;
         if (!touchesComponent) continue;
         const isProviderManagedLink =
           flow.sourceComponentId === providerWithTopology.id &&
@@ -337,15 +393,17 @@ function collapseGenericPgIntoManagedProviderNodes(
       const existingProviderEdge = flows.some(
         (flow) =>
           flow.sourceComponentId === providerWithTopology.id &&
-          flow.targetComponentId === component.id,
+          flow.targetComponentId === component.id
       );
       if (!existingProviderEdge) {
         flows.push({
           id: `flow_fallback_${flows.length + 1}`,
           sourceComponentId: providerWithTopology.id,
           targetComponentId: component.id,
-          type: "database_query",
-          confidence: providerRule?.confidence.collapseManagedPostgresFlowConfidence ?? 0.78,
+          type: 'database_query',
+          confidence:
+            providerRule?.confidence.collapseManagedPostgresFlowConfidence ??
+            0.78,
           description: `${providerWithTopology.name} provides ${component.name}`,
         });
       }
@@ -361,7 +419,7 @@ function collapseGenericPgIntoManagedProviderNodes(
       !flowIdsToRemove.has(flow.id) &&
       !removeIds.has(flow.sourceComponentId) &&
       !removeIds.has(flow.targetComponentId) &&
-      flow.sourceComponentId !== flow.targetComponentId,
+      flow.sourceComponentId !== flow.targetComponentId
   );
   flows.length = 0;
   flows.push(...retainedFlows);
@@ -370,14 +428,16 @@ function collapseGenericPgIntoManagedProviderNodes(
 
 function removeDirectFlowsToManagedPostgres(
   components: DetectedComponent[],
-  flows: DetectedDataFlow[],
+  flows: DetectedDataFlow[]
 ): void {
-  const byId = new Map(components.map((component) => [component.id, component]));
+  const byId = new Map(
+    components.map((component) => [component.id, component])
+  );
   const retained = flows.filter((flow) => {
     const target = byId.get(flow.targetComponentId);
     if (!target) return true;
-    if (target.properties?.managed_service_key !== "postgres") return true;
-    const providerId = String(target.properties?.managed_by_provider ?? "");
+    if (target.properties?.managed_service_key !== 'postgres') return true;
+    const providerId = String(target.properties?.managed_by_provider ?? '');
     if (!providerId) return true;
     // Keep only provider -> managed-postgres linkage.
     if (flow.sourceComponentId === providerId) return true;
@@ -408,10 +468,10 @@ function collectSectionRolledUpProviderUsageCorpus(input: {
 }
 
 function dedupeSourceLocations(
-  locations: NonNullable<DetectedComponent["sourceLocations"]>,
-): NonNullable<DetectedComponent["sourceLocations"]> {
+  locations: NonNullable<DetectedComponent['sourceLocations']>
+): NonNullable<DetectedComponent['sourceLocations']> {
   const seen = new Set<string>();
-  const result: NonNullable<DetectedComponent["sourceLocations"]> = [];
+  const result: NonNullable<DetectedComponent['sourceLocations']> = [];
   for (const loc of locations) {
     const key = `${loc.filePath}:${loc.startLine}:${loc.endLine}`;
     if (seen.has(key)) continue;
@@ -429,8 +489,8 @@ function providerDisplayFromServiceName(value: string): string {
 
 function providerEvidenceForManagedNode(
   provider: DetectedComponent,
-  managedNode: ProviderTopologyRule["managedServiceNodes"][number],
-): Pick<DetectedComponent, "detectedFrom" | "sourceLocations"> {
+  managedNode: ProviderTopologyRule['managedServiceNodes'][number]
+): Pick<DetectedComponent, 'detectedFrom' | 'sourceLocations'> {
   const detectedFrom = provider.detectedFrom ?? [];
   const sourceLocations = provider.sourceLocations ?? [];
   const evidencePatterns = new Set(managedNode.evidencePatterns);
@@ -443,19 +503,24 @@ function providerEvidenceForManagedNode(
   }
 
   const filteredDetectedFrom = detectedFrom.filter((ref) =>
-    evidencePatterns.has(String(ref.pattern ?? "").toLowerCase()),
+    evidencePatterns.has(String(ref.pattern ?? '').toLowerCase())
   );
   const filteredSourceLocations = dedupeSourceLocations(
     filteredDetectedFrom
       .map((ref) => ref.sourceLocation)
       .filter(
-        (loc): loc is NonNullable<DetectedComponent["sourceLocations"]>[number] =>
-          Boolean(loc),
-      ),
+        (
+          loc
+        ): loc is NonNullable<DetectedComponent['sourceLocations']>[number] =>
+          Boolean(loc)
+      )
   );
 
   return {
-    detectedFrom: filteredDetectedFrom.length > 0 ? filteredDetectedFrom : [...detectedFrom],
+    detectedFrom:
+      filteredDetectedFrom.length > 0
+        ? filteredDetectedFrom
+        : [...detectedFrom],
     sourceLocations:
       filteredSourceLocations.length > 0
         ? filteredSourceLocations
@@ -466,11 +531,15 @@ function providerEvidenceForManagedNode(
 function isProviderManagedDatabaseTarget(
   target: DetectedComponent,
   provider: DetectedComponent,
-  rule: ProviderTopologyRule,
+  rule: ProviderTopologyRule
 ): boolean {
-  const cloudProvider = String(target.properties?.cloud_provider ?? "").toLowerCase();
-  const targetService = String(target.properties?.serviceName ?? "").toLowerCase();
-  const targetVendor = String(target.properties?.vendor ?? "").toLowerCase();
+  const cloudProvider = String(
+    target.properties?.cloud_provider ?? ''
+  ).toLowerCase();
+  const targetService = String(
+    target.properties?.serviceName ?? ''
+  ).toLowerCase();
+  const targetVendor = String(target.properties?.vendor ?? '').toLowerCase();
   const providerKey = rule.providerId.toLowerCase();
   const hints = [cloudProvider, targetService, targetVendor];
   if (hints.some((h) => h.includes(providerKey))) return true;
@@ -482,13 +551,14 @@ function isProviderManagedDatabaseTarget(
   }
 
   const targetClients = getStringValues(target.properties?.client);
-  const targetName = String(target.name ?? "").toLowerCase();
-  const databaseRule = rule.managedResources.find((resource) => resource.kind === "database");
+  const targetName = String(target.name ?? '').toLowerCase();
+  const databaseRule = rule.managedResources.find(
+    (resource) => resource.kind === 'database'
+  );
   const sharedFileSignals = databaseRule?.directClients ?? [];
-  const allowsSharedFileProviderInference = [
-    ...targetClients,
-    targetName,
-  ].some((value) => sharedFileSignals.some((signal) => value.includes(signal)));
+  const allowsSharedFileProviderInference = [...targetClients, targetName].some(
+    (value) => sharedFileSignals.some((signal) => value.includes(signal))
+  );
   if (!allowsSharedFileProviderInference) {
     return false;
   }
@@ -496,12 +566,12 @@ function isProviderManagedDatabaseTarget(
   const targetFiles = new Set(
     (target.sourceLocations ?? [])
       .map((loc) => loc.filePath)
-      .filter((p): p is string => typeof p === "string"),
+      .filter((p): p is string => typeof p === 'string')
   );
   const providerFiles = new Set(
     (provider.sourceLocations ?? [])
       .map((loc) => loc.filePath)
-      .filter((p): p is string => typeof p === "string"),
+      .filter((p): p is string => typeof p === 'string')
   );
   for (const file of targetFiles) {
     if (providerFiles.has(file)) return true;
@@ -512,19 +582,19 @@ function isProviderManagedDatabaseTarget(
 function selectPreferredApiSource(
   source: DetectedComponent,
   target: DetectedComponent,
-  components: DetectedComponent[],
+  components: DetectedComponent[]
 ): DetectedComponent | undefined {
-  if (source.type !== "asset") return undefined;
-  if (target.type !== "third_party") return undefined;
+  if (source.type !== 'asset') return undefined;
+  if (target.type !== 'third_party') return undefined;
   const isMainApp = source.properties?.isMainApplication === true;
   if (!isMainApp) return undefined;
 
-  const sourceSection = String(source.properties?.section_id ?? "");
+  const sourceSection = String(source.properties?.section_id ?? '');
   const candidates = components.filter((c) => {
     if (c.id === source.id) return false;
-    if (c.type !== "asset") return false;
-    if (String(c.properties?.section_id ?? "") !== sourceSection) return false;
-    if (c.subType !== "api") return false;
+    if (c.type !== 'asset') return false;
+    if (String(c.properties?.section_id ?? '') !== sourceSection) return false;
+    if (c.subType !== 'api') return false;
     return true;
   });
   if (candidates.length === 0) return undefined;
@@ -533,7 +603,7 @@ function selectPreferredApiSource(
 
 export function applyDeterministicInferenceFallbacks(
   components: DetectedComponent[],
-  flows: DetectedDataFlow[],
+  flows: DetectedDataFlow[]
 ): { components: DetectedComponent[]; dataFlows: DetectedDataFlow[] } {
   const nextComponents = components.map((c) => ({
     ...c,
@@ -550,19 +620,29 @@ export function applyDeterministicInferenceFallbacks(
     if (!source || !target) continue;
 
     // Actor/customer should generally call the app/API, not the opposite.
-    if (source.type === "asset" && target.type === "actor") {
+    if (source.type === 'asset' && target.type === 'actor') {
       const originalSource = flow.sourceComponentId;
       flow.sourceComponentId = flow.targetComponentId;
       flow.targetComponentId = originalSource;
-      flow.confidence = Math.max(flow.confidence, fallbackPolicy.actorTargetReverseConfidenceFloor);
+      flow.confidence = Math.max(
+        flow.confidence,
+        fallbackPolicy.actorTargetReverseConfidenceFloor
+      );
     }
 
     // Prefer backend API nodes as caller for third-party integrations when
     // frontend/main-app and API coexist in the same section.
-    const preferredApi = selectPreferredApiSource(source, target, nextComponents);
+    const preferredApi = selectPreferredApiSource(
+      source,
+      target,
+      nextComponents
+    );
     if (preferredApi) {
       flow.sourceComponentId = preferredApi.id;
-      flow.confidence = Math.max(flow.confidence, fallbackPolicy.preferredApiSourceConfidenceFloor);
+      flow.confidence = Math.max(
+        flow.confidence,
+        fallbackPolicy.preferredApiSourceConfidenceFloor
+      );
     }
   }
   // Keep de-duplication keys aligned after directional rewrites above.
@@ -575,8 +655,8 @@ export function applyDeterministicInferenceFallbacks(
   for (const rule of providerRules) {
     const providers = nextComponents.filter(
       (component) =>
-        component.type === "third_party" &&
-        componentMatchesProvider(component, rule.providerMatchKeys),
+        component.type === 'third_party' &&
+        componentMatchesProvider(component, rule.providerMatchKeys)
     );
     if (providers.length === 0) continue;
 
@@ -591,7 +671,7 @@ export function applyDeterministicInferenceFallbacks(
         serviceName: canonicalService,
       };
 
-      const sectionId = String(provider.properties?.section_id ?? "root");
+      const sectionId = String(provider.properties?.section_id ?? 'root');
       const usageCorpus = collectSectionRolledUpProviderUsageCorpus({
         provider,
         providersInRule: providers,
@@ -599,46 +679,54 @@ export function applyDeterministicInferenceFallbacks(
       });
       for (const managedNode of rule.managedServiceNodes) {
         const isImplicitManagedPostgresKey =
-          fallbackPolicy.implicitManagedPostgresNodeKeys.includes(managedNode.key);
+          fallbackPolicy.implicitManagedPostgresNodeKeys.includes(
+            managedNode.key
+          );
         const postgresSignals = isImplicitManagedPostgresKey
           ? managedNode.usageSignals
           : [];
-        const implicitManagedCandidate =
-          isImplicitManagedPostgresKey
-            ? nextComponents.find((c) => {
-                if (!isPostgresLikeDatabase(c, fallbackPolicy)) return false;
-                if (!areComponentsSectionCompatible(provider, c)) return false;
-                const explicitManagedTarget = isProviderManagedDatabaseTarget(
-                  c,
-                  provider,
-                  rule,
-                );
-                if (explicitManagedTarget) return true;
-                // Provider-agnostic fallback: if provider section usage strongly
-                // signals managed postgres and local DB is postgres-like, adopt it.
-                return hasUsageSignal(usageCorpus, postgresSignals);
-              })
-            : undefined;
+        const implicitManagedCandidate = isImplicitManagedPostgresKey
+          ? nextComponents.find((c) => {
+              if (!isPostgresLikeDatabase(c, fallbackPolicy)) return false;
+              if (!areComponentsSectionCompatible(provider, c)) return false;
+              const explicitManagedTarget = isProviderManagedDatabaseTarget(
+                c,
+                provider,
+                rule
+              );
+              if (explicitManagedTarget) return true;
+              // Provider-agnostic fallback: if provider section usage strongly
+              // signals managed postgres and local DB is postgres-like, adopt it.
+              return hasUsageSignal(usageCorpus, postgresSignals);
+            })
+          : undefined;
 
         const terraformTargetsForNode = nextComponents.filter((c) => {
-          if (c.type !== "asset") return false;
-          if (typeof c.properties?.managed_by_provider === "string") return false;
+          if (c.type !== 'asset') return false;
+          if (typeof c.properties?.managed_by_provider === 'string')
+            return false;
           const addr = c.properties?.terraform_address;
-          if (typeof addr !== "string" || addr.startsWith("provider.")) return false;
+          if (typeof addr !== 'string' || addr.startsWith('provider.'))
+            return false;
           if (!areComponentsSectionCompatible(provider, c)) return false;
-          if (!terraformAssetBelongsToProviderRule(c, rule.providerId)) return false;
-          return terraformAssetMatchesManagedServiceTopologyRule(c, managedNode);
+          if (!terraformAssetBelongsToProviderRule(c, rule.providerId))
+            return false;
+          return terraformAssetMatchesManagedServiceTopologyRule(
+            c,
+            managedNode
+          );
         });
 
         const corpusMatchFromCode = managedNode.usageSignals.some((sig) =>
-          usageCorpus.some((entry) => entry.includes(sig)),
+          usageCorpus.some((entry) => entry.includes(sig))
         );
-        const terraformTopologyEvidence = terraformSectionMatchesManagedServiceTopologyRule(
-          provider,
-          rule.providerId,
-          nextComponents,
-          managedNode,
-        );
+        const terraformTopologyEvidence =
+          terraformSectionMatchesManagedServiceTopologyRule(
+            provider,
+            rule.providerId,
+            nextComponents,
+            managedNode
+          );
         const corpusMatch = corpusMatchFromCode || terraformTopologyEvidence;
 
         const shouldInclude =
@@ -651,7 +739,7 @@ export function applyDeterministicInferenceFallbacks(
         if (terraformTargetsForNode.length > 0) {
           const multi = terraformTargetsForNode.length > 1;
           for (const t of terraformTargetsForNode) {
-            const blockLabel = String(t.properties?.block_name ?? "").trim();
+            const blockLabel = String(t.properties?.block_name ?? '').trim();
             t.name = multi
               ? `${managedNode.label} · ${blockLabel || t.id}`
               : managedNode.label;
@@ -662,10 +750,13 @@ export function applyDeterministicInferenceFallbacks(
               managed_by_provider: provider.id,
               managed_service_key: managedNode.key,
               serviceName: provider.properties?.serviceName ?? rule.providerId,
-              generated_by: "provider_topology_fallback",
+              generated_by: 'provider_topology_fallback',
               section_id: t.properties?.section_id ?? sectionId,
-              section_label: t.properties?.section_label ?? provider.properties?.section_label,
-              section_role: t.properties?.section_role ?? provider.properties?.section_role,
+              section_label:
+                t.properties?.section_label ??
+                provider.properties?.section_label,
+              section_role:
+                t.properties?.section_role ?? provider.properties?.section_role,
             };
 
             const providerToServiceKey = `${provider.id}::${t.id}`;
@@ -687,16 +778,18 @@ export function applyDeterministicInferenceFallbacks(
         const existing = nextComponents.find(
           (c) =>
             c.properties?.managed_by_provider === provider.id &&
-            c.properties?.managed_service_key === managedNode.key,
+            c.properties?.managed_service_key === managedNode.key
         );
-        const existingImplicitManaged = !existing ? implicitManagedCandidate : undefined;
+        const existingImplicitManaged = !existing
+          ? implicitManagedCandidate
+          : undefined;
         const serviceNode =
           existingImplicitManaged ??
           existing ??
           (() => {
             const managedEvidence = providerEvidenceForManagedNode(
               provider,
-              managedNode,
+              managedNode
             );
             const id = `cmp_managed_${rule.providerId}_${managedNode.key}_${nextComponents.length + 1}`;
             const created: DetectedComponent = {
@@ -704,17 +797,21 @@ export function applyDeterministicInferenceFallbacks(
               name: managedNode.label,
               type: managedNode.componentType,
               subType: managedNode.componentSubType,
-              confidence: Math.max(rule.confidence.managedNodeMinConfidence, provider.confidence),
+              confidence: Math.max(
+                rule.confidence.managedNodeMinConfidence,
+                provider.confidence
+              ),
               detectedFrom: managedEvidence.detectedFrom,
               sourceLocations: managedEvidence.sourceLocations,
               properties: {
                 section_id: sectionId,
                 section_label: provider.properties?.section_label ?? sectionId,
-                section_role: provider.properties?.section_role ?? "service",
+                section_role: provider.properties?.section_role ?? 'service',
                 managed_by_provider: provider.id,
                 managed_service_key: managedNode.key,
-                serviceName: provider.properties?.serviceName ?? rule.providerId,
-                generated_by: "provider_topology_fallback",
+                serviceName:
+                  provider.properties?.serviceName ?? rule.providerId,
+                generated_by: 'provider_topology_fallback',
               },
             };
             nextComponents.push(created);
@@ -728,7 +825,7 @@ export function applyDeterministicInferenceFallbacks(
             ...serviceNode.properties,
             managed_by_provider: provider.id,
             managed_service_key: managedNode.key,
-            generated_by: "provider_topology_fallback",
+            generated_by: 'provider_topology_fallback',
           };
         }
 
@@ -748,13 +845,24 @@ export function applyDeterministicInferenceFallbacks(
 
       for (const managedResource of rule.managedResources) {
         const managedTargets = nextComponents.filter((component) => {
-          if (!isManagedResourceComponent(component, managedResource, fallbackPolicy)) return false;
-          if (!areComponentsSectionCompatible(provider, component)) return false;
-          const viaClientMatch = hasAnyClientMatch(component, managedResource.viaClients);
+          if (
+            !isManagedResourceComponent(
+              component,
+              managedResource,
+              fallbackPolicy
+            )
+          )
+            return false;
+          if (!areComponentsSectionCompatible(provider, component))
+            return false;
+          const viaClientMatch = hasAnyClientMatch(
+            component,
+            managedResource.viaClients
+          );
           const providerManagedHint = isProviderManagedDatabaseTarget(
             component,
             provider,
-            rule,
+            rule
           );
           if (!viaClientMatch && !providerManagedHint) return false;
           return true;
@@ -769,8 +877,9 @@ export function applyDeterministicInferenceFallbacks(
               id: `flow_fallback_${next.length + 1}`,
               sourceComponentId: provider.id,
               targetComponentId: target.id,
-              type: "database_query",
-              confidence: rule.confidence.providerToManagedResourceFlowConfidence,
+              type: 'database_query',
+              confidence:
+                rule.confidence.providerToManagedResourceFlowConfidence,
               description: `${provider.name} managed ${target.name}`,
             });
           }
@@ -778,12 +887,12 @@ export function applyDeterministicInferenceFallbacks(
           const directAccessExists = hasDirectClientMatch(
             target,
             managedResource.directClients,
-            managedResource.viaClients,
+            managedResource.viaClients
           );
           const providerManagedHint = isProviderManagedDatabaseTarget(
             target,
             provider,
-            rule,
+            rule
           );
           if (directAccessExists && !providerManagedHint) continue;
 
@@ -792,11 +901,12 @@ export function applyDeterministicInferenceFallbacks(
             if (flow.sourceComponentId === provider.id) continue;
             const sourceComponent = byId.get(flow.sourceComponentId);
             if (!sourceComponent) continue;
-            if (!areSectionCompatible(sourceComponent, provider, target)) continue;
+            if (!areSectionCompatible(sourceComponent, provider, target))
+              continue;
 
             const sourceTfAddr = sourceComponent.properties?.terraform_address;
             if (
-              typeof sourceTfAddr === "string" &&
+              typeof sourceTfAddr === 'string' &&
               sourceTfAddr.trim().length > 0
             ) {
               // IaC resources already live in the provider plane; skip SDK-style
@@ -805,8 +915,11 @@ export function applyDeterministicInferenceFallbacks(
             }
 
             const preferredSource =
-              selectPreferredApiSource(sourceComponent, provider, nextComponents) ??
-              sourceComponent;
+              selectPreferredApiSource(
+                sourceComponent,
+                provider,
+                nextComponents
+              ) ?? sourceComponent;
 
             const sourceToProviderKey = `${preferredSource.id}::${provider.id}`;
             if (!keys.has(sourceToProviderKey)) {
@@ -815,17 +928,27 @@ export function applyDeterministicInferenceFallbacks(
                 id: `flow_fallback_${next.length + 1}`,
                 sourceComponentId: preferredSource.id,
                 targetComponentId: provider.id,
-                type: "api_call",
-                confidence: Math.max(rule.confidence.sourceToProviderFlowConfidenceFloor, flow.confidence),
+                type: 'api_call',
+                confidence: Math.max(
+                  rule.confidence.sourceToProviderFlowConfidenceFloor,
+                  flow.confidence
+                ),
                 description: `${preferredSource.id} accesses ${target.name} via ${provider.name}`,
               });
             }
 
             if (
-              fallbackPolicy.rewriteThroughProviderFlowTypes.includes(flow.type)
+              (
+                fallbackPolicy.rewriteThroughProviderFlowTypes as ReadonlyArray<
+                  DetectedDataFlow['type']
+                >
+              ).includes(flow.type)
             ) {
               flow.sourceComponentId = provider.id;
-              flow.confidence = Math.max(flow.confidence, rule.confidence.rewiredFlowConfidenceFloor);
+              flow.confidence = Math.max(
+                flow.confidence,
+                rule.confidence.rewiredFlowConfidenceFloor
+              );
             }
           }
         }
@@ -842,7 +965,7 @@ export function applyDeterministicInferenceFallbacks(
     nextComponents,
     next,
     rulesByProviderServiceName,
-    fallbackPolicy,
+    fallbackPolicy
   );
   removeDirectFlowsToManagedPostgres(collapsedComponents, next);
 
@@ -857,17 +980,18 @@ export function applyDeterministicInferenceFallbacks(
   for (const source of components) {
     for (const target of components) {
       if (source.id === target.id) continue;
-      if (source.type !== "actor") continue;
-      if (target.type !== "asset") continue;
-      const sourceSection = String(source.properties.section_id ?? "");
-      const targetSection = String(target.properties.section_id ?? "");
+      if (source.type !== 'actor') continue;
+      if (target.type !== 'asset') continue;
+      const sourceSection = String(source.properties.section_id ?? '');
+      const targetSection = String(target.properties.section_id ?? '');
       if (!targetSection || sourceSection === targetSection) continue;
       // Do not synthesize edges from a section-scoped actor into another service
       // section (avoids cross-section service graph edges in monorepos).
       if (isConcreteServiceSectionId(sourceSection, fallbackPolicy)) continue;
       // When the target section already has a main application, actor→app edges are
       // emitted by data-flow postprocess — skip redundant actor→leaf shortcuts.
-      if (sectionHasMainApplicationAsset(collapsedComponents, targetSection)) continue;
+      if (sectionHasMainApplicationAsset(collapsedComponents, targetSection))
+        continue;
       const key = `${source.id}::${target.id}`;
       if (keys.has(key)) continue;
       keys.add(key);
@@ -875,14 +999,14 @@ export function applyDeterministicInferenceFallbacks(
         id: `flow_fallback_${next.length + 1}`,
         sourceComponentId: source.id,
         targetComponentId: target.id,
-        type: "api_call",
+        type: 'api_call',
         confidence: fallbackPolicy.crossSectionActorAssetFlowConfidence,
       });
     }
   }
 
   const dedupedDirectional = dedupeDirectionalFlows(next);
-  const singleDirectionFlows = enforceSingleDirectionPerPair(dedupedDirectional);
+  const singleDirectionFlows =
+    enforceSingleDirectionPerPair(dedupedDirectional);
   return { components: collapsedComponents, dataFlows: singleDirectionFlows };
 }
-

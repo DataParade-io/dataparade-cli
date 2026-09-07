@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import YAML from "yaml";
 import { z } from "zod";
+import { getScannerPackageRoot } from "../scanner-package-root";
 
 const managedResourceSchema = z.object({
   kind: z.enum(["database", "cache"]),
@@ -151,13 +152,7 @@ export function clearProviderTopologyRulesCacheForTest(): void {
 }
 
 function getProviderTopologyRulesPath(): string {
-  const parts = __dirname.split(path.sep);
-  const distIndex = parts.lastIndexOf("dist");
-  const cliRoot =
-    distIndex !== -1
-      ? parts.slice(0, distIndex).join(path.sep)
-      : path.resolve(__dirname, "..", "..");
-  return path.join(cliRoot, "patterns", "provider-topology.rules.yaml");
+  return path.join(getScannerPackageRoot(), "patterns", "provider-topology.rules.yaml");
 }
 
 export function loadProviderTopologyRules(): ProviderTopologyRule[] {

@@ -461,4 +461,273 @@ describe("ai-enrichment merge rules", () => {
     expect(backend?.properties.inference_status).toBeUndefined();
     expect(backend?.properties.cloud_services_used).toEqual(["aws"]);
   });
+
+  it("merges AI data_action verbs into dataActions without removing deterministic assignments", () => {
+    const components = makeBaseComponents();
+    components[1]!.properties = {
+      dataActions: [
+        {
+          action: "store",
+          source: "deterministic",
+          confidence: 1,
+          status: "asserted",
+          evidence: {
+            kind: "storage_subtype",
+            description: "database subtype",
+          },
+        },
+        {
+          action: "disclose",
+          source: "user",
+          confidence: 1,
+          status: "asserted",
+          evidence: [
+            {
+              filePath: "src/backend.ts",
+              startLine: 1,
+              endLine: 2,
+              reason: "user confirmed outbound share",
+            },
+          ],
+        },
+      ],
+      primaryDataAction: "store",
+    };
+
+    const proposals: Array<{ id: string; proposal: AiProposal }> = [
+      {
+        id: "p_data_actions",
+        proposal: {
+          kind: "component_patch",
+          targetComponentId: "asset_backend",
+          candidateType: "node_property",
+          setProperties: {
+            data_action: ["log", "store"],
+          },
+          propertyEvidence: {
+            data_action: [
+              {
+                filePath: "src/backend.ts",
+                startLine: 40,
+                endLine: 42,
+                reason: "logger.info email",
+              },
+            ],
+          },
+          confidence: { score: 0.88, band: "high" },
+          evidence: [
+            {
+              filePath: "src/backend.ts",
+              startLine: 40,
+              endLine: 42,
+              reason: "logger.info email",
+            },
+          ],
+          provider: "openai",
+          model: "x",
+          agent: "propertyAgent",
+        },
+      },
+    ];
+
+    const result = mergeAiProposals(components, makeBaseFlows(), proposals);
+    const backend = result.components.find((c) => c.id === "asset_backend");
+    const actions = backend?.properties.dataActions as Array<{
+      action: string;
+      source: string;
+    }>;
+
+    expect(result.appliedProposalIds).toEqual(["p_data_actions"]);
+    expect(actions?.map((a) => a.action).sort()).toEqual([
+      "disclose",
+      "log",
+      "store",
+    ]);
+    expect(actions?.find((a) => a.action === "store")?.source).toBe("deterministic");
+    expect(actions?.find((a) => a.action === "disclose")?.source).toBe("user");
+    expect(actions?.find((a) => a.action === "log")?.source).toBe("ai");
+    expect(backend?.properties.data_action).toBeUndefined();
+    expect(backend?.properties.primaryDataAction).toBeDefined();
+  });
+
+  it("rejects data_action merge below 0.72 confidence and leaves deterministic verbs intact", () => {
+    const components = makeBaseComponents();
+    components[1]!.properties = {
+      dataActions: [
+        {
+          action: "store",
+          source: "deterministic",
+          confidence: 1,
+          status: "asserted",
+          evidence: {
+            kind: "storage_subtype",
+            description: "database subtype",
+          },
+        },
+      ],
+    };
+
+    const proposals: Array<{ id: string; proposal: AiProposal }> = [
+      {
+        id: "p_low_da",
+        proposal: {
+          kind: "component_patch",
+          targetComponentId: "asset_backend",
+          candidateType: "node_property",
+          setProperties: {
+            data_action: ["log"],
+          },
+          confidence: { score: 0.71, band: "medium" },
+          evidence: [
+            {
+              filePath: "src/backend.ts",
+              startLine: 1,
+              endLine: 1,
+              reason: "weak log guess",
+            },
+          ],
+          provider: "openai",
+          model: "x",
+          agent: "propertyAgent",
+        },
+      },
+    ];
+
+    const result = mergeAiProposals(components, makeBaseFlows(), proposals);
+    const backend = result.components.find((c) => c.id === "asset_backend");
+
+    expect(result.appliedProposalIds).toEqual([]);
+    expect(result.rejectedProposalIds).toEqual([
+      {
+        proposalId: "p_low_da",
+        reason: "confidence_below_threshold:0.72",
+      },
+    ]);
+    expect(backend?.properties.dataActions).toEqual([
+      {
+        action: "store",
+        source: "deterministic",
+        confidence: 1,
+        status: "asserted",
+        evidence: {
+          kind: "storage_subtype",
+          description: "database subtype",
+        },
+      },
+    ]);
+  });
+
+  it("does not write dataActions onto actor nodes", () => {
+    const components: DetectedComponent[] = [
+      {
+        id: "actor_user",
+        name: "End User",
+        type: "actor",
+        confidence: 0.9,
+        detectedFrom: [],
+        sourceLocations: [],
+        properties: {},
+      },
+    ];
+    const proposals: Array<{ id: string; proposal: AiProposal }> = [
+      {
+        id: "p_actor_da",
+        proposal: {
+          kind: "component_patch",
+          targetComponentId: "actor_user",
+          candidateType: "node_property",
+          setProperties: {
+            data_action: ["collect"],
+          },
+          confidence: { score: 0.9, band: "high" },
+          evidence: [
+            {
+              filePath: "src/ui.ts",
+              startLine: 1,
+              endLine: 2,
+              reason: "form submit",
+            },
+          ],
+          provider: "openai",
+          model: "x",
+          agent: "propertyAgent",
+        },
+      },
+    ];
+
+    const result = mergeAiProposals(components, [], proposals);
+    expect(result.appliedProposalIds).toEqual([]);
+    expect(result.rejectedProposalIds).toEqual([
+      { proposalId: "p_actor_da", reason: "no_meaningful_changes" },
+    ]);
+    expect(result.components[0]?.properties.dataActions).toBeUndefined();
+  });
+
+  it("promotes a deterministic relay candidate when AI supplies corroboration", () => {
+    const components = makeBaseComponents();
+    components[0]!.properties = {
+      dataActions: [
+        {
+          action: "relay",
+          source: "deterministic",
+          confidence: 0.6,
+          status: "candidate",
+          evidence: {
+            kind: "relay_topology",
+            description: "in-degree and out-degree without store",
+          },
+        },
+      ],
+    };
+
+    const proposals: Array<{ id: string; proposal: AiProposal }> = [
+      {
+        id: "p_relay",
+        proposal: {
+          kind: "component_patch",
+          targetComponentId: "asset_frontend",
+          candidateType: "node_property",
+          setProperties: {
+            data_action: ["relay"],
+          },
+          propertyEvidence: {
+            data_action: [
+              {
+                filePath: "src/proxy.ts",
+                startLine: 8,
+                endLine: 12,
+                reason: "express proxy middleware passthrough",
+              },
+            ],
+          },
+          confidence: { score: 0.9, band: "high" },
+          evidence: [
+            {
+              filePath: "src/proxy.ts",
+              startLine: 8,
+              endLine: 12,
+              reason: "express proxy middleware passthrough",
+            },
+          ],
+          provider: "openai",
+          model: "x",
+          agent: "propertyAgent",
+        },
+      },
+    ];
+
+    const result = mergeAiProposals(components, makeBaseFlows(), proposals);
+    const frontend = result.components.find((c) => c.id === "asset_frontend");
+    const relay = (
+      frontend?.properties.dataActions as Array<{
+        action: string;
+        status?: string;
+        source: string;
+      }>
+    )?.find((a) => a.action === "relay");
+
+    expect(result.appliedProposalIds).toEqual(["p_relay"]);
+    expect(relay?.status).toBe("asserted");
+    expect(relay?.source).toBe("ai");
+  });
 });

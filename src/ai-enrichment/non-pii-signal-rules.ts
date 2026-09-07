@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import YAML from "yaml";
 import { z } from "zod";
+import { getScannerPackageRoot } from "../scanner-package-root";
 
 const nonPiiSignalRuleSchema = z.object({
   id: z.string().min(1),
@@ -32,13 +33,7 @@ export function clearNonPiiSignalRulesCacheForTest(): void {
 }
 
 function getNonPiiSignalRulesPath(): string {
-  const parts = __dirname.split(path.sep);
-  const distIndex = parts.lastIndexOf("dist");
-  const cliRoot =
-    distIndex !== -1
-      ? parts.slice(0, distIndex).join(path.sep)
-      : path.resolve(__dirname, "..", "..");
-  return path.join(cliRoot, "patterns", "non-pii-signals.rules.yaml");
+  return path.join(getScannerPackageRoot(), "patterns", "non-pii-signals.rules.yaml");
 }
 
 export function loadNonPiiSignalRules(): NonPiiSignalRule[] {

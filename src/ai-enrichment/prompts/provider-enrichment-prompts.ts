@@ -31,7 +31,7 @@ Rules:
 - **Anti-fabrication:** same as above — if the fact is not in the cited lines / excerpt text, omit the property.
 - Do not emit placeholder \`setProperties\` values (null, "none", empty arrays, empty strings), and do not set \`inference_status\`.
 
-setProperties value shapes: use snake_case keys from sparsePropertyKeys. integration_method must be a string array (e.g. ["api"]), never a single string. authentication_method must be one string token (e.g. api_key, oauth_2_0), never an array. processing_purpose must be a string array of taxonomy tokens (authentication, security, analytics, service_provision, payment_processing, marketing, compliance, other, etc.)—snake_case. Other multi-value fields must be string arrays, not comma-joined strings.`;
+setProperties value shapes: use snake_case keys from sparsePropertyKeys. integration_method must be a string array (e.g. ["api"]), never a single string. authentication_method must be one string token (e.g. api_key, oauth_2_0), never an array. processing_purpose must be a string array of taxonomy tokens (authentication, security, analytics, service_provision, payment_processing, marketing, compliance, other, etc.)—snake_case. data_action must be a string array of canonical privacy verbs (collect, generate, store, transform, use, combine, disclose, relay, display, log, delete); a node may have multiple verbs; never emit data_action for actors; propose relay only with cited corroboration. Other multi-value fields must be string arrays, not comma-joined strings.`;
 
 /**
  * Anthropic has no server-side JSON schema for this path; truncated output yields invalid JSON.

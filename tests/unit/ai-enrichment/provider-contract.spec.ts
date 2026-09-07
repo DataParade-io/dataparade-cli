@@ -257,4 +257,86 @@ describe("strictParseAndNormalizeProposals / propertyEvidence", () => {
       expect(out[0].propertyEvidence?.cloud_provider).toHaveLength(1);
     }
   });
+
+  it("normalizes data_action aliases, keeps multi-verb sets, and drops unknowns", () => {
+    const raw = {
+      proposals: [
+        {
+          kind: "component_patch",
+          targetComponentId: "c1",
+          candidateType: "third_party",
+          setProperties: {
+            data_action: ["persist", "share", "log", "not_a_verb", "store"],
+          },
+          confidence: { score: 0.9, band: "high" },
+          propertyEvidence: {
+            data_action: [
+              { filePath: "a.ts", startLine: 1, endLine: 1, reason: "pg INSERT + stripe + logger" },
+            ],
+          },
+        },
+      ],
+    };
+    const userPrompt = JSON.stringify({
+      relevantFileContents: { "a.ts": "line" },
+      componentContext: {
+        c1: {
+          detectedFrom: [{ filePath: "a.ts", pattern: "p" }],
+          sourceLocations: [],
+        },
+      },
+    });
+
+    const out = strictParseAndNormalizeProposals(raw, defaults, {
+      debugLabel: "test",
+      userPrompt,
+    });
+    expect(out).toHaveLength(1);
+    if (out[0]?.kind === "component_patch") {
+      expect(out[0].setProperties.data_action).toEqual(["store", "disclose", "log"]);
+      expect(out[0].setProperties.dataActions).toBeUndefined();
+      expect(out[0].propertyEvidence?.data_action).toHaveLength(1);
+    }
+  });
+
+  it("rewrites camelCase dataActions to data_action for node_property patches", () => {
+    const raw = {
+      proposals: [
+        {
+          kind: "component_patch",
+          targetComponentId: "asset_1",
+          candidateType: "node_property",
+          setProperties: {
+            dataActions: ["cache", "transmit"],
+          },
+          confidence: { score: 0.88, band: "high" },
+          propertyEvidence: {
+            dataActions: [
+              { filePath: "db.ts", startLine: 2, endLine: 4, reason: "redis set + outbound post" },
+            ],
+          },
+        },
+      ],
+    };
+    const userPrompt = JSON.stringify({
+      relevantFileContents: { "db.ts": "line1\nline2\nline3\nline4" },
+      componentContext: {
+        asset_1: {
+          detectedFrom: [{ filePath: "db.ts", pattern: "p" }],
+          sourceLocations: [],
+        },
+      },
+    });
+
+    const out = strictParseAndNormalizeProposals(raw, defaults, {
+      debugLabel: "test",
+      userPrompt,
+    });
+    expect(out).toHaveLength(1);
+    if (out[0]?.kind === "component_patch") {
+      expect(out[0].setProperties.data_action).toEqual(["store", "disclose"]);
+      expect(out[0].setProperties.dataActions).toBeUndefined();
+      expect(out[0].propertyEvidence?.data_action).toHaveLength(1);
+    }
+  });
 });

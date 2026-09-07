@@ -1,5 +1,5 @@
 import type { FileInfo } from "../core/types/file";
-import { isSensitiveEnvPath } from "../ingest/sensitive-paths";
+import { isSensitiveEnvPath } from "@dataparade/scanner";
 
 export { isSensitiveEnvPath };
 

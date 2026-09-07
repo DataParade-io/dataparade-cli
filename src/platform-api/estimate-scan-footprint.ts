@@ -6,9 +6,9 @@ import {
   gitignoreRulesForDir,
   isPathIgnored,
   type IgnoreRule,
+  shouldSkipDirectoryName,
   toPosixPath,
-} from "../ingest/gitignore";
-import { shouldSkipDirectoryName } from "../patterns/scan-exclusions";
+} from "@dataparade/scanner";
 
 export type ScanFootprintEstimate = {
   fileCount: number;

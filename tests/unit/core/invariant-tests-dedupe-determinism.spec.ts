@@ -1,11 +1,11 @@
 import path from "path";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 
 import { buildDiagramGraphFromScanResult } from "../../../src/core/pipeline/graph-mapping";
 import {
   createDefaultScanConfiguration,
-  scan,
-} from "../../../src/core/pipeline/orchestrator";
-import { dedupeDataFlows } from "../../../src/data-flow/dedupe";
+  } from "../../../src/core/pipeline/orchestrator";
+import { dedupeDataFlows } from "@dataparade/scanner";
 
 import type { DetectedDataFlow } from "../../../src/core/types/data-flow";
 
@@ -31,8 +31,8 @@ describe("invariant-tests - determinism", () => {
       deepAnalysis: false,
     });
 
-    const { scanResult: scanResult1 } = await scan(fixturesRoot, config);
-    const { scanResult: scanResult2 } = await scan(fixturesRoot, config);
+    const { scanResult: scanResult1 } = await runScanPipeline(fixturesRoot, config);
+    const { scanResult: scanResult2 } = await runScanPipeline(fixturesRoot, config);
 
     const graph1 = buildDiagramGraphFromScanResult(scanResult1);
     const graph2 = buildDiagramGraphFromScanResult(scanResult2);

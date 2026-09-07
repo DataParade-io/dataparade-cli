@@ -1,4 +1,4 @@
-import type { ServiceSection } from "../core/sectioning/discover-service-sections";
+import type { ServiceSection } from "@dataparade/scanner";
 import type { DetectedComponent } from "../core/types/component";
 import type { DetectedDataFlow } from "../core/types/data-flow";
 import type { FileInfo } from "../core/types/file";
@@ -225,6 +225,10 @@ export function buildProviderPromptPayload(input: {
     "`integration_method` must always be an array of lowercase tokens (e.g. [\"api\"], [\"sdk\",\"api\"]); never a single string. " +
     "`authentication_method` must be a single string token (e.g. \"api_key\", \"oauth_2_0\", \"openid_connect\", \"jwt\", \"saml\", \"mtls\", \"certificate\", \"basic_auth\", \"none\")—not an array—so it matches product dropdowns. " +
     "`processing_purpose` must be a string array of **taxonomy** tokens the app lists (e.g. authentication, security, analytics, service_provision, payment_processing, marketing, compliance, other)—snake_case only, not sentences. " +
+    "`data_action` must be a string array of **canonical privacy verbs** only: collect, generate, store, transform, use, combine, disclose, relay, display, log, delete. " +
+    "A single asset or third_party node may carry **multiple** verbs at once (set-valued)—never collapse to one label. Actors never get `data_action` (omit for actor targets). " +
+    "Propose `relay` only when cited code/config corroborates passthrough/proxy/gateway behavior; otherwise omit relay. " +
+    "Cite `propertyEvidence.data_action` with filePath + line range + reason for every verb you assert. " +
     "Other multi-value fields such as `data_categories_received`, `supported_export_formats`, `cloud_services_used`, `regions_availability_zones` must be string arrays, not one comma-joined string. " +
     "Booleans must be true/false (not strings). Prefer enum-like values in lowercase snake_case (e.g. integration_status: \"active\"). " +
     "For any field that corresponds to an app dropdown or multi-select, use the product's option tokens (snake_case / exact strings) — e.g. legal_basis: \"contractual_necessity\" not \"contract\"; pci_scope: \"saq_d\" not \"full\"; data_transfer_mechanism: \"standard_contractual_clauses\" not raw \"HTTPS\"; risk_rating and encrypt_at_rest must match allowed values.";

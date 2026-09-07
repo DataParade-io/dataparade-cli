@@ -1,7 +1,15 @@
 import type { DetectedComponent } from "../core/types/component";
 import { normalizeThirdPartySubType } from "./third-party-subtype";
 import type { DetectedDataFlow } from "../core/types/data-flow";
-import { sortDataFlowsDeterministically } from "../core/pipeline/sorting";
+import {
+  componentMayCarryDataActions,
+  mergeOneAssignment,
+  normalizeDataAction,
+  readDataActions,
+  selectPrimaryDataAction,
+  sortDataFlowsDeterministically,
+} from "@dataparade/scanner";
+import type { DataAction, DataActionAssignment } from "@dataparade/scanner";
 import path from "path";
 import { isDeepStrictEqual } from "util";
 import type {
@@ -9,12 +17,17 @@ import type {
   AiMergeThresholds,
   AiProposal,
   ComponentPatch,
+  EvidenceRef,
   FlowPatch,
   MergeProvenance,
 } from "./types";
+import { UI_DATA_ACTION_PROPERTY_KEY } from "./providers/provider-contract";
+
+/** PRD §4.4 / task 2.2 — AI data-action assignments gated at ≥ 0.72. */
+export const DATA_ACTION_MIN_CONFIDENCE = 0.72;
 
 const DEFAULT_THRESHOLDS: AiMergeThresholds = {
-  minComponentPatchConfidence: 0.7,
+  minComponentPatchConfidence: DATA_ACTION_MIN_CONFIDENCE,
   minFlowPatchConfidence: 0.75,
   minInsertFlowConfidence: 0.85,
 };
@@ -146,6 +159,119 @@ function toProvenance(
   };
 }
 
+function evidenceRefsForDataAction(patch: ComponentPatch): EvidenceRef[] {
+  const fromProperty = patch.propertyEvidence?.[UI_DATA_ACTION_PROPERTY_KEY];
+  if (Array.isArray(fromProperty) && fromProperty.length > 0) return fromProperty;
+  return patch.evidence;
+}
+
+function toSourceLocations(refs: EvidenceRef[]) {
+  return refs.map((ref) => ({
+    filePath: ref.filePath,
+    startLine: ref.startLine,
+    endLine: ref.endLine,
+  }));
+}
+
+/**
+ * Build an AI-sourced assignment for one verb.
+ * Relay uses topology corroboration so mergeOneAssignment may assert it (conservative-absence rule).
+ */
+function buildAiDataActionAssignment(
+  action: DataAction,
+  patch: ComponentPatch,
+): DataActionAssignment {
+  const refs = evidenceRefsForDataAction(patch);
+  const reason =
+    refs
+      .map((r) => r.reason.trim())
+      .filter(Boolean)
+      .join("; ") || "ai enrichment evidence";
+
+  if (action === "relay") {
+    return {
+      action: "relay",
+      source: "ai",
+      confidence: patch.confidence.score,
+      status: "asserted",
+      evidence: {
+        kind: "pattern_rule",
+        description: reason,
+        corroboration: reason,
+      },
+    };
+  }
+
+  return {
+    action,
+    source: "ai",
+    confidence: patch.confidence.score,
+    status: "asserted",
+    evidence: toSourceLocations(refs),
+  };
+}
+
+function parseProposedDataActions(raw: unknown): DataAction[] {
+  if (raw == null) return [];
+  const values = Array.isArray(raw) ? raw : [raw];
+  const out: DataAction[] = [];
+  const seen = new Set<string>();
+  for (const value of values) {
+    const action = normalizeDataAction(String(value));
+    if (!action || seen.has(action)) continue;
+    seen.add(action);
+    out.push(action);
+  }
+  return out;
+}
+
+/**
+ * Merge AI-proposed `data_action` verbs into set-valued `properties.dataActions`.
+ * Adds / promotes only; never removes deterministic or user assignments.
+ */
+function mergeDataActionProperties(
+  component: DetectedComponent,
+  patch: ComponentPatch,
+  proposedRaw: unknown,
+): boolean {
+  if (!componentMayCarryDataActions(component.type)) {
+    return false;
+  }
+  if (patch.confidence.score < DATA_ACTION_MIN_CONFIDENCE) {
+    return false;
+  }
+
+  const proposed = parseProposedDataActions(proposedRaw);
+  if (proposed.length === 0) return false;
+
+  const refs = evidenceRefsForDataAction(patch);
+  if (refs.length === 0) return false;
+
+  let merged = [...readDataActions(component)];
+  const before = JSON.stringify(merged);
+
+  for (const action of proposed) {
+    merged = mergeOneAssignment(merged, buildAiDataActionAssignment(action, patch));
+  }
+
+  merged.sort((a, b) => a.action.localeCompare(b.action));
+  if (JSON.stringify(merged) === before) {
+    return false;
+  }
+
+  component.properties = {
+    ...component.properties,
+    dataActions: merged,
+  };
+  const primary = selectPrimaryDataAction(merged);
+  if (primary) {
+    component.properties.primaryDataAction = primary;
+  } else {
+    delete component.properties.primaryDataAction;
+  }
+  return true;
+}
+
 function mergeComponentPatch(
   components: DetectedComponent[],
   patch: ComponentPatch,
@@ -165,9 +291,21 @@ function mergeComponentPatch(
     changed = true;
   }
 
+  const setProperties = patch.setProperties ?? {};
+  const dataActionRaw =
+    setProperties[UI_DATA_ACTION_PROPERTY_KEY] ?? setProperties.dataActions;
+  if (dataActionRaw !== undefined) {
+    if (mergeDataActionProperties(component, patch, dataActionRaw)) {
+      changed = true;
+    }
+  }
+
   const currentProperties = component.properties ?? {};
   const nextProperties = { ...currentProperties };
-  for (const [key, value] of Object.entries(patch.setProperties ?? {})) {
+  for (const [key, value] of Object.entries(setProperties)) {
+    if (key === UI_DATA_ACTION_PROPERTY_KEY || key === "dataActions") {
+      continue;
+    }
     const currentValue = currentProperties[key];
     if (key === "inference_status" && value === "needs_review") {
       continue;

@@ -1,3 +1,8 @@
+import {
+  DATA_ACTION_ALIASES,
+  DATA_ACTIONS,
+  normalizeDataAction,
+} from "@dataparade/scanner";
 import type { DataFlowType } from "../../core/types/data-flow";
 import type {
   AiAgentName,
@@ -296,6 +301,19 @@ const UI_PROCESSING_PURPOSE_ALIASES: Record<string, string> = {
   backup: "backup_services",
 };
 
+/** Canonical privacy verbs from `@dataparade/scanner` (PRD §4.1 / §4.4). */
+export const UI_DATA_ACTION_ALLOWED = new Set<string>(DATA_ACTIONS);
+
+/** Alias map mirrored from scanner taxonomy — single source of truth. */
+export const UI_DATA_ACTION_ALIASES: Record<string, string> = {
+  ...DATA_ACTION_ALIASES,
+};
+
+/** Proposable setProperties key for data-action verbs (PRD §4.4). */
+export const UI_DATA_ACTION_PROPERTY_KEY = "data_action";
+
+const DATA_ACTION_INPUT_KEYS = new Set(["data_action", "dataActions"]);
+
 function normalizeToken(value: string): string {
   return value
     .trim()
@@ -334,6 +352,56 @@ function mapToAllowed(
     }
   }
   return out;
+}
+
+/**
+ * Normalize LLM-proposed data-action verbs to canonical tokens.
+ * Unknown verbs are dropped (no "other" verb in the taxonomy).
+ * Accepts `data_action` or camelCase `dataActions`; always emits `data_action`.
+ */
+function normalizeDataActionSetProperties(
+  input: Record<string, unknown>,
+): { normalized: Record<string, unknown>; evidenceSourceByKey: Record<string, string> } {
+  const normalized: Record<string, unknown> = { ...input };
+  const evidenceSourceByKey: Record<string, string> = {};
+
+  let sourceKey: string | undefined;
+  for (const key of DATA_ACTION_INPUT_KEYS) {
+    if (Object.prototype.hasOwnProperty.call(normalized, key)) {
+      sourceKey = key;
+      break;
+    }
+  }
+  if (!sourceKey) {
+    return { normalized, evidenceSourceByKey };
+  }
+
+  const values = toStringArray(normalized[sourceKey]);
+  const mapped: string[] = [];
+  const seen = new Set<string>();
+  for (const value of values) {
+    const action = normalizeDataAction(value);
+    if (!action || !UI_DATA_ACTION_ALLOWED.has(action)) continue;
+    if (seen.has(action)) continue;
+    seen.add(action);
+    mapped.push(action);
+  }
+
+  if (sourceKey !== UI_DATA_ACTION_PROPERTY_KEY) {
+    delete normalized[sourceKey];
+  }
+
+  if (mapped.length > 0) {
+    normalized[UI_DATA_ACTION_PROPERTY_KEY] = mapped;
+    if (sourceKey !== UI_DATA_ACTION_PROPERTY_KEY) {
+      evidenceSourceByKey[UI_DATA_ACTION_PROPERTY_KEY] = sourceKey;
+    }
+  } else {
+    delete normalized[UI_DATA_ACTION_PROPERTY_KEY];
+    delete normalized[sourceKey];
+  }
+
+  return { normalized, evidenceSourceByKey };
 }
 
 function normalizeThirdPartySetPropertiesForUi(
@@ -470,8 +538,12 @@ function normalizeComponentPatch(
     ct === "third_party"
       ? normalizeThirdPartySetPropertiesForUi(sanitizedSetProperties)
       : { normalized: sanitizedSetProperties, evidenceSourceByKey: {} as Record<string, string> };
-  const normalizedSetProperties = thirdPartyNormalized.normalized;
-  const evidenceSourceByKey = thirdPartyNormalized.evidenceSourceByKey;
+  const dataActionNormalized = normalizeDataActionSetProperties(thirdPartyNormalized.normalized);
+  const normalizedSetProperties = dataActionNormalized.normalized;
+  const evidenceSourceByKey = {
+    ...thirdPartyNormalized.evidenceSourceByKey,
+    ...dataActionNormalized.evidenceSourceByKey,
+  };
   const propKeys = Object.keys(normalizedSetProperties);
   if (propKeys.length === 0) {
     reportDrop?.("component_patch_setProperties_empty_after_sanitize", p);

@@ -1,6 +1,6 @@
 import { selectInferenceCandidates } from "../../../src/ai-enrichment/candidate-selector";
 import type { DetectedComponent } from "../../../src/core/types/component";
-import type { ServiceSection } from "../../../src/core/sectioning/discover-service-sections";
+import type { ServiceSection } from "@dataparade/scanner";
 import type { DetectedDataFlow } from "../../../src/core/types/data-flow";
 
 describe("ai-enrichment candidate selector", () => {

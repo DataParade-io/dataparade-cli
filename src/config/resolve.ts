@@ -1,14 +1,14 @@
-import type { ScanConfiguration } from "../core/types";
-import type { FileLanguage } from "../core/types";
+import type { ScanConfiguration } from '../core/types';
+import type { FileLanguage } from '../core/types';
 
-import { normalizeAiProviderId } from "./normalize-ai-provider";
-import { loadCliConfigFile } from "./file";
-import { loadCliConfigEnv } from "./env";
+import { normalizeAiProviderId } from './normalize-ai-provider';
+import { loadCliConfigFile } from './file';
+import { loadCliConfigEnv } from './env';
 import type {
   CliConfigFlags,
   ResolveConfigOptions,
   ResolvedScanConfiguration,
-} from "./types";
+} from './types';
 
 /**
  * Normalize user-supplied language identifiers from flags/config into the
@@ -18,31 +18,32 @@ import type {
  * function returns `undefined` to signal \"no language filter\".
  */
 function normalizeLanguages(
-  values: string[] | undefined,
+  values: string[] | undefined
 ): FileLanguage[] | undefined {
   if (!values || values.length === 0) return undefined;
 
   const normalized = values.map((v) => v.toLowerCase().trim());
   // Filter to known languages; fall back to leaving them out if none match.
   const allowed: FileLanguage[] = [
-    "typescript",
-    "javascript",
-    "json",
-    "yaml",
-    "env",
-    "python",
-    "cpp",
-    "csharp",
-    "go",
-    "php",
-    "java",
-    "kotlin",
-    "terraform",
-    "dockerfile",
+    'typescript',
+    'javascript',
+    'json',
+    'yaml',
+    'env',
+    'python',
+    'cpp',
+    'csharp',
+    'go',
+    'php',
+    'rust',
+    'java',
+    'kotlin',
+    'terraform',
+    'dockerfile',
   ];
 
   const result = normalized.filter((v): v is FileLanguage =>
-    (allowed as string[]).includes(v),
+    (allowed as string[]).includes(v)
   );
 
   return result.length > 0 ? result : undefined;
@@ -67,7 +68,7 @@ function normalizeFlags(flags: CliConfigFlags): Partial<ScanConfiguration> {
     overrides.excludePaths = flags.exclude;
   }
 
-  if (typeof flags.minimumConfidence === "number") {
+  if (typeof flags.minimumConfidence === 'number') {
     const clamped = Math.max(0, Math.min(flags.minimumConfidence, 1));
     overrides.minimumConfidence = clamped;
   }
@@ -79,7 +80,7 @@ function normalizeFlags(flags: CliConfigFlags): Partial<ScanConfiguration> {
     }
   }
 
-  if (typeof flags.deepAnalysis === "boolean") {
+  if (typeof flags.deepAnalysis === 'boolean') {
     overrides.deepAnalysis = flags.deepAnalysis;
   }
 
@@ -90,27 +91,29 @@ function normalizeFlags(flags: CliConfigFlags): Partial<ScanConfiguration> {
     overrides.terraformPlanPath = flags.terraformPlan.trim();
   }
   if (
-    typeof flags.terraformStackSectionPathDepth === "number" &&
+    typeof flags.terraformStackSectionPathDepth === 'number' &&
     Number.isInteger(flags.terraformStackSectionPathDepth) &&
     flags.terraformStackSectionPathDepth > 0
   ) {
-    overrides.terraformStackSectionPathDepth = flags.terraformStackSectionPathDepth;
+    overrides.terraformStackSectionPathDepth =
+      flags.terraformStackSectionPathDepth;
   }
   if (flags.noTerraformStackSectionAuto === true) {
     overrides.autoInferTerraformStackSectionPathDepth = false;
   }
   if (
-    typeof flags.monorepoPackageSectionPathDepth === "number" &&
+    typeof flags.monorepoPackageSectionPathDepth === 'number' &&
     Number.isInteger(flags.monorepoPackageSectionPathDepth) &&
     flags.monorepoPackageSectionPathDepth > 0
   ) {
-    overrides.monorepoPackageSectionPathDepth = flags.monorepoPackageSectionPathDepth;
+    overrides.monorepoPackageSectionPathDepth =
+      flags.monorepoPackageSectionPathDepth;
   }
   if (flags.noMonorepoPackageSectionAuto === true) {
     overrides.autoInferMonorepoPackageSectionPathDepth = false;
   }
 
-  if (typeof flags.aiInference === "boolean") {
+  if (typeof flags.aiInference === 'boolean') {
     overrides.enableAiInference = flags.aiInference;
   }
   if (flags.aiProvider) {
@@ -122,58 +125,70 @@ function normalizeFlags(flags: CliConfigFlags): Partial<ScanConfiguration> {
   if (flags.aiEndpoint) {
     overrides.aiEndpoint = flags.aiEndpoint;
   }
-  if (typeof flags.aiTemperature === "number") {
+  if (typeof flags.aiTemperature === 'number') {
     overrides.aiTemperature = Math.max(0, Math.min(flags.aiTemperature, 2));
   }
-  if (typeof flags.aiMaxTokens === "number" && Number.isFinite(flags.aiMaxTokens)) {
+  if (
+    typeof flags.aiMaxTokens === 'number' &&
+    Number.isFinite(flags.aiMaxTokens)
+  ) {
     overrides.aiMaxTokens = Math.max(1, Math.floor(flags.aiMaxTokens));
   }
   if (
-    typeof flags.aiMaxModelCalls === "number" &&
+    typeof flags.aiMaxModelCalls === 'number' &&
     Number.isFinite(flags.aiMaxModelCalls)
   ) {
     overrides.aiMaxModelCalls = Math.max(1, Math.floor(flags.aiMaxModelCalls));
   }
   if (
-    typeof flags.aiBudgetTokens === "number" &&
+    typeof flags.aiBudgetTokens === 'number' &&
     Number.isFinite(flags.aiBudgetTokens)
   ) {
     overrides.aiBudgetTokens = Math.max(1, Math.floor(flags.aiBudgetTokens));
   }
   if (
-    typeof flags.aiProviderConcurrency === "number" &&
+    typeof flags.aiProviderConcurrency === 'number' &&
     Number.isFinite(flags.aiProviderConcurrency)
   ) {
     overrides.aiProviderConcurrency = Math.max(
       1,
-      Math.floor(flags.aiProviderConcurrency),
+      Math.floor(flags.aiProviderConcurrency)
     );
   }
   if (
-    typeof flags.aiMaxCandidatesPerAgent === "number" &&
+    typeof flags.aiMaxCandidatesPerAgent === 'number' &&
     Number.isFinite(flags.aiMaxCandidatesPerAgent)
   ) {
     overrides.aiMaxCandidatesPerAgent = Math.max(
       0,
-      Math.floor(flags.aiMaxCandidatesPerAgent),
+      Math.floor(flags.aiMaxCandidatesPerAgent)
     );
   }
   if (flags.aiInferenceScope) {
     overrides.aiInferenceScope = flags.aiInferenceScope;
   }
-  if (typeof flags.aiVerbose === "boolean") {
+  if (typeof flags.aiVerbose === 'boolean') {
     overrides.aiVerbose = flags.aiVerbose;
   }
-  if (typeof flags.aiToolLoopMaxRounds === "number") {
-    overrides.aiToolLoopMaxRounds = Math.max(1, Math.floor(flags.aiToolLoopMaxRounds));
+  if (typeof flags.aiToolLoopMaxRounds === 'number') {
+    overrides.aiToolLoopMaxRounds = Math.max(
+      1,
+      Math.floor(flags.aiToolLoopMaxRounds)
+    );
   }
-  if (typeof flags.aiToolLoopMaxFiles === "number") {
-    overrides.aiToolLoopMaxFiles = Math.max(1, Math.floor(flags.aiToolLoopMaxFiles));
+  if (typeof flags.aiToolLoopMaxFiles === 'number') {
+    overrides.aiToolLoopMaxFiles = Math.max(
+      1,
+      Math.floor(flags.aiToolLoopMaxFiles)
+    );
   }
-  if (typeof flags.aiToolLoopMaxSearches === "number") {
-    overrides.aiToolLoopMaxSearches = Math.max(1, Math.floor(flags.aiToolLoopMaxSearches));
+  if (typeof flags.aiToolLoopMaxSearches === 'number') {
+    overrides.aiToolLoopMaxSearches = Math.max(
+      1,
+      Math.floor(flags.aiToolLoopMaxSearches)
+    );
   }
-  if (typeof flags.aiThirdPartyDataFlowEnabled === "boolean") {
+  if (typeof flags.aiThirdPartyDataFlowEnabled === 'boolean') {
     overrides.aiThirdPartyDataFlowEnabled = flags.aiThirdPartyDataFlowEnabled;
   }
 
@@ -194,7 +209,7 @@ function normalizeFlags(flags: CliConfigFlags): Partial<ScanConfiguration> {
  * or its helpers.
  */
 export function resolveScanConfiguration(
-  options: ResolveConfigOptions,
+  options: ResolveConfigOptions
 ): ResolvedScanConfiguration {
   const { cwd, flags } = options;
 
@@ -208,23 +223,23 @@ export function resolveScanConfiguration(
       const { config } = fileResult;
       if (config.projectName) overrides.projectName = config.projectName;
       if (config.excludePaths) overrides.excludePaths = config.excludePaths;
-      if (typeof config.enableAPIDetection === "boolean") {
+      if (typeof config.enableAPIDetection === 'boolean') {
         overrides.enableAPIDetection = config.enableAPIDetection;
       }
-      if (typeof config.enableDatabaseDetection === "boolean") {
+      if (typeof config.enableDatabaseDetection === 'boolean') {
         overrides.enableDatabaseDetection = config.enableDatabaseDetection;
       }
-      if (typeof config.enableDataFlowDetection === "boolean") {
+      if (typeof config.enableDataFlowDetection === 'boolean') {
         overrides.enableDataFlowDetection = config.enableDataFlowDetection;
       }
       if (config.languages) {
         overrides.languages = config.languages;
       }
-      if (typeof config.minimumConfidence === "number") {
+      if (typeof config.minimumConfidence === 'number') {
         const clamped = Math.max(0, Math.min(config.minimumConfidence, 1));
         overrides.minimumConfidence = clamped;
       }
-      if (typeof config.deepAnalysis === "boolean") {
+      if (typeof config.deepAnalysis === 'boolean') {
         overrides.deepAnalysis = config.deepAnalysis;
       }
       if (config.terraformJsonPath?.trim()) {
@@ -234,82 +249,103 @@ export function resolveScanConfiguration(
         overrides.terraformPlanPath = config.terraformPlanPath.trim();
       }
       if (
-        typeof config.terraformStackSectionPathDepth === "number" &&
+        typeof config.terraformStackSectionPathDepth === 'number' &&
         Number.isInteger(config.terraformStackSectionPathDepth) &&
         config.terraformStackSectionPathDepth > 0
       ) {
         overrides.terraformStackSectionPathDepth =
           config.terraformStackSectionPathDepth;
       }
-      if (typeof config.autoInferTerraformStackSectionPathDepth === "boolean") {
+      if (typeof config.autoInferTerraformStackSectionPathDepth === 'boolean') {
         overrides.autoInferTerraformStackSectionPathDepth =
           config.autoInferTerraformStackSectionPathDepth;
       }
       if (
-        typeof config.monorepoPackageSectionPathDepth === "number" &&
+        typeof config.monorepoPackageSectionPathDepth === 'number' &&
         Number.isInteger(config.monorepoPackageSectionPathDepth) &&
         config.monorepoPackageSectionPathDepth > 0
       ) {
         overrides.monorepoPackageSectionPathDepth =
           config.monorepoPackageSectionPathDepth;
       }
-      if (typeof config.autoInferMonorepoPackageSectionPathDepth === "boolean") {
+      if (
+        typeof config.autoInferMonorepoPackageSectionPathDepth === 'boolean'
+      ) {
         overrides.autoInferMonorepoPackageSectionPathDepth =
           config.autoInferMonorepoPackageSectionPathDepth;
       }
-      if (typeof config.enableAiInference === "boolean") {
+      if (typeof config.enableAiInference === 'boolean') {
         overrides.enableAiInference = config.enableAiInference;
       }
       if (config.aiProvider) overrides.aiProvider = config.aiProvider;
       if (config.aiModel) overrides.aiModel = config.aiModel;
       if (config.aiEndpoint) overrides.aiEndpoint = config.aiEndpoint;
-      if (typeof config.aiTemperature === "number") {
-        overrides.aiTemperature = Math.max(0, Math.min(config.aiTemperature, 2));
-      }
-      if (typeof config.aiMaxTokens === "number") {
-        overrides.aiMaxTokens = Math.max(1, Math.floor(config.aiMaxTokens));
-      }
-      if (typeof config.aiMaxModelCalls === "number") {
-        overrides.aiMaxModelCalls = Math.max(1, Math.floor(config.aiMaxModelCalls));
-      }
-      if (typeof config.aiBudgetTokens === "number") {
-        overrides.aiBudgetTokens = Math.max(1, Math.floor(config.aiBudgetTokens));
-      }
-      if (typeof config.aiProviderConcurrency === "number") {
-        overrides.aiProviderConcurrency = Math.max(
-          1,
-          Math.floor(config.aiProviderConcurrency),
+      if (typeof config.aiTemperature === 'number') {
+        overrides.aiTemperature = Math.max(
+          0,
+          Math.min(config.aiTemperature, 2)
         );
       }
-      if (typeof config.aiMaxCandidatesPerAgent === "number") {
+      if (typeof config.aiMaxTokens === 'number') {
+        overrides.aiMaxTokens = Math.max(1, Math.floor(config.aiMaxTokens));
+      }
+      if (typeof config.aiMaxModelCalls === 'number') {
+        overrides.aiMaxModelCalls = Math.max(
+          1,
+          Math.floor(config.aiMaxModelCalls)
+        );
+      }
+      if (typeof config.aiBudgetTokens === 'number') {
+        overrides.aiBudgetTokens = Math.max(
+          1,
+          Math.floor(config.aiBudgetTokens)
+        );
+      }
+      if (typeof config.aiProviderConcurrency === 'number') {
+        overrides.aiProviderConcurrency = Math.max(
+          1,
+          Math.floor(config.aiProviderConcurrency)
+        );
+      }
+      if (typeof config.aiMaxCandidatesPerAgent === 'number') {
         overrides.aiMaxCandidatesPerAgent = Math.max(
           0,
-          Math.floor(config.aiMaxCandidatesPerAgent),
+          Math.floor(config.aiMaxCandidatesPerAgent)
         );
       }
       if (config.aiInferenceScope) {
         overrides.aiInferenceScope = config.aiInferenceScope;
       }
-      if (typeof config.aiVerbose === "boolean") {
+      if (typeof config.aiVerbose === 'boolean') {
         overrides.aiVerbose = config.aiVerbose;
       }
-      if (typeof config.aiToolLoopMaxRounds === "number") {
-        overrides.aiToolLoopMaxRounds = Math.max(1, Math.floor(config.aiToolLoopMaxRounds));
+      if (typeof config.aiToolLoopMaxRounds === 'number') {
+        overrides.aiToolLoopMaxRounds = Math.max(
+          1,
+          Math.floor(config.aiToolLoopMaxRounds)
+        );
       }
-      if (typeof config.aiToolLoopMaxFiles === "number") {
-        overrides.aiToolLoopMaxFiles = Math.max(1, Math.floor(config.aiToolLoopMaxFiles));
+      if (typeof config.aiToolLoopMaxFiles === 'number') {
+        overrides.aiToolLoopMaxFiles = Math.max(
+          1,
+          Math.floor(config.aiToolLoopMaxFiles)
+        );
       }
-      if (typeof config.aiToolLoopMaxSearches === "number") {
-        overrides.aiToolLoopMaxSearches = Math.max(1, Math.floor(config.aiToolLoopMaxSearches));
+      if (typeof config.aiToolLoopMaxSearches === 'number') {
+        overrides.aiToolLoopMaxSearches = Math.max(
+          1,
+          Math.floor(config.aiToolLoopMaxSearches)
+        );
       }
-      if (typeof config.aiThirdPartyDataFlowEnabled === "boolean") {
-        overrides.aiThirdPartyDataFlowEnabled = config.aiThirdPartyDataFlowEnabled;
+      if (typeof config.aiThirdPartyDataFlowEnabled === 'boolean') {
+        overrides.aiThirdPartyDataFlowEnabled =
+          config.aiThirdPartyDataFlowEnabled;
       }
       warnings.push(...fileResult.warnings);
     }
   } catch (err) {
     const message =
-      err instanceof Error ? err.message : "Unknown error loading config file.";
+      err instanceof Error ? err.message : 'Unknown error loading config file.';
     throw new Error(message);
   }
 
@@ -318,11 +354,11 @@ export function resolveScanConfiguration(
   if (envConfig.excludePaths && envConfig.excludePaths.length > 0) {
     overrides.excludePaths = envConfig.excludePaths;
   }
-  if (typeof envConfig.minimumConfidence === "number") {
+  if (typeof envConfig.minimumConfidence === 'number') {
     const clamped = Math.max(0, Math.min(envConfig.minimumConfidence, 1));
     overrides.minimumConfidence = clamped;
   }
-  if (typeof envConfig.enableAiInference === "boolean") {
+  if (typeof envConfig.enableAiInference === 'boolean') {
     overrides.enableAiInference = envConfig.enableAiInference;
   }
   const byokProviderRaw = process.env.SCAN_BYOK_PROVIDER?.trim();
@@ -348,47 +384,63 @@ export function resolveScanConfiguration(
   if (envConfig.aiEndpoint) {
     overrides.aiEndpoint = envConfig.aiEndpoint;
   }
-  if (typeof envConfig.aiTemperature === "number") {
+  if (typeof envConfig.aiTemperature === 'number') {
     overrides.aiTemperature = Math.max(0, Math.min(envConfig.aiTemperature, 2));
   }
-  if (typeof envConfig.aiMaxTokens === "number") {
+  if (typeof envConfig.aiMaxTokens === 'number') {
     overrides.aiMaxTokens = Math.max(1, Math.floor(envConfig.aiMaxTokens));
   }
-  if (typeof envConfig.aiMaxModelCalls === "number") {
-    overrides.aiMaxModelCalls = Math.max(1, Math.floor(envConfig.aiMaxModelCalls));
-  }
-  if (typeof envConfig.aiBudgetTokens === "number") {
-    overrides.aiBudgetTokens = Math.max(1, Math.floor(envConfig.aiBudgetTokens));
-  }
-  if (typeof envConfig.aiProviderConcurrency === "number") {
-    overrides.aiProviderConcurrency = Math.max(
+  if (typeof envConfig.aiMaxModelCalls === 'number') {
+    overrides.aiMaxModelCalls = Math.max(
       1,
-      Math.floor(envConfig.aiProviderConcurrency),
+      Math.floor(envConfig.aiMaxModelCalls)
     );
   }
-  if (typeof envConfig.aiMaxCandidatesPerAgent === "number") {
+  if (typeof envConfig.aiBudgetTokens === 'number') {
+    overrides.aiBudgetTokens = Math.max(
+      1,
+      Math.floor(envConfig.aiBudgetTokens)
+    );
+  }
+  if (typeof envConfig.aiProviderConcurrency === 'number') {
+    overrides.aiProviderConcurrency = Math.max(
+      1,
+      Math.floor(envConfig.aiProviderConcurrency)
+    );
+  }
+  if (typeof envConfig.aiMaxCandidatesPerAgent === 'number') {
     overrides.aiMaxCandidatesPerAgent = Math.max(
       0,
-      Math.floor(envConfig.aiMaxCandidatesPerAgent),
+      Math.floor(envConfig.aiMaxCandidatesPerAgent)
     );
   }
   if (envConfig.aiInferenceScope) {
     overrides.aiInferenceScope = envConfig.aiInferenceScope;
   }
-  if (typeof envConfig.aiVerbose === "boolean") {
+  if (typeof envConfig.aiVerbose === 'boolean') {
     overrides.aiVerbose = envConfig.aiVerbose;
   }
-  if (typeof envConfig.aiToolLoopMaxRounds === "number") {
-    overrides.aiToolLoopMaxRounds = Math.max(1, Math.floor(envConfig.aiToolLoopMaxRounds));
+  if (typeof envConfig.aiToolLoopMaxRounds === 'number') {
+    overrides.aiToolLoopMaxRounds = Math.max(
+      1,
+      Math.floor(envConfig.aiToolLoopMaxRounds)
+    );
   }
-  if (typeof envConfig.aiToolLoopMaxFiles === "number") {
-    overrides.aiToolLoopMaxFiles = Math.max(1, Math.floor(envConfig.aiToolLoopMaxFiles));
+  if (typeof envConfig.aiToolLoopMaxFiles === 'number') {
+    overrides.aiToolLoopMaxFiles = Math.max(
+      1,
+      Math.floor(envConfig.aiToolLoopMaxFiles)
+    );
   }
-  if (typeof envConfig.aiToolLoopMaxSearches === "number") {
-    overrides.aiToolLoopMaxSearches = Math.max(1, Math.floor(envConfig.aiToolLoopMaxSearches));
+  if (typeof envConfig.aiToolLoopMaxSearches === 'number') {
+    overrides.aiToolLoopMaxSearches = Math.max(
+      1,
+      Math.floor(envConfig.aiToolLoopMaxSearches)
+    );
   }
-  if (typeof envConfig.aiThirdPartyDataFlowEnabled === "boolean") {
-    overrides.aiThirdPartyDataFlowEnabled = envConfig.aiThirdPartyDataFlowEnabled;
+  if (typeof envConfig.aiThirdPartyDataFlowEnabled === 'boolean') {
+    overrides.aiThirdPartyDataFlowEnabled =
+      envConfig.aiThirdPartyDataFlowEnabled;
   }
 
   // 3) Flags (highest precedence)
@@ -417,4 +469,3 @@ export function resolveScanConfiguration(
     warnings,
   };
 }
-

@@ -1,6 +1,6 @@
 import type { RawFinding } from "../../core/types/detection";
 import type { FileInfo } from "../../core/types/file";
-import type { ServiceSection } from "../../core/sectioning/discover-service-sections";
+import type { ServiceSection } from "@dataparade/scanner";
 import type { DetectedComponent } from "../../core/types/component";
 import type { DetectedDataFlow } from "../../core/types/data-flow";
 

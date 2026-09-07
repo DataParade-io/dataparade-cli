@@ -11,7 +11,10 @@ jest.mock("../../../src/core/pipeline/orchestrator", () => ({
     ...overrides,
     enableAiInference: overrides.enableAiInference ?? false,
   })),
-  scan: jest.fn(async () => ({
+}));
+
+jest.mock("../../../src/core/pipeline/scan-pipeline", () => ({
+  runScanPipeline: jest.fn(async () => ({
     scanResult: {
       components: [],
       dataFlows: [],
@@ -101,9 +104,9 @@ describe("cli scan command ai flags", () => {
 
   it("prints all proposal property changes one per line without truncation", async () => {
     const { run } = require("../../../src/cli") as typeof import("../../../src/cli");
-    const orchestrator = require("../../../src/core/pipeline/orchestrator");
+    const scanPipeline = require("../../../src/core/pipeline/scan-pipeline");
 
-    orchestrator.scan.mockResolvedValueOnce({
+    scanPipeline.runScanPipeline.mockResolvedValueOnce({
       scanResult: {
         components: [],
         dataFlows: [],

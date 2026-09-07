@@ -1,27 +1,28 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
-import { z } from "zod";
+import { z } from 'zod';
 
-import { AI_PROVIDER_IDS } from "../ai-enrichment/types";
-import type { CliConfigFile } from "./types";
-import type { FileLanguage } from "../core/types";
+import { AI_PROVIDER_IDS } from '../ai-enrichment/types';
+import type { CliConfigFile } from './types';
+import type { FileLanguage } from '../core/types';
 
 const fileLanguageEnum = z.enum([
-  "typescript",
-  "javascript",
-  "json",
-  "yaml",
-  "env",
-  "python",
-  "cpp",
-  "csharp",
-  "go",
-  "php",
-  "java",
-  "kotlin",
-  "terraform",
-  "dockerfile",
+  'typescript',
+  'javascript',
+  'json',
+  'yaml',
+  'env',
+  'python',
+  'cpp',
+  'csharp',
+  'go',
+  'php',
+  'rust',
+  'java',
+  'kotlin',
+  'terraform',
+  'dockerfile',
 ] satisfies [FileLanguage, ...FileLanguage[]]);
 
 const cliConfigFileSchema = z
@@ -50,7 +51,7 @@ const cliConfigFileSchema = z
     aiBudgetTokens: z.number().int().positive().optional(),
     aiProviderConcurrency: z.number().int().positive().optional(),
     aiMaxCandidatesPerAgent: z.number().int().min(0).optional(),
-    aiInferenceScope: z.enum(["default", "third_party_only"]).optional(),
+    aiInferenceScope: z.enum(['default', 'third_party_only']).optional(),
     aiVerbose: z.boolean().optional(),
     aiToolLoopMaxRounds: z.number().int().positive().optional(),
     aiToolLoopMaxFiles: z.number().int().positive().optional(),
@@ -65,12 +66,12 @@ export interface LoadedCliConfigFile {
 }
 
 export function loadCliConfigFile(cwd: string): LoadedCliConfigFile | null {
-  const configPath = path.join(cwd, "dataparade.config.json");
+  const configPath = path.join(cwd, 'dataparade.config.json');
   if (!fs.existsSync(configPath)) {
     return null;
   }
 
-  const contents = fs.readFileSync(configPath, "utf8");
+  const contents = fs.readFileSync(configPath, 'utf8');
 
   try {
     const parsed = JSON.parse(contents);
@@ -78,20 +79,19 @@ export function loadCliConfigFile(cwd: string): LoadedCliConfigFile | null {
 
     if (!result.success) {
       const messages = result.error.issues.map(
-        (issue) => `${issue.path.join(".") || "<root>"}: ${issue.message}`,
+        (issue) => `${issue.path.join('.') || '<root>'}: ${issue.message}`
       );
 
       throw new Error(
-        `Invalid dataparade.config.json:\n${messages.join("\n")}`,
+        `Invalid dataparade.config.json:\n${messages.join('\n')}`
       );
     }
 
     return { config: result.data, warnings: [] };
   } catch (err) {
     const message =
-      err instanceof Error ? err.message : "Unknown error parsing config file.";
+      err instanceof Error ? err.message : 'Unknown error parsing config file.';
 
     throw new Error(`Failed to read dataparade.config.json: ${message}`);
   }
 }
-

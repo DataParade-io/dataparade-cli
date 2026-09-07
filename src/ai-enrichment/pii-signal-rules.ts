@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import YAML from "yaml";
 import { z } from "zod";
+import { getScannerPackageRoot } from "../scanner-package-root";
 
 const piiSignalRuleSchema = z.object({
   id: z.string().min(1),
@@ -28,13 +29,7 @@ export function clearPiiSignalRulesCacheForTest(): void {
 }
 
 function getPiiSignalRulesPath(): string {
-  const parts = __dirname.split(path.sep);
-  const distIndex = parts.lastIndexOf("dist");
-  const cliRoot =
-    distIndex !== -1
-      ? parts.slice(0, distIndex).join(path.sep)
-      : path.resolve(__dirname, "..", "..");
-  return path.join(cliRoot, "patterns", "pii-signals.rules.yaml");
+  return path.join(getScannerPackageRoot(), "patterns", "pii-signals.rules.yaml");
 }
 
 export function loadPiiSignalRules(): PiiSignalRule[] {

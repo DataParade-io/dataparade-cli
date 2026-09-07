@@ -1,4 +1,4 @@
-import { loadClassifierConfig } from "../classifier/config";
+import { loadClassifierConfig } from "@dataparade/scanner";
 import type { DetectedComponent } from "../core/types/component";
 
 /**

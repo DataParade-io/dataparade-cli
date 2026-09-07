@@ -4,7 +4,8 @@ import path from "path";
 
 import { run } from "../../../src/cli";
 import { validateDataflowJson } from "../../../src/core/schema/dataflow-wrapper.schema";
-import { INJECTED_PROJECT_PLACEHOLDER_SOURCE_CONTEXT } from "../../../src/classifier/application-injection";
+
+const INJECTED_PROJECT_PLACEHOLDER_SOURCE_CONTEXT = "injected-project-placeholder";
 
 type GraphNode = {
   id: string;

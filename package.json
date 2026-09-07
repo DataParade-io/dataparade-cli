@@ -1,6 +1,6 @@
 {
   "name": "@dataparade/cli",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "dataPARADE CLI — scan codebases for privacy and security data flows",
   "publishConfig": {
     "access": "public",
@@ -44,19 +44,17 @@
     "@dataparade/cli": "dist/bin/cli.js"
   },
   "scripts": {
-    "generate:terraform-provider-hints": "node scripts/generate-terraform-provider-hints.mjs",
-    "generate:aws-terraform-hints": "node scripts/generate-aws-terraform-hints.mjs",
-    "generate:azure-terraform-hints": "node scripts/generate-terraform-provider-hints.mjs --azure-only",
-    "generate:kubernetes-terraform-hints": "node scripts/generate-terraform-provider-hints.mjs --kubernetes-only",
+    "ensure-scanner": "node scripts/ensure-scanner-built.mjs",
     "build": "pnpm exec tsc -p tsconfig.json",
-    "prepublishOnly": "pnpm run build && pnpm run test",
+    "prepublishOnly": "pnpm run ensure-scanner && pnpm run build && pnpm run test",
     "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
-    "pretest": "pnpm run build",
+    "pretest": "pnpm run ensure-scanner && pnpm run build",
     "test": "jest",
     "scan": "node dist/bin/cli.js scan",
     "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js"
   },
   "dependencies": {
+    "@dataparade/scanner": "github:DataParade-io/scanner#998fb12b2db667dd7ff305e34c716634b867e806",
     "@sentry/node": "^10.38.0",
     "commander": "^12.1.0",
     "dotenv": "^16.4.7",
@@ -77,7 +75,6 @@
   },
   "files": [
     "dist",
-    "patterns",
     "LICENSE",
     "README.md",
     "package.json"

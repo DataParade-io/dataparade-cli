@@ -3,7 +3,7 @@ import {
   buildSharedHandlerAiFileIndex,
   buildThirdPartyDataFlowSummary,
 } from "../../../src/ai-enrichment/third-party-data-flow";
-import { assignStableComponentIds } from "../../../src/core/pipeline/stable-component-ids";
+import { assignStableComponentIds } from "@dataparade/scanner";
 import type { AiProposal } from "../../../src/ai-enrichment/types";
 import type { DetectedComponent } from "../../../src/core/types/component";
 import type { FileInfo } from "../../../src/core/types/file";

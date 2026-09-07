@@ -8,7 +8,7 @@ import type {
   ThirdPartyDataFlowEvidenceRef,
   ThirdPartyDataFlowSummary,
 } from "../core/types/result";
-import { stableComponentKey } from "../core/pipeline/stable-component-ids";
+import { stableComponentKey } from "@dataparade/scanner";
 import { resolveScannedFileExact } from "./scan-paths";
 import { loadPiiSignalRules } from "./pii-signal-rules";
 import { loadNonPiiSignalRules } from "./non-pii-signal-rules";

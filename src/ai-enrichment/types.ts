@@ -1,4 +1,4 @@
-import type { ServiceSection } from "../core/sectioning/discover-service-sections";
+import type { ServiceSection } from "@dataparade/scanner";
 import type { DetectedComponent } from "../core/types/component";
 import type { RawFinding } from "../core/types/detection";
 import type { DataFlowType, DetectedDataFlow } from "../core/types/data-flow";

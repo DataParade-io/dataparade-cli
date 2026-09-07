@@ -1,9 +1,9 @@
 import type { DiagramGraphJsonSchema } from "../../../src/core/schema";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 import { buildDiagramGraphFromScanResult } from "../../../src/core/pipeline/graph-mapping";
 import {
   createDefaultScanConfiguration,
-  scan,
-} from "../../../src/core/pipeline/orchestrator";
+  } from "../../../src/core/pipeline/orchestrator";
 
 import path from "path";
 
@@ -49,7 +49,7 @@ describe("output safety - no source code leakage (DP-P0-CLI-XXX)", () => {
     );
 
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult } = await scan(fixturesRoot, config);
+    const { scanResult } = await runScanPipeline(fixturesRoot, config);
 
     const graph = buildDiagramGraphFromScanResult(scanResult);
     expect(graphNodesContainCodeKey(graph)).toBe(false);

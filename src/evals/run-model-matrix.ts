@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import "../config/load-cli-env";
-import { createDefaultScanConfiguration, scan } from "../core/pipeline/orchestrator";
+import { createDefaultScanConfiguration } from "../core/pipeline/orchestrator";
+import { runScanPipeline } from "../core/pipeline/scan-pipeline";
 import type { AiProviderId } from "../ai-enrichment/types";
 import { computeEvalScores } from "./metrics";
 
@@ -36,7 +37,7 @@ async function run(): Promise<void> {
       aiProvider: provider as AiProviderId,
       aiModel: model,
     });
-    const result = await scan(path.resolve(process.cwd(), fixturePath), config);
+    const result = await runScanPipeline(path.resolve(process.cwd(), fixturePath), config);
     report.push({
       model,
       provider,

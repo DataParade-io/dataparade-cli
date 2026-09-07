@@ -22,7 +22,7 @@ import {
 import { reportCliUsageEvent } from "./platform-api/telemetry-client";
 import { validateScanConfiguration } from "./core/schema/scan-config.schema";
 import type { AiInferenceProposalDetail } from "./core/types";
-import { resolveScanFilesystemEntry } from "./ingest/file-system";
+import { resolveScanFilesystemEntry } from "@dataparade/scanner";
 
 function formatEvidence(detail: AiInferenceProposalDetail): string {
   const evidence = detail.evidence;
@@ -278,9 +278,10 @@ function createProgram(): Command {
             return;
           }
 
-          const [{ scan, createDefaultScanConfiguration }, { buildDiagramGraphFromScanResult }] =
+          const [{ createDefaultScanConfiguration }, { runScanPipeline }, { buildDiagramGraphFromScanResult }] =
             await Promise.all([
               import("./core/pipeline/orchestrator"),
+              import("./core/pipeline/scan-pipeline"),
               import("./core/pipeline/graph-mapping"),
             ]);
 
@@ -473,7 +474,7 @@ function createProgram(): Command {
             );
           }
 
-          const { scanResult } = await scan(
+          const { scanResult } = await runScanPipeline(
             resolvedScanRoot,
             config,
             (progress) => {

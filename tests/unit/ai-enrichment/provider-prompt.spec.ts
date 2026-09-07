@@ -79,6 +79,8 @@ describe("provider-prompt", () => {
     expect(String(payload.instructions)).toContain(
       "targetComponentId` must be exactly one of canonicalComponentIds",
     );
+    expect(String(payload.instructions)).toContain("data_action");
+    expect(String(payload.instructions)).toContain("multiple");
     expect(
       (payload as { canonicalComponentIds?: string[] }).canonicalComponentIds,
     ).toEqual(["tp_1"]);

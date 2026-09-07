@@ -1,9 +1,9 @@
 import path from "path";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 
 import {
   createDefaultScanConfiguration,
-  scan,
-} from "../../../src/core/pipeline/orchestrator";
+  } from "../../../src/core/pipeline/orchestrator";
 import { buildDiagramGraphFromScanResult } from "../../../src/core/pipeline/graph-mapping";
 import { diagramGraphJsonSchema } from "../../../src/core/schema";
 import type { ScanResult } from "../../../src/core/types";
@@ -20,7 +20,7 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
     );
 
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult } = await scan(fixturesRoot, config);
+    const { scanResult } = await runScanPipeline(fixturesRoot, config);
 
     const graph = buildDiagramGraphFromScanResult(scanResult);
 

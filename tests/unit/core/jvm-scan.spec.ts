@@ -1,13 +1,13 @@
 import fs from "fs";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 import os from "os";
 import path from "path";
 
 import {
   createDefaultScanConfiguration,
-  scan,
-} from "../../../src/core/pipeline/orchestrator";
-import { discoverServiceSections } from "../../../src/core/sectioning/discover-service-sections";
-import { ingestFileSystem } from "../../../src/ingest/file-system";
+  } from "../../../src/core/pipeline/orchestrator";
+import { discoverServiceSections } from "@dataparade/scanner";
+import { ingestFileSystem } from "@dataparade/scanner";
 
 function fixturePath(name: string): string {
   return path.join(__dirname, "..", "..", "fixtures", name);
@@ -21,7 +21,7 @@ function write(filePath: string, content: string): void {
 describe("structural scan - JVM repositories", () => {
   it("produces components, flows, and parser stats for a Spring service", async () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult, files, findings } = await scan(
+    const { scanResult, files, findings } = await runScanPipeline(
       fixturePath("java-basic"),
       config,
     );
@@ -70,7 +70,7 @@ describe("structural scan - JVM repositories", () => {
 
   it("scans a Kotlin service through the same analyzer", async () => {
     const config = createDefaultScanConfiguration({ enableAiInference: false });
-    const { scanResult, files, findings } = await scan(
+    const { scanResult, files, findings } = await runScanPipeline(
       fixturePath("kotlin-basic"),
       config,
     );

@@ -3,6 +3,8 @@ import { existsSync, readFileSync } from "fs";
 import path from "path";
 
 const cliDistPath = path.join(__dirname, "../../dist/bin/cli.js");
+const cliCwd = path.join(__dirname, "../../");
+const scanFixturePath = path.join(cliCwd, "tests/fixtures/typescript-basic");
 
 describe("CLI", () => {
   beforeAll(() => {
@@ -16,16 +18,21 @@ describe("CLI", () => {
   it("scan <path> writes a dataflow.json wrapper to the current directory and exits 0", () => {
     const result = spawnSync(
       "node",
-      [cliDistPath, "scan", ".", "--no-ai-inference", "--skip-auto-upload"],
+      [
+        cliDistPath,
+        "scan",
+        scanFixturePath,
+        "--no-ai-inference",
+        "--skip-auto-upload",
+      ],
       {
         encoding: "utf-8",
-        cwd: path.join(__dirname, "../../"),
+        cwd: cliCwd,
       },
     );
 
     expect(result.status).toBe(0);
 
-    const cliCwd = path.join(__dirname, "../../");
     const outputPath = path.join(cliCwd, "dataflow.json");
     const exists = existsSync(outputPath);
 
@@ -40,16 +47,13 @@ describe("CLI", () => {
     expect(Array.isArray(dataflow.graph.edges)).toBe(true);
   });
 
-  it("scan ../frontend produces a dataflow.json wrapper with at least one node", () => {
-    const cliCwd = path.join(__dirname, "../../");
-    const frontendPath = "../frontend";
-
+  it("scan fixture produces a dataflow.json wrapper with at least one node", () => {
     const result = spawnSync(
       "node",
       [
         cliDistPath,
         "scan",
-        frontendPath,
+        scanFixturePath,
         "--no-ai-inference",
         "--skip-auto-upload",
       ],
@@ -69,17 +73,15 @@ describe("CLI", () => {
     expect(dataflow.graph.nodes.length).toBeGreaterThan(0);
   });
 
-  it("scan ../frontend --output writes a dataflow.json wrapper to the given file and prints a short message", () => {
-    const cliCwd = path.join(__dirname, "../../");
-    const frontendPath = "../frontend";
-    const outputFile = "scan-frontend-summary.json";
+  it("scan fixture --output writes a dataflow.json wrapper to the given file and prints a short message", () => {
+    const outputFile = "scan-fixture-summary.json";
 
     const result = spawnSync(
       "node",
       [
         cliDistPath,
         "scan",
-        frontendPath,
+        scanFixturePath,
         "--output",
         outputFile,
         "--no-ai-inference",
@@ -109,7 +111,7 @@ describe("CLI", () => {
   it("unknown command shows usage and exits non-zero", () => {
     const result = spawnSync("node", [cliDistPath, "unknowncommand"], {
       encoding: "utf-8",
-      cwd: path.join(__dirname, "../../"),
+      cwd: cliCwd,
     });
 
     expect(result.status).not.toBe(0);
@@ -119,7 +121,7 @@ describe("CLI", () => {
   it("--help shows usage", () => {
     const result = spawnSync("node", [cliDistPath, "--help"], {
       encoding: "utf-8",
-      cwd: path.join(__dirname, "../../"),
+      cwd: cliCwd,
     });
 
     expect(result.status).toBe(0);
@@ -130,11 +132,10 @@ describe("CLI", () => {
   it("scan --help shows scan usage", () => {
     const result = spawnSync("node", [cliDistPath, "scan", "--help"], {
       encoding: "utf-8",
-      cwd: path.join(__dirname, "../../"),
+      cwd: cliCwd,
     });
 
     expect(result.status).toBe(0);
     expect(result.stdout).toMatch(/scan|path/i);
   });
 });
-

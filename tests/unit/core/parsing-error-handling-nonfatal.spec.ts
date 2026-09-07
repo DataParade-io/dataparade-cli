@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import { runScanPipeline } from "../../../src/core/pipeline/scan-pipeline";
 import path from "path";
 
 import {
@@ -6,8 +7,7 @@ import {
 } from "../../../src/core/pipeline/graph-mapping";
 import {
   createDefaultScanConfiguration,
-  scan,
-} from "../../../src/core/pipeline/orchestrator";
+  } from "../../../src/core/pipeline/orchestrator";
 
 function tempRootForTest(): string {
   return path.join(
@@ -48,7 +48,7 @@ describe("parsing error handling - non-fatal", () => {
         enableDataFlowDetection: false,
       });
 
-      const { scanResult } = await scan(root, config);
+      const { scanResult } = await runScanPipeline(root, config);
 
       expect(Array.isArray(scanResult.errors)).toBe(true);
       expect(scanResult.errors).toHaveLength(0);
