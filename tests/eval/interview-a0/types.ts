@@ -47,8 +47,14 @@ export interface BriefManifest {
   repository: string;
   brief_path: string;
   commit: string;
+  brief_fixture: string;
+  brief_fixture_sha256: string;
   skill_path: string;
   skill_commit: string;
+  skill_fixture: string;
+  skill_fixture_sha256: string;
+  rubric_fixture: string;
+  rubric_fixture_sha256: string;
 }
 
 export interface BriefSnapshot {

@@ -13,11 +13,11 @@ import type { BriefSnapshot } from "./types";
 describe("eval/interview-a0", () => {
   let brief: BriefSnapshot;
 
-  beforeAll(async () => {
-    brief = await loadDefaultBriefSnapshot();
-  }, 30_000);
+  beforeAll(() => {
+    brief = loadDefaultBriefSnapshot();
+  });
 
-  it("pins the same brief and skill SHAs as knowledge-base (DATAP-671)", () => {
+  it("pins source SHAs and checked-in dpkb fixtures (DATAP-671)", () => {
     const manifest = loadBriefManifest(defaultManifestPath);
     assertManifestPins(manifest);
     expect(manifest.commit).toBe(PINNED_BRIEF_SHA);

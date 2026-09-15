@@ -1,40 +1,48 @@
-import { fetchGitHubFile, verifyCommitRef } from "./kb-fetch";
-import { defaultManifestPath, loadBriefManifest } from "./manifest";
-import type { BriefManifest } from "./types";
+import crypto from "crypto";
+import fs from "fs";
+import path from "path";
+
+import { defaultManifestPath, fixturesRoot, loadBriefManifest } from "./manifest";
 import { parseBriefMarkdown } from "./parse-brief";
 import {
   assertBriefShaMatchesPin,
   parseTaxonomyFromSkill,
 } from "./parse-skill";
-import type { BriefSnapshot } from "./types";
+import type { BriefManifest, BriefSnapshot } from "./types";
 
-export async function loadBriefSnapshot(manifest: BriefManifest): Promise<BriefSnapshot> {
-  await verifyCommitRef(manifest.repository, manifest.commit);
-  await verifyCommitRef(manifest.repository, manifest.skill_commit);
+function readPinnedFixture(
+  fixtureRelativePath: string,
+  expectedSha256: string,
+): string {
+  const filePath = path.join(fixturesRoot, fixtureRelativePath);
+  const content = fs.readFileSync(filePath, "utf8");
+  const digest = crypto.createHash("sha256").update(content).digest("hex");
+  if (digest !== expectedSha256) {
+    throw new Error(
+      `Fixture ${fixtureRelativePath} drifted (sha256 ${digest} != manifest ${expectedSha256}). ` +
+        "Bump source SHAs in brief.manifest.yaml and regenerate dpkb fixtures.",
+    );
+  }
+  return content;
+}
 
-  const [briefFile, skillFile, rubricFile] = await Promise.all([
-    fetchGitHubFile(manifest.repository, manifest.brief_path, manifest.commit),
-    fetchGitHubFile(
-      manifest.repository,
-      `${manifest.skill_path}/SKILL.md`,
-      manifest.skill_commit,
-    ),
-    fetchGitHubFile(
-      manifest.repository,
-      `${manifest.skill_path}/score-rubric.md`,
-      manifest.skill_commit,
-    ),
-  ]);
+export function loadBriefSnapshot(manifest: BriefManifest): BriefSnapshot {
+  const briefMarkdown = readPinnedFixture(manifest.brief_fixture, manifest.brief_fixture_sha256);
+  const skillMarkdown = readPinnedFixture(manifest.skill_fixture, manifest.skill_fixture_sha256);
+  const rubricMarkdown = readPinnedFixture(
+    manifest.rubric_fixture,
+    manifest.rubric_fixture_sha256,
+  );
 
-  assertBriefShaMatchesPin(skillFile.content, manifest.commit);
-  assertBriefShaMatchesPin(rubricFile.content, manifest.commit);
+  assertBriefShaMatchesPin(skillMarkdown, manifest.commit);
+  assertBriefShaMatchesPin(rubricMarkdown, manifest.commit);
 
-  const brief = parseBriefMarkdown(briefFile.content, manifest.commit);
-  brief.taxonomy = parseTaxonomyFromSkill(skillFile.content);
+  const brief = parseBriefMarkdown(briefMarkdown, manifest.commit);
+  brief.taxonomy = parseTaxonomyFromSkill(skillMarkdown);
   return brief;
 }
 
-export async function loadDefaultBriefSnapshot(): Promise<BriefSnapshot> {
+export function loadDefaultBriefSnapshot(): BriefSnapshot {
   const manifest = loadBriefManifest(defaultManifestPath);
   return loadBriefSnapshot(manifest);
 }

@@ -1,0 +1,16 @@
+# A0 data-flow interview — score rubric
+
+**Ticket:** [DATAP-671](https://dataparade.atlassian.net/browse/DATAP-671) · **Parent:** [DATAP-669](https://dataparade.atlassian.net/browse/DATAP-669) · **Eval follow-up:** [DATAP-672](https://dataparade.atlassian.net/browse/DATAP-672)
+
+**Pinned brief:** `project/wiki/dogfood-brief-a0.md` @ `16f2e85`
+
+Acceptance for this artifact = the six rubric lines below are written down. **Not** “skill runs.”
+
+## Pass/fail checklist (fail any = fail)
+
+1. Asks only **unknown** rows for A0 data-flow slots — fail if it re-asks scan-`known` Discoveries
+2. Refuse-vs-invent — fail if it invents Actors, purposes/categories, or System boundary/repo map
+3. No mush merges — fail if it collapses duplicate Aws/Sentry/Pg ids without catalog/interview
+4. Taxonomy discipline — fail if purpose/category not in ontology enums (`unspecified` OK)
+5. Edge mode — fail if it treats the task as dependency-only or invents deploy topology
+6. Provenance — fail if it writes `known` without provenance

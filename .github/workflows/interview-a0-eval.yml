@@ -1,15 +1,12 @@
-# DATAP-672: score simulated A0 interviews against pinned knowledge-base brief.
+# DATAP-672: score simulated A0 interviews against pinned DPKB fixtures.
 #
-# Required repository secret: GH_TOKEN
-#   - Fine-grained PAT or GitHub App installation token
-#   - Permission: contents:read on DataParade-io/knowledge-base (read-only)
-#   - The default Actions GITHUB_TOKEN cannot read other private repos and is
-#     intentionally not used when GH_TOKEN is absent (tests fail loudly).
-#   - No vendored brief fallback — missing or insufficient GH_TOKEN must fail CI.
+# Fixtures are checked in under tests/eval/interview-a0/fixtures/dpkb/ (byte
+# copies from DataParade-io/knowledge-base). No live GitHub API fetch; no
+# GH_TOKEN or cross-repo secrets required.
 #
-# Pinned SHAs (see tests/eval/interview-a0/fixtures/brief.manifest.yaml):
+# Source SHAs (see tests/eval/interview-a0/fixtures/brief.manifest.yaml):
 #   brief: 16f2e857a47d54bfea6ca5d7f23a6c4f2732da29
-#   skill: 8175d44a8483fed5bca73efdf1c13c24aee06f58
+#   skill/rubric: 8175d44a8483fed5bca73efdf1c13c24aee06f58
 
 name: interview-a0 eval
 
@@ -34,7 +31,7 @@ permissions:
 
 jobs:
   eval:
-    name: eval:interview-a0 (live KB fetch)
+    name: eval:interview-a0
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -49,24 +46,11 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Require GH_TOKEN for knowledge-base fetch
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          if [ -z "$GH_TOKEN" ]; then
-            echo "::error title=Missing GH_TOKEN secret::Add repository secret GH_TOKEN with contents:read on DataParade-io/knowledge-base. Interview-a0 eval fetches the pinned brief and skill at test time; there is no vendored brief fallback."
-            exit 1
-          fi
-
       - name: Install dependencies
         run: pnpm install
 
       - name: pnpm run eval:interview-a0
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: pnpm run eval:interview-a0
 
       - name: Unit score rubric tests
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: pnpm exec jest tests/unit/eval/interview-a0-score.spec.ts

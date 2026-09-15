@@ -12,9 +12,9 @@ import type { BriefSnapshot, InterviewAction } from "../../eval/interview-a0/typ
 describe("interview-a0 score-rubric", () => {
   let brief: BriefSnapshot;
 
-  beforeAll(async () => {
-    brief = await loadDefaultBriefSnapshot();
-  }, 30_000);
+  beforeAll(() => {
+    brief = loadDefaultBriefSnapshot();
+  });
 
   it("flags re-ask of scan-known flow endpoint", () => {
     const action: InterviewAction = {

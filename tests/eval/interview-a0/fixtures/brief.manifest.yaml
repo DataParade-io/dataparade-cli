@@ -1,6 +1,14 @@
-# Pinned knowledge-base artifacts — must match DATAP-671 skill contract pins.
+# Source-of-truth pins from DataParade-io/knowledge-base (DATAP-671).
+# Checked-in fixtures under dpkb/ are byte copies at these commits.
+# To update: bump commit SHAs + fixture_sha256 values + regenerate dpkb/*.md.
 repository: DataParade-io/knowledge-base
 brief_path: project/wiki/dogfood-brief-a0.md
 commit: 16f2e857a47d54bfea6ca5d7f23a6c4f2732da29
+brief_fixture: dpkb/dogfood-brief-a0.md
+brief_fixture_sha256: 06dbc6fc61d6b137216dd46a5cf5a571ce327f4da31845862a114520a6726b91
 skill_path: project/wiki/skills/a0-dataflow-interview
 skill_commit: 8175d44a8483fed5bca73efdf1c13c24aee06f58
+skill_fixture: dpkb/a0-dataflow-interview/SKILL.md
+skill_fixture_sha256: 7321d368f89cce189305adc68fafdd1609fc18f9bd0f402a35fb69422a56c202
+rubric_fixture: dpkb/a0-dataflow-interview/score-rubric.md
+rubric_fixture_sha256: 8509c71573552b623f95cedb3e919c3ccb921fa41f55b9c71e2536009cb41813

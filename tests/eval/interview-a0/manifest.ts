@@ -19,15 +19,37 @@ function validateSha(value: string, field: string): string {
   return value;
 }
 
+function validateSha256(value: string, field: string): string {
+  if (!/^[a-f0-9]{64}$/.test(value)) {
+    throw new Error(`Expected sha256 hex digest in ${field}`);
+  }
+  return value;
+}
+
 function validateManifest(raw: Record<string, unknown>, manifestPath: string): BriefManifest {
   return {
     repository: isNonEmptyString(raw.repository, `${manifestPath}:repository`),
     brief_path: isNonEmptyString(raw.brief_path, `${manifestPath}:brief_path`),
     commit: validateSha(isNonEmptyString(raw.commit, `${manifestPath}:commit`), `${manifestPath}:commit`),
+    brief_fixture: isNonEmptyString(raw.brief_fixture, `${manifestPath}:brief_fixture`),
+    brief_fixture_sha256: validateSha256(
+      isNonEmptyString(raw.brief_fixture_sha256, `${manifestPath}:brief_fixture_sha256`),
+      `${manifestPath}:brief_fixture_sha256`,
+    ),
     skill_path: isNonEmptyString(raw.skill_path, `${manifestPath}:skill_path`),
     skill_commit: validateSha(
       isNonEmptyString(raw.skill_commit, `${manifestPath}:skill_commit`),
       `${manifestPath}:skill_commit`,
+    ),
+    skill_fixture: isNonEmptyString(raw.skill_fixture, `${manifestPath}:skill_fixture`),
+    skill_fixture_sha256: validateSha256(
+      isNonEmptyString(raw.skill_fixture_sha256, `${manifestPath}:skill_fixture_sha256`),
+      `${manifestPath}:skill_fixture_sha256`,
+    ),
+    rubric_fixture: isNonEmptyString(raw.rubric_fixture, `${manifestPath}:rubric_fixture`),
+    rubric_fixture_sha256: validateSha256(
+      isNonEmptyString(raw.rubric_fixture_sha256, `${manifestPath}:rubric_fixture_sha256`),
+      `${manifestPath}:rubric_fixture_sha256`,
     ),
   };
 }
@@ -51,3 +73,4 @@ export function assertManifestPins(manifest: BriefManifest): void {
 }
 
 export const defaultManifestPath = path.join(__dirname, "fixtures", "brief.manifest.yaml");
+export const fixturesRoot = path.join(__dirname, "fixtures");
