@@ -3,12 +3,28 @@ export interface GitHubFileContent {
   blobSha: string;
 }
 
+/**
+ * Cross-repo reads require GH_TOKEN (PAT or app token with contents:read on
+ * DataParade-io/knowledge-base). In GitHub Actions, the default GITHUB_TOKEN
+ * cannot read other private repos and must not be used as a fallback here.
+ */
+function resolveAuthToken(): string | undefined {
+  return process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN;
+}
+
 function authHeaders(): Record<string, string> {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
   };
-  const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
+  const token = resolveAuthToken();
+  if (process.env.CI === "true" && !process.env.GH_TOKEN) {
+    throw new Error(
+      "Missing repository secret GH_TOKEN. Interview-a0 eval requires a live fetch from " +
+        "DataParade-io/knowledge-base at pinned SHAs; there is no vendored brief fallback. " +
+        "Add GH_TOKEN (contents:read on DataParade-io/knowledge-base) to this repo's Actions secrets.",
+    );
+  }
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -27,7 +43,7 @@ export async function fetchGitHubFile(
     const detail = await response.text();
     throw new Error(
       `Failed to fetch ${repository}/${filePath}@${ref}: HTTP ${response.status}. ` +
-        `Ensure GITHUB_TOKEN or GH_TOKEN can read the private knowledge-base repo. ${detail}`,
+        `Ensure GH_TOKEN (preferred) can read the private knowledge-base repo. ${detail}`,
     );
   }
 
