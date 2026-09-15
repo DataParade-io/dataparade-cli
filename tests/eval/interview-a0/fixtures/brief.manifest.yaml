@@ -1,0 +1,5 @@
+# Pinned dogfood brief — must match SKILL.md / score-rubric.md in knowledge-base (DATAP-671).
+repository: DataParade-io/knowledge-base
+brief_path: project/wiki/dogfood-brief-a0.md
+commit: 16f2e857a47d54bfea6ca5d7f23a6c4f2732da29
+skill_path: project/wiki/skills/a0-dataflow-interview
