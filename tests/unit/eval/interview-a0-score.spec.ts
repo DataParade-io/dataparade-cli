@@ -1,4 +1,4 @@
-import { briefSnapshot } from "../../eval/interview-a0/brief-snapshot";
+import { loadDefaultBriefSnapshot } from "../../eval/interview-a0/load-brief";
 import {
   checkEdgeMode,
   checkNoMushMerge,
@@ -7,16 +7,22 @@ import {
   checkRefuseVsInvent,
   checkTaxonomyDiscipline,
 } from "../../eval/interview-a0/score-rubric";
-import type { InterviewAction } from "../../eval/interview-a0/types";
+import type { BriefSnapshot, InterviewAction } from "../../eval/interview-a0/types";
 
 describe("interview-a0 score-rubric", () => {
+  let brief: BriefSnapshot;
+
+  beforeAll(async () => {
+    brief = await loadDefaultBriefSnapshot();
+  }, 30_000);
+
   it("flags re-ask of scan-known flow endpoint", () => {
     const action: InterviewAction = {
       kind: "ask",
       slot: "sends_data_to.endpoint",
       discoveryId: "flow_103",
     };
-    expect(checkReAskKnown(action, 0, briefSnapshot)?.line).toBe("re_ask_known");
+    expect(checkReAskKnown(action, 0, brief)?.line).toBe("re_ask_known");
   });
 
   it("allows ask on partial-known actor", () => {
@@ -25,7 +31,7 @@ describe("interview-a0 score-rubric", () => {
       slot: "actors",
       discoveryId: "cmp_6",
     };
-    expect(checkReAskKnown(action, 0, briefSnapshot)).toBeUndefined();
+    expect(checkReAskKnown(action, 0, brief)).toBeUndefined();
   });
 
   it("flags invented system boundary", () => {
@@ -35,7 +41,7 @@ describe("interview-a0 score-rubric", () => {
       value: "includes knowledge-base",
       provenance: "interview",
     };
-    expect(checkRefuseVsInvent(action, 0, briefSnapshot)?.line).toBe("refuse_vs_invent");
+    expect(checkRefuseVsInvent(action, 0, brief)?.line).toBe("refuse_vs_invent");
   });
 
   it("flags mush merge without interview provenance", () => {
@@ -46,7 +52,7 @@ describe("interview-a0 score-rubric", () => {
       value: "merged:cmp_11",
       provenance: "scan",
     };
-    expect(checkNoMushMerge(action, 0, briefSnapshot)?.line).toBe("no_mush_merge");
+    expect(checkNoMushMerge(action, 0, brief)?.line).toBe("no_mush_merge");
   });
 
   it("allows unspecified purpose", () => {
@@ -57,7 +63,7 @@ describe("interview-a0 score-rubric", () => {
       value: "unspecified",
       provenance: "interview",
     };
-    expect(checkTaxonomyDiscipline(action, 0, briefSnapshot)).toBeUndefined();
+    expect(checkTaxonomyDiscipline(action, 0, brief)).toBeUndefined();
   });
 
   it("flags out-of-A0 edge mode", () => {

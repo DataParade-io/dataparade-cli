@@ -48,6 +48,7 @@ export interface BriefManifest {
   brief_path: string;
   commit: string;
   skill_path: string;
+  skill_commit: string;
 }
 
 export interface BriefSnapshot {

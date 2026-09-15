@@ -1,26 +1,35 @@
-import { PINNED_BRIEF_SHA } from "./brief-snapshot";
+import { loadDefaultBriefSnapshot } from "./load-brief";
 import { interviewEvalCases } from "./cases";
 import {
-  assertBriefShaPinned,
+  assertManifestPins,
   defaultManifestPath,
   loadBriefManifest,
 } from "./manifest";
+import { PINNED_BRIEF_SHA, PINNED_SKILL_SHA } from "./pins";
 import { RUBRIC_LINES } from "./score-rubric";
 import { scoreInterview } from "./score";
+import type { BriefSnapshot } from "./types";
 
 describe("eval/interview-a0", () => {
-  it("pins the same brief SHA as the skill files (DATAP-671)", () => {
+  let brief: BriefSnapshot;
+
+  beforeAll(async () => {
+    brief = await loadDefaultBriefSnapshot();
+  }, 30_000);
+
+  it("pins the same brief and skill SHAs as knowledge-base (DATAP-671)", () => {
     const manifest = loadBriefManifest(defaultManifestPath);
-    assertBriefShaPinned(manifest);
+    assertManifestPins(manifest);
     expect(manifest.commit).toBe(PINNED_BRIEF_SHA);
-    expect(manifest.commit).toMatch(/^16f2e85/);
+    expect(manifest.skill_commit).toBe(PINNED_SKILL_SHA);
     expect(manifest.repository).toBe("DataParade-io/knowledge-base");
     expect(manifest.brief_path).toBe("project/wiki/dogfood-brief-a0.md");
+    expect(brief.sha).toBe(PINNED_BRIEF_SHA);
   });
 
   it("scores the passing simulated interview with zero violations", () => {
     const passingCase = interviewEvalCases.find((c) => c.id === "a0-passing-simulated")!;
-    const report = scoreInterview(passingCase.interview);
+    const report = scoreInterview(passingCase.interview, brief);
 
     expect(report.passed).toBe(true);
     expect(report.violations).toEqual([]);
@@ -31,7 +40,7 @@ describe("eval/interview-a0", () => {
     const failureCases = interviewEvalCases.filter((c) => c.id !== "a0-passing-simulated");
 
     for (const caseRecord of failureCases) {
-      const report = scoreInterview(caseRecord.interview);
+      const report = scoreInterview(caseRecord.interview, brief);
       expect(report.passed).toBe(false);
 
       const violationLines = [...new Set(report.violations.map((v) => v.line))].sort();
@@ -62,6 +71,6 @@ describe("eval/interview-a0", () => {
         (action.text ?? "").toLowerCase().includes("kb"),
     );
     expect(hasDiagramOrKbAction).toBe(false);
-    expect(scoreInterview(passingCase.interview).passed).toBe(true);
+    expect(scoreInterview(passingCase.interview, brief).passed).toBe(true);
   });
 });

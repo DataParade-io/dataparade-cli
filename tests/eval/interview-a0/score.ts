@@ -1,10 +1,9 @@
-import { briefSnapshot } from "./brief-snapshot";
 import { scoreAction } from "./score-rubric";
 import type { BriefSnapshot, InterviewScoreReport, SimulatedInterview } from "./types";
 
 export function scoreInterview(
   interview: SimulatedInterview,
-  brief: BriefSnapshot = briefSnapshot,
+  brief: BriefSnapshot,
 ): InterviewScoreReport {
   const violations = interview.actions.flatMap((action, index) =>
     scoreAction(action, index, brief),

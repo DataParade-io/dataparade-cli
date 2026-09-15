@@ -1,5 +1,6 @@
-# Pinned dogfood brief — must match SKILL.md / score-rubric.md in knowledge-base (DATAP-671).
+# Pinned knowledge-base artifacts — must match DATAP-671 skill contract pins.
 repository: DataParade-io/knowledge-base
 brief_path: project/wiki/dogfood-brief-a0.md
 commit: 16f2e857a47d54bfea6ca5d7f23a6c4f2732da29
 skill_path: project/wiki/skills/a0-dataflow-interview
+skill_commit: 8175d44a8483fed5bca73efdf1c13c24aee06f58
