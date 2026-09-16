@@ -14,11 +14,11 @@
       "id": "dp:discovery/interview/dp_a0_system/in_scope/1",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:a0/system",
       "asserted_slot": "in_scope",
       "asserted_value": "DataParade",
-      "eligible_shape": "D8",
+      "eligible_shape": "D2",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -27,11 +27,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_cmp_6/actor_kind/5",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/cmp_6",
       "asserted_slot": "actor_kind",
       "asserted_value": "persona",
-      "eligible_shape": "D2",
+      "eligible_shape": "D4",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -40,11 +40,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_cmp_17/actor_kind/7",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/cmp_17",
       "asserted_slot": "actor_kind",
       "asserted_value": "person",
-      "eligible_shape": "D2",
+      "eligible_shape": "D4",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -53,11 +53,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_cmp_20/actor_kind/9",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/cmp_20",
       "asserted_slot": "actor_kind",
       "asserted_value": "persona",
-      "eligible_shape": "D2",
+      "eligible_shape": "D4",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -66,11 +66,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_cmp_25/actor_kind/11",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/cmp_25",
       "asserted_slot": "actor_kind",
       "asserted_value": "person",
-      "eligible_shape": "D2",
+      "eligible_shape": "D4",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -79,11 +79,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_1/purpose/15",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_1",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -92,11 +92,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_10/purpose/19",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_10",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -105,11 +105,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_14/purpose/23",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_14",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -118,11 +118,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_20/purpose/27",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_20",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -131,11 +131,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_24/purpose/31",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_24",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -144,11 +144,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_61/purpose/35",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_61",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -157,11 +157,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_103/purpose/39",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_103",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -170,11 +170,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_106/purpose/43",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_106",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -183,11 +183,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_109/purpose/47",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_109",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -196,11 +196,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_111/purpose/51",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_111",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -209,11 +209,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_254/purpose/55",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_254",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -222,11 +222,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_267/purpose/59",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_267",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -235,11 +235,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_268/purpose/63",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_268",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -248,11 +248,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_269/purpose/67",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_269",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -261,11 +261,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_279/purpose/71",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_279",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -274,11 +274,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_287/purpose/75",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_287",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -287,11 +287,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_288/purpose/79",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_288",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -300,11 +300,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_289/purpose/83",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_289",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -313,11 +313,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_290/purpose/87",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_290",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -326,11 +326,11 @@
       "id": "dp:discovery/interview/dp_scan_entity_flow_291/purpose/91",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserted_at": "2026-09-16T19:37:21.098Z",
       "asserts": "dp:scan/entity/flow_291",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
-      "eligible_shape": "D7",
+      "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
       "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
@@ -380,7 +380,7 @@
     {
       "action_index": 13,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 14,
@@ -395,7 +395,7 @@
     {
       "action_index": 17,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 18,
@@ -410,7 +410,7 @@
     {
       "action_index": 21,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 22,
@@ -425,7 +425,7 @@
     {
       "action_index": 25,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 26,
@@ -440,7 +440,7 @@
     {
       "action_index": 29,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 30,
@@ -455,7 +455,7 @@
     {
       "action_index": 33,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 34,
@@ -470,7 +470,7 @@
     {
       "action_index": 37,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 38,
@@ -485,7 +485,7 @@
     {
       "action_index": 41,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 42,
@@ -500,7 +500,7 @@
     {
       "action_index": 45,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 46,
@@ -515,7 +515,7 @@
     {
       "action_index": 49,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 50,
@@ -530,7 +530,7 @@
     {
       "action_index": 53,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 54,
@@ -545,7 +545,7 @@
     {
       "action_index": 57,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 58,
@@ -560,7 +560,7 @@
     {
       "action_index": 61,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 62,
@@ -575,7 +575,7 @@
     {
       "action_index": 65,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 66,
@@ -590,7 +590,7 @@
     {
       "action_index": 69,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 70,
@@ -605,7 +605,7 @@
     {
       "action_index": 73,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 74,
@@ -620,7 +620,7 @@
     {
       "action_index": 77,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 78,
@@ -635,7 +635,7 @@
     {
       "action_index": 81,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 82,
@@ -650,7 +650,7 @@
     {
       "action_index": 85,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 86,
@@ -665,7 +665,7 @@
     {
       "action_index": 89,
       "code": "INVALID_SHAPE",
-      "message": "data_categories must be ontology enum list (D4)"
+      "message": "data_categories must be ontology enum list (D7)"
     },
     {
       "action_index": 90,

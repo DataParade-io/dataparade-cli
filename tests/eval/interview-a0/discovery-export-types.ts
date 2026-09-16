@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-/** Eligible write-back shapes per DATAP-682 / pinned write-back-rules.md (2616ebc). */
+/**
+ * Eligible write-back shapes per DATAP-682:
+ * D2=in_scope, D4=actor_kind, D7=data_categories, D8=purpose.
+ */
 export type EligibleInterviewShape = "D2" | "D4" | "D7" | "D8";
 
 /** Refusal codes for ineligible interview writes (fail-closed). */

@@ -38,11 +38,11 @@ describe("exportInterviewDiscoveries (DATAP-690)", () => {
       "D2",
       "D4",
       "D7",
-      "D7",
+      "D8",
       "D8",
     ]);
 
-    const actorKind = exportBundle.discoveries.find((d) => d.eligible_shape === "D2");
+    const actorKind = exportBundle.discoveries.find((d) => d.eligible_shape === "D4");
     expect(actorKind).toMatchObject({
       asserts: "dp:scan/entity/cmp_6",
       asserted_slot: "actor_kind",
@@ -50,7 +50,7 @@ describe("exportInterviewDiscoveries (DATAP-690)", () => {
       reviewer: "ryan",
     });
 
-    const system = exportBundle.discoveries.find((d) => d.eligible_shape === "D8");
+    const system = exportBundle.discoveries.find((d) => d.eligible_shape === "D2");
     expect(system).toMatchObject({
       asserts: "dp:a0/system",
       asserted_slot: "in_scope",

@@ -192,13 +192,13 @@ function evaluateWriteAction(
         refusal: refuse(
           actionIndex,
           "INVALID_SHAPE",
-          "ActorKind write must be exactly one ontology enum token (D2)",
+          "ActorKind write must be exactly one ontology enum token (D4)",
         ),
       };
     }
     return {
       record: {
-        eligible_shape: "D2",
+        eligible_shape: "D4",
         asserted_slot: "actor_kind",
         asserted_value: action.value,
         asserts: entityUri(id),
@@ -228,13 +228,13 @@ function evaluateWriteAction(
         refusal: refuse(
           actionIndex,
           "INVALID_SHAPE",
-          "data_categories must be ontology enum list (D4)",
+          "data_categories must be ontology enum list (D7)",
         ),
       };
     }
     return {
       record: {
-        eligible_shape: "D4",
+        eligible_shape: "D7",
         asserted_slot: "data_categories",
         asserted_value: JSON.stringify(values),
         asserts: entityUri(id),
@@ -263,13 +263,13 @@ function evaluateWriteAction(
         refusal: refuse(
           actionIndex,
           "INVALID_SHAPE",
-          "purpose must be a single ontology enum token (D7)",
+          "purpose must be a single ontology enum token (D8)",
         ),
       };
     }
     return {
       record: {
-        eligible_shape: "D7",
+        eligible_shape: "D8",
         asserted_slot: "purpose",
         asserted_value: action.value,
         asserts: entityUri(id),
@@ -292,13 +292,13 @@ function evaluateWriteAction(
         refusal: refuse(
           actionIndex,
           "INVALID_SHAPE",
-          "System identity write requires approved text (D8)",
+          "System identity write requires approved text (D2)",
         ),
       };
     }
     return {
       record: {
-        eligible_shape: "D8",
+        eligible_shape: "D2",
         asserted_slot: "in_scope",
         asserted_value: action.value.trim(),
         asserts: SYSTEM_ASSERTS_URI,

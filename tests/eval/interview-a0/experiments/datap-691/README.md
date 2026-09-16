@@ -49,4 +49,4 @@ pnpm run eval:interview-a0:datap-691
 | 5. edge_mode | pass |
 | 6. provenance | pass |
 
-**Overall:** fail (taxonomy). Harness + `exportInterviewDiscoveries` still run on the frozen raw log. See `score-report.json` and `discovery-export-bundle.json` (25 `source=interview` Discoveries; D2/D7/D8 — invalid D4 writes refused by adapter).
+**Overall:** fail (taxonomy). Harness + `exportInterviewDiscoveries` still run on the frozen raw log. See `score-report.json` and `discovery-export-bundle.json` (DATAP-682 shapes: D2=in_scope, D4=actor_kind, D7=data_categories, D8=purpose; invalid category writes refused).
