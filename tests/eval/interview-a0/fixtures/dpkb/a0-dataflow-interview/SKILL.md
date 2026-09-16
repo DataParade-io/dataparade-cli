@@ -45,8 +45,8 @@ Must be filled (unknown until scan/interview/catalog says so):
 | Actors (`ActorKind`) connected to the System | partial known | Confirm/strengthen `cmp_6`, `cmp_17`, `cmp_20`, `cmp_25`; refuse inventing more |
 | ExternalSystems (canonical names) | partial known | Scan-seeded third_party Discoveries — **do not re-ask** canonical names (e.g. `cmp_3` Aws); do not merge mush ids without catalog/interview |
 | `sends_data_to` endpoints | known | Do **not** re-ask — see `flow_*` rows in brief |
-| `sends_data_to`.`data_categories` | unknown | Ask per flow; `unspecified` allowed; omit not allowed |
-| `sends_data_to`.`purpose` | unknown | Ask per flow; `unspecified` allowed; omit not allowed |
+| `sends_data_to`.`data_categories` | unknown | Ask per flow; valid `DataCategory` tokens only — use `other` when none fit; **never** `unspecified`; omit not allowed |
+| `sends_data_to`.`purpose` | unknown | Ask per flow; `Purpose` enum or `unspecified`; omit not allowed |
 
 ## Scan-known (do not re-ask)
 
@@ -80,7 +80,7 @@ Archival scanner dump (reference only; brief is authoritative): `~/Projects/scan
 - **Purpose or category** values not in ontology enums (see Taxonomy discipline)
 - **Promoting** sibling repos into the System (`scanner`, `ontology`, `knowledge-base`, `dataparade-cli`)
 
-When a slot is unknown and the stakeholder cannot answer, record `unspecified` for purpose/category — do not omit the slot and do not fabricate a value.
+When a slot is unknown and the stakeholder cannot answer: for **purpose**, record `unspecified`; for **data_categories**, pick the best-fit `DataCategory` token or `other` — **never** `unspecified` on categories. Do not omit either slot and do not fabricate values outside the enums.
 
 ## Taxonomy discipline
 
@@ -92,7 +92,18 @@ Purpose and `data_categories` on `sends_data_to` edges must use ontology enums:
 | `Purpose` | [ontology/taxonomy/purpose.yaml](https://github.com/DataParade-io/ontology/blob/main/taxonomy/purpose.yaml) — `service_provision`, `analytics`, `marketing`, `security`, `legal_obligation`, `research`, `debugging`, **`unspecified`** |
 | `ActorKind` | [ontology/taxonomy/actor_kind.yaml](https://github.com/DataParade-io/ontology/blob/main/taxonomy/actor_kind.yaml) — `person`, `role`, `persona` |
 
-`unspecified` is an explicit gap, not a silent default. Omitting purpose or category on a flow is **not** allowed.
+**`unspecified` is `Purpose` only** (ontology 0.2.0). `DataCategory` has no `unspecified` — use `other` for an explicit “none of the above” category gap. Omitting purpose or `data_categories` on a flow is **not** allowed.
+
+### DataCategory write shape (strict)
+
+When writing `data_categories` for a `flow_*` row, `value` must be a list of valid `DataCategory` enum tokens only.
+
+| Write `value` | Verdict | Why |
+| --- | --- | --- |
+| `["identifiers","contact"]` | ✅ | Valid enum list |
+| `["other"]` | ✅ | Explicit gap when no finer category fits |
+| `["unspecified"]` | ❌ | `unspecified` is not a `DataCategory` token |
+| `unspecified` | ❌ | String, not enum list — and not a category token |
 
 ### ActorKind write shape (strict)
 
@@ -122,9 +133,9 @@ See [KB hygiene](../../kb-hygiene.md), [Discoveries](../../discoveries.md), and 
 2. For each required slot, check brief status:
    - `known` (scan) → skip; do not re-ask (includes `flow_*` endpoints and ExternalSystems like `cmp_3`)
    - `partial known` → Actors only: confirm `ActorKind` for `cmp_6`, `cmp_17`, `cmp_20`, `cmp_25`; write enum token only; ExternalSystems: use scan-seeded rows — do not re-ask
-   - `unknown` → ask stakeholder; record answer with `provenance=interview` or refuse with `unspecified`
+   - `unknown` → ask stakeholder; record with `provenance=interview` (`purpose` may be `unspecified`; `data_categories` must be valid tokens or `other`)
 3. For each `flow_*` row, ask only for missing `data_categories` and `purpose`.
-4. Stop when all unknown A0 slots are filled or explicitly marked `unspecified` — do not expand into Not A0 topics.
+4. Stop when all unknown A0 slots are filled (purpose may be `unspecified`; categories must not use `unspecified`) — do not expand into Not A0 topics.
 
 ## Out of scope
 
