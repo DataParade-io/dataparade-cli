@@ -1,7 +1,7 @@
 {
   "interviewId": "datap-676-mapped-from-raw",
   "briefSha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-  "overallPassed": false,
+  "overallPassed": true,
   "rubricLines": [
     {
       "line": "re_ask_known",
@@ -12,17 +12,8 @@
     {
       "line": "refuse_vs_invent",
       "label": "2. Refuse-vs-invent",
-      "passed": false,
-      "violations": [
-        {
-          "actionIndex": 7,
-          "message": "Invented actor kind not in taxonomy: person"
-        },
-        {
-          "actionIndex": 11,
-          "message": "Invented actor kind not in taxonomy: person"
-        }
-      ]
+      "passed": true,
+      "violations": []
     },
     {
       "line": "no_mush_merge",
@@ -49,16 +40,5 @@
       "violations": []
     }
   ],
-  "violations": [
-    {
-      "line": "refuse_vs_invent",
-      "actionIndex": 7,
-      "message": "Invented actor kind not in taxonomy: person"
-    },
-    {
-      "line": "refuse_vs_invent",
-      "actionIndex": 11,
-      "message": "Invented actor kind not in taxonomy: person"
-    }
-  ]
+  "violations": []
 }

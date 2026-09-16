@@ -34,15 +34,15 @@ pnpm run eval:interview-a0:run-model-luna-676
 pnpm run eval:interview-a0:datap-676
 ```
 
-## Score (2026-09-16 run)
+## Score (2026-09-16 run; re-scored DATAP-677)
 
 | Rubric line | Result |
 |-------------|--------|
 | 1. re_ask_known | **pass** |
-| 2. refuse_vs_invent | **fail** |
+| 2. refuse_vs_invent | **pass** (was false fail before taxonomy parser fix) |
 | 3. no_mush_merge | pass |
 | 4. taxonomy_discipline | pass |
 | 5. edge_mode | pass |
 | 6. provenance | pass |
 
-**Overall:** fail (honest — scorer not softened). See `score-report.json` for violations.
+**Overall:** pass after DATAP-677 re-score (same raw log; no new Luna run). See `score-report.json`.

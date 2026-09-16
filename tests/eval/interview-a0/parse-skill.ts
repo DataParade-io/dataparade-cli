@@ -12,6 +12,14 @@ function parseEnumValues(row: string): string[] {
   return values;
 }
 
+/** Ontology enum table rows link to ontology/taxonomy/*.yaml; example tables do not. */
+function parseOntologyEnumRow(row: string): string[] | null {
+  if (!row.includes("ontology/taxonomy/")) {
+    return null;
+  }
+  return parseEnumValues(row);
+}
+
 export function parseTaxonomyFromSkill(skillMarkdown: string): BriefSnapshot["taxonomy"] {
   const sectionStart = skillMarkdown.indexOf("## Taxonomy discipline");
   if (sectionStart === -1) {
@@ -28,11 +36,20 @@ export function parseTaxonomyFromSkill(skillMarkdown: string): BriefSnapshot["ta
       continue;
     }
     if (line.includes("DataCategory")) {
-      dataCategories = parseEnumValues(line);
+      const values = parseOntologyEnumRow(line);
+      if (values) {
+        dataCategories = values;
+      }
     } else if (line.includes("Purpose")) {
-      purposes = parseEnumValues(line);
+      const values = parseOntologyEnumRow(line);
+      if (values) {
+        purposes = values;
+      }
     } else if (line.includes("ActorKind")) {
-      actorKinds = parseEnumValues(line);
+      const values = parseOntologyEnumRow(line);
+      if (values) {
+        actorKinds = values;
+      }
     }
   }
 
