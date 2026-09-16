@@ -61,7 +61,7 @@ export const interviewDiscoveryExportSchema = z.object({
   ontology_version: z.literal("0.2.0"),
   ontology_tag: z.literal("v0.2.0"),
   ontology_sha: z.literal("0656c5d9a6ce0d31440c63327ce597ce8df4414f"),
-  write_back_kb_sha: z.literal("2616ebccb4f424bd4281ae07e1bb94046b66f41a"),
+  write_back_kb_sha: z.literal("f8b4f2810f0be856f9bf5421af5ea0db51ecd768"),
   adapter_only: z.literal(true),
   landable: z.literal(false),
   promotion_blocked: z.boolean(),
