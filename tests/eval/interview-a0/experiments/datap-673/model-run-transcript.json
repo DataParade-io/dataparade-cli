@@ -1,0 +1,651 @@
+{
+  "id": "datap-673-model-run-2026-09-16",
+  "description": "DATAP-673 model interview (Cursor agent) against pinned SKILL+brief fixtures. Stakeholder-sim answers fill brief unknowns only; boundary refused.",
+  "meta": {
+    "ticket": "DATAP-673",
+    "model": "composer (Cursor coding agent)",
+    "runAt": "2026-09-16T00:20:00Z",
+    "briefSha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+    "skillSha": "8175d44a8483fed5bca73efdf1c13c24aee06f58",
+    "interviewer": "agent following tests/eval/interview-a0/fixtures/dpkb/a0-dataflow-interview/SKILL.md"
+  },
+  "actions": [
+    {
+      "kind": "ask",
+      "slot": "system_identity",
+      "text": "Please confirm the system name and what is in_scope for this A0 data-flow projection."
+    },
+    {
+      "kind": "write",
+      "slot": "system_identity",
+      "value": "DataParade — in_scope is the customer-facing application in the scan-seed repo (DataParade-io/dataparade); multi-repo boundary not confirmed.",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "system_boundary",
+      "text": "Which repositories belong inside the System boundary versus ExternalSystem/tooling? Are scanner, ontology, knowledge-base, or dataparade-cli in scope?"
+    },
+    {
+      "kind": "refuse",
+      "slot": "system_boundary",
+      "text": "Stakeholder cannot confirm repo membership map yet — refusing to invent System boundary."
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "text": "Confirm ActorKind for cmp_6 (Customer)."
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "value": "persona",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "text": "Confirm ActorKind for cmp_17 (User)."
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "value": "person",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "text": "Confirm ActorKind for cmp_20 (Customer)."
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "value": "persona",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "text": "Confirm ActorKind for cmp_25 (User)."
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "value": "person",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "text": "What data_categories apply to flow_103?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "value": [
+        "identifiers",
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "text": "What is the purpose of flow_103?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "text": "What data_categories apply to flow_109?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "value": [
+        "communications"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "text": "What is the purpose of flow_109?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "text": "What data_categories apply to flow_106?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "text": "What is the purpose of flow_106?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "text": "What data_categories apply to flow_254?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "value": [
+        "credentials",
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "text": "What is the purpose of flow_254?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "value": "security",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "text": "What data_categories apply to flow_111?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "text": "What is the purpose of flow_111?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "text": "What data_categories apply to flow_24?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "value": [
+        "personal",
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "text": "What is the purpose of flow_24?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "text": "What data_categories apply to flow_61?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "text": "What is the purpose of flow_61?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "text": "What data_categories apply to flow_1?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "value": [
+        "personal"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_1",
+      "text": "What is the purpose of flow_1?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_1",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "text": "What data_categories apply to flow_10?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "text": "What is the purpose of flow_10?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "text": "What data_categories apply to flow_14?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "value": [
+        "communications"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "text": "What is the purpose of flow_14?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "text": "What data_categories apply to flow_20?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "text": "What is the purpose of flow_20?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "text": "What data_categories apply to flow_267?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "value": [
+        "credentials"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "text": "What is the purpose of flow_267?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "value": "security",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "text": "What data_categories apply to flow_268?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "text": "What is the purpose of flow_268?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "text": "What data_categories apply to flow_287?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "value": [
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "text": "What is the purpose of flow_287?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "text": "What data_categories apply to flow_269?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "value": [
+        "identifiers",
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "text": "What is the purpose of flow_269?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "text": "What data_categories apply to flow_279?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "value": [
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "text": "What is the purpose of flow_279?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "value": "marketing",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "text": "What data_categories apply to flow_288?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "value": [
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "text": "What is the purpose of flow_288?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "text": "What data_categories apply to flow_289?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "text": "What is the purpose of flow_289?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "text": "What data_categories apply to flow_290?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "value": [
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "text": "What is the purpose of flow_290?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "text": "What data_categories apply to flow_291?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "value": [
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_291",
+      "text": "What is the purpose of flow_291?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_291",
+      "value": "service_provision",
+      "provenance": "interview"
+    }
+  ]
+}

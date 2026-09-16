@@ -1,0 +1,44 @@
+{
+  "interviewId": "datap-673-model-run-2026-09-16",
+  "briefSha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+  "overallPassed": true,
+  "rubricLines": [
+    {
+      "line": "re_ask_known",
+      "label": "1. Asks only unknown rows (no re-ask scan-known)",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "line": "refuse_vs_invent",
+      "label": "2. Refuse-vs-invent",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "line": "no_mush_merge",
+      "label": "3. No mush merges",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "line": "taxonomy_discipline",
+      "label": "4. Taxonomy discipline",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "line": "edge_mode",
+      "label": "5. Edge mode (data-flow only)",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "line": "provenance",
+      "label": "6. Provenance on writes",
+      "passed": true,
+      "violations": []
+    }
+  ],
+  "violations": []
+}
