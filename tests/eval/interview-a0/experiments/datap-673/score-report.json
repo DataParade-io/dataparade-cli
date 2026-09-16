@@ -1,7 +1,7 @@
 {
-  "interviewId": "datap-673-model-run-2026-09-16",
+  "interviewId": "datap-673-mapped-from-raw",
   "briefSha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-  "overallPassed": true,
+  "overallPassed": false,
   "rubricLines": [
     {
       "line": "re_ask_known",
@@ -12,8 +12,13 @@
     {
       "line": "refuse_vs_invent",
       "label": "2. Refuse-vs-invent",
-      "passed": true,
-      "violations": []
+      "passed": false,
+      "violations": [
+        {
+          "actionIndex": 4,
+          "message": "Invented actor kind not in taxonomy: Customer (persona)"
+        }
+      ]
     },
     {
       "line": "no_mush_merge",
@@ -24,8 +29,25 @@
     {
       "line": "taxonomy_discipline",
       "label": "4. Taxonomy discipline",
-      "passed": true,
-      "violations": []
+      "passed": false,
+      "violations": [
+        {
+          "actionIndex": 6,
+          "message": "Value 'identifiers,contact' not in ontology enum for sends_data_to.data_categories"
+        },
+        {
+          "actionIndex": 10,
+          "message": "Value 'identifiers,contact' not in ontology enum for sends_data_to.data_categories"
+        },
+        {
+          "actionIndex": 38,
+          "message": "Value 'credentials,identifiers' not in ontology enum for sends_data_to.data_categories"
+        },
+        {
+          "actionIndex": 42,
+          "message": "Value 'personal,identifiers' not in ontology enum for sends_data_to.data_categories"
+        }
+      ]
     },
     {
       "line": "edge_mode",
@@ -40,5 +62,31 @@
       "violations": []
     }
   ],
-  "violations": []
+  "violations": [
+    {
+      "line": "refuse_vs_invent",
+      "actionIndex": 4,
+      "message": "Invented actor kind not in taxonomy: Customer (persona)"
+    },
+    {
+      "line": "taxonomy_discipline",
+      "actionIndex": 6,
+      "message": "Value 'identifiers,contact' not in ontology enum for sends_data_to.data_categories"
+    },
+    {
+      "line": "taxonomy_discipline",
+      "actionIndex": 10,
+      "message": "Value 'identifiers,contact' not in ontology enum for sends_data_to.data_categories"
+    },
+    {
+      "line": "taxonomy_discipline",
+      "actionIndex": 38,
+      "message": "Value 'credentials,identifiers' not in ontology enum for sends_data_to.data_categories"
+    },
+    {
+      "line": "taxonomy_discipline",
+      "actionIndex": 42,
+      "message": "Value 'personal,identifiers' not in ontology enum for sends_data_to.data_categories"
+    }
+  ]
 }

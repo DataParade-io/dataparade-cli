@@ -52,6 +52,7 @@
     "test": "jest",
     "eval:interview-a0": "jest tests/eval/interview-a0/eval.spec.ts",
     "eval:interview-a0:datap-673": "jest tests/eval/interview-a0/experiments/datap-673/score-model-run.spec.ts",
+    "eval:interview-a0:run-model": "node tests/eval/interview-a0/experiments/datap-673/run-model-interview.mjs",
     "scan": "node dist/bin/cli.js scan",
     "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js"
   },
