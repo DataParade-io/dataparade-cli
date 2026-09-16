@@ -1,0 +1,64 @@
+{
+  "interviewId": "datap-676-mapped-from-raw",
+  "briefSha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+  "overallPassed": false,
+  "rubricLines": [
+    {
+      "line": "re_ask_known",
+      "label": "1. Asks only unknown rows (no re-ask scan-known)",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "line": "refuse_vs_invent",
+      "label": "2. Refuse-vs-invent",
+      "passed": false,
+      "violations": [
+        {
+          "actionIndex": 7,
+          "message": "Invented actor kind not in taxonomy: person"
+        },
+        {
+          "actionIndex": 11,
+          "message": "Invented actor kind not in taxonomy: person"
+        }
+      ]
+    },
+    {
+      "line": "no_mush_merge",
+      "label": "3. No mush merges",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "line": "taxonomy_discipline",
+      "label": "4. Taxonomy discipline",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "line": "edge_mode",
+      "label": "5. Edge mode (data-flow only)",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "line": "provenance",
+      "label": "6. Provenance on writes",
+      "passed": true,
+      "violations": []
+    }
+  ],
+  "violations": [
+    {
+      "line": "refuse_vs_invent",
+      "actionIndex": 7,
+      "message": "Invented actor kind not in taxonomy: person"
+    },
+    {
+      "line": "refuse_vs_invent",
+      "actionIndex": 11,
+      "message": "Invented actor kind not in taxonomy: person"
+    }
+  ]
+}
