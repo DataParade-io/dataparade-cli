@@ -29,7 +29,12 @@ export type InterviewSlot =
 export interface InterviewAction {
   kind: InterviewActionKind;
   slot: InterviewSlot;
-  /** Discovery id when the action targets a specific cmp_* or flow_* row. */
+  /**
+   * Brief row id (`cmp_*` / `flow_*`) when the action targets a scan-seeded subject.
+   * Eval harness uses brief provenance; ontology 0.2.0 lands use `Discovery` with
+   * `source=interview` (see pinned write-back-rules.md). DATAP-669–677 experiments
+   * remain frozen on scan-only Discovery exam language.
+   */
   discoveryId?: string;
   value?: string | string[];
   provenance?: Provenance;
@@ -55,6 +60,10 @@ export interface BriefManifest {
   skill_fixture_sha256: string;
   rubric_fixture: string;
   rubric_fixture_sha256: string;
+  write_back_fixture: string;
+  write_back_fixture_sha256: string;
+  ontology_version: string;
+  ontology_sha: string;
 }
 
 export interface BriefSnapshot {

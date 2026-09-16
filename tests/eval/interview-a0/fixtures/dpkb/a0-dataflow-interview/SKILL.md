@@ -114,7 +114,7 @@ Never mark a slot `known` without provenance. Allowed values: `scan` | `intervie
 - Stakeholder answers from this interview → `provenance=interview`
 - Do not promote sibling-repo candidates to `known` without `provenance=interview`
 
-See [KB hygiene](../../kb-hygiene.md) and [Discoveries](../../discoveries.md).
+See [KB hygiene](../../kb-hygiene.md), [Discoveries](../../discoveries.md), and [Write-back rules](write-back-rules.md) (ontology **0.2.0** @ `0656c5d9a6ce0d31440c63327ce597ce8df4414f` — interview lands as `Discovery` with `source=interview`).
 
 ## Interview workflow
 

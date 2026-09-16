@@ -2,7 +2,12 @@ import fs from "fs";
 import path from "path";
 import YAML from "yaml";
 
-import { PINNED_BRIEF_SHA, PINNED_SKILL_SHA } from "./pins";
+import {
+  PINNED_BRIEF_SHA,
+  PINNED_ONTOLOGY_SHA,
+  PINNED_ONTOLOGY_VERSION,
+  PINNED_SKILL_SHA,
+} from "./pins";
 import type { BriefManifest } from "./types";
 
 function isNonEmptyString(value: unknown, field: string): string {
@@ -51,6 +56,19 @@ function validateManifest(raw: Record<string, unknown>, manifestPath: string): B
       isNonEmptyString(raw.rubric_fixture_sha256, `${manifestPath}:rubric_fixture_sha256`),
       `${manifestPath}:rubric_fixture_sha256`,
     ),
+    write_back_fixture: isNonEmptyString(
+      raw.write_back_fixture,
+      `${manifestPath}:write_back_fixture`,
+    ),
+    write_back_fixture_sha256: validateSha256(
+      isNonEmptyString(raw.write_back_fixture_sha256, `${manifestPath}:write_back_fixture_sha256`),
+      `${manifestPath}:write_back_fixture_sha256`,
+    ),
+    ontology_version: isNonEmptyString(raw.ontology_version, `${manifestPath}:ontology_version`),
+    ontology_sha: validateSha(
+      isNonEmptyString(raw.ontology_sha, `${manifestPath}:ontology_sha`),
+      `${manifestPath}:ontology_sha`,
+    ),
   };
 }
 
@@ -68,6 +86,16 @@ export function assertManifestPins(manifest: BriefManifest): void {
   if (manifest.skill_commit !== PINNED_SKILL_SHA) {
     throw new Error(
       `Skill manifest commit ${manifest.skill_commit} does not match required pin ${PINNED_SKILL_SHA}`,
+    );
+  }
+  if (manifest.ontology_version !== PINNED_ONTOLOGY_VERSION) {
+    throw new Error(
+      `Ontology version ${manifest.ontology_version} does not match required pin ${PINNED_ONTOLOGY_VERSION}`,
+    );
+  }
+  if (manifest.ontology_sha !== PINNED_ONTOLOGY_SHA) {
+    throw new Error(
+      `Ontology SHA ${manifest.ontology_sha} does not match required pin ${PINNED_ONTOLOGY_SHA}`,
     );
   }
 }
