@@ -1,0 +1,676 @@
+{
+  "export_kind": "interview_discovery_bundle",
+  "surface": "a0-data-flow",
+  "ontology_version": "0.2.0",
+  "ontology_tag": "v0.2.0",
+  "ontology_sha": "0656c5d9a6ce0d31440c63327ce597ce8df4414f",
+  "write_back_kb_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a",
+  "adapter_only": true,
+  "landable": false,
+  "promotion_blocked": false,
+  "interview_id": "datap-691-mapped-from-raw",
+  "discoveries": [
+    {
+      "id": "dp:discovery/interview/dp_a0_system/in_scope/1",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:a0/system",
+      "asserted_slot": "in_scope",
+      "asserted_value": "DataParade",
+      "eligible_shape": "D8",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_cmp_6/actor_kind/5",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/cmp_6",
+      "asserted_slot": "actor_kind",
+      "asserted_value": "persona",
+      "eligible_shape": "D2",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_cmp_17/actor_kind/7",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/cmp_17",
+      "asserted_slot": "actor_kind",
+      "asserted_value": "person",
+      "eligible_shape": "D2",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_cmp_20/actor_kind/9",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/cmp_20",
+      "asserted_slot": "actor_kind",
+      "asserted_value": "persona",
+      "eligible_shape": "D2",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_cmp_25/actor_kind/11",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/cmp_25",
+      "asserted_slot": "actor_kind",
+      "asserted_value": "person",
+      "eligible_shape": "D2",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_1/purpose/15",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_1",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_10/purpose/19",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_10",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_14/purpose/23",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_14",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_20/purpose/27",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_20",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_24/purpose/31",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_24",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_61/purpose/35",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_61",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_103/purpose/39",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_103",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_106/purpose/43",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_106",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_109/purpose/47",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_109",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_111/purpose/51",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_111",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_254/purpose/55",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_254",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_267/purpose/59",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_267",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_268/purpose/63",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_268",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_269/purpose/67",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_269",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_279/purpose/71",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_279",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_287/purpose/75",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_287",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_288/purpose/79",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_288",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_289/purpose/83",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_289",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_290/purpose/87",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_290",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_291/purpose/91",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T19:08:15.441Z",
+      "asserts": "dp:scan/entity/flow_291",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+    }
+  ],
+  "refused": [
+    {
+      "action_index": 0,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 2,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 3,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'refuse' is not an interview write export"
+    },
+    {
+      "action_index": 4,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 6,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 8,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 10,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 12,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 13,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 14,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 16,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 17,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 18,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 20,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 21,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 22,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 24,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 25,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 26,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 28,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 29,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 30,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 32,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 33,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 34,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 36,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 37,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 38,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 40,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 41,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 42,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 44,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 45,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 46,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 48,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 49,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 50,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 52,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 53,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 54,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 56,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 57,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 58,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 60,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 61,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 62,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 64,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 65,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 66,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 68,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 69,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 70,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 72,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 73,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 74,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 76,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 77,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 78,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 80,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 81,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 82,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 84,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 85,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 86,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 88,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 89,
+      "code": "INVALID_SHAPE",
+      "message": "data_categories must be ontology enum list (D4)"
+    },
+    {
+      "action_index": 90,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    }
+  ]
+}
