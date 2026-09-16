@@ -43,14 +43,18 @@ Must be filled (unknown until scan/interview/catalog says so):
 | System identity + `in_scope` | unknown | Confirm identity / in_scope via interview |
 | **Repo membership / System boundary** (in vs ExternalSystem/tooling) | unknown | Seeded unknown; refuse-to-invent |
 | Actors (`ActorKind`) connected to the System | partial known | Confirm/strengthen `cmp_6`, `cmp_17`, `cmp_20`, `cmp_25`; refuse inventing more |
-| ExternalSystems (canonical names) | partial known | Use third_party Discoveries below; do not merge mush ids without catalog/interview |
+| ExternalSystems (canonical names) | partial known | Scan-seeded third_party Discoveries — **do not re-ask** canonical names (e.g. `cmp_3` Aws); do not merge mush ids without catalog/interview |
 | `sends_data_to` endpoints | known | Do **not** re-ask — see `flow_*` rows in brief |
 | `sends_data_to`.`data_categories` | unknown | Ask per flow; `unspecified` allowed; omit not allowed |
 | `sends_data_to`.`purpose` | unknown | Ask per flow; `unspecified` allowed; omit not allowed |
 
 ## Scan-known (do not re-ask)
 
-These rows have `provenance=scan` in the pinned brief. Skip them in interview questions.
+These rows have `provenance=scan` in the pinned brief. **Never re-ask** them in interview questions — unless the brief explicitly marks the slot `unknown`.
+
+This includes **ExternalSystems** / third_party components (e.g. `cmp_3` Aws, `cmp_12` Auth0): scan-seeded identity is already known; do not ask stakeholders to “confirm canonical name” or re-validate scan-`known` rows.
+
+Skip all scan-`known` rows below.
 
 ### Components (28)
 
@@ -90,6 +94,18 @@ Purpose and `data_categories` on `sends_data_to` edges must use ontology enums:
 
 `unspecified` is an explicit gap, not a silent default. Omitting purpose or category on a flow is **not** allowed.
 
+### ActorKind write shape (strict)
+
+When writing `ActorKind` for partial-known actors (`cmp_6`, `cmp_17`, `cmp_20`, `cmp_25`), `value` must be **exactly one** ontology enum token — nothing else.
+
+| Write `value` | Verdict | Why |
+| --- | --- | --- |
+| `persona` | ✅ | Valid `ActorKind` enum token |
+| `Customer (persona)` | ❌ | Combines scan display name with enum — not a token |
+| `{"name":"Customer","actor_kind":"persona"}` | ❌ | Object shape — not a token |
+
+Do not embed component display names, labels, or JSON objects in ActorKind writes.
+
 ## Provenance rules
 
 Never mark a slot `known` without provenance. Allowed values: `scan` | `interview` | `cloud` | `doc`.
@@ -104,8 +120,8 @@ See [KB hygiene](../../kb-hygiene.md) and [Discoveries](../../discoveries.md).
 
 1. Load the pinned brief at SHA `16f2e85`.
 2. For each required slot, check brief status:
-   - `known` (scan) → skip; do not re-ask
-   - `partial known` → confirm/strengthen only (`cmp_6`, `cmp_17`, `cmp_20`, `cmp_25` for Actors)
+   - `known` (scan) → skip; do not re-ask (includes `flow_*` endpoints and ExternalSystems like `cmp_3`)
+   - `partial known` → Actors only: confirm `ActorKind` for `cmp_6`, `cmp_17`, `cmp_20`, `cmp_25`; write enum token only; ExternalSystems: use scan-seeded rows — do not re-ask
    - `unknown` → ask stakeholder; record answer with `provenance=interview` or refuse with `unspecified`
 3. For each `flow_*` row, ask only for missing `data_categories` and `purpose`.
 4. Stop when all unknown A0 slots are filled or explicitly marked `unspecified` — do not expand into Not A0 topics.

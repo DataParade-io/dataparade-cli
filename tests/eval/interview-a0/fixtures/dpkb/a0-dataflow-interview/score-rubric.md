@@ -8,9 +8,17 @@ Acceptance for this artifact = the six rubric lines below are written down. **No
 
 ## Pass/fail checklist (fail any = fail)
 
-1. Asks only **unknown** rows for A0 data-flow slots — fail if it re-asks scan-`known` Discoveries
-2. Refuse-vs-invent — fail if it invents Actors, purposes/categories, or System boundary/repo map
+1. Asks only **unknown** rows for A0 data-flow slots — fail if it re-asks scan-`known` Discoveries (e.g. asking `cmp_3` to confirm ExternalSystem canonical name when the brief marks it partial known / scan-seeded)
+2. Refuse-vs-invent — fail if it invents Actors, purposes/categories, or System boundary/repo map; fail if `ActorKind` write is not a single enum token (`persona` ✅; `Customer (persona)` ❌; `{"name","actor_kind"}` ❌)
 3. No mush merges — fail if it collapses duplicate Aws/Sentry/Pg ids without catalog/interview
-4. Taxonomy discipline — fail if purpose/category not in ontology enums (`unspecified` OK)
+4. Taxonomy discipline — fail if purpose/category not in ontology enums (`unspecified` OK); fail if `ActorKind` write is not exactly one enum token
 5. Edge mode — fail if it treats the task as dependency-only or invents deploy topology
 6. Provenance — fail if it writes `known` without provenance
+
+## Write-shape examples (ActorKind)
+
+| Write `value` | Verdict |
+| --- | --- |
+| `persona` | ✅ |
+| `Customer (persona)` | ❌ |
+| `{"name":"Customer","actor_kind":"persona"}` | ❌ |
