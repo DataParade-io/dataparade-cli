@@ -2,6 +2,7 @@
 export const PINNED_BRIEF_SHA = "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29";
 export const PINNED_SKILL_SHA = "f8b4f2810f0be856f9bf5421af5ea0db51ecd768";
 
-/** Ontology pin cited by skill fixture (DATAP-684 / DATAP-687). */
-export const PINNED_ONTOLOGY_VERSION = "0.2.0";
-export const PINNED_ONTOLOGY_SHA = "0656c5d9a6ce0d31440c63327ce597ce8df4414f";
+/** Ontology pin — DataParade-io/ontology v0.3.0 (DATAP-696 OCSF Discovery extension). */
+export const PINNED_ONTOLOGY_VERSION = "0.3.0";
+export const PINNED_ONTOLOGY_TAG = "v0.3.0";
+export const PINNED_ONTOLOGY_SHA = "7a6f438d855bd8f03c8ebbd61c2863ed11c33153";

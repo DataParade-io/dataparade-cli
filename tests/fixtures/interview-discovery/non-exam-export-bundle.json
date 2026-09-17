@@ -1,9 +1,9 @@
 {
   "export_kind": "interview_discovery_bundle",
   "surface": "a0-data-flow",
-  "ontology_version": "0.2.0",
-  "ontology_tag": "v0.2.0",
-  "ontology_sha": "0656c5d9a6ce0d31440c63327ce597ce8df4414f",
+  "ontology_version": "0.3.0",
+  "ontology_tag": "v0.3.0",
+  "ontology_sha": "7a6f438d855bd8f03c8ebbd61c2863ed11c33153",
   "write_back_kb_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768",
   "adapter_only": true,
   "landable": false,

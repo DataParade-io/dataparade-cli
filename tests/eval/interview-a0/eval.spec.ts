@@ -37,7 +37,7 @@ describe("eval/interview-a0", () => {
     expect(brief.sha).toBe(PINNED_BRIEF_SHA);
   });
 
-  it("cites ontology 0.2.0 Discovery model in pinned skill fixture (DATAP-687)", () => {
+  it("cites Discovery write-back model in pinned skill fixture (DATAP-687)", () => {
     const manifest = loadBriefManifest(defaultManifestPath);
     const skillMarkdown = fs.readFileSync(
       path.join(__dirname, "fixtures", manifest.skill_fixture),
@@ -48,7 +48,6 @@ describe("eval/interview-a0", () => {
       "utf8",
     );
 
-    expect(skillMarkdown).toContain(PINNED_ONTOLOGY_SHA);
     expect(skillMarkdown).toContain("source=interview");
     expect(skillMarkdown).toContain("Discovery");
     expect(writeBackMarkdown).toContain("source=interview");

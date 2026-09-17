@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+import {
+  PINNED_ONTOLOGY_SHA,
+  PINNED_ONTOLOGY_TAG,
+  PINNED_ONTOLOGY_VERSION,
+  PINNED_SKILL_SHA,
+} from "./pins";
+
 /**
  * Eligible write-back shapes per DATAP-682:
  * D2=in_scope, D4=actor_kind, D7=data_categories, D8=purpose.
@@ -58,10 +65,10 @@ export type InterviewDiscoveryRefusal = z.infer<typeof interviewDiscoveryRefusal
 export const interviewDiscoveryExportSchema = z.object({
   export_kind: z.literal("interview_discovery_bundle"),
   surface: z.literal("a0-data-flow"),
-  ontology_version: z.literal("0.2.0"),
-  ontology_tag: z.literal("v0.2.0"),
-  ontology_sha: z.literal("0656c5d9a6ce0d31440c63327ce597ce8df4414f"),
-  write_back_kb_sha: z.literal("f8b4f2810f0be856f9bf5421af5ea0db51ecd768"),
+  ontology_version: z.literal(PINNED_ONTOLOGY_VERSION),
+  ontology_tag: z.literal(PINNED_ONTOLOGY_TAG),
+  ontology_sha: z.literal(PINNED_ONTOLOGY_SHA),
+  write_back_kb_sha: z.literal(PINNED_SKILL_SHA),
   adapter_only: z.literal(true),
   landable: z.literal(false),
   promotion_blocked: z.boolean(),

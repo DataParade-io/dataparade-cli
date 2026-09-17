@@ -12,7 +12,7 @@ import {
 } from "../../eval/interview-a0/land-ocsf-discovery";
 import type { LandCandidate } from "../../eval/interview-a0/land-candidate-types";
 import { ocsfDiscoveryRecordSchema } from "../../eval/interview-a0/ocsf-discovery-types";
-import { PINNED_OCSF_ONTOLOGY_VERSION } from "../../eval/interview-a0/ocsf-pins";
+import { PINNED_ONTOLOGY_VERSION } from "../../eval/interview-a0/pins";
 
 const RYAN_CANDIDATE_PATH = path.join(
   __dirname,
@@ -47,7 +47,7 @@ describe("landOcsfDiscovery (DATAP-696)", () => {
     expect(ocsfDiscoveryRecordSchema.parse(record)).toEqual(record);
     expect(record.class_uid).toBe(900101);
     expect(record.metadata.version).toBe("1.7.0");
-    expect(record.dataparade.ontology_version).toBe(PINNED_OCSF_ONTOLOGY_VERSION);
+    expect(record.dataparade.ontology_version).toBe(PINNED_ONTOLOGY_VERSION);
     expect(record.dataparade.source).toBe("interview");
     expect(record.dataparade.reviewer).toBe("ryan@dataparade.io");
     expect(record.dataparade.brief_sha).toBe(ryanCandidate.brief_sha);

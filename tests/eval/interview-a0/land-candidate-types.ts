@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { EligibleInterviewShape } from "./discovery-export-types";
+import { PINNED_ONTOLOGY_SHA, PINNED_ONTOLOGY_VERSION } from "./pins";
 
 export const landCandidateDiscoverySchema = z.object({
   id: z.string().min(1),
@@ -17,8 +18,8 @@ export type LandCandidateDiscovery = z.infer<typeof landCandidateDiscoverySchema
 export const landCandidateSchema = z.object({
   land_candidate_id: z.string().min(1),
   ticket: z.string().optional(),
-  ontology_version: z.literal("0.2.0"),
-  ontology_sha: z.literal("0656c5d9a6ce0d31440c63327ce597ce8df4414f"),
+  ontology_version: z.literal(PINNED_ONTOLOGY_VERSION),
+  ontology_sha: z.literal(PINNED_ONTOLOGY_SHA),
   skill_sha: z.literal("f8b4f2810f0be856f9bf5421af5ea0db51ecd768"),
   brief_sha: z.literal("16f2e857a47d54bfea6ca5d7f23a6c4f2732da29"),
   reviewer: z.string(),

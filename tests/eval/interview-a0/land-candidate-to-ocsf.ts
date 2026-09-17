@@ -2,11 +2,11 @@ import {
   PINNED_OCSF_BASE_VERSION,
   PINNED_OCSF_EXTENSION_NAME,
   PINNED_OCSF_EXTENSION_VERSION,
-  PINNED_OCSF_ONTOLOGY_VERSION,
   OCSF_ARCHITECTURE_CATEGORY_UID,
   OCSF_ARCHITECTURE_DISCOVERY_CLASS_UID,
   OCSF_ARCHITECTURE_DISCOVERY_TYPE_UID,
 } from "./ocsf-pins";
+import { PINNED_ONTOLOGY_VERSION } from "./pins";
 import type { OcsfDiscoveryRecord } from "./ocsf-discovery-types";
 import type { LandCandidate, LandCandidateDiscovery } from "./land-candidate-types";
 
@@ -70,7 +70,7 @@ export function landCandidateDiscoveryToOcsf(
     ],
     dataparade: {
       record_kind: "discovery",
-      ontology_version: PINNED_OCSF_ONTOLOGY_VERSION,
+      ontology_version: PINNED_ONTOLOGY_VERSION,
       source: "interview",
       asserted_at: discovery.asserted_at,
       asserts: discovery.asserts,

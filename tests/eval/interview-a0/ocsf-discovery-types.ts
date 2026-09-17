@@ -4,17 +4,20 @@ import {
   PINNED_OCSF_BASE_VERSION,
   PINNED_OCSF_EXTENSION_NAME,
   PINNED_OCSF_EXTENSION_VERSION,
-  PINNED_OCSF_ONTOLOGY_VERSION,
   OCSF_ARCHITECTURE_CATEGORY_UID,
   OCSF_ARCHITECTURE_DISCOVERY_CLASS_UID,
   OCSF_ARCHITECTURE_DISCOVERY_TYPE_UID,
 } from "./ocsf-pins";
-import { PINNED_BRIEF_SHA, PINNED_SKILL_SHA } from "./pins";
+import {
+  PINNED_BRIEF_SHA,
+  PINNED_ONTOLOGY_VERSION,
+  PINNED_SKILL_SHA,
+} from "./pins";
 
 const dataparadePayloadSchema = z
   .object({
     record_kind: z.literal("discovery"),
-    ontology_version: z.literal(PINNED_OCSF_ONTOLOGY_VERSION),
+    ontology_version: z.literal(PINNED_ONTOLOGY_VERSION),
     source: z.enum(["scan", "cloud", "interview"]),
     asserted_at: z.string().datetime(),
     asserts: z.string().min(1),

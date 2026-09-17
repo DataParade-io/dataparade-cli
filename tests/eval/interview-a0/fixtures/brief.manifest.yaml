@@ -15,5 +15,6 @@ rubric_fixture: dpkb/a0-dataflow-interview/score-rubric.md
 rubric_fixture_sha256: 6e23ffa4caab7023857f80b717b748ca206f977fc6d23f3898b9fdb7862b15e4
 write_back_fixture: dpkb/a0-dataflow-interview/write-back-rules.md
 write_back_fixture_sha256: f098b4d8cee838967fbcfebffec60366f50ad78696a685117ac94890fa7cfe29
-ontology_version: 0.2.0
-ontology_sha: 0656c5d9a6ce0d31440c63327ce597ce8df4414f
+ontology_version: 0.3.0
+ontology_tag: v0.3.0
+ontology_sha: 7a6f438d855bd8f03c8ebbd61c2863ed11c33153

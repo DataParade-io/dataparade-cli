@@ -1,6 +1,7 @@
 import {
   PINNED_BRIEF_SHA,
   PINNED_ONTOLOGY_SHA,
+  PINNED_ONTOLOGY_TAG,
   PINNED_ONTOLOGY_VERSION,
   PINNED_SKILL_SHA,
 } from "./pins";
@@ -354,7 +355,7 @@ function buildRecord(
 }
 
 /**
- * Export ontology 0.2.0 interview Discoveries from eval interview writes.
+ * Export ontology interview Discoveries from eval interview writes (pinned in pins.ts).
  *
  * Adapter only — `landable` is always false. Never auto-promotes frozen scripted
  * exams (datap-673/674/676). Does not rename eval actions or mint scan/cloud source.
@@ -389,7 +390,7 @@ export function exportInterviewDiscoveries(
       export_kind: "interview_discovery_bundle",
       surface: "a0-data-flow",
       ontology_version: PINNED_ONTOLOGY_VERSION,
-      ontology_tag: "v0.2.0",
+      ontology_tag: PINNED_ONTOLOGY_TAG,
       ontology_sha: PINNED_ONTOLOGY_SHA,
       write_back_kb_sha: PINNED_SKILL_SHA,
       adapter_only: true,
@@ -431,7 +432,7 @@ export function exportInterviewDiscoveries(
     export_kind: "interview_discovery_bundle",
     surface: "a0-data-flow",
     ontology_version: PINNED_ONTOLOGY_VERSION,
-    ontology_tag: "v0.2.0",
+    ontology_tag: PINNED_ONTOLOGY_TAG,
     ontology_sha: PINNED_ONTOLOGY_SHA,
     write_back_kb_sha: PINNED_SKILL_SHA,
     adapter_only: true,
