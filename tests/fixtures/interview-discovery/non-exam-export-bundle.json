@@ -1,0 +1,116 @@
+{
+  "export_kind": "interview_discovery_bundle",
+  "surface": "a0-data-flow",
+  "ontology_version": "0.2.0",
+  "ontology_tag": "v0.2.0",
+  "ontology_sha": "0656c5d9a6ce0d31440c63327ce597ce8df4414f",
+  "write_back_kb_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768",
+  "adapter_only": true,
+  "landable": false,
+  "promotion_blocked": false,
+  "interview_id": "production-a0-2026-09-16",
+  "discoveries": [
+    {
+      "id": "dp:discovery/interview/dp_a0_system/in_scope/1",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T22:30:00.000Z",
+      "asserts": "dp:a0/system",
+      "asserted_slot": "in_scope",
+      "asserted_value": "DataParade",
+      "eligible_shape": "D2",
+      "raw_evidence_ref": "transcript:stakeholder-interviews/2026-09-16-dataparade-a0-review.md",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_cmp_6/actor_kind/5",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T22:30:00.000Z",
+      "asserts": "dp:scan/entity/cmp_6",
+      "asserted_slot": "actor_kind",
+      "asserted_value": "persona",
+      "eligible_shape": "D4",
+      "raw_evidence_ref": "transcript:stakeholder-interviews/2026-09-16-dataparade-a0-review.md",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_103/data_categories/7",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T22:30:00.000Z",
+      "asserts": "dp:scan/entity/flow_103",
+      "asserted_slot": "data_categories",
+      "asserted_value": "[\"identifiers\",\"contact\"]",
+      "eligible_shape": "D7",
+      "raw_evidence_ref": "transcript:stakeholder-interviews/2026-09-16-dataparade-a0-review.md",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_103/purpose/9",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T22:30:00.000Z",
+      "asserts": "dp:scan/entity/flow_103",
+      "asserted_slot": "purpose",
+      "asserted_value": "service_provision",
+      "eligible_shape": "D8",
+      "raw_evidence_ref": "transcript:stakeholder-interviews/2026-09-16-dataparade-a0-review.md",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
+    },
+    {
+      "id": "dp:discovery/interview/dp_scan_entity_flow_109/purpose/11",
+      "class": "Discovery",
+      "source": "interview",
+      "asserted_at": "2026-09-16T22:30:00.000Z",
+      "asserts": "dp:scan/entity/flow_109",
+      "asserted_slot": "purpose",
+      "asserted_value": "unspecified",
+      "eligible_shape": "D8",
+      "raw_evidence_ref": "transcript:stakeholder-interviews/2026-09-16-dataparade-a0-review.md",
+      "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
+    }
+  ],
+  "refused": [
+    {
+      "action_index": 0,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 2,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 3,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'refuse' is not an interview write export"
+    },
+    {
+      "action_index": 4,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 6,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 8,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    },
+    {
+      "action_index": 10,
+      "code": "NOT_INTERVIEW_WRITE",
+      "message": "Action kind 'ask' is not an interview write export"
+    }
+  ]
+}
