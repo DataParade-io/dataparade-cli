@@ -62,6 +62,7 @@
     "export-bundle-to-land-candidate": "node tests/eval/interview-a0/bin/export-bundle-to-land-candidate.mjs",
     "land-ocsf-discovery": "node tests/eval/interview-a0/bin/land-ocsf-discovery.mjs",
     "validate-ocsf-discovery": "node tests/eval/interview-a0/bin/validate-ocsf-discovery.mjs",
+    "project-a0-diagram": "node tests/eval/a0-diagram/bin/project-a0-diagram.mjs",
     "eval:interview-a0:run-model": "node tests/eval/interview-a0/experiments/datap-673/run-model-interview.mjs",
     "eval:interview-a0:run-model-luna": "node tests/eval/interview-a0/experiments/datap-674/run-model-interview.mjs",
     "scan": "node dist/bin/cli.js scan",
