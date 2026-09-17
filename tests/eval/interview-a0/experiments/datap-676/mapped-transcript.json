@@ -1,0 +1,656 @@
+{
+  "id": "datap-676-mapped-from-raw",
+  "description": "Mechanical mapper output from raw-model-transcript.jsonl (DATAP-676). Not hand-edited.",
+  "actions": [
+    {
+      "kind": "ask",
+      "slot": "system_identity",
+      "text": "Please confirm the system name and whether DataParade is in scope for this A0 system-context data-flow projection."
+    },
+    {
+      "kind": "write",
+      "slot": "system_identity",
+      "text": "Recorded product identity and customer-facing application scope from stakeholder.",
+      "value": "DataParade",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "system_boundary",
+      "text": "Which repositories belong inside the DataParade System boundary for this A0 projection, and which are external or tooling? Please identify only memberships you can establish; do not assume sibling repositories belong inside."
+    },
+    {
+      "kind": "refuse",
+      "slot": "system_boundary",
+      "text": "System boundary and repository membership remain unknown; refusing to invent a sibling-repository map."
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "text": "For discovery cmp_6 (Customer), which single ActorKind ontology value applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "text": "Recorded ActorKind for discovery cmp_6.",
+      "value": "persona",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "text": "For discovery cmp_17 (User), which single ActorKind ontology value applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "text": "Recorded ActorKind for discovery cmp_17.",
+      "value": "person",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "text": "For discovery cmp_20 (Customer), which single ActorKind ontology value applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "text": "Recorded ActorKind for discovery cmp_20.",
+      "value": "persona",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "text": "For discovery cmp_25 (User), which single ActorKind ontology value applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "text": "Recorded ActorKind for discovery cmp_25.",
+      "value": "person",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "text": "For flow_1 (cmp_1 lambdas → cmp_2 Pg), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "text": "Recorded DataCategory for flow_1.",
+      "value": "personal",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_1",
+      "text": "For flow_1 (cmp_1 lambdas → cmp_2 Pg), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_1",
+      "text": "Recorded Purpose for flow_1.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "text": "For flow_10 (cmp_1 lambdas → cmp_3 Aws), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "text": "Recorded DataCategory for flow_10.",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "text": "For flow_10 (cmp_1 lambdas → cmp_3 Aws), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "text": "Recorded Purpose for flow_10.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "text": "For flow_14 (cmp_1 lambdas → cmp_4 Sendgrid), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "text": "Recorded DataCategory for flow_14.",
+      "value": "communications",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "text": "For flow_14 (cmp_1 lambdas → cmp_4 Sendgrid), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "text": "Recorded Purpose for flow_14.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "text": "For flow_20 (cmp_1 lambdas → cmp_5 Sentry), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "text": "Recorded DataCategory for flow_20.",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "text": "For flow_20 (cmp_1 lambdas → cmp_5 Sentry), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "text": "Recorded Purpose for flow_20.",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "text": "For flow_24 (cmp_7 backend → cmp_8 Pg), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "text": "Recorded DataCategories for flow_24.",
+      "value": [
+        "personal",
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "text": "For flow_61 (cmp_7 backend → cmp_9 Typeorm), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified? You may provide one or more allowed values."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "text": "Recorded DataCategory for flow_61.",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "text": "For flow_24 (cmp_7 backend → cmp_8 Pg), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "text": "Recorded Purpose for flow_24.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "text": "For flow_61 (cmp_7 backend → cmp_9 Typeorm), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "text": "Recorded Purpose for flow_61.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "text": "For flow_103 (cmp_6 Customer → cmp_7 backend), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "text": "Recorded DataCategories for flow_103.",
+      "value": [
+        "identifiers",
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "text": "For flow_103 (cmp_6 Customer → cmp_7 backend), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "text": "Recorded Purpose for flow_103.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "text": "For flow_106 (cmp_7 backend → cmp_14 Sentry), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "text": "Recorded DataCategory for flow_106.",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "text": "For flow_106 (cmp_7 backend → cmp_14 Sentry), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "text": "Recorded Purpose for flow_106.",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "text": "For flow_109 (cmp_7 backend → cmp_13 Sendgrid), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "text": "Recorded DataCategory for flow_109.",
+      "value": "communications",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "text": "For flow_109 (cmp_7 backend → cmp_13 Sendgrid), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "text": "Recorded Purpose for flow_109.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "text": "For flow_111 (cmp_7 backend → cmp_11 Aws), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "text": "Recorded DataCategory for flow_111.",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "text": "For flow_111 (cmp_7 backend → cmp_11 Aws), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "text": "Recorded Purpose for flow_111.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "text": "For flow_254 (cmp_7 backend → cmp_12 Auth0), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "text": "Recorded DataCategories for flow_254.",
+      "value": [
+        "credentials",
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "text": "For flow_254 (cmp_7 backend → cmp_12 Auth0), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "text": "Recorded Purpose for flow_254.",
+      "value": "security",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "text": "For flow_267 (cmp_22 frontend → cmp_24 Auth0), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "text": "Recorded DataCategory for flow_267.",
+      "value": "credentials",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "text": "For flow_267 (cmp_22 frontend → cmp_24 Auth0), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "text": "Recorded Purpose for flow_267.",
+      "value": "security",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "text": "For flow_268 (cmp_22 frontend → cmp_23 Sentry), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "text": "Recorded DataCategory for flow_268.",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "text": "For flow_268 (cmp_22 frontend → cmp_23 Sentry), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "text": "Recorded Purpose for flow_268.",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "text": "For flow_269 (cmp_20 Customer → cmp_22 frontend), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "text": "Recorded DataCategories for flow_269.",
+      "value": [
+        "identifiers",
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "text": "For flow_269 (cmp_20 Customer → cmp_22 frontend), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "text": "Recorded Purpose for flow_269.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "text": "For flow_279 (cmp_27 landing → cmp_28 Dataparade.io), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "text": "Recorded DataCategory for flow_279.",
+      "value": "contact",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "text": "For flow_279 (cmp_27 landing → cmp_28 Dataparade.io), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "text": "Recorded Purpose for flow_279.",
+      "value": "marketing",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "text": "For flow_287 (cmp_22 frontend → cmp_21 API), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "text": "Recorded DataCategory for flow_287.",
+      "value": "identifiers",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "text": "For flow_287 (cmp_22 frontend → cmp_21 API), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "text": "Recorded Purpose for flow_287.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "text": "For flow_288 (cmp_27 landing → cmp_26 API), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "text": "Recorded DataCategory for flow_288.",
+      "value": "identifiers",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "text": "For flow_288 (cmp_27 landing → cmp_26 API), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "text": "Recorded Purpose for flow_288.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "text": "For flow_289 (cmp_19 docs-site → cmp_18 API), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "text": "Recorded DataCategory for flow_289.",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "text": "For flow_289 (cmp_19 docs-site → cmp_18 API), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "text": "Recorded Purpose for flow_289.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "text": "For flow_290 (cmp_17 User → cmp_19 docs-site), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "text": "Recorded DataCategory for flow_290.",
+      "value": "identifiers",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "text": "For flow_290 (cmp_17 User → cmp_19 docs-site), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "text": "Recorded Purpose for flow_290.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "text": "For flow_291 (cmp_25 User → cmp_27 landing), which DataCategory applies: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "text": "Recorded DataCategory for flow_291.",
+      "value": "contact",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_291",
+      "text": "For flow_291 (cmp_25 User → cmp_27 landing), which Purpose applies: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_291",
+      "text": "Recorded Purpose for flow_291.",
+      "value": "service_provision",
+      "provenance": "interview"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "discoveries": [
+    { "eligible_shape": "D2", "asserted_slot": "in_scope" },
+    { "eligible_shape": "D4", "asserted_slot": "actor_kind" },
+    { "eligible_shape": "D7", "asserted_slot": "data_categories" },
+    { "eligible_shape": "D8", "asserted_slot": "purpose" },
+    { "eligible_shape": "D8", "asserted_slot": "purpose" }
+  ],
+  "refused_codes": []
+}

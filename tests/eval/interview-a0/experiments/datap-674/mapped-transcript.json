@@ -1,0 +1,686 @@
+{
+  "id": "datap-674-mapped-from-raw",
+  "description": "Mechanical mapper output from raw-model-transcript.jsonl (DATAP-674). Not hand-edited.",
+  "actions": [
+    {
+      "kind": "ask",
+      "slot": "system_identity",
+      "text": "Please confirm the system identity and whether DataParade is in scope for this A0 system-context data-flow projection."
+    },
+    {
+      "kind": "write",
+      "slot": "system_identity",
+      "text": "Recorded system identity and in-scope application from stakeholder.",
+      "value": "[object Object]",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "system_boundary",
+      "text": "Please confirm which repositories are inside the DataParade system boundary for this A0 slice, specifically whether scanner, ontology, knowledge-base, or dataparade-cli are in scope."
+    },
+    {
+      "kind": "refuse",
+      "slot": "system_boundary",
+      "text": "System boundary and sibling-repository membership remain unknown; not inventing a repo map."
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "text": "Please confirm or clarify the actor represented by discovery cmp_6 (currently scanned as Customer), including its ActorKind: person, role, or persona."
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "text": "Recorded stakeholder confirmation for cmp_6.",
+      "value": "[object Object]",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "text": "Please confirm or clarify the actor represented by discovery cmp_17 (currently scanned as User), including its ActorKind: person, role, or persona."
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "text": "Recorded stakeholder confirmation for cmp_17.",
+      "value": "[object Object]",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "text": "Please confirm or clarify the actor represented by discovery cmp_20 (currently scanned as Customer), including its ActorKind: person, role, or persona."
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "text": "Recorded stakeholder confirmation for cmp_20.",
+      "value": "[object Object]",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "text": "Please confirm or clarify the actor represented by discovery cmp_25 (currently scanned as User), including its ActorKind: person, role, or persona."
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "text": "Recorded stakeholder confirmation for cmp_25.",
+      "value": "[object Object]",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "text": "For flow_1 (cmp_1 lambdas → cmp_2 Pg), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_1.",
+      "value": [
+        "personal"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_1",
+      "text": "For flow_1 (cmp_1 lambdas → cmp_2 Pg), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_1",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_1.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "text": "For flow_10 (cmp_1 lambdas → cmp_3 Aws), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_10.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "text": "For flow_10 (cmp_1 lambdas → cmp_3 Aws), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_10.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "text": "For flow_14 (cmp_1 lambdas → cmp_4 Sendgrid), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_14.",
+      "value": [
+        "communications"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "text": "For flow_14 (cmp_1 lambdas → cmp_4 Sendgrid), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_14.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "text": "For flow_20 (cmp_1 lambdas → cmp_5 Sentry), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_20.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "text": "For flow_20 (cmp_1 lambdas → cmp_5 Sentry), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_20.",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "text": "For flow_24 (cmp_7 backend → cmp_8 Pg), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "text": "Recorded the stakeholder-provided ontology data categories for flow_24.",
+      "value": [
+        "personal",
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "text": "For flow_24 (cmp_7 backend → cmp_8 Pg), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_24.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "text": "For flow_61 (cmp_7 backend → cmp_9 Typeorm), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_61.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "text": "For flow_61 (cmp_7 backend → cmp_9 Typeorm), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_61.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "text": "For flow_103 (cmp_6 Customer → cmp_7 backend), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "text": "Recorded the stakeholder-provided ontology data categories for flow_103.",
+      "value": [
+        "identifiers",
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "text": "For flow_103 (cmp_6 Customer → cmp_7 backend), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_103.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "text": "For flow_106 (cmp_7 backend → cmp_14 Sentry), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_106.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "text": "For flow_106 (cmp_7 backend → cmp_14 Sentry), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_106.",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "text": "For flow_109 (cmp_7 backend → cmp_13 Sendgrid), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_109.",
+      "value": [
+        "communications"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "text": "For flow_109 (cmp_7 backend → cmp_13 Sendgrid), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_109.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "text": "For flow_111 (cmp_7 backend → cmp_11 Aws), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_111.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "text": "For flow_111 (cmp_7 backend → cmp_11 Aws), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_111.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "text": "For flow_254 (cmp_7 backend → cmp_12 Auth0), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "text": "Recorded the stakeholder-provided ontology data categories for flow_254.",
+      "value": [
+        "credentials",
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "text": "For flow_254 (cmp_7 backend → cmp_12 Auth0), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_254.",
+      "value": "security",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "text": "For flow_267 (cmp_22 frontend → cmp_24 Auth0), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_267.",
+      "value": [
+        "credentials"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "text": "For flow_267 (cmp_22 frontend → cmp_24 Auth0), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_267.",
+      "value": "security",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "text": "For flow_268 (cmp_22 frontend → cmp_23 Sentry), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_268.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "text": "For flow_268 (cmp_22 frontend → cmp_23 Sentry), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_268.",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "text": "For flow_269 (cmp_20 Customer → cmp_22 frontend), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "text": "Recorded the stakeholder-provided ontology data categories for flow_269.",
+      "value": [
+        "identifiers",
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "text": "For flow_269 (cmp_20 Customer → cmp_22 frontend), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_269.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "text": "For flow_279 (cmp_27 landing → cmp_28 Dataparade.io), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_279.",
+      "value": [
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "text": "For flow_279 (cmp_27 landing → cmp_28 Dataparade.io), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_279.",
+      "value": "marketing",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "text": "For flow_287 (cmp_22 frontend → cmp_21 API), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_287.",
+      "value": [
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "text": "For flow_287 (cmp_22 frontend → cmp_21 API), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_287.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "text": "For flow_288 (cmp_27 landing → cmp_26 API), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_288.",
+      "value": [
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "text": "For flow_288 (cmp_27 landing → cmp_26 API), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_288.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "text": "For flow_289 (cmp_19 docs-site → cmp_18 API), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_289.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "text": "For flow_289 (cmp_19 docs-site → cmp_18 API), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_289.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "text": "For flow_290 (cmp_17 User → cmp_19 docs-site), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_290.",
+      "value": [
+        "identifiers"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "text": "For flow_290 (cmp_17 User → cmp_19 docs-site), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "text": "Recorded the stakeholder-provided ontology purpose for flow_290.",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "text": "For flow_291 (cmp_25 User → cmp_27 landing), what data category applies? Choose one or more of personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "text": "Recorded the stakeholder-provided ontology data category for flow_291.",
+      "value": [
+        "contact"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_291",
+      "text": "For flow_291 (cmp_25 User → cmp_27 landing), what purpose applies? Choose service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "ask",
+      "slot": "external_systems",
+      "discoveryId": "cmp_3",
+      "text": "Please confirm the canonical external-system name for discovery cmp_3, currently scanned as Aws. Do not merge it with other Aws discoveries unless you explicitly confirm that mapping."
+    }
+  ]
+}

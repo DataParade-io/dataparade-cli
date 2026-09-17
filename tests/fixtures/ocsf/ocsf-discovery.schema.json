@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/dataparade/ontology/generated/ocsf-discovery.schema.json",
+  "title": "DataParade OCSF Architecture Discovery record",
+  "description": "Wire format for Discovery (DATAP-696). OCSF base 1.7.0 + dataparade_discovery extension 1.0.0.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "class_name",
+    "class_uid",
+    "category_name",
+    "category_uid",
+    "activity_id",
+    "activity_name",
+    "type_uid",
+    "time",
+    "metadata",
+    "dataparade"
+  ],
+  "properties": {
+    "class_name": { "const": "Architecture Discovery" },
+    "class_uid": { "const": 900101 },
+    "category_name": { "const": "Architecture" },
+    "category_uid": { "const": 9001 },
+    "activity_id": { "const": 1 },
+    "activity_name": { "const": "Create" },
+    "type_uid": { "const": 90010101 },
+    "time": { "type": "integer", "minimum": 0 },
+    "severity": { "type": "string" },
+    "severity_id": { "type": "integer" },
+    "status": { "type": "string" },
+    "status_id": { "type": "integer" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["version", "uid"],
+      "properties": {
+        "version": { "const": "1.7.0" },
+        "uid": { "type": "string", "minLength": 1 },
+        "extension": {
+          "type": "object",
+          "required": ["name", "version"],
+          "properties": {
+            "name": { "const": "dataparade_discovery" },
+            "version": { "const": "1.0.0" }
+          }
+        },
+        "product": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "vendor_name": { "type": "string" }
+          }
+        },
+        "profiles": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uid": { "type": "string" },
+          "name": { "type": "string" },
+          "type": { "type": "string" }
+        }
+      }
+    },
+    "unmapped": { "type": "object" },
+    "dataparade": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_kind",
+        "ontology_version",
+        "source",
+        "asserted_at",
+        "asserts"
+      ],
+      "properties": {
+        "record_kind": { "const": "discovery" },
+        "ontology_version": { "const": "0.3.0" },
+        "source": { "enum": ["scan", "cloud", "interview"] },
+        "asserted_at": { "type": "string", "format": "date-time" },
+        "asserts": { "type": "string", "minLength": 1 },
+        "asserted_slot": { "type": "string", "minLength": 1 },
+        "asserted_value": { "type": "string", "minLength": 1 },
+        "eligible_shape": { "enum": ["D2", "D4", "D7", "D8"] },
+        "raw_evidence_ref": { "type": "string", "minLength": 1 },
+        "reviewer": { "type": "string", "minLength": 1 },
+        "reviewed_at": { "type": "string", "format": "date-time" },
+        "brief_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "skill_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "supersedes": { "type": "string", "minLength": 1 },
+        "related_resource_refs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "source": { "const": "interview" } },
+            "required": ["source"]
+          },
+          "then": {
+            "required": [
+              "raw_evidence_ref",
+              "reviewer",
+              "reviewed_at",
+              "brief_sha",
+              "skill_sha"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
