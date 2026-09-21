@@ -8,23 +8,24 @@ import {
   projectA0DiagramGraph,
 } from "../../eval/a0-diagram/a0-diagram-projector";
 import { validateA0DiscoveriesDocument } from "../../eval/a0-diagram/a0-discoveries-document.schema";
+import { loadDiscoverySeedFromFile } from "../../eval/a0-diagram/load-discovery-seed";
 import { loadOcsfDiscoveriesFromDir } from "../../eval/a0-diagram/load-ocsf-discoveries";
 import { renderDiagramToD2, renderDiagramToSvg } from "../../eval/a0-diagram/d2-diagram-render";
 import { loadDefaultBriefSnapshot } from "../../eval/interview-a0/load-brief";
-import { fixturesRoot } from "../../eval/interview-a0/manifest";
 import { PINNED_BRIEF_SHA } from "../../eval/interview-a0/pins";
+
+const DISCOVERY_SEED_PATH = path.join(
+  __dirname,
+  "../../eval/a0-diagram/fixtures/dataparade-discovery-seed.json",
+);
 
 const DOGFOOD_OCSF_DIR = path.join(
   __dirname,
   "../../../../knowledge-base/project/wiki/graph/dogfood/ocsf-discoveries",
 );
 
-function loadBriefMarkdown(): string {
-  return fs.readFileSync(path.join(fixturesRoot, "dpkb/dogfood-brief-a0.md"), "utf8");
-}
-
 describe("a0DiagramProjector (DATAP-699)", () => {
-  const briefMarkdown = loadBriefMarkdown();
+  const discoverySeed = loadDiscoverySeedFromFile(DISCOVERY_SEED_PATH);
   const brief = loadDefaultBriefSnapshot();
   const discoveries = (() => {
     if (!fs.existsSync(DOGFOOD_OCSF_DIR)) {
@@ -33,8 +34,8 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     return loadOcsfDiscoveriesFromDir(DOGFOOD_OCSF_DIR);
   })();
 
-  it("builds dogfood A0 discoveries dataflow.json from brief scan rows and OCSF", () => {
-    const document = buildA0DiscoveriesDocument({ briefMarkdown, discoveries });
+  it("builds dogfood A0 discoveries dataflow.json from scanner seed and OCSF", () => {
+    const document = buildA0DiscoveriesDocument({ seed: discoverySeed, discoveries });
 
     expect(validateA0DiscoveriesDocument(document).ok).toBe(true);
     expect(document.components.length).toBe(28);
@@ -45,10 +46,14 @@ describe("a0DiagramProjector (DATAP-699)", () => {
 
     const cmp6 = document.components.find((row) => row.id === "cmp_6");
     expect(cmp6?.actor_kind).toBeDefined();
+    expect(cmp6?.confidence).toBeGreaterThan(0);
+    expect(cmp6?.sourceLocations.length).toBeGreaterThan(0);
 
     const flow103 = document.dataFlows.find((row) => row.id === "flow_103");
     expect(flow103?.data_categories).toEqual(["other"]);
     expect(flow103?.purpose).toBeDefined();
+    expect(flow103?.sourceComponentId).toBeDefined();
+    expect(flow103?.targetComponentId).toBeDefined();
 
     const serialized = JSON.stringify(document);
     expect(serialized).not.toContain('"position"');
@@ -56,11 +61,11 @@ describe("a0DiagramProjector (DATAP-699)", () => {
   });
 
   it("projects dogfood A0 to a valid diagram.json wrapper in interview mode", () => {
-    const discoveriesDocument = buildA0DiscoveriesDocument({ briefMarkdown, discoveries });
+    const discoveriesDocument = buildA0DiscoveriesDocument({ seed: discoverySeed, discoveries });
     const wrapper = buildA0DiagramWrapper({
-      briefMarkdown,
       brief,
       discoveries,
+      discoverySeed,
       discoveriesDocument,
       mode: "interview",
       projectName: "dogfood-a0-test",
@@ -78,11 +83,11 @@ describe("a0DiagramProjector (DATAP-699)", () => {
   });
 
   it("shows unknown/partial slots in interview mode", () => {
-    const discoveriesDocument = buildA0DiscoveriesDocument({ briefMarkdown, discoveries });
+    const discoveriesDocument = buildA0DiscoveriesDocument({ seed: discoverySeed, discoveries });
     const graph = projectA0DiagramGraph({
-      briefMarkdown,
       brief,
       discoveries,
+      discoverySeed,
       discoveriesDocument,
       mode: "interview",
     });
@@ -104,11 +109,11 @@ describe("a0DiagramProjector (DATAP-699)", () => {
   });
 
   it("renders D2 source and SVG with dashed unknown styling", () => {
-    const discoveriesDocument = buildA0DiscoveriesDocument({ briefMarkdown, discoveries });
+    const discoveriesDocument = buildA0DiscoveriesDocument({ seed: discoverySeed, discoveries });
     const graph = projectA0DiagramGraph({
-      briefMarkdown,
       brief,
       discoveries,
+      discoverySeed,
       discoveriesDocument,
       mode: "interview",
     });
@@ -122,11 +127,11 @@ describe("a0DiagramProjector (DATAP-699)", () => {
   });
 
   it("projects dogfood A0 to a valid diagram.json wrapper in filled mode", () => {
-    const discoveriesDocument = buildA0DiscoveriesDocument({ briefMarkdown, discoveries });
+    const discoveriesDocument = buildA0DiscoveriesDocument({ seed: discoverySeed, discoveries });
     const wrapper = buildA0DiagramWrapper({
-      briefMarkdown,
       brief,
       discoveries,
+      discoverySeed,
       discoveriesDocument,
       mode: "filled",
       projectName: "dogfood-a0-filled-test",
@@ -142,19 +147,19 @@ describe("a0DiagramProjector (DATAP-699)", () => {
   });
 
   it("omits unknown slots and question placeholders in filled mode", () => {
-    const discoveriesDocument = buildA0DiscoveriesDocument({ briefMarkdown, discoveries });
+    const discoveriesDocument = buildA0DiscoveriesDocument({ seed: discoverySeed, discoveries });
     const graph = projectA0DiagramGraph({
-      briefMarkdown,
       brief,
       discoveries,
+      discoverySeed,
       discoveriesDocument,
       mode: "filled",
     });
 
     const interview = projectA0DiagramGraph({
-      briefMarkdown,
       brief,
       discoveries,
+      discoverySeed,
       discoveriesDocument,
       mode: "interview",
     });
@@ -192,14 +197,14 @@ describe("a0DiagramProjector (DATAP-699)", () => {
       ),
     };
     const discoveriesDocument = buildA0DiscoveriesDocument({
-      briefMarkdown,
+      seed: discoverySeed,
       discoveries: discoveriesWithoutFlow103Purpose,
     });
 
     const interview = projectA0DiagramGraph({
-      briefMarkdown,
       brief,
       discoveries: discoveriesWithoutFlow103Purpose,
+      discoverySeed,
       discoveriesDocument,
       mode: "interview",
     });
@@ -209,9 +214,9 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(interviewEdge!.data!.privacy?.categoriesStatus).toBe("known");
 
     const filled = projectA0DiagramGraph({
-      briefMarkdown,
       brief,
       discoveries: discoveriesWithoutFlow103Purpose,
+      discoverySeed,
       discoveriesDocument,
       mode: "filled",
     });

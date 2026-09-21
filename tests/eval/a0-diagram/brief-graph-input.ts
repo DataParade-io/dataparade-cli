@@ -120,6 +120,10 @@ export function componentNodeType(kindHint: string): "actor" | "asset" {
   return kindHint.includes("actor/") ? "actor" : "asset";
 }
 
+export function componentNodeTypeFromDiscoveryType(type: string): "actor" | "asset" {
+  return type === "actor" ? "actor" : "asset";
+}
+
 export function assertBriefSnapshotPins(brief: BriefSnapshot, expectedSha: string): void {
   if (brief.sha !== expectedSha) {
     throw new Error(`Brief SHA ${brief.sha} does not match required pin ${expectedSha}`);
