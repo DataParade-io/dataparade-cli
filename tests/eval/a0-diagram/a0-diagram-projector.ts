@@ -8,11 +8,12 @@ import {
   parseBriefFlows,
   type BriefFlowRow,
 } from "./brief-graph-input";
-import {
-  discoveryValue,
-  indexDiscoverySlots,
-  type LoadedOcsfDiscoveries,
-} from "./load-ocsf-discoveries";
+import type { A0DiscoveriesDocument } from "./a0-discoveries-document.schema";
+import { buildA0DiscoveriesDocument } from "./build-a0-discoveries-document";
+
+export { buildA0DiscoveriesDocument } from "./build-a0-discoveries-document";
+export type { A0DiscoveriesDocument } from "./a0-discoveries-document.schema";
+import type { LoadedOcsfDiscoveries } from "./load-ocsf-discoveries";
 import type { BriefSnapshot } from "../interview-a0/types";
 import { PINNED_BRIEF_SHA } from "../interview-a0/pins";
 
@@ -33,6 +34,7 @@ export interface ProjectA0DiagramInput {
   briefMarkdown: string;
   brief: BriefSnapshot;
   discoveries: LoadedOcsfDiscoveries;
+  discoveriesDocument?: A0DiscoveriesDocument;
   mode?: A0ProjectorMode;
   projectName?: string;
 }
@@ -46,21 +48,6 @@ export interface FlowPrivacyState {
   slotStatus: SlotStatus;
 }
 
-function parseCategoriesValue(raw: string | undefined): string[] | null {
-  if (!raw) {
-    return null;
-  }
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    if (Array.isArray(parsed)) {
-      return parsed.map(String);
-    }
-  } catch {
-    return null;
-  }
-  return null;
-}
-
 function mergeSlotStatus(parts: SlotStatus[]): SlotStatus {
   if (parts.includes("unknown")) {
     return "unknown";
@@ -71,20 +58,28 @@ function mergeSlotStatus(parts: SlotStatus[]): SlotStatus {
   return "known";
 }
 
+function flowRowFromDocument(
+  document: A0DiscoveriesDocument,
+  flowId: string,
+): A0DiscoveriesDocument["dataFlows"][number] | undefined {
+  return document.dataFlows.find((row) => row.id === flowId);
+}
+
 function flowPrivacyState(
   flow: BriefFlowRow,
-  discoveryIndex: ReturnType<typeof indexDiscoverySlots>,
+  discoveriesDocument: A0DiscoveriesDocument,
   brief: BriefSnapshot,
 ): FlowPrivacyState {
-  const asserts = `dp:scan/entity/${flow.flowId}`;
-  const categoriesRaw = discoveryValue(discoveryIndex, asserts, "data_categories");
-  const purposeRaw = discoveryValue(discoveryIndex, asserts, "purpose");
+  const flowRow = flowRowFromDocument(discoveriesDocument, flow.flowId);
 
   const categoriesUnknownByBrief = brief.unknownSlots.includes("sends_data_to.data_categories");
   const purposeUnknownByBrief = brief.unknownSlots.includes("sends_data_to.purpose");
 
-  const dataCategories = parseCategoriesValue(categoriesRaw);
-  const purpose = purposeRaw ?? null;
+  const dataCategories =
+    flowRow?.data_categories && flowRow.data_categories.length > 0
+      ? flowRow.data_categories
+      : null;
+  const purpose = flowRow?.purpose ?? null;
 
   const categoriesStatus: SlotStatus =
     dataCategories && dataCategories.length > 0
@@ -113,9 +108,12 @@ function flowPrivacyState(
   };
 }
 
-function actorSlotStatus(cmpId: string, brief: BriefSnapshot, discoveryIndex: ReturnType<typeof indexDiscoverySlots>): SlotStatus {
-  const asserts = `dp:scan/entity/${cmpId}`;
-  const actorKind = discoveryValue(discoveryIndex, asserts, "actor_kind");
+function actorSlotStatus(
+  cmpId: string,
+  brief: BriefSnapshot,
+  discoveriesDocument: A0DiscoveriesDocument,
+): SlotStatus {
+  const actorKind = discoveriesDocument.components.find((row) => row.id === cmpId)?.actor_kind;
   if (actorKind) {
     return "known";
   }
@@ -130,9 +128,9 @@ function actorSlotStatus(cmpId: string, brief: BriefSnapshot, discoveryIndex: Re
 
 function systemSlotStatus(
   brief: BriefSnapshot,
-  discoveryIndex: ReturnType<typeof indexDiscoverySlots>,
+  discoveriesDocument: A0DiscoveriesDocument,
 ): { slotStatus: SlotStatus; inScope: string | null; openSlots: string[] } {
-  const inScope = discoveryValue(discoveryIndex, "dp:a0/system", "in_scope") ?? null;
+  const inScope = discoveriesDocument.system?.in_scope ?? null;
   const openSlots: string[] = [];
 
   if (brief.unknownSlots.includes("system_identity") && !inScope) {
@@ -251,9 +249,14 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
   const flows = parseBriefFlows(input.briefMarkdown);
   const components = parseBriefComponents(input.briefMarkdown);
   const componentById = new Map(components.map((row) => [row.cmpId, row]));
-  const discoveryIndex = indexDiscoverySlots(input.discoveries.records);
+  const discoveriesDocument =
+    input.discoveriesDocument ??
+    buildA0DiscoveriesDocument({
+      briefMarkdown: input.briefMarkdown,
+      discoveries: input.discoveries,
+    });
 
-  const systemState = systemSlotStatus(input.brief, discoveryIndex);
+  const systemState = systemSlotStatus(input.brief, discoveriesDocument);
   const nodes: DiagramGraphJsonSchema["nodes"] = [];
   const edges: DiagramGraphJsonSchema["edges"] = [];
 
@@ -297,7 +300,7 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
   for (const cmpId of [...involvedCmpIds].sort()) {
     const row = componentById.get(cmpId);
     const label = row?.label ?? cmpId;
-    const actorStatus = actorSlotStatus(cmpId, input.brief, discoveryIndex);
+    const actorStatus = actorSlotStatus(cmpId, input.brief, discoveriesDocument);
     if (filled && actorStatus === "unknown") {
       continue;
     }
@@ -327,7 +330,7 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
   }
 
   for (const flow of flows) {
-    const privacy = flowPrivacyState(flow, discoveryIndex, input.brief);
+    const privacy = flowPrivacyState(flow, discoveriesDocument, input.brief);
     if (filled && privacy.categoriesStatus === "unknown" && privacy.purposeStatus === "unknown") {
       continue;
     }
@@ -368,8 +371,14 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
   };
 }
 
-export function buildA0DataflowWrapper(input: ProjectA0DiagramInput): DataflowWrapperSchema {
-  const graph = projectA0DiagramGraph(input);
+export function buildA0DiagramWrapper(input: ProjectA0DiagramInput): DataflowWrapperSchema {
+  const discoveriesDocument =
+    input.discoveriesDocument ??
+    buildA0DiscoveriesDocument({
+      briefMarkdown: input.briefMarkdown,
+      discoveries: input.discoveries,
+    });
+  const graph = projectA0DiagramGraph({ ...input, discoveriesDocument });
   const wrapper: DataflowWrapperSchema = {
     schemaVersion: "1.0",
     graph,
@@ -392,4 +401,9 @@ export function buildA0DataflowWrapper(input: ProjectA0DiagramInput): DataflowWr
   }
 
   return validation.value;
+}
+
+/** @deprecated Use {@link buildA0DiagramWrapper} — dataflow.json is now the discoveries document. */
+export function buildA0DataflowWrapper(input: ProjectA0DiagramInput): DataflowWrapperSchema {
+  return buildA0DiagramWrapper(input);
 }
