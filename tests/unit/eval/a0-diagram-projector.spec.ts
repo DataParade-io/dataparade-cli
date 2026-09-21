@@ -130,13 +130,61 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(interviewPartialOrUnknown).toBe(true);
 
     for (const item of [...graph.nodes, ...graph.edges]) {
-      const privacy = item.data?.privacy as { slotStatus?: string } | undefined;
+      const privacy = item.data?.privacy as Record<string, unknown> | undefined;
       expect(privacy?.slotStatus).not.toBe("unknown");
-      expect(privacy?.slotStatus).not.toBe("partial");
+      for (const [key, value] of Object.entries(privacy ?? {})) {
+        if (key.endsWith("Status") || key === "slotStatus") {
+          expect(value).not.toBe("unknown");
+        }
+      }
+      expect(privacy?.openSlots).toEqual([]);
       const label = String(item.data?.label ?? "");
       expect(label).not.toContain("?");
       expect(label).not.toContain("(partial)");
       expect(label).not.toContain("(?)");
+    }
+  });
+
+  it("drops unknown flow slots from filled edge privacy when only one side is known", () => {
+    const discoveriesWithoutFlow103Purpose = {
+      ...discoveries,
+      records: discoveries.records.filter(
+        (record) =>
+          !(
+            record.dataparade.asserts === "dp:scan/entity/flow_103" &&
+            record.dataparade.asserted_slot === "purpose"
+          ),
+      ),
+    };
+
+    const interview = projectA0DiagramGraph({
+      briefMarkdown,
+      brief,
+      discoveries: discoveriesWithoutFlow103Purpose,
+      mode: "interview",
+    });
+    const interviewEdge = interview.edges.find((edge) => edge.id === "flow_103");
+    expect(interviewEdge).toBeDefined();
+    expect(interviewEdge!.data!.privacy?.purposeStatus).toBe("unknown");
+    expect(interviewEdge!.data!.privacy?.categoriesStatus).toBe("known");
+
+    const filled = projectA0DiagramGraph({
+      briefMarkdown,
+      brief,
+      discoveries: discoveriesWithoutFlow103Purpose,
+      mode: "filled",
+    });
+    const filledEdge = filled.edges.find((edge) => edge.id === "flow_103");
+    expect(filledEdge).toBeDefined();
+    const privacy = filledEdge!.data!.privacy as Record<string, unknown> | undefined;
+    expect(privacy?.categoriesStatus).toBe("known");
+    expect(privacy?.purposeStatus).toBeUndefined();
+    expect(privacy?.slotStatus).toBe("known");
+    expect(privacy?.openSlots).toEqual([]);
+    for (const [key, value] of Object.entries(privacy ?? {})) {
+      if (key.endsWith("Status") || key === "slotStatus") {
+        expect(value).not.toBe("unknown");
+      }
     }
   });
 });

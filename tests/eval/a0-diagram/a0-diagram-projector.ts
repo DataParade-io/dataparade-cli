@@ -154,6 +154,71 @@ function systemSlotStatus(
   return { slotStatus, inScope, openSlots };
 }
 
+function filledFlowEdgePrivacy(
+  privacy: FlowPrivacyState,
+  flowId: string,
+): Record<string, unknown> {
+  const includedStatuses: SlotStatus[] = [];
+  const payload: Record<string, unknown> = {
+    openSlots: [],
+    flowId,
+  };
+
+  if (privacy.categoriesStatus === "known") {
+    payload.categoriesStatus = "known";
+    if (privacy.dataCategories) {
+      payload.dataCategories = privacy.dataCategories;
+    }
+    includedStatuses.push("known");
+  }
+  if (privacy.purposeStatus === "known") {
+    payload.purposeStatus = "known";
+    if (privacy.purpose) {
+      payload.purpose = privacy.purpose;
+    }
+    includedStatuses.push("known");
+  }
+
+  payload.slotStatus =
+    includedStatuses.length > 0 && includedStatuses.every((status) => status === "known")
+      ? "known"
+      : "partial";
+
+  return payload;
+}
+
+function filledSystemNodePrivacy(
+  systemState: ReturnType<typeof systemSlotStatus>,
+): Record<string, unknown> {
+  const payload: Record<string, unknown> = {
+    openSlots: [],
+    source: "brief+ocsf",
+  };
+  const includedStatuses: SlotStatus[] = [];
+
+  if (systemState.inScope) {
+    payload.inScope = systemState.inScope;
+    includedStatuses.push("known");
+  }
+
+  payload.slotStatus =
+    includedStatuses.length > 0 && includedStatuses.every((status) => status === "known")
+      ? "known"
+      : "partial";
+
+  return payload;
+}
+
+function filledActorNodePrivacy(
+  cmpId: string,
+): Record<string, unknown> {
+  return {
+    slotStatus: "known",
+    openSlots: [],
+    cmpId,
+  };
+}
+
 function edgeLabel(privacy: FlowPrivacyState, filled: boolean): string {
   const categories =
     privacy.categoriesStatus === "known" && privacy.dataCategories
@@ -217,12 +282,7 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
         label: systemLabel,
         description: "A0 system-context boundary",
         privacy: filled
-          ? {
-              slotStatus: "known",
-              openSlots: [],
-              inScope: systemState.inScope,
-              source: "brief+ocsf",
-            }
+          ? filledSystemNodePrivacy(systemState)
           : {
               slotStatus: systemState.slotStatus,
               openSlots: systemState.openSlots,
@@ -256,13 +316,7 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
       position: positions.get(cmpId) ?? { x: 0, y: 0 },
       data: {
         label: displayLabel,
-        privacy: filled
-          ? {
-              slotStatus: "known",
-              openSlots: [],
-              cmpId,
-            }
-          : {
+        privacy: filled ? filledActorNodePrivacy(cmpId) : {
               slotStatus: actorStatus,
               openSlots: actorStatus === "partial" ? ["actor_kind"] : [],
               cmpId,
@@ -274,7 +328,7 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
 
   for (const flow of flows) {
     const privacy = flowPrivacyState(flow, discoveryIndex, input.brief);
-    if (filled && privacy.slotStatus === "unknown") {
+    if (filled && privacy.categoriesStatus === "unknown" && privacy.purposeStatus === "unknown") {
       continue;
     }
     if (!includedNodeIds.has(flow.sourceCmpId) || !includedNodeIds.has(flow.targetCmpId)) {
@@ -289,15 +343,7 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
       data: {
         label: edgeLabel(privacy, filled),
         privacy: filled
-          ? {
-              slotStatus: "known",
-              openSlots: [],
-              categoriesStatus: privacy.categoriesStatus,
-              purposeStatus: privacy.purposeStatus,
-              dataCategories: privacy.dataCategories,
-              purpose: privacy.purpose,
-              flowId: flow.flowId,
-            }
+          ? filledFlowEdgePrivacy(privacy, flow.flowId)
           : {
               slotStatus: privacy.slotStatus,
               openSlots: privacy.openSlots,
