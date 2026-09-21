@@ -1,0 +1,249 @@
+# Scripted stakeholder answers for brief UNKNOWN slots only (DATAP-691).
+# Mechanical responder — not the interviewer model. Does not invent repo map.
+responses:
+  - match:
+      slot: system_identity
+    stakeholder_text: >-
+      The product is DataParade. For this A0 slice, in_scope is the customer-facing
+      application in the scan-seed repo (DataParade-io/dataparade). I cannot confirm
+      sibling-repo membership yet.
+    write_value: >-
+      DataParade — in_scope is the customer-facing application in the scan-seed repo
+      (DataParade-io/dataparade); multi-repo boundary not confirmed.
+
+  - match:
+      slot: system_boundary
+    stakeholder_text: >-
+      I do not know which repositories belong inside the System boundary. I cannot
+      confirm whether scanner, ontology, knowledge-base, or dataparade-cli are in scope.
+    refuse: true
+
+  - match:
+      slot: actors
+    stakeholder_text: >-
+      Ask each actor separately with discoveryId: cmp_6, cmp_17, cmp_20, cmp_25.
+    refuse: false
+
+  - match:
+      slot: actors
+      discoveryId: cmp_6
+    stakeholder_text: Customer maps to persona ActorKind.
+    write_value: persona
+
+  - match:
+      slot: actors
+      discoveryId: cmp_17
+    stakeholder_text: User maps to person ActorKind.
+    write_value: person
+
+  - match:
+      slot: actors
+      discoveryId: cmp_20
+    stakeholder_text: Customer maps to persona ActorKind.
+    write_value: persona
+
+  - match:
+      slot: actors
+      discoveryId: cmp_25
+    stakeholder_text: User maps to person ActorKind.
+    write_value: person
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_103
+    write_value: [identifiers, contact]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_103
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_109
+    write_value: [communications]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_109
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_106
+    write_value: [other]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_106
+    write_value: debugging
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_254
+    write_value: [credentials, identifiers]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_254
+    write_value: security
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_111
+    write_value: [other]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_111
+    write_value: unspecified
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_24
+    write_value: [personal, identifiers]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_24
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_61
+    write_value: [other]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_61
+    write_value: unspecified
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_1
+    write_value: [personal]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_1
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_10
+    write_value: [other]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_10
+    write_value: unspecified
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_14
+    write_value: [communications]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_14
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_20
+    write_value: [other]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_20
+    write_value: debugging
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_267
+    write_value: [credentials]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_267
+    write_value: security
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_268
+    write_value: [other]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_268
+    write_value: debugging
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_287
+    write_value: [identifiers]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_287
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_269
+    write_value: [identifiers, contact]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_269
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_279
+    write_value: [contact]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_279
+    write_value: marketing
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_288
+    write_value: [identifiers]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_288
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_289
+    write_value: [other]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_289
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_290
+    write_value: [identifiers]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_290
+    write_value: service_provision
+
+  - match:
+      slot: sends_data_to.data_categories
+      discoveryId: flow_291
+    write_value: [contact]
+
+  - match:
+      slot: sends_data_to.purpose
+      discoveryId: flow_291
+    write_value: service_provision

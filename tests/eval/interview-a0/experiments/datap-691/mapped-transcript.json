@@ -1,0 +1,644 @@
+{
+  "id": "datap-691-mapped-from-raw",
+  "description": "Mechanical mapper output from raw-model-transcript.jsonl (DATAP-691). Not hand-edited.",
+  "actions": [
+    {
+      "kind": "ask",
+      "slot": "system_identity",
+      "text": "Please confirm the system identity and whether DataParade is in scope for this A0 system-context data-flow projection."
+    },
+    {
+      "kind": "write",
+      "slot": "system_identity",
+      "text": "Recorded stakeholder confirmation for the customer-facing application in DataParade-io/dataparade.",
+      "value": "DataParade",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "system_boundary",
+      "text": "Which repositories or codebases belong inside the DataParade System boundary for this A0 slice? Please identify any sibling repositories that are in scope; do not assume scanner, ontology, knowledge-base, or dataparade-cli belong inside."
+    },
+    {
+      "kind": "refuse",
+      "slot": "system_boundary",
+      "text": "System boundary and repository membership remain unknown; not inventing a sibling-repository map."
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "text": "For the scan-seeded Customer actor cmp_6, which ActorKind enum applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "text": "Recorded stakeholder confirmation for cmp_6.",
+      "value": "persona",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "text": "For the scan-seeded User actor cmp_17, which ActorKind enum applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "text": "Recorded stakeholder confirmation for cmp_17.",
+      "value": "person",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "text": "For the scan-seeded Customer actor cmp_20, which ActorKind enum applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "text": "Recorded stakeholder confirmation for cmp_20.",
+      "value": "persona",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "text": "For the scan-seeded User actor cmp_25, which ActorKind enum applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "text": "Recorded stakeholder confirmation for cmp_25.",
+      "value": "person",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "text": "For flow_1 (cmp_1 lambdas → cmp_2 Pg), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_1",
+      "text": "For flow_1 (cmp_1 lambdas → cmp_2 Pg), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_1",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "text": "For flow_10 (cmp_1 lambdas → cmp_3 Aws), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "text": "For flow_10 (cmp_1 lambdas → cmp_3 Aws), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "text": "For flow_14 (cmp_1 lambdas → cmp_4 Sendgrid), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "text": "For flow_14 (cmp_1 lambdas → cmp_4 Sendgrid), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "text": "For flow_20 (cmp_1 lambdas → cmp_5 Sentry), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "text": "For flow_20 (cmp_1 lambdas → cmp_5 Sentry), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "text": "For flow_24 (cmp_7 backend → cmp_8 Pg), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "text": "For flow_24 (cmp_7 backend → cmp_8 Pg), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "text": "For flow_61 (cmp_7 backend → cmp_9 Typeorm), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "text": "For flow_61 (cmp_7 backend → cmp_9 Typeorm), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "text": "For flow_103 (cmp_6 Customer → cmp_7 backend), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "text": "For flow_103 (cmp_6 Customer → cmp_7 backend), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "text": "For flow_106 (cmp_7 backend → cmp_14 Sentry), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "text": "For flow_106 (cmp_7 backend → cmp_14 Sentry), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "text": "For flow_109 (cmp_7 backend → cmp_13 Sendgrid), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "text": "For flow_109 (cmp_7 backend → cmp_13 Sendgrid), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "text": "For flow_111 (cmp_7 backend → cmp_11 Aws), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "text": "For flow_111 (cmp_7 backend → cmp_11 Aws), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "text": "For flow_254 (cmp_7 backend → cmp_12 Auth0), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "text": "For flow_254 (cmp_7 backend → cmp_12 Auth0), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "text": "For flow_267 (cmp_22 frontend → cmp_24 Auth0), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "text": "For flow_267 (cmp_22 frontend → cmp_24 Auth0), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "text": "For flow_268 (cmp_22 frontend → cmp_23 Sentry), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "text": "For flow_268 (cmp_22 frontend → cmp_23 Sentry), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "text": "For flow_269 (cmp_20 Customer → cmp_22 frontend), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "text": "For flow_269 (cmp_20 Customer → cmp_22 frontend), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "text": "For flow_279 (cmp_27 landing → cmp_28 Dataparade.io), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "text": "For flow_279 (cmp_27 landing → cmp_28 Dataparade.io), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "text": "For flow_287 (cmp_22 frontend → cmp_21 API), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "text": "For flow_287 (cmp_22 frontend → cmp_21 API), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "text": "For flow_288 (cmp_27 landing → cmp_26 API), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "text": "For flow_288 (cmp_27 landing → cmp_26 API), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "text": "For flow_289 (cmp_19 docs-site → cmp_18 API), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "text": "For flow_289 (cmp_19 docs-site → cmp_18 API), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "text": "For flow_290 (cmp_17 User → cmp_19 docs-site), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "text": "For flow_290 (cmp_17 User → cmp_19 docs-site), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "text": "For flow_291 (cmp_25 User → cmp_27 landing), which DataCategory enum applies? Choose one or more: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "text": "Stakeholder did not provide a data category; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_291",
+      "text": "For flow_291 (cmp_25 User → cmp_27 landing), which Purpose enum applies? Choose one: service_provision, analytics, marketing, security, legal_obligation, research, debugging, unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_291",
+      "text": "Stakeholder did not provide a purpose; recorded explicit unspecified.",
+      "value": "unspecified",
+      "provenance": "interview"
+    }
+  ]
+}

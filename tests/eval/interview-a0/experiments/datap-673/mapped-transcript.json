@@ -1,0 +1,299 @@
+{
+  "id": "datap-673-mapped-from-raw",
+  "description": "Mechanical mapper output from raw-model-transcript.jsonl (DATAP-673). Not hand-edited.",
+  "actions": [
+    {
+      "kind": "ask",
+      "slot": "system_identity",
+      "text": "Please confirm system name and in_scope."
+    },
+    {
+      "kind": "write",
+      "slot": "system_identity",
+      "text": "Recorded from stakeholder",
+      "value": "DataParade",
+      "provenance": "interview"
+    },
+    {
+      "kind": "refuse",
+      "slot": "system_boundary",
+      "text": "Boundary unknown — not inventing sibling repo map"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "text": "Can you confirm or strengthen the actors connected to the system: Customer (cmp_6), User (cmp_17), Customer (cmp_20), and User (cmp_25)?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "text": "Strengthened actor information from stakeholder",
+      "value": "Customer (persona)",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_103 (Customer → backend), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_103 from stakeholder",
+      "value": "identifiers,contact",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_103 (Customer → backend), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_103 from stakeholder",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_269 (Customer → frontend), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_269 from stakeholder",
+      "value": "identifiers,contact",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_269 (Customer → frontend), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_269 from stakeholder",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_111 (backend → Aws), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_111 from stakeholder",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_111 (backend → Aws), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_111 from stakeholder",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_10 (lambdas → Aws), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_10 from stakeholder",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_10 (lambdas → Aws), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_10 from stakeholder",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_20 (lambdas → Sentry), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_20 from stakeholder",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_20 (lambdas → Sentry), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_20 from stakeholder",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_14 (lambdas → Sendgrid), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_14 from stakeholder",
+      "value": "communications",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_14 (lambdas → Sendgrid), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_14 from stakeholder",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_106 (backend → Sentry), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_106 from stakeholder",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_106 (backend → Sentry), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_106 from stakeholder",
+      "value": "debugging",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_109 (backend → Sendgrid), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_109 from stakeholder",
+      "value": "communications",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_109 (backend → Sendgrid), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_109 from stakeholder",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_254 (backend → Auth0), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_254 from stakeholder",
+      "value": "credentials,identifiers",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_254 (backend → Auth0), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_254 from stakeholder",
+      "value": "security",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_24 (backend → Pg), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_24 from stakeholder",
+      "value": "personal,identifiers",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_24 (backend → Pg), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_24 from stakeholder",
+      "value": "service_provision",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "text": "For flow_61 (backend → Typeorm), what are the data categories?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "text": "Recorded data categories for flow_61 from stakeholder",
+      "value": "other",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "text": "For flow_61 (backend → Typeorm), what is the purpose of the data flow?"
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "text": "Recorded purpose for flow_61 from stakeholder",
+      "value": "unspecified",
+      "provenance": "interview"
+    }
+  ]
+}
