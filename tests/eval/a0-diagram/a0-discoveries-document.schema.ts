@@ -1,16 +1,29 @@
 import { z } from "zod";
 
+const sourceLocationSchema = z.object({
+  filePath: z.string(),
+  startLine: z.number(),
+  endLine: z.number(),
+  code: z.string().optional(),
+});
+
 export const a0DiscoveriesComponentSchema = z.object({
   id: z.string(),
-  label: z.string(),
-  kind: z.string(),
+  name: z.string(),
+  type: z.string(),
+  subType: z.string(),
+  confidence: z.number(),
+  sourceLocations: z.array(sourceLocationSchema),
   actor_kind: z.string().optional(),
 });
 
 export const a0DiscoveriesDataFlowSchema = z.object({
   id: z.string(),
-  source: z.string(),
-  target: z.string(),
+  sourceComponentId: z.string(),
+  targetComponentId: z.string(),
+  type: z.string(),
+  confidence: z.number(),
+  targetScope: z.string().optional(),
   data_categories: z.array(z.string()).optional(),
   purpose: z.string().optional(),
 });

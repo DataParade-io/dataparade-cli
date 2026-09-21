@@ -1,15 +1,10 @@
 import type { DiagramGraphJsonSchema } from "../../../src/core/schema/diagram-graph.schema";
 import type { DataflowWrapperSchema } from "../../../src/core/schema/dataflow-wrapper.schema";
 import { validateDataflowJson } from "../../../src/core/schema/dataflow-wrapper.schema";
-import {
-  assertBriefSnapshotPins,
-  componentNodeType,
-  parseBriefComponents,
-  parseBriefFlows,
-  type BriefFlowRow,
-} from "./brief-graph-input";
+import { assertBriefSnapshotPins, componentNodeTypeFromDiscoveryType } from "./brief-graph-input";
 import type { A0DiscoveriesDocument } from "./a0-discoveries-document.schema";
 import { buildA0DiscoveriesDocument } from "./build-a0-discoveries-document";
+import type { DiscoverySeed } from "./load-discovery-seed";
 
 export { buildA0DiscoveriesDocument } from "./build-a0-discoveries-document";
 export type { A0DiscoveriesDocument } from "./a0-discoveries-document.schema";
@@ -31,9 +26,10 @@ export class A0ProjectorError extends Error {
 }
 
 export interface ProjectA0DiagramInput {
-  briefMarkdown: string;
+  briefMarkdown?: string;
   brief: BriefSnapshot;
-  discoveries: LoadedOcsfDiscoveries;
+  discoveries?: LoadedOcsfDiscoveries;
+  discoverySeed: DiscoverySeed;
   discoveriesDocument?: A0DiscoveriesDocument;
   mode?: A0ProjectorMode;
   projectName?: string;
@@ -58,37 +54,16 @@ function mergeSlotStatus(parts: SlotStatus[]): SlotStatus {
   return "known";
 }
 
-function flowRowFromDocument(
-  document: A0DiscoveriesDocument,
-  flowId: string,
-): A0DiscoveriesDocument["dataFlows"][number] | undefined {
-  return document.dataFlows.find((row) => row.id === flowId);
-}
-
 function flowPrivacyState(
-  flow: BriefFlowRow,
-  discoveriesDocument: A0DiscoveriesDocument,
-  brief: BriefSnapshot,
+  flow: A0DiscoveriesDocument["dataFlows"][number],
 ): FlowPrivacyState {
-  const flowRow = flowRowFromDocument(discoveriesDocument, flow.flowId);
-
-  const categoriesUnknownByBrief = brief.unknownSlots.includes("sends_data_to.data_categories");
-  const purposeUnknownByBrief = brief.unknownSlots.includes("sends_data_to.purpose");
-
   const dataCategories =
-    flowRow?.data_categories && flowRow.data_categories.length > 0
-      ? flowRow.data_categories
-      : null;
-  const purpose = flowRow?.purpose ?? null;
+    flow.data_categories && flow.data_categories.length > 0 ? flow.data_categories : null;
+  const purpose = flow.purpose ?? null;
 
   const categoriesStatus: SlotStatus =
-    dataCategories && dataCategories.length > 0
-      ? "known"
-      : categoriesUnknownByBrief
-        ? "unknown"
-        : "known";
-
-  const purposeStatus: SlotStatus = purpose ? "known" : purposeUnknownByBrief ? "unknown" : "known";
+    dataCategories && dataCategories.length > 0 ? "known" : "unknown";
+  const purposeStatus: SlotStatus = purpose ? "known" : "unknown";
 
   const openSlots: string[] = [];
   if (categoriesStatus !== "known") {
@@ -110,17 +85,13 @@ function flowPrivacyState(
 
 function actorSlotStatus(
   cmpId: string,
-  brief: BriefSnapshot,
   discoveriesDocument: A0DiscoveriesDocument,
 ): SlotStatus {
-  const actorKind = discoveriesDocument.components.find((row) => row.id === cmpId)?.actor_kind;
-  if (actorKind) {
+  const row = discoveriesDocument.components.find((component) => component.id === cmpId);
+  if (!row || row.type !== "actor") {
     return "known";
   }
-  if (brief.partialKnownActors.includes(cmpId)) {
-    return "partial";
-  }
-  if (brief.scanKnownComponents.includes(cmpId)) {
+  if (row.actor_kind) {
     return "known";
   }
   return "unknown";
@@ -190,7 +161,7 @@ function filledSystemNodePrivacy(
 ): Record<string, unknown> {
   const payload: Record<string, unknown> = {
     openSlots: [],
-    source: "brief+ocsf",
+    source: "seed+ocsf",
   };
   const includedStatuses: SlotStatus[] = [];
 
@@ -246,15 +217,15 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
   const filled = mode === "filled";
 
   assertBriefSnapshotPins(input.brief, PINNED_BRIEF_SHA);
-  const flows = parseBriefFlows(input.briefMarkdown);
-  const components = parseBriefComponents(input.briefMarkdown);
-  const componentById = new Map(components.map((row) => [row.cmpId, row]));
   const discoveriesDocument =
     input.discoveriesDocument ??
     buildA0DiscoveriesDocument({
-      briefMarkdown: input.briefMarkdown,
+      seed: input.discoverySeed,
       discoveries: input.discoveries,
     });
+
+  const componentById = new Map(discoveriesDocument.components.map((row) => [row.id, row]));
+  const flows = discoveriesDocument.dataFlows;
 
   const systemState = systemSlotStatus(input.brief, discoveriesDocument);
   const nodes: DiagramGraphJsonSchema["nodes"] = [];
@@ -262,8 +233,8 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
 
   const involvedCmpIds = new Set<string>();
   for (const flow of flows) {
-    involvedCmpIds.add(flow.sourceCmpId);
-    involvedCmpIds.add(flow.targetCmpId);
+    involvedCmpIds.add(flow.sourceComponentId);
+    involvedCmpIds.add(flow.targetComponentId);
   }
 
   const nodeIds = ["system", ...[...involvedCmpIds].sort()];
@@ -290,7 +261,7 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
               slotStatus: systemState.slotStatus,
               openSlots: systemState.openSlots,
               inScope: systemState.inScope,
-              source: "brief+ocsf",
+              source: "seed+ocsf",
             },
       },
     });
@@ -299,27 +270,24 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
 
   for (const cmpId of [...involvedCmpIds].sort()) {
     const row = componentById.get(cmpId);
-    const label = row?.label ?? cmpId;
-    const actorStatus = actorSlotStatus(cmpId, input.brief, discoveriesDocument);
+    const label = row?.name ?? cmpId;
+    const actorStatus = actorSlotStatus(cmpId, discoveriesDocument);
     if (filled && actorStatus === "unknown") {
       continue;
     }
 
-    const displayLabel = filled
-      ? label
-      : actorStatus === "partial"
-        ? `${label} (partial)`
-        : actorStatus === "unknown"
-          ? `${label} (?)`
-          : label;
+    const displayLabel =
+      filled || actorStatus === "known" ? label : actorStatus === "partial" ? `${label} (partial)` : `${label} (?)`;
 
     nodes.push({
       id: cmpId,
-      type: row ? componentNodeType(row.kindHint) : "asset",
+      type: row ? componentNodeTypeFromDiscoveryType(row.type) : "asset",
       position: positions.get(cmpId) ?? { x: 0, y: 0 },
       data: {
         label: displayLabel,
-        privacy: filled ? filledActorNodePrivacy(cmpId) : {
+        privacy: filled
+          ? filledActorNodePrivacy(cmpId)
+          : {
               slotStatus: actorStatus,
               openSlots: actorStatus === "partial" ? ["actor_kind"] : [],
               cmpId,
@@ -330,23 +298,29 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
   }
 
   for (const flow of flows) {
-    const privacy = flowPrivacyState(flow, discoveriesDocument, input.brief);
+    const privacy = flowPrivacyState(flow);
     if (filled && privacy.categoriesStatus === "unknown" && privacy.purposeStatus === "unknown") {
       continue;
     }
-    if (!includedNodeIds.has(flow.sourceCmpId) || !includedNodeIds.has(flow.targetCmpId)) {
+    if (
+      !includedNodeIds.has(flow.sourceComponentId) ||
+      !includedNodeIds.has(flow.targetComponentId)
+    ) {
       continue;
     }
 
+    const sourceLabel = componentById.get(flow.sourceComponentId)?.name ?? flow.sourceComponentId;
+    const targetLabel = componentById.get(flow.targetComponentId)?.name ?? flow.targetComponentId;
+
     edges.push({
-      id: flow.flowId,
-      source: flow.sourceCmpId,
-      target: flow.targetCmpId,
+      id: flow.id,
+      source: flow.sourceComponentId,
+      target: flow.targetComponentId,
       type: "data_flow",
       data: {
         label: edgeLabel(privacy, filled),
         privacy: filled
-          ? filledFlowEdgePrivacy(privacy, flow.flowId)
+          ? filledFlowEdgePrivacy(privacy, flow.id)
           : {
               slotStatus: privacy.slotStatus,
               openSlots: privacy.openSlots,
@@ -354,9 +328,9 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
               purposeStatus: privacy.purposeStatus,
               dataCategories: privacy.dataCategories,
               purpose: privacy.purpose,
-              flowId: flow.flowId,
+              flowId: flow.id,
             },
-        narrative: `${flow.sourceLabel} → ${flow.targetLabel}`,
+        narrative: `${sourceLabel} → ${targetLabel}`,
         properties: {
           engineering: { flowKind: "sends_data_to", scanProvenance: true },
         },
@@ -375,7 +349,7 @@ export function buildA0DiagramWrapper(input: ProjectA0DiagramInput): DataflowWra
   const discoveriesDocument =
     input.discoveriesDocument ??
     buildA0DiscoveriesDocument({
-      briefMarkdown: input.briefMarkdown,
+      seed: input.discoverySeed,
       discoveries: input.discoveries,
     });
   const graph = projectA0DiagramGraph({ ...input, discoveriesDocument });
@@ -389,8 +363,8 @@ export function buildA0DiagramWrapper(input: ProjectA0DiagramInput): DataflowWra
       a0Projector: {
         mode: input.mode ?? "interview",
         briefSha: PINNED_BRIEF_SHA,
-        discoveryCount: input.discoveries.records.length,
-        discoveryDirectory: input.discoveries.directory,
+        discoveryCount: input.discoveries?.records.length ?? 0,
+        discoveryDirectory: input.discoveries?.directory ?? "",
       },
     },
   };
