@@ -24,6 +24,7 @@ const discoverySeedDataFlowSchema = z.object({
   type: z.string(),
   confidence: z.number(),
   targetScope: z.string().optional(),
+  sourceLocation: sourceLocationSchema.optional(),
 });
 
 export const discoverySeedSchema = z.object({

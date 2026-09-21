@@ -54,6 +54,8 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(flow103?.purpose).toBeDefined();
     expect(flow103?.sourceComponentId).toBeDefined();
     expect(flow103?.targetComponentId).toBeDefined();
+    expect(flow103?.sourceLocation?.filePath).toBe("backend/src/actors/actors.controller.ts");
+    expect(flow103?.sourceLocation?.startLine).toBe(57);
 
     const serialized = JSON.stringify(document);
     expect(serialized).not.toContain('"position"');

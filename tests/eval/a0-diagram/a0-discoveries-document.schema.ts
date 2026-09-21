@@ -26,6 +26,7 @@ export const a0DiscoveriesDataFlowSchema = z.object({
   targetScope: z.string().optional(),
   data_categories: z.array(z.string()).optional(),
   purpose: z.string().optional(),
+  sourceLocation: sourceLocationSchema.optional(),
 });
 
 export const a0DiscoveriesDocumentSchema = z.object({

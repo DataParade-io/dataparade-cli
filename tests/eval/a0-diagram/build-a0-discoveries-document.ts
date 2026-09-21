@@ -64,6 +64,7 @@ export function buildA0DiscoveriesDocument(
       ...(flow.targetScope !== undefined ? { targetScope: flow.targetScope } : {}),
       ...(dataCategories && dataCategories.length > 0 ? { data_categories: dataCategories } : {}),
       ...(purpose ? { purpose } : {}),
+      ...(flow.sourceLocation !== undefined ? { sourceLocation: flow.sourceLocation } : {}),
     };
   });
 
