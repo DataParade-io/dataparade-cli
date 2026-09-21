@@ -19,13 +19,6 @@ import { PINNED_BRIEF_SHA } from "../interview-a0/pins";
 export type A0ProjectorMode = "interview" | "filled";
 export type SlotStatus = "known" | "unknown" | "partial";
 
-export class A0FilledModeNotImplementedError extends Error {
-  constructor(message = "filled mode is not implemented yet") {
-    super(message);
-    this.name = "A0FilledModeNotImplementedError";
-  }
-}
-
 export class A0ProjectorError extends Error {
   constructor(
     readonly code: string,
@@ -161,13 +154,17 @@ function systemSlotStatus(
   return { slotStatus, inScope, openSlots };
 }
 
-function edgeLabel(privacy: FlowPrivacyState): string {
+function edgeLabel(privacy: FlowPrivacyState, filled: boolean): string {
   const categories =
     privacy.categoriesStatus === "known" && privacy.dataCategories
       ? privacy.dataCategories.join(", ")
-      : "?";
-  const purpose = privacy.purposeStatus === "known" && privacy.purpose ? privacy.purpose : "?";
-  return `${categories} | ${purpose}`;
+      : filled
+        ? null
+        : "?";
+  const purpose =
+    privacy.purposeStatus === "known" && privacy.purpose ? privacy.purpose : filled ? null : "?";
+  const parts = [categories, purpose].filter((part): part is string => part !== null);
+  return parts.join(" | ");
 }
 
 function layoutNodes(nodeIds: string[]): Map<string, { x: number; y: number }> {
@@ -183,9 +180,7 @@ function layoutNodes(nodeIds: string[]): Map<string, { x: number; y: number }> {
 
 export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGraphJsonSchema {
   const mode = input.mode ?? "interview";
-  if (mode === "filled") {
-    throw new A0FilledModeNotImplementedError();
-  }
+  const filled = mode === "filled";
 
   assertBriefSnapshotPins(input.brief, PINNED_BRIEF_SHA);
   const flows = parseBriefFlows(input.briefMarkdown);
@@ -206,32 +201,54 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
   const nodeIds = ["system", ...[...involvedCmpIds].sort()];
   const positions = layoutNodes(nodeIds);
 
-  const systemLabel =
-    systemState.inScope ??
-    (systemState.slotStatus === "unknown" ? "DataParade (?)" : "DataParade");
+  const includedNodeIds = new Set<string>();
 
-  nodes.push({
-    id: "system",
-    type: "system",
-    position: positions.get("system") ?? { x: 400, y: 20 },
-    data: {
-      label: systemLabel,
-      description: "A0 system-context boundary",
-      privacy: {
-        slotStatus: systemState.slotStatus,
-        openSlots: systemState.openSlots,
-        inScope: systemState.inScope,
-        source: "brief+ocsf",
+  if (!filled || systemState.slotStatus !== "unknown") {
+    const systemLabel = filled
+      ? (systemState.inScope ?? "DataParade")
+      : (systemState.inScope ??
+        (systemState.slotStatus === "unknown" ? "DataParade (?)" : "DataParade"));
+
+    nodes.push({
+      id: "system",
+      type: "system",
+      position: positions.get("system") ?? { x: 400, y: 20 },
+      data: {
+        label: systemLabel,
+        description: "A0 system-context boundary",
+        privacy: filled
+          ? {
+              slotStatus: "known",
+              openSlots: [],
+              inScope: systemState.inScope,
+              source: "brief+ocsf",
+            }
+          : {
+              slotStatus: systemState.slotStatus,
+              openSlots: systemState.openSlots,
+              inScope: systemState.inScope,
+              source: "brief+ocsf",
+            },
       },
-    },
-  });
+    });
+    includedNodeIds.add("system");
+  }
 
   for (const cmpId of [...involvedCmpIds].sort()) {
     const row = componentById.get(cmpId);
     const label = row?.label ?? cmpId;
     const actorStatus = actorSlotStatus(cmpId, input.brief, discoveryIndex);
-    const displayLabel =
-      actorStatus === "partial" ? `${label} (partial)` : actorStatus === "unknown" ? `${label} (?)` : label;
+    if (filled && actorStatus === "unknown") {
+      continue;
+    }
+
+    const displayLabel = filled
+      ? label
+      : actorStatus === "partial"
+        ? `${label} (partial)`
+        : actorStatus === "unknown"
+          ? `${label} (?)`
+          : label;
 
     nodes.push({
       id: cmpId,
@@ -239,17 +256,30 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
       position: positions.get(cmpId) ?? { x: 0, y: 0 },
       data: {
         label: displayLabel,
-        privacy: {
-          slotStatus: actorStatus,
-          openSlots: actorStatus === "partial" ? ["actor_kind"] : [],
-          cmpId,
-        },
+        privacy: filled
+          ? {
+              slotStatus: "known",
+              openSlots: [],
+              cmpId,
+            }
+          : {
+              slotStatus: actorStatus,
+              openSlots: actorStatus === "partial" ? ["actor_kind"] : [],
+              cmpId,
+            },
       },
     });
+    includedNodeIds.add(cmpId);
   }
 
   for (const flow of flows) {
     const privacy = flowPrivacyState(flow, discoveryIndex, input.brief);
+    if (filled && privacy.slotStatus === "unknown") {
+      continue;
+    }
+    if (!includedNodeIds.has(flow.sourceCmpId) || !includedNodeIds.has(flow.targetCmpId)) {
+      continue;
+    }
 
     edges.push({
       id: flow.flowId,
@@ -257,16 +287,26 @@ export function projectA0DiagramGraph(input: ProjectA0DiagramInput): DiagramGrap
       target: flow.targetCmpId,
       type: "data_flow",
       data: {
-        label: edgeLabel(privacy),
-        privacy: {
-          slotStatus: privacy.slotStatus,
-          openSlots: privacy.openSlots,
-          categoriesStatus: privacy.categoriesStatus,
-          purposeStatus: privacy.purposeStatus,
-          dataCategories: privacy.dataCategories,
-          purpose: privacy.purpose,
-          flowId: flow.flowId,
-        },
+        label: edgeLabel(privacy, filled),
+        privacy: filled
+          ? {
+              slotStatus: "known",
+              openSlots: [],
+              categoriesStatus: privacy.categoriesStatus,
+              purposeStatus: privacy.purposeStatus,
+              dataCategories: privacy.dataCategories,
+              purpose: privacy.purpose,
+              flowId: flow.flowId,
+            }
+          : {
+              slotStatus: privacy.slotStatus,
+              openSlots: privacy.openSlots,
+              categoriesStatus: privacy.categoriesStatus,
+              purposeStatus: privacy.purposeStatus,
+              dataCategories: privacy.dataCategories,
+              purpose: privacy.purpose,
+              flowId: flow.flowId,
+            },
         narrative: `${flow.sourceLabel} → ${flow.targetLabel}`,
         properties: {
           engineering: { flowKind: "sends_data_to", scanProvenance: true },

@@ -3,7 +3,6 @@ import path from "path";
 
 import { validateDataflowJson } from "../../../src/core/schema/dataflow-wrapper.schema";
 import {
-  A0FilledModeNotImplementedError,
   buildA0DataflowWrapper,
   projectA0DiagramGraph,
 } from "../../eval/a0-diagram/a0-diagram-projector";
@@ -92,14 +91,52 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(svg).toContain("Every repository in the DataParade-io GitHub organization");
   });
 
-  it("stub filled mode with explicit not-implemented error", () => {
-    expect(() =>
-      projectA0DiagramGraph({
-        briefMarkdown,
-        brief,
-        discoveries,
-        mode: "filled",
-      }),
-    ).toThrow(A0FilledModeNotImplementedError);
+  it("projects dogfood A0 to a valid dataflow.json wrapper in filled mode", () => {
+    const wrapper = buildA0DataflowWrapper({
+      briefMarkdown,
+      brief,
+      discoveries,
+      mode: "filled",
+      projectName: "dogfood-a0-filled-test",
+    });
+
+    expect(validateDataflowJson(wrapper).ok).toBe(true);
+    const meta = wrapper.metadata as {
+      a0Projector?: { mode?: string; briefSha?: string };
+    };
+    expect(meta.a0Projector?.mode).toBe("filled");
+    expect(wrapper.graph.nodes.length).toBeGreaterThan(0);
+    expect(wrapper.graph.edges.length).toBeGreaterThan(0);
+  });
+
+  it("omits unknown slots and question placeholders in filled mode", () => {
+    const graph = projectA0DiagramGraph({
+      briefMarkdown,
+      brief,
+      discoveries,
+      mode: "filled",
+    });
+
+    const interview = projectA0DiagramGraph({
+      briefMarkdown,
+      brief,
+      discoveries,
+      mode: "interview",
+    });
+    const interviewPartialOrUnknown = [...interview.nodes, ...interview.edges].some((item) => {
+      const privacy = item.data?.privacy as { slotStatus?: string } | undefined;
+      return privacy?.slotStatus === "partial" || privacy?.slotStatus === "unknown";
+    });
+    expect(interviewPartialOrUnknown).toBe(true);
+
+    for (const item of [...graph.nodes, ...graph.edges]) {
+      const privacy = item.data?.privacy as { slotStatus?: string } | undefined;
+      expect(privacy?.slotStatus).not.toBe("unknown");
+      expect(privacy?.slotStatus).not.toBe("partial");
+      const label = String(item.data?.label ?? "");
+      expect(label).not.toContain("?");
+      expect(label).not.toContain("(partial)");
+      expect(label).not.toContain("(?)");
+    }
   });
 });
