@@ -94,7 +94,7 @@ Options:
   --discoveries <dir>         OCSF Discovery JSON directory
   --output-dir <dir>          Write artifacts here (default: cwd)
   --basename <name>           Output file basename (default a0-dogfood)
-  --project-name <name>       dataflow.json metadata.projectName`);
+  --project-name <name>       diagram.json metadata.projectName`);
 }
 
 async function main() {
@@ -117,16 +117,22 @@ async function main() {
   briefSnapshot.taxonomy = parseSkill.parseTaxonomyFromSkill(skillMarkdown);
   const discoveries = loader.loadOcsfDiscoveriesFromDir(path.resolve(options.discoveriesDir));
 
-  const wrapper = projector.buildA0DataflowWrapper({
+  const discoveriesDocument = projector.buildA0DiscoveriesDocument({
+    briefMarkdown,
+    discoveries,
+  });
+  const diagramWrapper = projector.buildA0DiagramWrapper({
     briefMarkdown,
     brief: briefSnapshot,
     discoveries,
+    discoveriesDocument,
     mode: options.mode,
     projectName: options.projectName,
   });
 
   const paths = writer.writeA0DiagramArtifacts({
-    wrapper,
+    discoveriesDocument,
+    diagramWrapper,
     outputDir: options.outputDir,
     basename: options.basename,
   });
