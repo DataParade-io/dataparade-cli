@@ -3,7 +3,6 @@ import path from "path";
 
 import { validateDataflowJson } from "../../../src/core/schema/dataflow-wrapper.schema";
 import {
-  A0FilledModeNotImplementedError,
   buildA0DataflowWrapper,
   projectA0DiagramGraph,
 } from "../../eval/a0-diagram/a0-diagram-projector";
@@ -92,14 +91,100 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(svg).toContain("Every repository in the DataParade-io GitHub organization");
   });
 
-  it("stub filled mode with explicit not-implemented error", () => {
-    expect(() =>
-      projectA0DiagramGraph({
-        briefMarkdown,
-        brief,
-        discoveries,
-        mode: "filled",
-      }),
-    ).toThrow(A0FilledModeNotImplementedError);
+  it("projects dogfood A0 to a valid dataflow.json wrapper in filled mode", () => {
+    const wrapper = buildA0DataflowWrapper({
+      briefMarkdown,
+      brief,
+      discoveries,
+      mode: "filled",
+      projectName: "dogfood-a0-filled-test",
+    });
+
+    expect(validateDataflowJson(wrapper).ok).toBe(true);
+    const meta = wrapper.metadata as {
+      a0Projector?: { mode?: string; briefSha?: string };
+    };
+    expect(meta.a0Projector?.mode).toBe("filled");
+    expect(wrapper.graph.nodes.length).toBeGreaterThan(0);
+    expect(wrapper.graph.edges.length).toBeGreaterThan(0);
+  });
+
+  it("omits unknown slots and question placeholders in filled mode", () => {
+    const graph = projectA0DiagramGraph({
+      briefMarkdown,
+      brief,
+      discoveries,
+      mode: "filled",
+    });
+
+    const interview = projectA0DiagramGraph({
+      briefMarkdown,
+      brief,
+      discoveries,
+      mode: "interview",
+    });
+    const interviewPartialOrUnknown = [...interview.nodes, ...interview.edges].some((item) => {
+      const privacy = item.data?.privacy as { slotStatus?: string } | undefined;
+      return privacy?.slotStatus === "partial" || privacy?.slotStatus === "unknown";
+    });
+    expect(interviewPartialOrUnknown).toBe(true);
+
+    for (const item of [...graph.nodes, ...graph.edges]) {
+      const privacy = item.data?.privacy as Record<string, unknown> | undefined;
+      expect(privacy?.slotStatus).not.toBe("unknown");
+      for (const [key, value] of Object.entries(privacy ?? {})) {
+        if (key.endsWith("Status") || key === "slotStatus") {
+          expect(value).not.toBe("unknown");
+        }
+      }
+      expect(privacy?.openSlots).toEqual([]);
+      const label = String(item.data?.label ?? "");
+      expect(label).not.toContain("?");
+      expect(label).not.toContain("(partial)");
+      expect(label).not.toContain("(?)");
+    }
+  });
+
+  it("drops unknown flow slots from filled edge privacy when only one side is known", () => {
+    const discoveriesWithoutFlow103Purpose = {
+      ...discoveries,
+      records: discoveries.records.filter(
+        (record) =>
+          !(
+            record.dataparade.asserts === "dp:scan/entity/flow_103" &&
+            record.dataparade.asserted_slot === "purpose"
+          ),
+      ),
+    };
+
+    const interview = projectA0DiagramGraph({
+      briefMarkdown,
+      brief,
+      discoveries: discoveriesWithoutFlow103Purpose,
+      mode: "interview",
+    });
+    const interviewEdge = interview.edges.find((edge) => edge.id === "flow_103");
+    expect(interviewEdge).toBeDefined();
+    expect(interviewEdge!.data!.privacy?.purposeStatus).toBe("unknown");
+    expect(interviewEdge!.data!.privacy?.categoriesStatus).toBe("known");
+
+    const filled = projectA0DiagramGraph({
+      briefMarkdown,
+      brief,
+      discoveries: discoveriesWithoutFlow103Purpose,
+      mode: "filled",
+    });
+    const filledEdge = filled.edges.find((edge) => edge.id === "flow_103");
+    expect(filledEdge).toBeDefined();
+    const privacy = filledEdge!.data!.privacy as Record<string, unknown> | undefined;
+    expect(privacy?.categoriesStatus).toBe("known");
+    expect(privacy?.purposeStatus).toBeUndefined();
+    expect(privacy?.slotStatus).toBe("known");
+    expect(privacy?.openSlots).toEqual([]);
+    for (const [key, value] of Object.entries(privacy ?? {})) {
+      if (key.endsWith("Status") || key === "slotStatus") {
+        expect(value).not.toBe("unknown");
+      }
+    }
   });
 });

@@ -24,7 +24,7 @@ OCSF Discoveries + A0 brief
 | Mode | Default | Behavior |
 | --- | --- | --- |
 | `interview` | yes | Known + unknown/partial slots visible (question map) |
-| `filled` | no | **Not implemented** — throws `A0FilledModeNotImplementedError` |
+| `filled` | no | Known slots only — omits `unknown` nodes/edges; partial items show known fields without `?` placeholders |
 
 Unknowns come from the **brief** merged with landed Discoveries — the projector does not invent gaps.
 
