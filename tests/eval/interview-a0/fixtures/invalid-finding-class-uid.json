@@ -1,0 +1,21 @@
+{
+  "class_name": "Architecture Discovery",
+  "class_uid": 2002,
+  "category_name": "Architecture",
+  "category_uid": 9001,
+  "activity_id": 1,
+  "activity_name": "Create",
+  "type_uid": 90010101,
+  "time": 1726934400,
+  "metadata": {
+    "version": "1.7.0",
+    "uid": "dp:discovery/example-wrong-class"
+  },
+  "dataparade": {
+    "record_kind": "discovery",
+    "ontology_version": "0.3.0",
+    "source": "scan",
+    "asserted_at": "2024-09-21T12:00:00Z",
+    "asserts": "dp:scan/entity/cmp_example"
+  }
+}
