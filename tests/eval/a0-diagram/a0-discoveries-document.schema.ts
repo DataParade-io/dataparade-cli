@@ -7,6 +7,19 @@ const sourceLocationSchema = z.object({
   code: z.string().optional(),
 });
 
+export const a0DiscoveriesMentionSchema = z.object({
+  id: z.string(),
+  filePath: z.string(),
+  startLine: z.number(),
+  endLine: z.number(),
+  code: z.string().optional(),
+});
+
+export const a0DiscoveriesDataItemSchema = z.object({
+  id: z.string(),
+  mentionId: z.string(),
+});
+
 export const a0DiscoveriesComponentSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -14,6 +27,7 @@ export const a0DiscoveriesComponentSchema = z.object({
   subType: z.string(),
   confidence: z.number(),
   sourceLocations: z.array(sourceLocationSchema),
+  dataItemIds: z.array(z.string()),
   actor_kind: z.string().optional(),
 });
 
@@ -26,14 +40,13 @@ export const a0DiscoveriesDataFlowSchema = z.object({
   targetScope: z.string().optional(),
   data_categories: z.array(z.string()).optional(),
   purpose: z.string().optional(),
-  sourceLocation: sourceLocationSchema.optional(),
 });
 
 export const a0DiscoveriesDocumentSchema = z.object({
   components: z.array(a0DiscoveriesComponentSchema),
   dataFlows: z.array(a0DiscoveriesDataFlowSchema),
-  dataItems: z.array(z.unknown()),
-  mentions: z.array(z.unknown()),
+  dataItems: z.array(a0DiscoveriesDataItemSchema),
+  mentions: z.array(a0DiscoveriesMentionSchema),
   system: z
     .object({
       in_scope: z.string().optional(),
