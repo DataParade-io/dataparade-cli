@@ -1,30 +1,40 @@
 # A0 diagram projector (DATAP-699)
 
-Projects a **scanner discovery seed** plus optional **OCSF Discoveries** overlay into a **discoveries document** and a separate **diagram projection** (interview or filled).
+Projects **scan OCSF Architecture Discovery** records (plus optional **interview** overlays) into a **discoveries document** (`dataparade.json`) and a separate **diagram projection** (interview or filled).
 
 ```
-Scanner discovery seed JSON (+ optional OCSF overlay)
-        │
-        ├──────────────────────────────┐
-        ▼                              ▼
-  buildA0DiscoveriesDocument    projectA0DiagramGraph (mode: interview | filled)
-        │                              │
-        ▼                              ▼
-  dataflow.json                 diagram.json (schemaVersion + graph + metadata)
-  (components, dataFlows,              │
-   dataItems, mentions,                ├──────────────────┬─────────────────────┐
-   system.in_scope)                    ▼                  ▼                     ▼
-                                 .d2 source        inline SVG (demo)    React Flow wrapper
-                                 (D2 renderer)     (this ticket)        (eval / manual import)
+Scanner discovery seed JSON  ──land──►  scan OCSF records (in-memory or ocsf-discoveries/)
+                                              │
+Optional interview OCSF overlay ──────────────┤
+Optional personal-data mention/data-item input ┘
+                                              │
+                                              ▼
+                              projectOcsfToDiscoveriesDocument
+                                              │
+                                              ▼
+                              dataparade.json (components, dataFlows, dataItems, mentions, system.in_scope)
+                                              │
+                                              ▼
+                              projectA0DiagramGraph (mode: interview | filled)
+                                              │
+                                              ▼
+                              diagram.json (schemaVersion + graph + metadata)
+                                              │
+                                              ├──────────────────┬─────────────────────┐
+                                              ▼                  ▼                     ▼
+                                         .d2 source        inline SVG (demo)    React Flow wrapper
+                                         (D2 renderer)     (this ticket)        (eval / manual import)
 ```
+
+The vendored `fixtures/dataparade-discovery-seed.json` is **scan input to the lander only** — `dataparade.json` is not built by copying the seed.
 
 ## Artifacts
 
 | File | Role |
 | --- | --- |
-| `{basename}.dataflow.json` | **Discoveries document** from the vendored scanner seed (`fixtures/dataparade-discovery-seed.json`) plus matching OCSF slot values: `components`, `dataFlows`, `dataItems`, `mentions`, and optional `system.in_scope`. Not a diagram. **Not** the app-import wrapper. |
+| `{basename}.dataparade.json` | **Discoveries document** projected from scan OCSF (+ interview overlays): `components`, `dataFlows`, `dataItems`, `mentions`, optional `system.in_scope`. Not a diagram. |
 | `{basename}.diagram.json` | **A0 projection** in the existing React Flow wrapper (`dataflowWrapperSchema`: `schemaVersion`, `graph`, `metadata`). Modes `interview` \| `filled`. |
-| `{basename}.d2`, `{basename}.svg` | Rendered from the **diagram** graph, not from `dataflow.json`. |
+| `{basename}.d2`, `{basename}.svg` | Rendered from the **diagram** graph, not from `dataparade.json`. |
 
 The **scan CLI** `dataflow.json` produced by `dataparade scan` (app import via `src/output/json.ts` / `dataflowWrapperSchema`) is a **different file** and is **unchanged** by this eval projector.
 
@@ -35,7 +45,7 @@ The **scan CLI** `dataflow.json` produced by `dataparade scan` (app import via `
 | `interview` | yes | Known + unknown/partial slots visible (question map) |
 | `filled` | no | Known slots only — omits `unknown` nodes/edges; partial items show known fields without `?` placeholders |
 
-Unknown flow privacy slots mean the seed/OCSF record has no value for that field. System boundary gaps still come from the pinned brief interview snapshot when projecting diagrams.
+Unknown flow privacy slots mean the scan/interview OCSF record has no value for that field. System boundary gaps still come from the pinned brief interview snapshot when projecting diagrams.
 
 ## Privacy / status fields
 
@@ -58,9 +68,9 @@ node tests/eval/a0-diagram/bin/project-a0-diagram.mjs \
   --basename a0-interview
 ```
 
-`--seed` defaults to `fixtures/dataparade-discovery-seed.json`. `--discoveries` is optional (OCSF overlay only). `--brief` is optional and only affects diagram interview hints, not `dataflow.json` graph rows.
+`--seed` defaults to `fixtures/dataparade-discovery-seed.json` (lander input). `--discoveries` is optional interview OCSF overlay. `--brief` is optional and only affects diagram interview hints, not `dataparade.json` rows.
 
-Writes `{basename}.dataflow.json`, `{basename}.diagram.json`, `{basename}.d2`, `{basename}.svg`.
+Writes `{basename}.dataparade.json`, `{basename}.diagram.json`, `{basename}.d2`, `{basename}.svg`.
 
 ## Diagram wrapper schema
 
@@ -75,4 +85,4 @@ Discoveries document validation: `a0-discoveries-document.schema.ts` (do not reu
 ## Pins
 
 - Brief @ `16f2e857a47d54bfea6ca5d7f23a6c4f2732da29` (eval fixture / `loadDefaultBriefSnapshot`) — diagram interview hints only
-- OCSF records must carry matching `dataparade.brief_sha`
+- Interview OCSF records must carry matching `dataparade.brief_sha`

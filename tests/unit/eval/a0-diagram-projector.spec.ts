@@ -2,10 +2,14 @@ import fs from "fs";
 import path from "path";
 
 import { validateDataflowJson } from "../../../src/core/schema/dataflow-wrapper.schema";
+import type { OcsfDiscoveryRecord } from "../../eval/interview-a0/ocsf-discovery-types";
+import { ocsfDiscoveryRecordSchema } from "../../eval/interview-a0/ocsf-discovery-types";
 import {
   buildA0DiagramWrapper,
   buildA0DiscoveriesDocument,
+  landDiscoverySeedToOcsfRecords,
   projectA0DiagramGraph,
+  projectOcsfToDiscoveriesDocument,
 } from "../../eval/a0-diagram/a0-diagram-projector";
 import { validateA0DiscoveriesDocument } from "../../eval/a0-diagram/a0-discoveries-document.schema";
 import { loadDiscoverySeedFromFile } from "../../eval/a0-diagram/load-discovery-seed";
@@ -34,7 +38,12 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     return loadOcsfDiscoveriesFromDir(DOGFOOD_OCSF_DIR);
   })();
 
-  it("builds dogfood A0 discoveries dataflow.json from scanner seed and OCSF", () => {
+  it("builds dogfood dataparade.json from scan OCSF land + interview overlay", () => {
+    const scanRecords = landDiscoverySeedToOcsfRecords(discoverySeed);
+    for (const record of scanRecords) {
+      expect(() => ocsfDiscoveryRecordSchema.parse(record)).not.toThrow();
+    }
+
     const document = buildA0DiscoveriesDocument({ seed: discoverySeed, discoveries });
 
     expect(validateA0DiscoveriesDocument(document).ok).toBe(true);
@@ -75,6 +84,80 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     const serialized = JSON.stringify(document);
     expect(serialized).not.toContain('"position"');
     expect(serialized).not.toContain('"viewport"');
+  });
+
+  it("projects extra personal-data mention and data item when supplied", () => {
+    const scanRecords = landDiscoverySeedToOcsfRecords(discoverySeed);
+    const document = projectOcsfToDiscoveriesDocument({
+      records: [...scanRecords, ...discoveries.records],
+      personalData: {
+        mentions: [
+          {
+            id: "mention:user_email",
+            filePath: "backend/src/auth/login.ts",
+            startLine: 12,
+            endLine: 12,
+            code: "const email = req.body.email;",
+          },
+        ],
+        dataItems: [{ id: "data_item:user_email", mentionId: "mention:user_email" }],
+      },
+    });
+
+    expect(document.mentions.some((row) => row.id === "mention:user_email")).toBe(true);
+    expect(document.dataItems.some((row) => row.id === "data_item:user_email")).toBe(true);
+    expect(document.mentions.some((row) => row.id === "mention:flow_103")).toBe(true);
+  });
+
+  it("rejects interview OCSF that would create a new component", () => {
+    const interviewOnlyComponent: OcsfDiscoveryRecord = {
+      ...discoveries.records[0],
+      metadata: {
+        ...discoveries.records[0].metadata,
+        uid: "dp:discovery/interview/dp_scan_entity_cmp_999/actor_kind/test",
+      },
+      resources: [{ uid: "dp:scan/entity/cmp_999", name: "cmp_999", type: "entity" }],
+      dataparade: {
+        ...discoveries.records[0].dataparade,
+        asserts: "dp:scan/entity/cmp_999",
+        asserted_slot: "actor_kind",
+        asserted_value: "person",
+      },
+    };
+
+    expect(() =>
+      buildA0DiscoveriesDocument({
+        seed: discoverySeed,
+        discoveries: {
+          directory: discoveries.directory,
+          records: [interviewOnlyComponent],
+        },
+      }),
+    ).toThrow(/must not create/);
+  });
+
+  it("rejects interview OCSF that would create a new flow", () => {
+    const interviewOnlyFlow: OcsfDiscoveryRecord = {
+      ...discoveries.records[0],
+      metadata: {
+        ...discoveries.records[0].metadata,
+        uid: "dp:discovery/interview/dp_scan_entity_flow_999/purpose/test",
+      },
+      resources: [{ uid: "dp:scan/entity/flow_999", name: "flow_999", type: "entity" }],
+      dataparade: {
+        ...discoveries.records[0].dataparade,
+        asserts: "dp:scan/entity/flow_999",
+        asserted_slot: "purpose",
+        asserted_value: "service_delivery",
+      },
+    };
+
+    expect(() =>
+      buildA0DiscoveriesDocument({
+        seed: discoverySeed,
+        discoveries: { directory: discoveries.directory, records: [interviewOnlyFlow] },
+      }),
+    ).toThrow(/must not create/);
   });
 
   it("projects dogfood A0 to a valid diagram.json wrapper in interview mode", () => {
