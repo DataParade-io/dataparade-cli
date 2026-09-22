@@ -42,11 +42,13 @@ export function loadOcsfDiscoveriesFromDir(directory: string): LoadedOcsfDiscove
     const filePath = path.join(resolved, file);
     const parsed = JSON.parse(fs.readFileSync(filePath, "utf8")) as unknown;
     const record = ocsfDiscoveryRecordSchema.parse(parsed);
-    if (record.dataparade.brief_sha !== PINNED_BRIEF_SHA) {
-      throw new OcsfDiscoveryLoadError(
-        "PIN_MISMATCH",
-        `${file}: brief_sha ${record.dataparade.brief_sha} != pin ${PINNED_BRIEF_SHA}`,
-      );
+    if (record.dataparade.source === "interview") {
+      if (record.dataparade.brief_sha !== PINNED_BRIEF_SHA) {
+        throw new OcsfDiscoveryLoadError(
+          "PIN_MISMATCH",
+          `${file}: brief_sha ${record.dataparade.brief_sha} != pin ${PINNED_BRIEF_SHA}`,
+        );
+      }
     }
     records.push(record);
   }

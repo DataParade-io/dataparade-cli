@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * DATAP-699: project scanner discovery seed + optional OCSF Discoveries → dataflow.json + D2/SVG.
+ * DATAP-699: land scanner seed to scan OCSF, project dataparade.json + diagram/D2/SVG.
  */
 import fs from "fs";
 import path from "path";

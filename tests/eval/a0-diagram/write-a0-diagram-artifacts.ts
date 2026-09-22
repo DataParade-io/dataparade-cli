@@ -13,7 +13,7 @@ export interface WriteA0DiagramArtifactsOptions {
 }
 
 export function writeA0DiagramArtifacts(options: WriteA0DiagramArtifactsOptions): {
-  dataflowPath: string;
+  dataparadePath: string;
   diagramPath: string;
   d2Path: string;
   svgPath: string;
@@ -21,13 +21,13 @@ export function writeA0DiagramArtifacts(options: WriteA0DiagramArtifactsOptions)
   const outputDir = path.resolve(options.outputDir);
   fs.mkdirSync(outputDir, { recursive: true });
 
-  const dataflowPath = path.join(outputDir, `${options.basename}.dataflow.json`);
+  const dataparadePath = path.join(outputDir, `${options.basename}.dataparade.json`);
   const diagramPath = path.join(outputDir, `${options.basename}.diagram.json`);
   const d2Path = path.join(outputDir, `${options.basename}.d2`);
   const svgPath = path.join(outputDir, `${options.basename}.svg`);
 
   fs.writeFileSync(
-    dataflowPath,
+    dataparadePath,
     `${JSON.stringify(options.discoveriesDocument, null, 2)}\n`,
     "utf8",
   );
@@ -35,5 +35,5 @@ export function writeA0DiagramArtifacts(options: WriteA0DiagramArtifactsOptions)
   fs.writeFileSync(d2Path, renderDiagramToD2(options.diagramWrapper.graph), "utf8");
   fs.writeFileSync(svgPath, renderDiagramToSvg(options.diagramWrapper.graph), "utf8");
 
-  return { dataflowPath, diagramPath, d2Path, svgPath };
+  return { dataparadePath, diagramPath, d2Path, svgPath };
 }
