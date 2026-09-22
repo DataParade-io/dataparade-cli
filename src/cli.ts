@@ -7,6 +7,7 @@ import pkg from "../package.json";
 
 import type { DiagramGraphJsonSchema } from "./core/schema";
 import { buildDataflowWrapper, writeDataflowJson } from "./output/json";
+import { writeScanDiscoveriesArtifacts } from "./output/write-scan-discoveries";
 import { resolveSkipAutoUpload } from "./config/upload-env";
 import { AI_PROVIDER_IDS, type AiProviderId } from "./ai-enrichment/types";
 import type { CliConfigFlags } from "./config/types";
@@ -586,10 +587,23 @@ function createProgram(): Command {
                 projectName: resolvedProjectName,
               });
 
+              const scanDiscoveriesPaths = writeScanDiscoveriesArtifacts(
+                scanResult,
+                dataflowOutputPath,
+              );
+
               // Always print a short message so non-interactive callers and
               // tests can rely on it.
               // eslint-disable-next-line no-console
               console.log(`[scan] dataflow.json written to ${dataflowOutputPath}`);
+              // eslint-disable-next-line no-console
+              console.log(
+                `[scan] OCSF discoveries written to ${scanDiscoveriesPaths.ocsfDiscoveriesDir}`,
+              );
+              // eslint-disable-next-line no-console
+              console.log(
+                `[scan] dataparade.json written to ${scanDiscoveriesPaths.dataparadeJsonPath}`,
+              );
 
               const skipAutoUpload =
                 Boolean(options.skipAutoUpload) ||
