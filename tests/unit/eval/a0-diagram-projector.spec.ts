@@ -40,8 +40,8 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(validateA0DiscoveriesDocument(document).ok).toBe(true);
     expect(document.components.length).toBe(28);
     expect(document.dataFlows.length).toBe(20);
-    expect(document.dataItems).toEqual([]);
-    expect(document.mentions).toEqual([]);
+    expect(document.dataItems.length).toBeGreaterThan(0);
+    expect(document.mentions.length).toBeGreaterThan(0);
     expect(document.system?.in_scope).toContain("Every repository in the DataParade-io GitHub organization");
 
     const cmp6 = document.components.find((row) => row.id === "cmp_6");
@@ -54,8 +54,23 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(flow103?.purpose).toBeDefined();
     expect(flow103?.sourceComponentId).toBeDefined();
     expect(flow103?.targetComponentId).toBeDefined();
-    expect(flow103?.sourceLocation?.filePath).toBe("backend/src/actors/actors.controller.ts");
-    expect(flow103?.sourceLocation?.startLine).toBe(57);
+    expect(flow103).not.toHaveProperty("sourceLocation");
+
+    const flow103Mention = document.mentions.find((row) => row.id === "mention:flow_103");
+    expect(flow103Mention?.filePath).toBe("backend/src/actors/actors.controller.ts");
+    expect(flow103Mention?.startLine).toBe(57);
+
+    const flow103DataItem = document.dataItems.find((row) => row.id === "data_item:flow_103");
+    expect(flow103DataItem?.mentionId).toBe("mention:flow_103");
+    expect(cmp6?.dataItemIds).toContain("data_item:flow_103");
+
+    const flow254 = document.dataFlows.find((row) => row.id === "flow_254");
+    expect(flow254).not.toHaveProperty("sourceLocation");
+    const flow254Mention = document.mentions.find((row) => row.id === "mention:flow_254");
+    expect(flow254Mention?.filePath).toBe("backend/package.json");
+    expect(flow254Mention?.startLine).toBe(1);
+    const cmp7 = document.components.find((row) => row.id === "cmp_7");
+    expect(cmp7?.dataItemIds).toContain("data_item:flow_254");
 
     const serialized = JSON.stringify(document);
     expect(serialized).not.toContain('"position"');

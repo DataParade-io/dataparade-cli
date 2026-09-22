@@ -29,12 +29,27 @@ function parseCategoriesValue(raw: string | undefined): string[] | undefined {
   return undefined;
 }
 
+function mentionIdForFlow(flowId: string): string {
+  return `mention:${flowId}`;
+}
+
+function dataItemIdForFlow(flowId: string): string {
+  return `data_item:${flowId}`;
+}
+
 export function buildA0DiscoveriesDocument(
   input: BuildA0DiscoveriesDocumentInput,
 ): A0DiscoveriesDocument {
   const discoveryIndex = indexDiscoverySlots(input.discoveries?.records ?? []);
   const seedComponentIds = new Set(input.seed.components.map((row) => row.id));
   const seedFlowIds = new Set(input.seed.dataFlows.map((row) => row.id));
+
+  const componentDataItemIds = new Map<string, string[]>(
+    input.seed.components.map((row) => [row.id, [] as string[]]),
+  );
+
+  const mentions: A0DiscoveriesDocument["mentions"] = [];
+  const dataItems: A0DiscoveriesDocument["dataItems"] = [];
 
   const components = input.seed.components.map((row) => {
     const asserts = `dp:scan/entity/${row.id}`;
@@ -46,6 +61,7 @@ export function buildA0DiscoveriesDocument(
       subType: row.subType,
       confidence: row.confidence,
       sourceLocations: row.sourceLocations,
+      dataItemIds: componentDataItemIds.get(row.id) ?? [],
       ...(actorKind ? { actor_kind: actorKind } : {}),
     };
   });
@@ -55,6 +71,30 @@ export function buildA0DiscoveriesDocument(
     const categoriesRaw = discoveryValue(discoveryIndex, asserts, "data_categories");
     const purpose = discoveryValue(discoveryIndex, asserts, "purpose");
     const dataCategories = parseCategoriesValue(categoriesRaw);
+
+    if (flow.sourceLocation !== undefined) {
+      const mentionId = mentionIdForFlow(flow.id);
+      const dataItemId = dataItemIdForFlow(flow.id);
+      const { filePath, startLine, endLine, code } = flow.sourceLocation;
+
+      mentions.push({
+        id: mentionId,
+        filePath,
+        startLine,
+        endLine,
+        ...(code !== undefined ? { code } : {}),
+      });
+      dataItems.push({
+        id: dataItemId,
+        mentionId,
+      });
+
+      const sourceDataItemIds = componentDataItemIds.get(flow.sourceComponentId);
+      if (sourceDataItemIds) {
+        sourceDataItemIds.push(dataItemId);
+      }
+    }
+
     return {
       id: flow.id,
       sourceComponentId: flow.sourceComponentId,
@@ -64,16 +104,19 @@ export function buildA0DiscoveriesDocument(
       ...(flow.targetScope !== undefined ? { targetScope: flow.targetScope } : {}),
       ...(dataCategories && dataCategories.length > 0 ? { data_categories: dataCategories } : {}),
       ...(purpose ? { purpose } : {}),
-      ...(flow.sourceLocation !== undefined ? { sourceLocation: flow.sourceLocation } : {}),
     };
   });
+
+  for (const component of components) {
+    component.dataItemIds = componentDataItemIds.get(component.id) ?? [];
+  }
 
   const inScope = discoveryValue(discoveryIndex, "dp:a0/system", "in_scope");
   const document: A0DiscoveriesDocument = {
     components,
     dataFlows,
-    dataItems: [],
-    mentions: [],
+    dataItems,
+    mentions,
     ...(inScope ? { system: { in_scope: inScope } } : {}),
   };
 
