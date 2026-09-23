@@ -1,4 +1,10 @@
 packages:
   - "."
 
+# The scanner ships source-only (dist/ is gitignored), so its `prepare` script
+# builds it on install. pnpm v11 gates build scripts behind a per-SHA
+# `allowBuilds` allowlist, which would force a new entry for every scanner SHA
+# — re-introducing the pinning hassle we removed. Allowing all builds lets
+# the scanner build on install with zero per-SHA entries.
+# See: project/wiki/scanner-dependency.md (knowledge-base)
 dangerouslyAllowAllBuilds: true

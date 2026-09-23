@@ -78,6 +78,39 @@ By default, the CLI writes `./dataflow.json` in the current working directory.
 
 ---
 
+## Development
+
+### Keeping the scanner up to date
+
+This CLI consumes [`@dataparade/scanner`](https://github.com/DataParade-io/scanner) via a **git branch ref**, not a pinned commit SHA and not an npm package:
+
+- `main` branch of this CLI → `github:DataParade-io/scanner#main`
+- `develop` and any feature/fix/chore branch → `github:DataParade-io/scanner#develop`
+
+`pnpm install` resolves the ref to the scanner branch tip **at the time the lockfile was last refreshed**, then builds the scanner from source (`pnpm-workspace.yaml` sets `dangerouslyAllowAllBuilds: true` so that build runs without a per-SHA allowlist).
+
+**To pull the latest scanner for your branch, run:**
+
+```bash
+pnpm update @dataparade/scanner
+```
+
+Do this whenever a scanner fix you need has landed — otherwise the CLI keeps using the scanner SHA frozen in `pnpm-lock.yaml`, which can be **stale**. A stale scanner is the usual cause of "the CLI projects empty arrays / wrong `dataparade.json` shape." If a scan looks wrong, refresh the scanner first:
+
+```bash
+pnpm update @dataparade/scanner && pnpm exec tsc -p tsconfig.json
+```
+
+Check which scanner SHA you're on:
+
+```bash
+grep -A2 "'@dataparade/scanner'" pnpm-lock.yaml
+```
+
+See the knowledge-base wiki page [Scanner dependency](https://github.com/DataParade-io/knowledge-base/blob/main/project/wiki/scanner-dependency.md) for the full policy and rationale.
+
+---
+
 ## License
 
 GPL-3.0-or-later · Source: [github.com/DataParade-io/dataparade-cli](https://github.com/DataParade-io/dataparade-cli)
