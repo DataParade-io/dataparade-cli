@@ -69,7 +69,7 @@
     "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js"
   },
   "dependencies": {
-    "@dataparade/scanner": "github:DataParade-io/scanner#9f2f5fc9d361ebbe3a21911b1ee53b4c9f34ba88",
+    "@dataparade/scanner": "github:DataParade-io/scanner#develop",
     "@sentry/node": "^10.38.0",
     "commander": "^12.1.0",
     "dotenv": "^16.4.7",
