@@ -22,6 +22,7 @@ export interface ScanDiscoveryFlowInput {
   confidence: number;
   targetScope?: string;
   sourceLocation?: ScanDiscoverySourceLocation;
+  sourceLocations?: ScanDiscoverySourceLocation[];
 }
 
 export interface ScanDiscoveryInput {

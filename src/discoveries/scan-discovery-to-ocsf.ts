@@ -11,6 +11,7 @@ import type { OcsfDiscoveryRecord } from "../../tests/eval/interview-a0/ocsf-dis
 import type {
   PersonalDataLandInput,
   ScanDiscoveryInput,
+  ScanDiscoverySourceLocation,
 } from "./scan-discovery-input";
 import {
   PINNED_SCAN_ASSERTED_AT,
@@ -128,6 +129,49 @@ function resolveLandTiming(options?: LandScanDiscoveryOcsfOptions): {
   return { assertedAt, landDate };
 }
 
+function sourceLocationKey(location: ScanDiscoverySourceLocation): string {
+  return `${location.filePath}\0${location.startLine}\0${location.endLine}`;
+}
+
+function compareSourceLocations(
+  a: ScanDiscoverySourceLocation,
+  b: ScanDiscoverySourceLocation,
+): number {
+  const pathCompare = a.filePath.localeCompare(b.filePath);
+  if (pathCompare !== 0) {
+    return pathCompare;
+  }
+  if (a.startLine !== b.startLine) {
+    return a.startLine - b.startLine;
+  }
+  return a.endLine - b.endLine;
+}
+
+function collectFlowSourceLocations(
+  flow: ScanDiscoveryInput["dataFlows"][number],
+): ScanDiscoverySourceLocation[] {
+  const raw: ScanDiscoverySourceLocation[] = [];
+  if (flow.sourceLocation !== undefined) {
+    raw.push(flow.sourceLocation);
+  }
+  if (flow.sourceLocations !== undefined) {
+    raw.push(...flow.sourceLocations);
+  }
+
+  const seen = new Set<string>();
+  const deduped: ScanDiscoverySourceLocation[] = [];
+  for (const location of raw) {
+    const key = sourceLocationKey(location);
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    deduped.push(location);
+  }
+
+  return deduped.sort(compareSourceLocations);
+}
+
 export function landPersonalDataToOcsfRecords(
   input: PersonalDataLandInput,
   options?: LandScanDiscoveryOcsfOptions,
@@ -188,12 +232,13 @@ export function landScanDiscoveryToOcsfRecords(
       records.push(slotRecord(asserts, "target_scope", flow.targetScope, timing));
     }
 
-    if (flow.sourceLocation !== undefined) {
-      const mentionId = `mention:${flow.id}`;
-      const dataItemId = `data_item:${flow.id}`;
+    const flowSourceLocations = collectFlowSourceLocations(flow);
+    for (const [index, location] of flowSourceLocations.entries()) {
+      const mentionId = `mention:${flow.id}:${index}`;
+      const dataItemId = `data_item:${flow.id}:${index}`;
       const mentionUri = mentionAssertUri(mentionId);
       const dataItemUri = dataItemAssertUri(dataItemId);
-      const { filePath, startLine, endLine, code } = flow.sourceLocation;
+      const { filePath, startLine, endLine, code } = location;
 
       records.push(entityRecord(mentionUri, timing));
       records.push(slotRecord(mentionUri, "file_path", filePath, timing));

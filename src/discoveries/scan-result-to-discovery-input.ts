@@ -1,5 +1,16 @@
 import type { ScanResult } from "../core/types/result";
-import type { ScanDiscoveryInput } from "./scan-discovery-input";
+import type { ScanDiscoveryInput, ScanDiscoverySourceLocation } from "./scan-discovery-input";
+
+function mapSourceLocation(
+  location: NonNullable<ScanResult["dataFlows"][number]["sourceLocation"]>,
+): ScanDiscoverySourceLocation {
+  return {
+    filePath: location.filePath,
+    startLine: location.startLine,
+    endLine: location.endLine,
+    ...(location.code !== undefined ? { code: location.code } : {}),
+  };
+}
 
 export function scanResultToDiscoveryInput(scanResult: ScanResult): ScanDiscoveryInput {
   return {
@@ -24,14 +35,10 @@ export function scanResultToDiscoveryInput(scanResult: ScanResult): ScanDiscover
       confidence: flow.confidence,
       ...(flow.targetScope !== undefined ? { targetScope: flow.targetScope } : {}),
       ...(flow.sourceLocation !== undefined
-        ? {
-            sourceLocation: {
-              filePath: flow.sourceLocation.filePath,
-              startLine: flow.sourceLocation.startLine,
-              endLine: flow.sourceLocation.endLine,
-              ...(flow.sourceLocation.code !== undefined ? { code: flow.sourceLocation.code } : {}),
-            },
-          }
+        ? { sourceLocation: mapSourceLocation(flow.sourceLocation) }
+        : {}),
+      ...(flow.sourceLocations !== undefined && flow.sourceLocations.length > 0
+        ? { sourceLocations: flow.sourceLocations.map(mapSourceLocation) }
         : {}),
     })),
   };
