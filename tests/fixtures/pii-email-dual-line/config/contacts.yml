@@ -1,0 +1,4 @@
+primary:
+  emailAddress: primary@example.com
+secondary:
+  emailAddress: secondary@example.com
