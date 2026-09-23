@@ -8,9 +8,11 @@ import {
   buildA0DiagramWrapper,
   buildA0DiscoveriesDocument,
   landDiscoverySeedToOcsfRecords,
+  landPersonalDataToOcsfRecords,
   projectA0DiagramGraph,
   projectOcsfToDiscoveriesDocument,
 } from "../../eval/a0-diagram/a0-diagram-projector";
+import type { ScanDiscoveryInput } from "../../../src/discoveries/scan-discovery-input";
 import { validateA0DiscoveriesDocument } from "../../eval/a0-diagram/a0-discoveries-document.schema";
 import { loadDiscoverySeedFromFile } from "../../eval/a0-diagram/load-discovery-seed";
 import { loadOcsfDiscoveriesFromDir } from "../../eval/a0-diagram/load-ocsf-discoveries";
@@ -65,21 +67,21 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(flow103?.targetComponentId).toBeDefined();
     expect(flow103).not.toHaveProperty("sourceLocation");
 
-    const flow103Mention = document.mentions.find((row) => row.id === "mention:flow_103");
+    const flow103Mention = document.mentions.find((row) => row.id === "mention:flow_103:0");
     expect(flow103Mention?.filePath).toBe("backend/src/actors/actors.controller.ts");
     expect(flow103Mention?.startLine).toBe(57);
 
-    const flow103DataItem = document.dataItems.find((row) => row.id === "data_item:flow_103");
-    expect(flow103DataItem?.mentionId).toBe("mention:flow_103");
-    expect(cmp6?.dataItemIds).toContain("data_item:flow_103");
+    const flow103DataItem = document.dataItems.find((row) => row.id === "data_item:flow_103:0");
+    expect(flow103DataItem?.mentionId).toBe("mention:flow_103:0");
+    expect(cmp6?.dataItemIds).toContain("data_item:flow_103:0");
 
     const flow254 = document.dataFlows.find((row) => row.id === "flow_254");
     expect(flow254).not.toHaveProperty("sourceLocation");
-    const flow254Mention = document.mentions.find((row) => row.id === "mention:flow_254");
+    const flow254Mention = document.mentions.find((row) => row.id === "mention:flow_254:0");
     expect(flow254Mention?.filePath).toBe("backend/package.json");
     expect(flow254Mention?.startLine).toBe(1);
     const cmp7 = document.components.find((row) => row.id === "cmp_7");
-    expect(cmp7?.dataItemIds).toContain("data_item:flow_254");
+    expect(cmp7?.dataItemIds).toContain("data_item:flow_254:0");
 
     const serialized = JSON.stringify(document);
     expect(serialized).not.toContain('"position"');
@@ -88,25 +90,123 @@ describe("a0DiagramProjector (DATAP-699)", () => {
 
   it("projects extra personal-data mention and data item when supplied", () => {
     const scanRecords = landDiscoverySeedToOcsfRecords(discoverySeed);
+    const personalRecords = landPersonalDataToOcsfRecords({
+      mentions: [
+        {
+          id: "mention:user_email",
+          filePath: "backend/src/auth/login.ts",
+          startLine: 12,
+          endLine: 12,
+          code: "const email = req.body.email;",
+        },
+      ],
+      dataItems: [{ id: "data_item:user_email", mentionId: "mention:user_email" }],
+    });
     const document = projectOcsfToDiscoveriesDocument({
-      records: [...scanRecords, ...discoveries.records],
-      personalData: {
-        mentions: [
-          {
-            id: "mention:user_email",
-            filePath: "backend/src/auth/login.ts",
-            startLine: 12,
-            endLine: 12,
-            code: "const email = req.body.email;",
-          },
-        ],
-        dataItems: [{ id: "data_item:user_email", mentionId: "mention:user_email" }],
-      },
+      records: [...scanRecords, ...discoveries.records, ...personalRecords],
     });
 
     expect(document.mentions.some((row) => row.id === "mention:user_email")).toBe(true);
     expect(document.dataItems.some((row) => row.id === "data_item:user_email")).toBe(true);
-    expect(document.mentions.some((row) => row.id === "mention:flow_103")).toBe(true);
+    expect(document.mentions.some((row) => row.id === "mention:flow_103:0")).toBe(true);
+  });
+
+  it("lands every flow sourceLocations line as its own mention on the source component", () => {
+    const multiLineFlowSeed: ScanDiscoveryInput = {
+      components: [
+        {
+          id: "cmp_6",
+          name: "Customer",
+          type: "actor",
+          subType: "person",
+          confidence: 0.85,
+          sourceLocations: [],
+        },
+        {
+          id: "cmp_7",
+          name: "backend",
+          type: "asset",
+          subType: "service",
+          confidence: 0.85,
+          sourceLocations: [],
+        },
+      ],
+      dataFlows: [
+        {
+          id: "flow_103",
+          sourceComponentId: "cmp_6",
+          targetComponentId: "cmp_7",
+          type: "api_call",
+          confidence: 0.85,
+          targetScope: "local",
+          sourceLocation: {
+            filePath: "backend/src/actors/actors.controller.ts",
+            startLine: 57,
+            endLine: 57,
+            code: "    return this.actorsService.findAllByUser(req.user!.id);",
+          },
+          sourceLocations: [
+            {
+              filePath: "backend/src/actors/actors.controller.ts",
+              startLine: 57,
+              endLine: 57,
+            },
+            {
+              filePath: "backend/src/auth/auth.controller.ts",
+              startLine: 282,
+              endLine: 282,
+            },
+            {
+              filePath: "backend/src/diagram/diagram.controller.ts",
+              startLine: 89,
+              endLine: 89,
+            },
+          ],
+        },
+      ],
+    };
+
+    const scanRecords = landDiscoverySeedToOcsfRecords(multiLineFlowSeed);
+    const document = projectOcsfToDiscoveriesDocument({ records: scanRecords });
+
+    const flow103 = document.dataFlows.find((row) => row.id === "flow_103");
+    expect(flow103).toBeDefined();
+    expect(flow103).not.toHaveProperty("sourceLocation");
+    expect(flow103).not.toHaveProperty("filePath");
+    expect(flow103).not.toHaveProperty("startLine");
+
+    const mentionIds = [
+      "mention:flow_103:0",
+      "mention:flow_103:1",
+      "mention:flow_103:2",
+    ];
+    for (const mentionId of mentionIds) {
+      expect(document.mentions.some((row) => row.id === mentionId)).toBe(true);
+    }
+
+    expect(document.mentions.find((row) => row.id === "mention:flow_103:0")?.filePath).toBe(
+      "backend/src/actors/actors.controller.ts",
+    );
+    expect(document.mentions.find((row) => row.id === "mention:flow_103:0")?.startLine).toBe(57);
+    expect(document.mentions.find((row) => row.id === "mention:flow_103:1")?.filePath).toBe(
+      "backend/src/auth/auth.controller.ts",
+    );
+    expect(document.mentions.find((row) => row.id === "mention:flow_103:1")?.startLine).toBe(282);
+
+    const dataItemIds = [
+      "data_item:flow_103:0",
+      "data_item:flow_103:1",
+      "data_item:flow_103:2",
+    ];
+    for (const dataItemId of dataItemIds) {
+      const dataItem = document.dataItems.find((row) => row.id === dataItemId);
+      expect(dataItem?.mentionId).toBe(dataItemId.replace("data_item:", "mention:"));
+    }
+
+    const cmp6 = document.components.find((row) => row.id === "cmp_6");
+    for (const dataItemId of dataItemIds) {
+      expect(cmp6?.dataItemIds).toContain(dataItemId);
+    }
   });
 
   it("rejects interview OCSF that would create a new component", () => {
