@@ -10,7 +10,6 @@ export { buildA0DiscoveriesDocument } from "./build-a0-discoveries-document";
 export { projectOcsfToDiscoveriesDocument } from "./project-ocsf-to-discoveries-document";
 export {
   landDiscoverySeedToOcsfRecords,
-  landPersonalDataToOcsfRecords,
 } from "./scan-discovery-to-ocsf";
 export type { A0DiscoveriesDocument } from "./a0-discoveries-document.schema";
 import type { LoadedOcsfDiscoveries } from "./load-ocsf-discoveries";

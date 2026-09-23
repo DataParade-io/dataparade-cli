@@ -17,7 +17,7 @@ export const a0DiscoveriesMentionSchema = z.object({
 
 export const a0DiscoveriesDataItemSchema = z.object({
   id: z.string(),
-  mentionId: z.string(),
+  mentionIds: z.array(z.string()).min(1),
 });
 
 export const a0DiscoveriesComponentSchema = z.object({

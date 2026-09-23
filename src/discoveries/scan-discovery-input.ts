@@ -21,29 +21,26 @@ export interface ScanDiscoveryFlowInput {
   type: string;
   confidence: number;
   targetScope?: string;
-  sourceLocation?: ScanDiscoverySourceLocation;
-  sourceLocations?: ScanDiscoverySourceLocation[];
 }
 
-export interface ScanDiscoveryInput {
-  components: ScanDiscoveryComponentInput[];
-  dataFlows: ScanDiscoveryFlowInput[];
-}
-
-export interface PersonalDataMentionLandInput {
+export interface ScanDiscoveryMentionInput {
   id: string;
   filePath: string;
   startLine: number;
   endLine: number;
   code?: string;
+  labels: string[];
 }
 
-export interface PersonalDataDataItemLandInput {
+export interface ScanDiscoveryDataItemInput {
   id: string;
-  mentionId: string;
+  mentionIds: string[];
+  labels: string[];
 }
 
-export interface PersonalDataLandInput {
-  mentions: PersonalDataMentionLandInput[];
-  dataItems: PersonalDataDataItemLandInput[];
+export interface ScanDiscoveryInput {
+  components: ScanDiscoveryComponentInput[];
+  dataFlows: ScanDiscoveryFlowInput[];
+  mentions: ScanDiscoveryMentionInput[];
+  dataItems: ScanDiscoveryDataItemInput[];
 }

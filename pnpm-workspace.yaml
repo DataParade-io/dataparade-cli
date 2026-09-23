@@ -1,0 +1,5 @@
+packages:
+  - "."
+
+allowBuilds:
+  "@dataparade/scanner@https://codeload.github.com/DataParade-io/scanner/tar.gz/e0dcef681c88f5b78ed12139308e5193c2a783f6": true

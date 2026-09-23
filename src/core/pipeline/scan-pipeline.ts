@@ -9,6 +9,7 @@ import type {
 import { buildAgentOrchestratorOptions } from "./ai-orchestrator-options";
 import {
   emitScanProgress,
+  enrichOrchestratorResultWithPersonalDataLayers,
   finalizeDeterministicScanResult,
   runDeterministicScanPhases,
   type DeterministicScanWork,
@@ -429,7 +430,7 @@ async function runScanPipelineInner(
     };
   }
 
-  return result;
+  return enrichOrchestratorResultWithPersonalDataLayers(rootPath, result);
 }
 
 /**

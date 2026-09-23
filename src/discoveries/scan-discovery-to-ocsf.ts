@@ -9,8 +9,8 @@ import {
 import { PINNED_ONTOLOGY_VERSION } from "../../tests/eval/interview-a0/pins";
 import type { OcsfDiscoveryRecord } from "../../tests/eval/interview-a0/ocsf-discovery-types";
 import type {
-  PersonalDataLandInput,
   ScanDiscoveryInput,
+  ScanDiscoveryMentionInput,
   ScanDiscoverySourceLocation,
 } from "./scan-discovery-input";
 import {
@@ -129,74 +129,49 @@ function resolveLandTiming(options?: LandScanDiscoveryOcsfOptions): {
   return { assertedAt, landDate };
 }
 
-function sourceLocationKey(location: ScanDiscoverySourceLocation): string {
-  return `${location.filePath}\0${location.startLine}\0${location.endLine}`;
+function locationOverlapsComponentSource(
+  mention: ScanDiscoveryMentionInput,
+  location: ScanDiscoverySourceLocation,
+): boolean {
+  if (location.filePath !== mention.filePath) {
+    return false;
+  }
+  return (
+    mention.startLine >= location.startLine &&
+    mention.endLine <= location.endLine
+  );
 }
 
-function compareSourceLocations(
-  a: ScanDiscoverySourceLocation,
-  b: ScanDiscoverySourceLocation,
-): number {
-  const pathCompare = a.filePath.localeCompare(b.filePath);
-  if (pathCompare !== 0) {
-    return pathCompare;
-  }
-  if (a.startLine !== b.startLine) {
-    return a.startLine - b.startLine;
-  }
-  return a.endLine - b.endLine;
+function componentIdsForMention(
+  mention: ScanDiscoveryMentionInput,
+  input: ScanDiscoveryInput,
+): string[] {
+  const matches = input.components
+    .filter((component) =>
+      component.sourceLocations.some((location) =>
+        locationOverlapsComponentSource(mention, location),
+      ),
+    )
+    .map((component) => component.id);
+  return [...new Set(matches)].sort((left, right) => left.localeCompare(right));
 }
 
-function collectFlowSourceLocations(
-  flow: ScanDiscoveryInput["dataFlows"][number],
-): ScanDiscoverySourceLocation[] {
-  const raw: ScanDiscoverySourceLocation[] = [];
-  if (flow.sourceLocation !== undefined) {
-    raw.push(flow.sourceLocation);
-  }
-  if (flow.sourceLocations !== undefined) {
-    raw.push(...flow.sourceLocations);
-  }
-
-  const seen = new Set<string>();
-  const deduped: ScanDiscoverySourceLocation[] = [];
-  for (const location of raw) {
-    const key = sourceLocationKey(location);
-    if (seen.has(key)) {
+function componentIdsForDataItem(
+  dataItemMentionIds: string[],
+  mentionById: Map<string, ScanDiscoveryMentionInput>,
+  input: ScanDiscoveryInput,
+): string[] {
+  const attached = new Set<string>();
+  for (const mentionId of dataItemMentionIds) {
+    const mention = mentionById.get(mentionId);
+    if (!mention) {
       continue;
     }
-    seen.add(key);
-    deduped.push(location);
-  }
-
-  return deduped.sort(compareSourceLocations);
-}
-
-export function landPersonalDataToOcsfRecords(
-  input: PersonalDataLandInput,
-  options?: LandScanDiscoveryOcsfOptions,
-): OcsfDiscoveryRecord[] {
-  const timing = resolveLandTiming(options);
-  const records: OcsfDiscoveryRecord[] = [];
-
-  for (const mention of input.mentions) {
-    const mentionUri = mentionAssertUri(mention.id);
-    records.push(entityRecord(mentionUri, timing));
-    records.push(slotRecord(mentionUri, "file_path", mention.filePath, timing));
-    records.push(slotRecord(mentionUri, "start_line", String(mention.startLine), timing));
-    records.push(slotRecord(mentionUri, "end_line", String(mention.endLine), timing));
-    if (mention.code !== undefined) {
-      records.push(slotRecord(mentionUri, "code", mention.code, timing));
+    for (const componentId of componentIdsForMention(mention, input)) {
+      attached.add(componentId);
     }
   }
-
-  for (const dataItem of input.dataItems) {
-    const dataItemUri = dataItemAssertUri(dataItem.id);
-    records.push(entityRecord(dataItemUri, timing));
-    records.push(slotRecord(dataItemUri, "mention", dataItem.mentionId, timing));
-  }
-
-  return records;
+  return [...attached].sort((left, right) => left.localeCompare(right));
 }
 
 export function landScanDiscoveryToOcsfRecords(
@@ -208,6 +183,8 @@ export function landScanDiscoveryToOcsfRecords(
   const componentDataItemIds = new Map<string, string[]>(
     input.components.map((row) => [row.id, [] as string[]]),
   );
+
+  const mentionById = new Map(input.mentions.map((mention) => [mention.id, mention]));
 
   for (const component of input.components) {
     const asserts = `dp:scan/entity/${component.id}`;
@@ -231,29 +208,45 @@ export function landScanDiscoveryToOcsfRecords(
     if (flow.targetScope !== undefined) {
       records.push(slotRecord(asserts, "target_scope", flow.targetScope, timing));
     }
+  }
 
-    const flowSourceLocations = collectFlowSourceLocations(flow);
-    for (const [index, location] of flowSourceLocations.entries()) {
-      const mentionId = `mention:${flow.id}:${index}`;
-      const dataItemId = `data_item:${flow.id}:${index}`;
-      const mentionUri = mentionAssertUri(mentionId);
-      const dataItemUri = dataItemAssertUri(dataItemId);
-      const { filePath, startLine, endLine, code } = location;
+  for (const mention of input.mentions) {
+    const mentionUri = mentionAssertUri(mention.id);
+    records.push(entityRecord(mentionUri, timing));
+    records.push(slotRecord(mentionUri, "file_path", mention.filePath, timing));
+    records.push(slotRecord(mentionUri, "start_line", String(mention.startLine), timing));
+    records.push(slotRecord(mentionUri, "end_line", String(mention.endLine), timing));
+    if (mention.code !== undefined) {
+      records.push(slotRecord(mentionUri, "code", mention.code, timing));
+    }
+    if (mention.labels.length > 0) {
+      records.push(
+        slotRecord(mentionUri, "labels", JSON.stringify(mention.labels), timing),
+      );
+    }
+  }
 
-      records.push(entityRecord(mentionUri, timing));
-      records.push(slotRecord(mentionUri, "file_path", filePath, timing));
-      records.push(slotRecord(mentionUri, "start_line", String(startLine), timing));
-      records.push(slotRecord(mentionUri, "end_line", String(endLine), timing));
-      if (code !== undefined) {
-        records.push(slotRecord(mentionUri, "code", code, timing));
-      }
+  for (const dataItem of input.dataItems) {
+    const dataItemUri = dataItemAssertUri(dataItem.id);
+    records.push(entityRecord(dataItemUri, timing));
+    records.push(
+      slotRecord(dataItemUri, "mention_ids", JSON.stringify(dataItem.mentionIds), timing),
+    );
+    if (dataItem.labels.length > 0) {
+      records.push(
+        slotRecord(dataItemUri, "labels", JSON.stringify(dataItem.labels), timing),
+      );
+    }
 
-      records.push(entityRecord(dataItemUri, timing));
-      records.push(slotRecord(dataItemUri, "mention", mentionId, timing));
-
-      const sourceItems = componentDataItemIds.get(flow.sourceComponentId);
+    const attachedComponentIds = componentIdsForDataItem(
+      dataItem.mentionIds,
+      mentionById,
+      input,
+    );
+    for (const componentId of attachedComponentIds) {
+      const sourceItems = componentDataItemIds.get(componentId);
       if (sourceItems) {
-        sourceItems.push(dataItemId);
+        sourceItems.push(dataItem.id);
       }
     }
   }

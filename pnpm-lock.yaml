@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@dataparade/scanner':
-        specifier: github:DataParade-io/scanner#998fb12b2db667dd7ff305e34c716634b867e806
-        version: https://codeload.github.com/DataParade-io/scanner/tar.gz/998fb12b2db667dd7ff305e34c716634b867e806
+        specifier: github:DataParade-io/scanner#e0dcef6
+        version: https://codeload.github.com/DataParade-io/scanner/tar.gz/e0dcef681c88f5b78ed12139308e5193c2a783f6
       '@sentry/node':
         specifier: ^10.38.0
         version: 10.75.0(@opentelemetry/core@2.11.0(@opentelemetry/api@1.9.1))(supports-color@8.1.1)
@@ -225,8 +225,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@dataparade/scanner@https://codeload.github.com/DataParade-io/scanner/tar.gz/998fb12b2db667dd7ff305e34c716634b867e806':
-    resolution: {gitHosted: true, integrity: sha512-YL8QCV3GdbEghQpPimoh2oeheXUZLrscZlwv9f68VrqzbzGu82ZE/4TmiewUnMfM1OmhcJZsrGqH7jCHtqf8xA==, tarball: https://codeload.github.com/DataParade-io/scanner/tar.gz/998fb12b2db667dd7ff305e34c716634b867e806}
+  '@dataparade/scanner@https://codeload.github.com/DataParade-io/scanner/tar.gz/e0dcef681c88f5b78ed12139308e5193c2a783f6':
+    resolution: {gitHosted: true, integrity: sha512-9lZ2irks+2ItYAKcw3Pc5NjmKSePl1YMapaxl9BQjV1jOShjeKg7kXSKIaJzJw1VFMyMe3/8SB1ZgMP0/kRotw==, tarball: https://codeload.github.com/DataParade-io/scanner/tar.gz/e0dcef681c88f5b78ed12139308e5193c2a783f6}
     version: 0.0.1
     engines: {node: '>=20'}
 
@@ -1925,7 +1925,7 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@dataparade/scanner@https://codeload.github.com/DataParade-io/scanner/tar.gz/998fb12b2db667dd7ff305e34c716634b867e806':
+  '@dataparade/scanner@https://codeload.github.com/DataParade-io/scanner/tar.gz/e0dcef681c88f5b78ed12139308e5193c2a783f6':
     dependencies:
       typescript: 5.9.3
       yaml: 2.9.1
