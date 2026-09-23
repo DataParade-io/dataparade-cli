@@ -1,18 +1,35 @@
+import type { OrchestratorScanResult } from "../core/pipeline/orchestrator-result";
 import type { ScanResult } from "../core/types/result";
-import type { ScanDiscoveryInput, ScanDiscoverySourceLocation } from "./scan-discovery-input";
+import type { ScanDiscoveryInput } from "./scan-discovery-input";
 
-function mapSourceLocation(
-  location: NonNullable<ScanResult["dataFlows"][number]["sourceLocation"]>,
-): ScanDiscoverySourceLocation {
+export interface DiscoverySeedLike {
+  components: ScanDiscoveryInput["components"];
+  dataFlows: Array<
+    ScanDiscoveryInput["dataFlows"][number] & {
+      sourceLocation?: ScanDiscoveryInput["components"][number]["sourceLocations"][number];
+      sourceLocations?: ScanDiscoveryInput["components"][number]["sourceLocations"];
+    }
+  >;
+}
+
+export function discoverySeedToDiscoveryInput(seed: DiscoverySeedLike): ScanDiscoveryInput {
   return {
-    filePath: location.filePath,
-    startLine: location.startLine,
-    endLine: location.endLine,
-    ...(location.code !== undefined ? { code: location.code } : {}),
+    components: seed.components,
+    dataFlows: seed.dataFlows.map(
+      ({ sourceLocation: _sourceLocation, sourceLocations: _sourceLocations, ...flow }) => flow,
+    ),
+    mentions: [],
+    dataItems: [],
   };
 }
 
-export function scanResultToDiscoveryInput(scanResult: ScanResult): ScanDiscoveryInput {
+export function scanResultToDiscoveryInput(
+  scanResult: ScanResult,
+  personalData: Pick<OrchestratorScanResult, "mentions" | "dataItems"> = {
+    mentions: [],
+    dataItems: [],
+  },
+): ScanDiscoveryInput {
   return {
     components: scanResult.components.map((component) => ({
       id: component.id,
@@ -34,12 +51,28 @@ export function scanResultToDiscoveryInput(scanResult: ScanResult): ScanDiscover
       type: flow.type,
       confidence: flow.confidence,
       ...(flow.targetScope !== undefined ? { targetScope: flow.targetScope } : {}),
-      ...(flow.sourceLocation !== undefined
-        ? { sourceLocation: mapSourceLocation(flow.sourceLocation) }
-        : {}),
-      ...(flow.sourceLocations !== undefined && flow.sourceLocations.length > 0
-        ? { sourceLocations: flow.sourceLocations.map(mapSourceLocation) }
-        : {}),
+    })),
+    mentions: personalData.mentions.map((mention) => ({
+      id: mention.id,
+      filePath: mention.filePath,
+      startLine: mention.startLine,
+      endLine: mention.endLine,
+      labels: [...mention.labels],
+      ...(mention.code !== undefined ? { code: mention.code } : {}),
+    })),
+    dataItems: personalData.dataItems.map((dataItem) => ({
+      id: dataItem.id,
+      mentionIds: [...dataItem.mentionIds],
+      labels: [...dataItem.labels],
     })),
   };
+}
+
+export function orchestratorScanResultToDiscoveryInput(
+  result: OrchestratorScanResult,
+): ScanDiscoveryInput {
+  return scanResultToDiscoveryInput(result.scanResult, {
+    mentions: result.mentions ?? [],
+    dataItems: result.dataItems ?? [],
+  });
 }

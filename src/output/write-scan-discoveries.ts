@@ -1,10 +1,10 @@
 import fs from "fs";
 import path from "path";
 
-import type { ScanResult } from "../core/types/result";
+import type { OrchestratorScanResult } from "../core/pipeline/orchestrator-result";
 import { loadOcsfDiscoveriesFromDir } from "../discoveries/load-ocsf-discoveries";
 import { projectOcsfToDiscoveriesDocument } from "../discoveries/project-ocsf-to-discoveries-document";
-import { scanResultToDiscoveryInput } from "../discoveries/scan-result-to-discovery-input";
+import { orchestratorScanResultToDiscoveryInput } from "../discoveries/scan-result-to-discovery-input";
 import { landScanDiscoveryToOcsfRecords } from "../discoveries/scan-discovery-to-ocsf";
 import { writeOcsfDiscoveryRecordsToDir } from "../discoveries/write-ocsf-discoveries";
 
@@ -29,12 +29,12 @@ export interface WriteScanDiscoveriesOptions {
 }
 
 export function writeScanDiscoveriesArtifacts(
-  scanResult: ScanResult,
+  scanResult: OrchestratorScanResult,
   dataflowOutputPath: string,
   options: WriteScanDiscoveriesOptions = {},
 ): ScanDiscoveriesOutputPaths {
   const assertedAt = options.assertedAt ?? new Date().toISOString();
-  const discoveryInput = scanResultToDiscoveryInput(scanResult);
+  const discoveryInput = orchestratorScanResultToDiscoveryInput(scanResult);
   const scanRecords = landScanDiscoveryToOcsfRecords(discoveryInput, { assertedAt });
 
   const paths = resolveScanDiscoveriesOutputPaths(dataflowOutputPath);

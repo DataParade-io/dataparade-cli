@@ -193,14 +193,21 @@ export function projectOcsfToDiscoveriesDocument(
 
   const dataItems = dataItemIds.map((id) => {
     const asserts = `dp:scan/entity/${id}`;
-    const mentionId =
-      discoveryValue(slotIndex, asserts, "mention") ??
-      (() => {
-        throw new Error(`Data item ${id} missing mention slot in scan OCSF`);
-      })();
+    const mentionIdsFromSlot = parseJsonArray(
+      discoveryValue(slotIndex, asserts, "mention_ids"),
+    );
+    const legacyMentionId = discoveryValue(slotIndex, asserts, "mention");
+    const mentionIds =
+      mentionIdsFromSlot.length > 0
+        ? mentionIdsFromSlot
+        : legacyMentionId
+          ? [legacyMentionId]
+          : (() => {
+              throw new Error(`Data item ${id} missing mention_ids in scan OCSF`);
+            })();
     return {
       id,
-      mentionId,
+      mentionIds,
     };
   });
 

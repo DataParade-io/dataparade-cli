@@ -475,7 +475,7 @@ function createProgram(): Command {
             );
           }
 
-          const { scanResult } = await runScanPipeline(
+          const orchestratorResult = await runScanPipeline(
             resolvedScanRoot,
             config,
             (progress) => {
@@ -486,6 +486,7 @@ function createProgram(): Command {
               );
             },
           );
+          const { scanResult } = orchestratorResult;
 
           if (scanResult.structuralEnrichmentSummary) {
             const st = scanResult.structuralEnrichmentSummary;
@@ -588,7 +589,7 @@ function createProgram(): Command {
               });
 
               const scanDiscoveriesPaths = writeScanDiscoveriesArtifacts(
-                scanResult,
+                orchestratorResult,
                 dataflowOutputPath,
               );
 

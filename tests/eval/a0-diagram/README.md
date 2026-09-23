@@ -6,7 +6,7 @@ Projects **scan OCSF Architecture Discovery** records (plus optional **interview
 Scanner discovery seed JSON  ──land──►  scan OCSF records (in-memory or ocsf-discoveries/)
                                               │
 Optional interview OCSF overlay ──────────────┤
-Optional personal-data mention/data-item input ┘
+Scanner mentions/dataItems (PII layer) ───────┘
                                               │
                                               ▼
                               projectOcsfToDiscoveriesDocument
@@ -26,7 +26,7 @@ Optional personal-data mention/data-item input ┘
                                          (D2 renderer)     (this ticket)        (eval / manual import)
 ```
 
-The vendored `fixtures/dataparade-discovery-seed.json` is **scan input to the lander only** — `dataparade.json` is not built by copying the seed.
+The vendored `fixtures/dataparade-discovery-seed.json` is **scan input to the lander only** — `dataparade.json` is not built by copying the seed. Flow `sourceLocation` / `sourceLocations` on the seed are **not** projected to mentions; personal-data mentions and data items come from the scanner PII inventory layer passed through `scanResultToDiscoveryInput`.
 
 ## Artifacts
 
