@@ -9,6 +9,7 @@ const sourceLocationSchema = z.object({
 
 export const a0DiscoveriesMentionSchema = z.object({
   id: z.string(),
+  scanPath: z.string().optional(),
   filePath: z.string(),
   startLine: z.number(),
   endLine: z.number(),
@@ -17,11 +18,13 @@ export const a0DiscoveriesMentionSchema = z.object({
 
 export const a0DiscoveriesDataItemSchema = z.object({
   id: z.string(),
+  scanPath: z.string().optional(),
   mentionIds: z.array(z.string()).min(1),
 });
 
 export const a0DiscoveriesComponentSchema = z.object({
   id: z.string(),
+  scanPath: z.string().optional(),
   name: z.string(),
   type: z.string(),
   subType: z.string(),
@@ -33,6 +36,7 @@ export const a0DiscoveriesComponentSchema = z.object({
 
 export const a0DiscoveriesDataFlowSchema = z.object({
   id: z.string(),
+  scanPath: z.string().optional(),
   sourceComponentId: z.string(),
   targetComponentId: z.string(),
   type: z.string(),

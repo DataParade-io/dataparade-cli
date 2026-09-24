@@ -39,6 +39,7 @@ export interface ScanDiscoveryDataItemInput {
 }
 
 export interface ScanDiscoveryInput {
+  scanPath?: string;
   components: ScanDiscoveryComponentInput[];
   dataFlows: ScanDiscoveryFlowInput[];
   mentions: ScanDiscoveryMentionInput[];
