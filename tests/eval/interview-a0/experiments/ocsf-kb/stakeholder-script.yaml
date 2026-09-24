@@ -1,0 +1,10 @@
+# Mechanical stakeholder for ocsf-kb — generated at runtime from gap-report.json gaps.
+# When gapCount is 0, the runner does not call the model and this script is unused.
+#
+# Response rules (gap slots only):
+#   system_identity → "DataParade"
+#   system_boundary → boundary unknown; model must refuse (refuse: true)
+#   actors → persona
+#   sends_data_to.data_categories → ["other"]
+#   sends_data_to.purpose → unspecified
+responses: []

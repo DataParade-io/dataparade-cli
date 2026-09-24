@@ -56,6 +56,8 @@
     "eval:interview-a0:datap-676": "jest tests/eval/interview-a0/experiments/datap-676/score-model-run.spec.ts",
     "eval:interview-a0:datap-691": "jest tests/eval/interview-a0/experiments/datap-691/score-model-run.spec.ts --watchman=false",
     "eval:interview-a0:datap-693": "jest tests/eval/interview-a0/experiments/datap-693/score-model-run.spec.ts --watchman=false",
+    "eval:interview-a0:ocsf-kb": "jest --config jest.config.cjs tests/eval/interview-a0/experiments/ocsf-kb/score-model-run.spec.ts --watchman=false",
+    "eval:interview-a0:run-ocsf-kb": "pnpm exec tsx tests/eval/interview-a0/experiments/ocsf-kb/run-model-interview.ts",
     "eval:interview-a0:run-model-luna-676": "node tests/eval/interview-a0/experiments/datap-676/run-model-interview.mjs",
     "eval:interview-a0:run-model-luna-691": "node tests/eval/interview-a0/experiments/datap-691/run-model-interview.mjs",
     "eval:interview-a0:run-model-luna-693": "node tests/eval/interview-a0/experiments/datap-693/run-model-interview.mjs",
@@ -86,6 +88,7 @@
     "globals": "^15.14.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
+    "tsx": "^4.23.15",
     "typescript-eslint": "^8.20.0"
   },
   "files": [
