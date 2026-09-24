@@ -1541,5 +1541,103 @@ describe("ai-enrichment deterministic fallbacks", () => {
     );
     expect(badFallbacks).toHaveLength(0);
   });
+
+  it("injects a section hub and edges for third_party-only sections (cli-shaped)", () => {
+    const components: DetectedComponent[] = [
+      {
+        id: "tp_openai",
+        name: "Openai",
+        type: "third_party",
+        subType: "saas_service",
+        confidence: 0.9,
+        detectedFrom: [],
+        sourceLocations: [],
+        properties: {
+          section_id: "cli",
+          section_label: "cli",
+          section_role: "service",
+        },
+      },
+      {
+        id: "tp_sentry",
+        name: "Sentry",
+        type: "third_party",
+        subType: "saas_service",
+        confidence: 0.9,
+        detectedFrom: [],
+        sourceLocations: [],
+        properties: {
+          section_id: "cli",
+          section_label: "cli",
+          section_role: "service",
+        },
+      },
+    ];
+
+    const result = applyDeterministicInferenceFallbacks(components, []);
+    const hub = result.components.find(
+      (c) =>
+        c.type === "asset" &&
+        c.properties?.section_id === "cli" &&
+        (c.properties?.isMainApplication === true ||
+          c.properties?.isMainApplication === "true"),
+    );
+    expect(hub).toBeDefined();
+    expect(hub?.name).toBe("cli");
+    expect(
+      result.dataFlows.filter(
+        (f) =>
+          f.sourceComponentId === hub?.id &&
+          (f.targetComponentId === "tp_openai" ||
+            f.targetComponentId === "tp_sentry"),
+      ),
+    ).toHaveLength(2);
+  });
+
+  it("promotes an existing section asset to main hub instead of duplicating", () => {
+    const components: DetectedComponent[] = [
+      {
+        id: "asset_scripts",
+        name: "Scripts Service",
+        type: "asset",
+        subType: "service",
+        confidence: 1,
+        detectedFrom: [],
+        sourceLocations: [],
+        properties: {
+          section_id: "scripts",
+          section_label: "scripts",
+        },
+      },
+      {
+        id: "tp_stripe",
+        name: "Stripe",
+        type: "third_party",
+        confidence: 1,
+        detectedFrom: [],
+        sourceLocations: [],
+        properties: { section_id: "scripts", section_label: "scripts" },
+      },
+    ];
+
+    const result = applyDeterministicInferenceFallbacks(components, []);
+    const hubs = result.components.filter(
+      (c) =>
+        c.type === "asset" &&
+        c.properties?.section_id === "scripts" &&
+        (c.properties?.isMainApplication === true ||
+          c.properties?.isMainApplication === "true"),
+    );
+    expect(hubs).toHaveLength(1);
+    expect(hubs[0]?.id).toBe("asset_scripts");
+    expect(hubs[0]?.name).toBe("scripts");
+    expect(
+      result.dataFlows.some(
+        (f) =>
+          f.sourceComponentId === "asset_scripts" &&
+          f.targetComponentId === "tp_stripe",
+      ),
+    ).toBe(true);
+  });
 });
 

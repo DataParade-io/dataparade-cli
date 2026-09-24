@@ -32,7 +32,18 @@ describe("scan quota flow", () => {
     fs.rmSync(tempRoot, { recursive: true, force: true });
     delete process.env.DATAPARADE_WORKSPACE_API_KEY;
     delete process.env.DATAPARADE_SKIP_AUTO_UPLOAD;
+    delete process.env.SCAN_HOSTED_INFER_PROXY_URL;
     process.exitCode = 0;
+  });
+
+  it("skips anonymous AI session when hosted infer proxy is configured", async () => {
+    process.env.SCAN_HOSTED_INFER_PROXY_URL = "http://127.0.0.1:9/infer";
+    process.env.DATAPARADE_SKIP_AUTO_UPLOAD = "true";
+
+    await run(["node", "cli", "scan", tempRoot, "--ai-inference"]);
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(process.exitCode ?? 0).toBe(0);
   });
 
   it("skips quota API when workspace key is present but AI is disabled", async () => {

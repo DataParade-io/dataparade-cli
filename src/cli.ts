@@ -1,77 +1,85 @@
-import "./config/load-cli-env";
-import pathModule from "path";
-import { Command } from "commander";
-import { randomUUID } from "crypto";
+import './config/load-cli-env';
+import pathModule from 'path';
+import { Command } from 'commander';
+import { randomUUID } from 'crypto';
 
-import pkg from "../package.json";
+import pkg from '../package.json';
 
-import type { DiagramGraphJsonSchema } from "./core/schema";
-import { buildDataflowWrapper, writeDataflowJson } from "./output/json";
-import { resolveSkipAutoUpload } from "./config/upload-env";
-import { AI_PROVIDER_IDS, type AiProviderId } from "./ai-enrichment/types";
-import type { CliConfigFlags } from "./config/types";
-import { parseAiInferenceScope } from "./config/inference-scope";
-import { redactScanConfigurationForDisplay } from "./config/redact";
-import { resolveScanConfiguration } from "./config/resolve";
-import { resolveWorkspaceApiKey } from "./config/scan-env";
-import { resolveAiMode } from "./config/validate-scan-ai";
+import type { DiagramGraphJsonSchema } from './core/schema';
+import { buildDataflowWrapper, writeDataflowJson } from './output/json';
+import { resolveSkipAutoUpload } from './config/upload-env';
+import { AI_PROVIDER_IDS, type AiProviderId } from './ai-enrichment/types';
+import type { CliConfigFlags } from './config/types';
+import { parseAiInferenceScope } from './config/inference-scope';
+import { redactScanConfigurationForDisplay } from './config/redact';
+import { resolveScanConfiguration } from './config/resolve';
+import { resolveWorkspaceApiKey } from './config/scan-env';
+import { resolveAiMode } from './config/validate-scan-ai';
 import {
   reportScanCliError,
   type ScanCliAiMode,
-} from "./observability/scan-sentry";
-import { reportCliUsageEvent } from "./platform-api/telemetry-client";
-import { validateScanConfiguration } from "./core/schema/scan-config.schema";
-import type { AiInferenceProposalDetail } from "./core/types";
-import { resolveScanFilesystemEntry } from "@dataparade/scanner";
+} from './observability/scan-sentry';
+import { reportCliUsageEvent } from './platform-api/telemetry-client';
+import { validateScanConfiguration } from './core/schema/scan-config.schema';
+import type { AiInferenceProposalDetail } from './core/types';
+import { resolveScanFilesystemEntry } from '@dataparade/scanner';
 
 function formatEvidence(detail: AiInferenceProposalDetail): string {
   const evidence = detail.evidence;
   if (!evidence || evidence.length === 0) {
-    return "none";
+    return 'none';
   }
   const head = evidence[0];
   const first =
     head != null
       ? `${head.filePath}:${head.startLine}-${head.endLine} (${head.reason})`
-      : "none";
-  return evidence.length === 1 ? first : `${first}; +${evidence.length - 1} more`;
+      : 'none';
+  return evidence.length === 1
+    ? first
+    : `${first}; +${evidence.length - 1} more`;
 }
 
 function formatProposalTarget(detail: AiInferenceProposalDetail): string {
-  if (detail.kind === "component_patch" && detail.targetComponentId) {
+  if (detail.kind === 'component_patch' && detail.targetComponentId) {
     return `component:${detail.targetComponentId}`;
   }
   if (detail.targetFlowId) return `flow:${detail.targetFlowId}`;
   if (detail.sourceComponentId && detail.targetFlowComponentId) {
     return `flow:${detail.sourceComponentId}->${detail.targetFlowComponentId}`;
   }
-  return "unknown";
+  return 'unknown';
 }
 
 function printAiInferenceVerbose(details: AiInferenceProposalDetail[]): void {
   if (details.length === 0) {
     // eslint-disable-next-line no-console
-    console.log("[scan] ai-inference details: no proposals generated");
+    console.log('[scan] ai-inference details: no proposals generated');
     return;
   }
 
   // eslint-disable-next-line no-console
-  console.log("[scan] ai-inference details:");
+  console.log('[scan] ai-inference details:');
   for (const detail of details) {
     const status =
-      detail.status === "applied" ? "applied" : `rejected (${detail.rejectionReason})`;
+      detail.status === 'applied'
+        ? 'applied'
+        : `rejected (${detail.rejectionReason})`;
     const confidence = detail.confidence.toFixed(2);
     // eslint-disable-next-line no-console
     console.log(
-      `[scan]   - ${detail.id}: ${status} | ${detail.source} | ${detail.kind} | target=${formatProposalTarget(detail)} | confidence=${confidence} (${detail.confidenceBand})`,
+      `[scan]   - ${detail.id}: ${status} | ${detail.source} | ${detail.kind} | target=${formatProposalTarget(detail)} | confidence=${confidence} (${detail.confidenceBand})`
     );
     // eslint-disable-next-line no-console
     console.log(
-      `[scan]       candidate=${detail.candidateType} agent=${detail.agent} provider=${detail.provider}/${detail.model}`,
+      `[scan]       candidate=${detail.candidateType} agent=${detail.agent} provider=${detail.provider}/${detail.model}`
     );
     // eslint-disable-next-line no-console
     console.log(`[scan]       evidence=${formatEvidence(detail)}`);
-    if (detail.status === "applied" && detail.propertyChanges && detail.propertyChanges.length) {
+    if (
+      detail.status === 'applied' &&
+      detail.propertyChanges &&
+      detail.propertyChanges.length
+    ) {
       const formatted = detail.propertyChanges.map((change) => {
         const from = JSON.stringify(change.from);
         const to = JSON.stringify(change.to);
@@ -85,9 +93,8 @@ function printAiInferenceVerbose(details: AiInferenceProposalDetail[]): void {
   }
 }
 
-
 function formatUsd(value: number | undefined): string {
-  if (typeof value !== "number" || !Number.isFinite(value)) return "n/a";
+  if (typeof value !== 'number' || !Number.isFinite(value)) return 'n/a';
   return `$${value.toFixed(6)}`;
 }
 
@@ -95,106 +102,103 @@ function createProgram(): Command {
   const program = new Command();
 
   program
-    .name("dataparade")
-    .description("DataParade CLI - scan codebases for data flow components")
+    .name('dataparade')
+    .description('DataParade CLI - scan codebases for data flow components')
     .version(pkg.version);
 
   program
-    .command("scan <path>")
+    .command('scan <path>')
     .description(
-      "Scan a directory (or a single supported source file) for data flow components",
+      'Scan a directory (or a single supported source file) for data flow components'
     )
     .option(
-      "-o, --output <file>",
-      "Write dataflow.json wrapper to the given file (default: ./dataflow.json)",
+      '-o, --output <file>',
+      'Write dataflow.json wrapper to the given file (default: ./dataflow.json)'
     )
     .option(
-      "--exclude <pattern...>",
-      "One or more glob patterns to exclude from scanning",
+      '--exclude <pattern...>',
+      'One or more glob patterns to exclude from scanning'
     )
     .option(
-      "--minimum-confidence <number>",
-      "Minimum confidence (0-1) for including detections",
+      '--minimum-confidence <number>',
+      'Minimum confidence (0-1) for including detections'
     )
     .option(
-      "--language <language...>",
-      "Limit scanning to specific languages (e.g. typescript, javascript, python, go, java, kotlin, cpp, csharp, terraform)",
+      '--language <language...>',
+      'Limit scanning to specific languages (e.g. typescript, javascript, python, go, java, kotlin, cpp, csharp, terraform)'
     )
     .option(
-      "--project-name <name>",
-      "Override the inferred project name used for the application asset",
+      '--project-name <name>',
+      'Override the inferred project name used for the application asset'
     )
     .option(
-      "--deep-analysis",
-      "Enable deeper, potentially slower structural analysis where supported",
+      '--deep-analysis',
+      'Enable deeper, potentially slower structural analysis where supported'
     )
     .option(
-      "--terraform-json <path>",
-      "Merge resource addresses from a saved `terraform show -json` file (absolute or relative to scan root)",
+      '--terraform-json <path>',
+      'Merge resource addresses from a saved `terraform show -json` file (absolute or relative to scan root)'
     )
     .option(
-      "--terraform-plan <path>",
-      "Merge addresses by running `terraform show -json <path>` from the scan root (path relative to scan root; requires terraform on PATH)",
+      '--terraform-plan <path>',
+      'Merge addresses by running `terraform show -json <path>` from the scan root (path relative to scan root; requires terraform on PATH)'
     )
     .option(
-      "--terraform-stack-section-path-depth <n>",
-      "Register Terraform stack directories as service sections when their path has exactly N segments (e.g. 4 for packages/foo/k8s/terraform)",
+      '--terraform-stack-section-path-depth <n>',
+      'Register Terraform stack directories as service sections when their path has exactly N segments (e.g. 4 for packages/foo/k8s/terraform)'
     )
     .option(
-      "--no-terraform-stack-section-auto",
-      "Do not infer terraformStackSectionPathDepth from .tf layout when depth is unset",
+      '--no-terraform-stack-section-auto',
+      'Do not infer terraformStackSectionPathDepth from .tf layout when depth is unset'
     )
     .option(
-      "--monorepo-package-section-path-depth <n>",
-      "Workspace package section depth (max 3): primary packages and rollup use N POSIX path segments (e.g. 3 for packages/twenty-apps/hello)",
+      '--monorepo-package-section-path-depth <n>',
+      'Workspace package section depth (max 3): primary packages and rollup use N POSIX path segments (e.g. 3 for packages/twenty-apps/hello)'
     )
     .option(
-      "--no-monorepo-package-section-auto",
-      "Do not infer monorepoPackageSectionPathDepth from package.json layout when depth is unset",
+      '--no-monorepo-package-section-auto',
+      'Do not infer monorepoPackageSectionPathDepth from package.json layout when depth is unset'
     )
     .option(
-      "--ai-inference",
-      "Enable post-scan AI inference (default: on; SCAN_AI_INFERENCE=false also disables)",
+      '--ai-inference',
+      'Enable post-scan AI inference (default: on; SCAN_AI_INFERENCE=false also disables)'
+    )
+    .option('--no-ai-inference', 'Disable post-scan AI inference')
+    .option(
+      '--ai-provider <provider>',
+      `AI provider: ${AI_PROVIDER_IDS.join('|')}`
+    )
+    .option('--ai-model <model>', 'Model name for AI inference')
+    .option('--ai-endpoint <url>', 'Override provider endpoint URL')
+    .option('--ai-temperature <number>', 'Sampling temperature for model calls')
+    .option('--ai-max-tokens <number>', 'Max tokens per inference call')
+    .option('--ai-max-calls <number>', 'Max model calls for a scan')
+    .option('--ai-budget-tokens <number>', 'Total token budget for inference')
+    .option(
+      '--ai-max-candidates-per-agent <number>',
+      'Max inference queue items per agent (0 = no cap; default from config: 25)'
     )
     .option(
-      "--no-ai-inference",
-      "Disable post-scan AI inference",
+      '--ai-inference-scope <scope>',
+      'default | third_party_only — third_party_only runs AI enrichment only on every third-party node'
     )
     .option(
-      "--ai-provider <provider>",
-      `AI provider: ${AI_PROVIDER_IDS.join("|")}`,
-    )
-    .option("--ai-model <model>", "Model name for AI inference")
-    .option("--ai-endpoint <url>", "Override provider endpoint URL")
-    .option("--ai-temperature <number>", "Sampling temperature for model calls")
-    .option("--ai-max-tokens <number>", "Max tokens per inference call")
-    .option("--ai-max-calls <number>", "Max model calls for a scan")
-    .option("--ai-budget-tokens <number>", "Total token budget for inference")
-    .option(
-      "--ai-max-candidates-per-agent <number>",
-      "Max inference queue items per agent (0 = no cap; default from config: 25)",
+      '--ai-verbose',
+      'Print per-proposal AI inference details (applied/rejected + evidence)'
     )
     .option(
-      "--ai-inference-scope <scope>",
-      "default | third_party_only — third_party_only runs AI enrichment only on every third-party node",
+      '--workspace-api-key <key>',
+      'DataParade workspace API key (platform AI + quota; env: DATAPARADE_WORKSPACE_API_KEY)'
     )
+    .option('--api-key <key>', '(deprecated) alias for --workspace-api-key')
     .option(
-      "--ai-verbose",
-      "Print per-proposal AI inference details (applied/rejected + evidence)",
+      '--byok-provider <provider>',
+      `BYOK LLM provider when using your own API key: ${AI_PROVIDER_IDS.join('|')}`
     )
+    .option('--byok-model <model>', 'BYOK model name (env: SCAN_BYOK_MODEL)')
     .option(
-      "--workspace-api-key <key>",
-      "DataParade workspace API key (platform AI + quota; env: DATAPARADE_WORKSPACE_API_KEY)",
-    )
-    .option("--api-key <key>", "(deprecated) alias for --workspace-api-key")
-    .option(
-      "--byok-provider <provider>",
-      `BYOK LLM provider when using your own API key: ${AI_PROVIDER_IDS.join("|")}`,
-    )
-    .option("--byok-model <model>", "BYOK model name (env: SCAN_BYOK_MODEL)")
-    .option(
-      "--skip-auto-upload",
-      "Do not upload dataflow.json to the dashboard after scan (env: DATAPARADE_SKIP_AUTO_UPLOAD)",
+      '--skip-auto-upload',
+      'Do not upload dataflow.json to the dashboard after scan (env: DATAPARADE_SKIP_AUTO_UPLOAD)'
     )
     .action(
       async (
@@ -228,12 +232,12 @@ function createProgram(): Command {
           byokProvider?: AiProviderId;
           byokModel?: string;
           skipAutoUpload?: boolean;
-        },
+        }
       ) => {
         let cliQuotaJobId: string | undefined;
         let platformQuotaApiKey: string | undefined;
         let quotaCompletionReported = false;
-        let fallbackFailureMessage = "CLI scan did not complete successfully";
+        let fallbackFailureMessage = 'CLI scan did not complete successfully';
         let sentryScanRoot: string | undefined;
         let sentryAiMode: ScanCliAiMode | undefined;
         let sentryAiProvider: string | undefined;
@@ -245,32 +249,35 @@ function createProgram(): Command {
         const usageSessionId = randomUUID();
         await reportCliUsageEvent({
           sessionId: usageSessionId,
-          event: "scan_started",
-          command: "scan",
+          event: 'scan_started',
+          command: 'scan',
           hasApiKey: Boolean(workspaceApiKey),
           apiKey: workspaceApiKey,
           cliVersion: pkg.version,
         });
 
         try {
-          const rootPathArg = path || ".";
+          const rootPathArg = path || '.';
           // Load dataparade.config.json from the directory being scanned, not
           // process.cwd(). Locally these often match; in Lambda the worker cwd
           // is the image root (/var/task) while the scan path is /tmp/.../project.
-          const resolvedScanRoot = pathModule.resolve(process.cwd(), rootPathArg);
+          const resolvedScanRoot = pathModule.resolve(
+            process.cwd(),
+            rootPathArg
+          );
 
           let scanEntry: { scanRootDir: string; ingestTarget: string };
           try {
             scanEntry = await resolveScanFilesystemEntry(resolvedScanRoot);
           } catch (err) {
             const message =
-              err instanceof Error ? err.message : "Path does not exist.";
+              err instanceof Error ? err.message : 'Path does not exist.';
             sentryScanRoot = resolvedScanRoot;
             await reportScanCliError({
               error: err,
               scanRoot: sentryScanRoot,
-              failurePhase: "resolve_path",
-              failureCode: "path_not_found",
+              failurePhase: 'resolve_path',
+              failureCode: 'path_not_found',
             });
             // eslint-disable-next-line no-console
             console.error(`[scan] error: ${message}`);
@@ -278,12 +285,15 @@ function createProgram(): Command {
             return;
           }
 
-          const [{ createDefaultScanConfiguration }, { runScanPipeline }, { buildDiagramGraphFromScanResult }] =
-            await Promise.all([
-              import("./core/pipeline/orchestrator"),
-              import("./core/pipeline/scan-pipeline"),
-              import("./core/pipeline/graph-mapping"),
-            ]);
+          const [
+            { createDefaultScanConfiguration },
+            { runScanPipeline },
+            { buildDiagramGraphFromScanResult },
+          ] = await Promise.all([
+            import('./core/pipeline/orchestrator'),
+            import('./core/pipeline/scan-pipeline'),
+            import('./core/pipeline/graph-mapping'),
+          ]);
 
           if (isInteractive) {
             // eslint-disable-next-line no-console
@@ -293,7 +303,7 @@ function createProgram(): Command {
           const flags: CliConfigFlags = {
             exclude: options.exclude,
             minimumConfidence:
-              typeof options.minimumConfidence === "string"
+              typeof options.minimumConfidence === 'string'
                 ? Number(options.minimumConfidence)
                 : undefined,
             language: options.language,
@@ -302,12 +312,12 @@ function createProgram(): Command {
             terraformJson: options.terraformJson,
             terraformPlan: options.terraformPlan,
             terraformStackSectionPathDepth:
-              typeof options.terraformStackSectionPathDepth === "string"
+              typeof options.terraformStackSectionPathDepth === 'string'
                 ? Number(options.terraformStackSectionPathDepth)
                 : undefined,
             noTerraformStackSectionAuto: options.noTerraformStackSectionAuto,
             monorepoPackageSectionPathDepth:
-              typeof options.monorepoPackageSectionPathDepth === "string"
+              typeof options.monorepoPackageSectionPathDepth === 'string'
                 ? Number(options.monorepoPackageSectionPathDepth)
                 : undefined,
             noMonorepoPackageSectionAuto: options.noMonorepoPackageSectionAuto,
@@ -316,23 +326,23 @@ function createProgram(): Command {
             aiModel: options.aiModel,
             aiEndpoint: options.aiEndpoint,
             aiTemperature:
-              typeof options.aiTemperature === "string"
+              typeof options.aiTemperature === 'string'
                 ? Number(options.aiTemperature)
                 : undefined,
             aiMaxTokens:
-              typeof options.aiMaxTokens === "string"
+              typeof options.aiMaxTokens === 'string'
                 ? Number(options.aiMaxTokens)
                 : undefined,
             aiMaxModelCalls:
-              typeof options.aiMaxCalls === "string"
+              typeof options.aiMaxCalls === 'string'
                 ? Number(options.aiMaxCalls)
                 : undefined,
             aiBudgetTokens:
-              typeof options.aiBudgetTokens === "string"
+              typeof options.aiBudgetTokens === 'string'
                 ? Number(options.aiBudgetTokens)
                 : undefined,
             aiMaxCandidatesPerAgent:
-              typeof options.aiMaxCandidatesPerAgent === "string"
+              typeof options.aiMaxCandidatesPerAgent === 'string'
                 ? Number(options.aiMaxCandidatesPerAgent)
                 : undefined,
             aiInferenceScope: parseAiInferenceScope(options.aiInferenceScope),
@@ -353,7 +363,7 @@ function createProgram(): Command {
           }
 
           const aiMode = resolveAiMode(config);
-          const usesByok = aiMode === "byok";
+          const usesByok = aiMode === 'byok';
           sentryScanRoot = scanEntry.scanRootDir;
           sentryAiMode = aiMode;
           sentryAiProvider = config.aiProvider;
@@ -362,12 +372,12 @@ function createProgram(): Command {
           if (workspaceApiKey && !usesByok && config.enableAiInference) {
             const [{ cliScanPreflight }, { estimateScanFootprint }] =
               await Promise.all([
-                import("./platform-api/scan-quota-client"),
-                import("./platform-api/estimate-scan-footprint"),
+                import('./platform-api/scan-quota-client'),
+                import('./platform-api/estimate-scan-footprint'),
               ]);
             const footprint = await estimateScanFootprint(
               scanEntry.scanRootDir,
-              config.excludePaths ?? [],
+              config.excludePaths ?? []
             );
             const preflight = await cliScanPreflight({
               apiKey: workspaceApiKey,
@@ -388,27 +398,27 @@ function createProgram(): Command {
               // budget above the configured default (or user override).
               config.aiBudgetTokens = Math.min(
                 config.aiBudgetTokens ?? 12_000,
-                preflight.suggestedAiBudgetTokens,
+                preflight.suggestedAiBudgetTokens
               );
             }
-            if (preflight.aiDelivery === "platform_proxy") {
-              config.aiMode = "platform";
+            if (preflight.aiDelivery === 'platform_proxy') {
+              config.aiMode = 'platform';
             }
             if (isInteractive) {
               // eslint-disable-next-line no-console
               console.log(
-                `[scan] quota: scans_remaining=${preflight.scansRemaining} ai_tokens_remaining=${preflight.aiTokensRemaining} job_id=${preflight.jobId} working_budget=${config.aiBudgetTokens ?? 0}`,
+                `[scan] quota: scans_remaining=${preflight.scansRemaining} ai_tokens_remaining=${preflight.aiTokensRemaining} job_id=${preflight.jobId} working_budget=${config.aiBudgetTokens ?? 0}`
               );
             }
           } else if (
             !workspaceApiKey &&
             !usesByok &&
+            aiMode !== "hosted_worker" &&
             config.enableAiInference
           ) {
             try {
-              const { cliAnonymousAiSession } = await import(
-                "./platform-api/anonymous-ai-session-client"
-              );
+              const { cliAnonymousAiSession } =
+                await import('./platform-api/anonymous-ai-session-client');
               const session = await cliAnonymousAiSession({
                 projectName: config.projectName,
               });
@@ -420,26 +430,25 @@ function createProgram(): Command {
                 // Applying it as the working budget caused scans to burn ~100k tokens.
                 config.aiBudgetTokens = Math.min(
                   config.aiBudgetTokens ?? 12_000,
-                  session.suggestedAiBudgetTokens,
+                  session.suggestedAiBudgetTokens
                 );
               }
-              if (session.aiDelivery === "platform_proxy") {
-                config.aiMode = "platform";
+              if (session.aiDelivery === 'platform_proxy') {
+                config.aiMode = 'platform';
               }
               if (isInteractive) {
                 // eslint-disable-next-line no-console
                 console.log(
-                  `[scan] anonymous platform AI: job_id=${session.jobId} working_budget=${config.aiBudgetTokens ?? 0} server_cap=${session.suggestedAiBudgetTokens} (claim debits actual tokens used)`,
+                  `[scan] anonymous platform AI: job_id=${session.jobId} working_budget=${config.aiBudgetTokens ?? 0} server_cap=${session.suggestedAiBudgetTokens} (claim debits actual tokens used)`
                 );
               }
             } catch (anonSessionError) {
-              const { CliAnonymousIpLimitError } = await import(
-                "./platform-api/anonymous-ai-session-client"
-              );
+              const { CliAnonymousIpLimitError } =
+                await import('./platform-api/anonymous-ai-session-client');
               const message =
                 anonSessionError instanceof Error
                   ? anonSessionError.message
-                  : "Anonymous AI session failed.";
+                  : 'Anonymous AI session failed.';
               // eslint-disable-next-line no-console
               console.error(`[scan] ${message}`);
               process.exitCode =
@@ -451,17 +460,17 @@ function createProgram(): Command {
           const configValidation = validateScanConfiguration(config);
           if (!configValidation.ok) {
             await reportScanCliError({
-              error: configValidation.errors.join("\n"),
+              error: configValidation.errors.join('\n'),
               scanRoot: sentryScanRoot,
               jobId: cliQuotaJobId,
               aiMode: sentryAiMode,
               aiProvider: sentryAiProvider,
-              failurePhase: "config_validation",
-              failureCode: "invalid_configuration",
+              failurePhase: 'config_validation',
+              failureCode: 'invalid_configuration',
             });
             // eslint-disable-next-line no-console
             console.error(
-              `[scan] invalid configuration:\n${configValidation.errors.map((e) => `  - ${e}`).join("\n")}`,
+              `[scan] invalid configuration:\n${configValidation.errors.map((e) => `  - ${e}`).join('\n')}`
             );
             process.exitCode = 2;
             return;
@@ -470,27 +479,27 @@ function createProgram(): Command {
           if (isInteractive && warnings.length > 0) {
             // eslint-disable-next-line no-console
             console.warn(
-              `[scan] warnings:\n${warnings.map((w) => `  - ${w}`).join("\n")}`,
+              `[scan] warnings:\n${warnings.map((w) => `  - ${w}`).join('\n')}`
             );
           }
 
-          const { scanResult } = await runScanPipeline(
+          const { scanResult, redFlags } = await runScanPipeline(
             resolvedScanRoot,
             config,
             (progress) => {
               if (!isInteractive) return;
               // eslint-disable-next-line no-console
               console.log(
-                `[scan] ${progress.phase}: ${progress.message ?? ""}`.trim(),
+                `[scan] ${progress.phase}: ${progress.message ?? ''}`.trim()
               );
-            },
+            }
           );
 
           if (scanResult.structuralEnrichmentSummary) {
             const st = scanResult.structuralEnrichmentSummary;
             // eslint-disable-next-line no-console
             console.log(
-              `[scan] structural enrichment: proposals=${st.proposalsGenerated} applied=${st.proposalsApplied} rejected=${st.proposalsRejected}`,
+              `[scan] structural enrichment: proposals=${st.proposalsGenerated} applied=${st.proposalsApplied} rejected=${st.proposalsRejected}`
             );
           }
 
@@ -498,15 +507,15 @@ function createProgram(): Command {
             const s = scanResult.aiInferenceSummary;
             // eslint-disable-next-line no-console
             console.log(
-              `[scan] llm-inference summary: candidates=${s.candidatesConsidered} proposals=${s.proposalsGenerated} (provider=${s.proposalsGeneratedProvider}) applied=${s.proposalsApplied} (provider=${s.proposalsAppliedProvider}) rejected=${s.proposalsRejected} (${s.aiProvider}/${s.aiModel})`,
+              `[scan] llm-inference summary: candidates=${s.candidatesConsidered} proposals=${s.proposalsGenerated} (provider=${s.proposalsGeneratedProvider}) applied=${s.proposalsApplied} (provider=${s.proposalsAppliedProvider}) rejected=${s.proposalsRejected} (${s.aiProvider}/${s.aiModel})`
             );
             // Always show real provider token usage (budget_cap is only a ceiling, not cost).
             // eslint-disable-next-line no-console
             console.log(
               `[scan] ai-usage: provider_calls=${s.providerCalls} tokens_in=${s.inputTokens} tokens_out=${s.outputTokens} tokens_total=${s.totalTokens}` +
-                (typeof s.estimatedCostUsd === "number"
+                (typeof s.estimatedCostUsd === 'number'
                   ? ` estimated_cost_usd=${formatUsd(s.estimatedCostUsd)}`
-                  : ""),
+                  : '')
             );
             if (options.aiVerbose && scanResult.aiInferenceProposalDetails) {
               printAiInferenceVerbose(scanResult.aiInferenceProposalDetails);
@@ -514,16 +523,19 @@ function createProgram(): Command {
           }
 
           for (const w of scanResult.warnings ?? []) {
-            if (w.startsWith("ai-provider:")) {
+            if (w.startsWith('ai-provider:')) {
               await reportScanCliError({
                 error: w,
                 scanRoot: sentryScanRoot,
                 jobId: cliQuotaJobId,
                 aiMode: sentryAiMode,
                 aiProvider: sentryAiProvider,
-                failurePhase: "ai_provider",
-                failureCode: "ai_provider_warning",
+                failurePhase: 'ai_provider',
+                failureCode: 'ai_provider_warning',
               });
+              // eslint-disable-next-line no-console
+              console.warn(`[scan] ${w}`);
+            } else if (w.startsWith('red-flag:')) {
               // eslint-disable-next-line no-console
               console.warn(`[scan] ${w}`);
             }
@@ -531,13 +543,13 @@ function createProgram(): Command {
 
           if (scanResult.errors?.length) {
             await reportScanCliError({
-              error: scanResult.errors.join("\n"),
+              error: scanResult.errors.join('\n'),
               scanRoot: sentryScanRoot,
               jobId: cliQuotaJobId,
               aiMode: sentryAiMode,
               aiProvider: sentryAiProvider,
-              failurePhase: "scan_pipeline",
-              failureCode: "scan_errors",
+              failurePhase: 'scan_pipeline',
+              failureCode: 'scan_errors',
               extra: { errorCount: scanResult.errors.length },
             });
             process.exitCode = 1;
@@ -553,17 +565,17 @@ function createProgram(): Command {
               jobId: cliQuotaJobId,
               aiMode: sentryAiMode,
               aiProvider: sentryAiProvider,
-              failurePhase: "diagram_graph",
-              failureCode: "graph_build_failed",
+              failurePhase: 'diagram_graph',
+              failureCode: 'graph_build_failed',
             });
             if (isInteractive) {
               const message =
                 graphError instanceof Error
                   ? graphError.message
-                  : "Unknown error while building diagram graph.";
+                  : 'Unknown error while building diagram graph.';
               // eslint-disable-next-line no-console
               console.error(
-                `[scan] warning: unable to build diagram graph: ${message}`,
+                `[scan] warning: unable to build diagram graph: ${message}`
               );
             }
             process.exitCode = 1;
@@ -572,7 +584,7 @@ function createProgram(): Command {
           if (diagramGraph) {
             const dataflowOutputPath = pathModule.resolve(
               process.cwd(),
-              options.output ?? "dataflow.json",
+              options.output ?? 'dataflow.json'
             );
             const resolvedProjectName =
               config.projectName?.trim() ||
@@ -584,44 +596,44 @@ function createProgram(): Command {
                 graph: diagramGraph,
                 outputPath: dataflowOutputPath,
                 projectName: resolvedProjectName,
+                redFlags,
               });
 
               // Always print a short message so non-interactive callers and
               // tests can rely on it.
               // eslint-disable-next-line no-console
-              console.log(`[scan] dataflow.json written to ${dataflowOutputPath}`);
+              console.log(
+                `[scan] dataflow.json written to ${dataflowOutputPath}`
+              );
 
               const skipAutoUpload =
                 Boolean(options.skipAutoUpload) ||
                 resolveSkipAutoUpload(process.env);
               if (!skipAutoUpload) {
                 try {
-                  const { runDataflowUpload } = await import(
-                    "./upload/run-upload"
-                  );
+                  const { runDataflowUpload } =
+                    await import('./upload/run-upload');
                   const dataflowWrapper = buildDataflowWrapper(
                     scanResult,
                     diagramGraph,
-                    { projectName: resolvedProjectName },
+                    { projectName: resolvedProjectName, redFlags }
                   );
                   await runDataflowUpload({
                     apiKey: workspaceApiKey,
                     dataflow: dataflowWrapper,
                     projectName: resolvedProjectName,
                     scanJobId: cliQuotaJobId,
-                    logPrefix: "[scan]",
+                    logPrefix: '[scan]',
                     cliUsageSessionId: usageSessionId,
-                    command: "scan",
+                    command: 'scan',
                   });
                 } catch (uploadError) {
                   const uploadMessage =
                     uploadError instanceof Error
                       ? uploadError.message
-                      : "Unknown upload error.";
+                      : 'Unknown upload error.';
                   // eslint-disable-next-line no-console
-                  console.error(
-                    `[scan] Auto-upload failed: ${uploadMessage}`,
-                  );
+                  console.error(`[scan] Auto-upload failed: ${uploadMessage}`);
                 }
               }
             } catch (dataflowError) {
@@ -631,49 +643,52 @@ function createProgram(): Command {
                 jobId: cliQuotaJobId,
                 aiMode: sentryAiMode,
                 aiProvider: sentryAiProvider,
-                failurePhase: "dataflow_output",
-                failureCode: "dataflow_write_failed",
+                failurePhase: 'dataflow_output',
+                failureCode: 'dataflow_write_failed',
               });
               const message =
                 dataflowError instanceof Error
                   ? dataflowError.message
-                  : "Unknown error while writing dataflow.json.";
+                  : 'Unknown error while writing dataflow.json.';
               // eslint-disable-next-line no-console
               console.error(
-                `[scan] error: failed to write dataflow.json: ${message}`,
+                `[scan] error: failed to write dataflow.json: ${message}`
               );
               process.exitCode = 1;
             }
           }
 
           if (platformQuotaApiKey && cliQuotaJobId) {
-            const { cliScanComplete } = await import("./platform-api/scan-quota-client");
+            const { cliScanComplete } =
+              await import('./platform-api/scan-quota-client');
             const exitFailed = (process.exitCode ?? 0) !== 0;
-            const platformAiMode = resolveAiMode(config) === "platform";
+            const platformAiMode = resolveAiMode(config) === 'platform';
             await cliScanComplete({
               apiKey: platformQuotaApiKey,
               jobId: cliQuotaJobId,
-              status: exitFailed ? "failed" : "completed",
+              status: exitFailed ? 'failed' : 'completed',
               aiTokensUsed: platformAiMode
                 ? 0
                 : (scanResult.aiInferenceSummary?.totalTokens ?? 0),
-              failureCode: exitFailed ? "scan_failed" : undefined,
-              failureMessage: exitFailed ? "CLI scan did not complete successfully" : undefined,
+              failureCode: exitFailed ? 'scan_failed' : undefined,
+              failureMessage: exitFailed
+                ? 'CLI scan did not complete successfully'
+                : undefined,
             });
             quotaCompletionReported = true;
             if (isInteractive) {
               // eslint-disable-next-line no-console
               console.log(
-                "[scan] Scan finished — you can start a new scan now.",
+                '[scan] Scan finished — you can start a new scan now.'
               );
             }
           }
         } catch (err) {
           const message =
-            err instanceof Error ? err.message : "Unknown error during scan.";
+            err instanceof Error ? err.message : 'Unknown error during scan.';
           fallbackFailureMessage = message;
           const { CliScanQuotaExceededError, CliScanAlreadyRunningError } =
-            await import("./platform-api/scan-quota-client");
+            await import('./platform-api/scan-quota-client');
           const quotaBlocked = err instanceof CliScanQuotaExceededError;
           const scanInProgress = err instanceof CliScanAlreadyRunningError;
           await reportScanCliError({
@@ -683,12 +698,12 @@ function createProgram(): Command {
             aiMode: sentryAiMode,
             aiProvider: sentryAiProvider,
             failurePhase:
-              quotaBlocked || scanInProgress ? "preflight" : "scan_command",
+              quotaBlocked || scanInProgress ? 'preflight' : 'scan_command',
             failureCode: quotaBlocked
-              ? "scan_quota_exceeded"
+              ? 'scan_quota_exceeded'
               : scanInProgress
-                ? "scan_already_running"
-                : "scan_exception",
+                ? 'scan_already_running'
+                : 'scan_exception',
           });
           // eslint-disable-next-line no-console
           console.error(
@@ -696,36 +711,41 @@ function createProgram(): Command {
               ? `[scan] workspace quota: ${message}`
               : scanInProgress
                 ? `[scan] scan in progress: ${message}`
-                : `Scan failed: ${message}`,
+                : `Scan failed: ${message}`
           );
           process.exitCode = 1;
         } finally {
           const scanFailed = (process.exitCode ?? 0) !== 0;
           await reportCliUsageEvent({
             sessionId: usageSessionId,
-            event: scanFailed ? "scan_failed" : "scan_succeeded",
-            command: "scan",
+            event: scanFailed ? 'scan_failed' : 'scan_succeeded',
+            command: 'scan',
             hasApiKey: Boolean(workspaceApiKey),
             apiKey: workspaceApiKey,
             cliVersion: pkg.version,
-            errorCode: scanFailed ? "scan_failed" : undefined,
+            errorCode: scanFailed ? 'scan_failed' : undefined,
             errorMessage: scanFailed ? fallbackFailureMessage : undefined,
           });
-          if (platformQuotaApiKey && cliQuotaJobId && !quotaCompletionReported) {
+          if (
+            platformQuotaApiKey &&
+            cliQuotaJobId &&
+            !quotaCompletionReported
+          ) {
             try {
-              const { cliScanComplete } = await import("./platform-api/scan-quota-client");
+              const { cliScanComplete } =
+                await import('./platform-api/scan-quota-client');
               await cliScanComplete({
                 apiKey: platformQuotaApiKey,
                 jobId: cliQuotaJobId,
-                status: "failed",
-                failureCode: "scan_failed",
+                status: 'failed',
+                failureCode: 'scan_failed',
                 failureMessage: fallbackFailureMessage,
               });
               quotaCompletionReported = true;
               if (isInteractive) {
                 // eslint-disable-next-line no-console
                 console.log(
-                  "[scan] Scan finished — you can start a new scan now.",
+                  '[scan] Scan finished — you can start a new scan now.'
                 );
               }
             } catch {
@@ -733,21 +753,23 @@ function createProgram(): Command {
             }
           }
         }
-      },
+      }
     );
 
   program
-    .command("upload <file>")
-    .description("Upload a dataflow.json file to the dashboard as an import preview")
-    .option(
-      "--project-name <name>",
-      "Assessment name shown in the preview (default: from file metadata if present)",
+    .command('upload <file>')
+    .description(
+      'Upload a dataflow.json file to the dashboard as an import preview'
     )
     .option(
-      "--workspace-api-key <key>",
-      "DataParade workspace API key (env: DATAPARADE_WORKSPACE_API_KEY)",
+      '--project-name <name>',
+      'Assessment name shown in the preview (default: from file metadata if present)'
     )
-    .option("--api-key <key>", "(deprecated) alias for --workspace-api-key")
+    .option(
+      '--workspace-api-key <key>',
+      'DataParade workspace API key (env: DATAPARADE_WORKSPACE_API_KEY)'
+    )
+    .option('--api-key <key>', '(deprecated) alias for --workspace-api-key')
     .action(
       async (
         file: string,
@@ -755,7 +777,7 @@ function createProgram(): Command {
           projectName?: string;
           workspaceApiKey?: string;
           apiKey?: string;
-        },
+        }
       ) => {
         const apiKey =
           options.workspaceApiKey?.trim() ||
@@ -763,14 +785,17 @@ function createProgram(): Command {
           resolveWorkspaceApiKey(process.env);
         const usageSessionId = randomUUID();
 
-        const filePath = pathModule.resolve(process.cwd(), file || "dataflow.json");
+        const filePath = pathModule.resolve(
+          process.cwd(),
+          file || 'dataflow.json'
+        );
         let dataflow: unknown;
         try {
-          const { readFileSync } = await import("fs");
-          dataflow = JSON.parse(readFileSync(filePath, "utf8")) as unknown;
+          const { readFileSync } = await import('fs');
+          dataflow = JSON.parse(readFileSync(filePath, 'utf8')) as unknown;
         } catch (err) {
           const message =
-            err instanceof Error ? err.message : "Failed to read dataflow.json";
+            err instanceof Error ? err.message : 'Failed to read dataflow.json';
           // eslint-disable-next-line no-console
           console.error(`[upload] error: ${message}`);
           process.exitCode = 1;
@@ -778,44 +803,49 @@ function createProgram(): Command {
         }
 
         let projectName = options.projectName?.trim();
-        if (!projectName && dataflow && typeof dataflow === "object") {
+        if (!projectName && dataflow && typeof dataflow === 'object') {
           const meta = (dataflow as { metadata?: { projectName?: unknown } })
             .metadata;
-          if (typeof meta?.projectName === "string" && meta.projectName.trim()) {
+          if (
+            typeof meta?.projectName === 'string' &&
+            meta.projectName.trim()
+          ) {
             projectName = meta.projectName.trim();
           }
         }
 
         try {
-          const { runDataflowUpload } = await import("./upload/run-upload");
+          const { runDataflowUpload } = await import('./upload/run-upload');
           await runDataflowUpload({
             apiKey,
             dataflow,
             projectName,
             cliUsageSessionId: usageSessionId,
-            command: "upload",
+            command: 'upload',
           });
         } catch (err) {
-          const message =
-            err instanceof Error ? err.message : "Upload failed.";
+          const message = err instanceof Error ? err.message : 'Upload failed.';
           // eslint-disable-next-line no-console
           console.error(`[upload] error: ${message}`);
           process.exitCode = 1;
         }
-      },
+      }
     );
 
   program
-    .command("config")
-    .description("View the effective configuration for the current project")
-    .argument("[path]", "Project directory (default: current working directory)")
+    .command('config')
+    .description('View the effective configuration for the current project')
+    .argument(
+      '[path]',
+      'Project directory (default: current working directory)'
+    )
     .action(async (pathArg?: string) => {
       try {
         const [{ createDefaultScanConfiguration }] = await Promise.all([
-          import("./core/pipeline/orchestrator"),
+          import('./core/pipeline/orchestrator'),
         ]);
 
-        const rootPathArg = pathArg?.trim() || ".";
+        const rootPathArg = pathArg?.trim() || '.';
         const resolvedRoot = pathModule.resolve(process.cwd(), rootPathArg);
         let configCwd = resolvedRoot;
         try {
@@ -839,9 +869,9 @@ function createProgram(): Command {
         const message =
           err instanceof Error
             ? err.message
-            : "Unknown error while loading configuration.";
+            : 'Unknown error while loading configuration.';
         // eslint-disable-next-line no-console
-        console.error("Failed to read configuration:", message);
+        console.error('Failed to read configuration:', message);
         process.exitCode = 1;
       }
     });

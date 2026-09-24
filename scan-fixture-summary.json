@@ -129,6 +129,32 @@
           "section_id": "root",
           "section_label": "root",
           "section_role": "root",
+          "propertyEvidence": {
+            "framework": [
+              {
+                "filePath": "app/route.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "finding:express_route"
+              }
+            ],
+            "hosting_type": [
+              {
+                "filePath": "app/route.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "scanner_heuristic:enhanceAsset"
+              }
+            ],
+            "supported_operations": [
+              {
+                "filePath": "app/route.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "scanner_heuristic:enhanceAsset"
+              }
+            ]
+          },
           "cloud_provider": null,
           "region_location": null,
           "technical_owner": null,
@@ -300,6 +326,64 @@
           "client": "pg",
           "databaseType": "postgres",
           "audit_logging_enabled": true,
+          "propertyEvidence": {
+            "audit_logging_enabled": [
+              {
+                "filePath": "db-client-import.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "property.patterns.yaml:database_connection"
+              }
+            ],
+            "client": [
+              {
+                "filePath": "db-client-import.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "finding:database_connection"
+              }
+            ],
+            "databaseType": [
+              {
+                "filePath": "db-client-import.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "finding:database_connection"
+              }
+            ],
+            "technology_stack": [
+              {
+                "filePath": "db-client-import.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "scanner_heuristic:inferTechnologyStack"
+              }
+            ],
+            "hosting_type": [
+              {
+                "filePath": "db-client-import.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "scanner_heuristic:enhanceAsset"
+              }
+            ],
+            "database_engine": [
+              {
+                "filePath": "db-client-import.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "scanner_heuristic:enhanceAsset"
+              }
+            ],
+            "supported_operations": [
+              {
+                "filePath": "db-client-import.ts",
+                "startLine": 1,
+                "endLine": 1,
+                "reason": "scanner_heuristic:enhanceAsset"
+              }
+            ]
+          },
           "section_id": "root",
           "section_label": "root",
           "section_role": "root",
@@ -472,6 +556,120 @@
           "url": "https://api.stripe.com/v1/customers",
           "serviceName": "stripe",
           "integration_method": "api",
+          "propertyEvidence": {
+            "integration_method": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "property.patterns.yaml:external_api_call"
+              }
+            ],
+            "authentication_method": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "property.patterns.yaml:external_api_call"
+              }
+            ],
+            "integration_status": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "property.patterns.yaml:external_api_call"
+              }
+            ],
+            "api_type": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "property.patterns.yaml:external_api_call"
+              }
+            ],
+            "sdk_available": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "property.patterns.yaml:external_api_call"
+              }
+            ],
+            "code_reference_package": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "property.patterns.yaml:external_api_call"
+              }
+            ],
+            "service_url_api_endpoint": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "property.patterns.yaml:external_api_call"
+              }
+            ],
+            "documentation_url": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "property.patterns.yaml:external_api_call"
+              }
+            ],
+            "https_enforced": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "property.patterns.yaml:external_api_call"
+              }
+            ],
+            "client": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "finding:external_api_call"
+              }
+            ],
+            "url": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "finding:external_api_call"
+              }
+            ],
+            "serviceName": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "finding:external_api_call"
+              }
+            ],
+            "hosting_type": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "scanner_heuristic:enhanceThirdParty"
+              }
+            ],
+            "vendor": [
+              {
+                "filePath": "external-api.ts",
+                "startLine": 6,
+                "endLine": 6,
+                "reason": "scanner_heuristic:enhanceThirdParty"
+              }
+            ]
+          },
           "authentication_method": "api_key",
           "integration_status": "active",
           "api_type": "rest",
@@ -754,7 +952,7 @@
     "componentsCount": 5,
     "dataFlowsCount": 4,
     "filesScanned": 6,
-    "scanDurationMs": 496,
+    "scanDurationMs": 531,
     "projectName": "typescript-basic"
   }
 }

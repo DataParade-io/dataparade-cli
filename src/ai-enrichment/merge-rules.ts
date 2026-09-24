@@ -1,6 +1,6 @@
-import type { DetectedComponent } from "../core/types/component";
-import { normalizeThirdPartySubType } from "./third-party-subtype";
-import type { DetectedDataFlow } from "../core/types/data-flow";
+import type { DetectedComponent } from '../core/types/component';
+import { normalizeThirdPartySubType } from './third-party-subtype';
+import type { DetectedDataFlow } from '../core/types/data-flow';
 import {
   componentMayCarryDataActions,
   mergeOneAssignment,
@@ -8,10 +8,10 @@ import {
   readDataActions,
   selectPrimaryDataAction,
   sortDataFlowsDeterministically,
-} from "@dataparade/scanner";
-import type { DataAction, DataActionAssignment } from "@dataparade/scanner";
-import path from "path";
-import { isDeepStrictEqual } from "util";
+} from '@dataparade/scanner';
+import type { DataAction, DataActionAssignment } from '@dataparade/scanner';
+import path from 'path';
+import { isDeepStrictEqual } from 'util';
 import type {
   AiMergeResult,
   AiMergeThresholds,
@@ -20,8 +20,8 @@ import type {
   EvidenceRef,
   FlowPatch,
   MergeProvenance,
-} from "./types";
-import { UI_DATA_ACTION_PROPERTY_KEY } from "./providers/provider-contract";
+} from './types';
+import { UI_DATA_ACTION_PROPERTY_KEY } from './providers/provider-contract';
 
 /** PRD §4.4 / task 2.2 — AI data-action assignments gated at ≥ 0.72. */
 export const DATA_ACTION_MIN_CONFIDENCE = 0.72;
@@ -41,22 +41,26 @@ export interface MergeAiProposalsOptions {
 function normalizeAlias(raw: string): string {
   return raw
     .trim()
-    .replace(/\\/g, "/")
-    .replace(/^\.\//, "")
-    .replace(/\/+$/, "")
+    .replace(/\\/g, '/')
+    .replace(/^\.\//, '')
+    .replace(/\/+$/, '')
     .toLowerCase();
 }
 
 function stripIndexSuffix(p: string): string {
   const normalized = normalizeAlias(p);
   const base = path.posix.basename(normalized);
-  const stem = base.replace(/\.[^.]+$/, "");
-  if (stem !== "index") return normalized;
+  const stem = base.replace(/\.[^.]+$/, '');
+  if (stem !== 'index') return normalized;
   const dir = path.posix.dirname(normalized);
-  return dir === "." ? normalized : normalizeAlias(dir);
+  return dir === '.' ? normalized : normalizeAlias(dir);
 }
 
-function addAlias(aliasMap: Map<string, Set<string>>, alias: string, componentId: string): void {
+function addAlias(
+  aliasMap: Map<string, Set<string>>,
+  alias: string,
+  componentId: string
+): void {
   const key = normalizeAlias(alias);
   if (!key) return;
   const set = aliasMap.get(key) ?? new Set<string>();
@@ -64,7 +68,9 @@ function addAlias(aliasMap: Map<string, Set<string>>, alias: string, componentId
   aliasMap.set(key, set);
 }
 
-function buildComponentAliasMap(components: DetectedComponent[]): Map<string, Set<string>> {
+function buildComponentAliasMap(
+  components: DetectedComponent[]
+): Map<string, Set<string>> {
   const aliasMap = new Map<string, Set<string>>();
   for (const component of components) {
     addAlias(aliasMap, component.id, component.id);
@@ -92,7 +98,7 @@ function buildComponentAliasMap(components: DetectedComponent[]): Map<string, Se
 function remapComponentPatchTarget(
   patch: ComponentPatch,
   componentIds: Set<string>,
-  aliasMap: Map<string, Set<string>>,
+  aliasMap: Map<string, Set<string>>
 ): ComponentPatch {
   if (componentIds.has(patch.targetComponentId)) return patch;
   const key = normalizeAlias(patch.targetComponentId);
@@ -107,10 +113,12 @@ function remapComponentPatchTarget(
 }
 
 function proposalTargetKey(proposal: AiProposal): string {
-  if (proposal.kind === "component_patch") {
-    const propKeys = Object.keys(proposal.setProperties ?? {}).sort().join("|");
-    const sub = proposal.setSubType ? `sub:${proposal.setSubType}` : "";
-    const desc = proposal.setDescription ? "desc" : "";
+  if (proposal.kind === 'component_patch') {
+    const propKeys = Object.keys(proposal.setProperties ?? {})
+      .sort()
+      .join('|');
+    const sub = proposal.setSubType ? `sub:${proposal.setSubType}` : '';
+    const desc = proposal.setDescription ? 'desc' : '';
     return `component:${proposal.targetComponentId}:${propKeys}:${sub}:${desc}`;
   }
 
@@ -125,12 +133,14 @@ function proposalRank(proposal: AiProposal): number {
   const confidenceScore = proposal.confidence.score;
   const evidenceWeight = proposal.evidence.length / 100;
   const insertPenalty =
-    proposal.kind === "flow_patch" && proposal.insertIfMissing ? -0.02 : 0;
-  const llmBonus = proposal.provider !== "mock" ? 0.25 : 0;
+    proposal.kind === 'flow_patch' && proposal.insertIfMissing ? -0.02 : 0;
+  const llmBonus = proposal.provider !== 'mock' ? 0.25 : 0;
   return confidenceScore + evidenceWeight + insertPenalty + llmBonus;
 }
 
-function sortedProposals(proposals: Array<{ id: string; proposal: AiProposal }>) {
+function sortedProposals(
+  proposals: Array<{ id: string; proposal: AiProposal }>
+) {
   return [...proposals].sort((a, b) => {
     const rankDelta = proposalRank(b.proposal) - proposalRank(a.proposal);
     if (rankDelta !== 0) return rankDelta;
@@ -145,10 +155,10 @@ function sortedProposals(proposals: Array<{ id: string; proposal: AiProposal }>)
 
 function toProvenance(
   proposal: ComponentPatch | FlowPatch,
-  confidence: number,
+  confidence: number
 ): MergeProvenance {
   return {
-    source: "ai_agent",
+    source: 'ai_agent',
     provider: proposal.provider,
     model: proposal.model,
     agent: proposal.agent,
@@ -161,8 +171,71 @@ function toProvenance(
 
 function evidenceRefsForDataAction(patch: ComponentPatch): EvidenceRef[] {
   const fromProperty = patch.propertyEvidence?.[UI_DATA_ACTION_PROPERTY_KEY];
-  if (Array.isArray(fromProperty) && fromProperty.length > 0) return fromProperty;
+  if (Array.isArray(fromProperty) && fromProperty.length > 0)
+    return fromProperty;
   return patch.evidence;
+}
+
+function isEvidenceRef(value: unknown): value is EvidenceRef {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const ref = value as Record<string, unknown>;
+  return (
+    typeof ref.filePath === 'string' &&
+    typeof ref.startLine === 'number' &&
+    typeof ref.endLine === 'number' &&
+    typeof ref.reason === 'string'
+  );
+}
+
+function readExistingPropertyEvidence(
+  raw: unknown
+): Record<string, EvidenceRef[]> {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
+  const out: Record<string, EvidenceRef[]> = {};
+  for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
+    if (!Array.isArray(value)) continue;
+    const refs = value.filter(isEvidenceRef);
+    if (refs.length > 0) out[key] = refs;
+  }
+  return out;
+}
+
+/**
+ * Persist AI per-property evidence onto the component so graph-mapping can
+ * flatten it to node.data.propertyEvidence (not dropped after merge).
+ */
+function mergePropertyEvidenceMap(
+  existingRaw: unknown,
+  incoming: Record<string, EvidenceRef[]> | undefined
+): { next: Record<string, EvidenceRef[]> | undefined; changed: boolean } {
+  if (!incoming || Object.keys(incoming).length === 0) {
+    const existing = readExistingPropertyEvidence(existingRaw);
+    return {
+      next: Object.keys(existing).length > 0 ? existing : undefined,
+      changed: false,
+    };
+  }
+
+  const next = readExistingPropertyEvidence(existingRaw);
+  let changed = false;
+
+  for (const [key, refs] of Object.entries(incoming)) {
+    if (!Array.isArray(refs) || refs.length === 0) continue;
+    const validRefs = refs.filter(isEvidenceRef);
+    if (validRefs.length === 0) continue;
+
+    const current = next[key] ?? [];
+    if (isDeepStrictEqual(current, validRefs)) continue;
+
+    // Prefer incoming refs for this key; keep unrelated keys intact.
+    next[key] = validRefs;
+    changed = true;
+  }
+
+  return {
+    next: Object.keys(next).length > 0 ? next : undefined,
+    changed,
+  };
 }
 
 function toSourceLocations(refs: EvidenceRef[]) {
@@ -179,23 +252,23 @@ function toSourceLocations(refs: EvidenceRef[]) {
  */
 function buildAiDataActionAssignment(
   action: DataAction,
-  patch: ComponentPatch,
+  patch: ComponentPatch
 ): DataActionAssignment {
   const refs = evidenceRefsForDataAction(patch);
   const reason =
     refs
       .map((r) => r.reason.trim())
       .filter(Boolean)
-      .join("; ") || "ai enrichment evidence";
+      .join('; ') || 'ai enrichment evidence';
 
-  if (action === "relay") {
+  if (action === 'relay') {
     return {
-      action: "relay",
-      source: "ai",
+      action: 'relay',
+      source: 'ai',
       confidence: patch.confidence.score,
-      status: "asserted",
+      status: 'asserted',
       evidence: {
-        kind: "pattern_rule",
+        kind: 'pattern_rule',
         description: reason,
         corroboration: reason,
       },
@@ -204,9 +277,9 @@ function buildAiDataActionAssignment(
 
   return {
     action,
-    source: "ai",
+    source: 'ai',
     confidence: patch.confidence.score,
-    status: "asserted",
+    status: 'asserted',
     evidence: toSourceLocations(refs),
   };
 }
@@ -232,7 +305,7 @@ function parseProposedDataActions(raw: unknown): DataAction[] {
 function mergeDataActionProperties(
   component: DetectedComponent,
   patch: ComponentPatch,
-  proposedRaw: unknown,
+  proposedRaw: unknown
 ): boolean {
   if (!componentMayCarryDataActions(component.type)) {
     return false;
@@ -251,7 +324,10 @@ function mergeDataActionProperties(
   const before = JSON.stringify(merged);
 
   for (const action of proposed) {
-    merged = mergeOneAssignment(merged, buildAiDataActionAssignment(action, patch));
+    merged = mergeOneAssignment(
+      merged,
+      buildAiDataActionAssignment(action, patch)
+    );
   }
 
   merged.sort((a, b) => a.action.localeCompare(b.action));
@@ -274,12 +350,15 @@ function mergeDataActionProperties(
 
 function mergeComponentPatch(
   components: DetectedComponent[],
-  patch: ComponentPatch,
+  patch: ComponentPatch
 ): boolean {
-  const component = components.find((item) => item.id === patch.targetComponentId);
+  const component = components.find(
+    (item) => item.id === patch.targetComponentId
+  );
   if (!component) return false;
 
   let changed = false;
+  const acceptedEvidenceKeys = new Set<string>();
 
   const normalizedSubType = normalizeThirdPartySubType(patch.setSubType);
   if (normalizedSubType && normalizedSubType !== component.subType) {
@@ -297,38 +376,67 @@ function mergeComponentPatch(
   if (dataActionRaw !== undefined) {
     if (mergeDataActionProperties(component, patch, dataActionRaw)) {
       changed = true;
+      acceptedEvidenceKeys.add(UI_DATA_ACTION_PROPERTY_KEY);
     }
   }
 
   const currentProperties = component.properties ?? {};
   const nextProperties = { ...currentProperties };
   for (const [key, value] of Object.entries(setProperties)) {
-    if (key === UI_DATA_ACTION_PROPERTY_KEY || key === "dataActions") {
+    if (key === UI_DATA_ACTION_PROPERTY_KEY || key === 'dataActions') {
       continue;
     }
     const currentValue = currentProperties[key];
-    if (key === "inference_status" && value === "needs_review") {
+    if (key === 'inference_status' && value === 'needs_review') {
       continue;
     }
     const normalizedCurrent = normalizeEmptyLikeValue(currentValue);
     const normalizedNext = normalizeEmptyLikeValue(value);
+    if (normalizedCurrent !== '__empty__') {
+      continue;
+    }
+    if (normalizedNext === '__empty__') {
+      continue;
+    }
     if (isDeepStrictEqual(normalizedCurrent, normalizedNext)) {
       continue;
     }
     nextProperties[key] = value;
+    acceptedEvidenceKeys.add(key);
     changed = true;
   }
+
+  const acceptedEvidence = patch.propertyEvidence
+    ? Object.fromEntries(
+        Object.entries(patch.propertyEvidence).filter(([key]) =>
+          acceptedEvidenceKeys.has(key)
+        )
+      )
+    : undefined;
+  const evidenceMerge = mergePropertyEvidenceMap(
+    currentProperties.propertyEvidence,
+    acceptedEvidence
+  );
+  if (evidenceMerge.next) {
+    nextProperties.propertyEvidence = evidenceMerge.next;
+  } else {
+    delete nextProperties.propertyEvidence;
+  }
+  if (evidenceMerge.changed) {
+    changed = true;
+  }
+
   component.properties = nextProperties;
 
   return changed;
 }
 
 function normalizeEmptyLikeValue(value: unknown): unknown {
-  if (value == null) return "__empty__";
-  if (typeof value === "string" && value.trim().toLowerCase() === "none") {
-    return "__empty__";
+  if (value == null) return '__empty__';
+  if (typeof value === 'string' && value.trim().toLowerCase() === 'none') {
+    return '__empty__';
   }
-  if (Array.isArray(value) && value.length === 0) return "__empty__";
+  if (Array.isArray(value) && value.length === 0) return '__empty__';
   return value;
 }
 
@@ -340,7 +448,7 @@ function normalizeSectionId(raw: unknown): string | undefined {
 
 function resolveFlowPatchEndpoints(
   patch: FlowPatch,
-  flows: DetectedDataFlow[],
+  flows: DetectedDataFlow[]
 ): { sourceComponentId: string; targetComponentId: string } | undefined {
   if (patch.targetFlowId) {
     const targetFlow = flows.find((flow) => flow.id === patch.targetFlowId);
@@ -364,7 +472,7 @@ function resolveFlowPatchEndpoints(
 function isIntraSectionFlowPatch(
   patch: FlowPatch,
   componentsById: Map<string, DetectedComponent>,
-  flows: DetectedDataFlow[],
+  flows: DetectedDataFlow[]
 ): boolean {
   const endpoints = resolveFlowPatchEndpoints(patch, flows);
   if (!endpoints) return false;
@@ -383,7 +491,7 @@ function mergeFlowPatch(flows: DetectedDataFlow[], patch: FlowPatch): boolean {
     : flows.find(
         (item) =>
           item.sourceComponentId === patch.sourceComponentId &&
-          item.targetComponentId === patch.targetComponentId,
+          item.targetComponentId === patch.targetComponentId
       );
 
   if (!flow) {
@@ -394,7 +502,7 @@ function mergeFlowPatch(flows: DetectedDataFlow[], patch: FlowPatch): boolean {
       id: `flow_ai_${patch.sourceComponentId}_${patch.targetComponentId}_${flows.length + 1}`,
       sourceComponentId: patch.sourceComponentId,
       targetComponentId: patch.targetComponentId,
-      type: patch.setType ?? "api_call",
+      type: patch.setType ?? 'api_call',
       description: patch.setDescription,
       confidence: patch.confidence.score,
       method: patch.setMethod,
@@ -423,7 +531,7 @@ export function mergeAiProposals(
   dataFlows: DetectedDataFlow[],
   proposals: Array<{ id: string; proposal: AiProposal }>,
   thresholds: Partial<AiMergeThresholds> = {},
-  options: MergeAiProposalsOptions = {},
+  options: MergeAiProposalsOptions = {}
 ): AiMergeResult {
   const mergedThresholds = { ...DEFAULT_THRESHOLDS, ...thresholds };
   const nextComponents = components.map((component) => ({
@@ -440,32 +548,32 @@ export function mergeAiProposals(
 
   for (const { id, proposal } of sortedProposals(proposals)) {
     const resolvedProposal =
-      proposal.kind === "component_patch"
+      proposal.kind === 'component_patch'
         ? remapComponentPatchTarget(proposal, componentIds, aliasMap)
         : proposal;
 
-    if (options.preserveDataFlowTopology && proposal.kind === "flow_patch") {
+    if (options.preserveDataFlowTopology && proposal.kind === 'flow_patch') {
       rejectedProposalIds.push({
         proposalId: id,
-        reason: "data_flow_topology_preserved",
+        reason: 'data_flow_topology_preserved',
       });
       continue;
     }
 
     if (
       options.enforceIntraSectionFlowChangesOnly &&
-      resolvedProposal.kind === "flow_patch" &&
+      resolvedProposal.kind === 'flow_patch' &&
       !isIntraSectionFlowPatch(resolvedProposal, componentsById, nextFlows)
     ) {
       rejectedProposalIds.push({
         proposalId: id,
-        reason: "cross_section_flow_change_blocked",
+        reason: 'cross_section_flow_change_blocked',
       });
       continue;
     }
 
     const minConfidence =
-      resolvedProposal.kind === "component_patch"
+      resolvedProposal.kind === 'component_patch'
         ? mergedThresholds.minComponentPatchConfidence
         : resolvedProposal.insertIfMissing
           ? mergedThresholds.minInsertFlowConfidence
@@ -480,7 +588,7 @@ export function mergeAiProposals(
     }
 
     if (resolvedProposal.evidence.length === 0) {
-      rejectedProposalIds.push({ proposalId: id, reason: "missing_evidence" });
+      rejectedProposalIds.push({ proposalId: id, reason: 'missing_evidence' });
       continue;
     }
 
@@ -488,13 +596,13 @@ export function mergeAiProposals(
     if (provenanceByTarget[targetKey]) {
       rejectedProposalIds.push({
         proposalId: id,
-        reason: "target_already_modified_by_higher_ranked_proposal",
+        reason: 'target_already_modified_by_higher_ranked_proposal',
       });
       continue;
     }
 
     const merged =
-      resolvedProposal.kind === "component_patch"
+      resolvedProposal.kind === 'component_patch'
         ? mergeComponentPatch(nextComponents, resolvedProposal)
         : mergeFlowPatch(nextFlows, resolvedProposal);
 
@@ -502,9 +610,9 @@ export function mergeAiProposals(
       rejectedProposalIds.push({
         proposalId: id,
         reason:
-          resolvedProposal.kind === "component_patch"
-            ? "no_meaningful_changes"
-            : "target_not_found",
+          resolvedProposal.kind === 'component_patch'
+            ? 'no_meaningful_changes'
+            : 'target_not_found',
       });
       continue;
     }
@@ -512,7 +620,7 @@ export function mergeAiProposals(
     appliedProposalIds.push(id);
     provenanceByTarget[targetKey] = toProvenance(
       resolvedProposal,
-      resolvedProposal.confidence.score,
+      resolvedProposal.confidence.score
     );
   }
 

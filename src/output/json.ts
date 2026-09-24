@@ -1,12 +1,13 @@
-import fs from "fs";
+import fs from 'fs';
 
-import type { DiagramGraphJsonSchema } from "../core/schema";
+import type { DiagramGraphJsonSchema } from '../core/schema';
 import {
   type DataflowMetadataSchema,
   type DataflowWrapperSchema,
   validateDataflowJson,
-} from "../core/schema/dataflow-wrapper.schema";
-import type { ScanResult } from "../core/types";
+} from '../core/schema/dataflow-wrapper.schema';
+import type { ScanResult } from '../core/types';
+import type { ScanRedFlag } from '../ai-enrichment/red-flags';
 
 export interface BuildDataflowWrapperOptions {
   /**
@@ -19,6 +20,11 @@ export interface BuildDataflowWrapperOptions {
   schemaVersion?: string;
   /** Assessment / project name shown in the dashboard import preview. */
   projectName?: string;
+  /**
+   * Connectivity RED flags from the CLI soft gate (after repair).
+   * Written under `metadata.redFlags` (passthrough metadata schema).
+   */
+  redFlags?: ScanRedFlag[];
 }
 
 /**
@@ -30,9 +36,9 @@ export interface BuildDataflowWrapperOptions {
 export function buildDataflowWrapper(
   scanResult: ScanResult,
   graph: DiagramGraphJsonSchema,
-  options: BuildDataflowWrapperOptions = {},
+  options: BuildDataflowWrapperOptions = {}
 ): DataflowWrapperSchema {
-  const schemaVersion = options.schemaVersion ?? "1.0";
+  const schemaVersion = options.schemaVersion ?? '1.0';
   const projectName = options.projectName?.trim();
 
   const metadata: DataflowMetadataSchema = {
@@ -49,7 +55,12 @@ export function buildDataflowWrapper(
   }
 
   if (scanResult.terraformScanSummary) {
-    (metadata as Record<string, unknown>).terraform = scanResult.terraformScanSummary;
+    (metadata as Record<string, unknown>).terraform =
+      scanResult.terraformScanSummary;
+  }
+
+  if (options.redFlags && options.redFlags.length > 0) {
+    (metadata as Record<string, unknown>).redFlags = options.redFlags;
   }
 
   return {
@@ -78,6 +89,8 @@ export interface WriteDataflowJsonOptions {
   schemaVersion?: string;
   /** Assessment / project name stored in wrapper metadata for upload and preview. */
   projectName?: string;
+  /** Optional connectivity RED flags for `metadata.redFlags`. */
+  redFlags?: ScanRedFlag[];
 }
 
 /**
@@ -93,21 +106,28 @@ export interface WriteDataflowJsonOptions {
  * can emit a non-zero exit code.
  */
 export function writeDataflowJson(options: WriteDataflowJsonOptions): void {
-  const { scanResult, graph, outputPath, schemaVersion, projectName } = options;
+  const {
+    scanResult,
+    graph,
+    outputPath,
+    schemaVersion,
+    projectName,
+    redFlags,
+  } = options;
 
   const wrapper = buildDataflowWrapper(scanResult, graph, {
     schemaVersion,
     projectName,
+    redFlags,
   });
 
   const validation = validateDataflowJson(wrapper);
   if (!validation.ok) {
-    const messages = validation.errors.join("; ");
+    const messages = validation.errors.join('; ');
     throw new Error(`Invalid dataflow.json wrapper: ${messages}`);
   }
 
   const json = JSON.stringify(validation.value, null, 2);
 
-  fs.writeFileSync(outputPath, json, "utf8");
+  fs.writeFileSync(outputPath, json, 'utf8');
 }
-

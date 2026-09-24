@@ -108,6 +108,157 @@ function sectionHasMainApplicationAsset(
   );
 }
 
+function nextSyntheticComponentId(components: DetectedComponent[]): string {
+  let maxNumericId = 0;
+  for (const component of components) {
+    const match = /^cmp_(\d+)$/.exec(component.id);
+    if (match) {
+      const num = Number.parseInt(match[1], 10);
+      if (!Number.isNaN(num) && num > maxNumericId) maxNumericId = num;
+    }
+  }
+  return `cmp_${maxNumericId + 1}`;
+}
+
+const INJECTED_SECTION_HUB_SOURCE_CONTEXT = 'injected_project_placeholder';
+
+/**
+ * Ensures every concrete service section with components has a main-app hub,
+ * and connects that hub to orphan third parties in the same section.
+ */
+function ensureSectionHubsAndOrphanThirdPartyFlows(
+  components: DetectedComponent[],
+  flows: DetectedDataFlow[],
+  policy: FallbackPolicy
+): { components: DetectedComponent[]; flows: DetectedDataFlow[] } {
+  const nextComponents = components.map((c) => ({
+    ...c,
+    properties: { ...c.properties },
+  }));
+  const occupied = new Set<string>();
+  for (const c of nextComponents) {
+    const sid = String(c.properties?.section_id ?? '').trim();
+    if (isConcreteServiceSectionId(sid, policy)) occupied.add(sid);
+  }
+
+  const sortedSections = [...occupied].sort((a, b) => a.localeCompare(b));
+  for (const sectionId of sortedSections) {
+    if (sectionHasMainApplicationAsset(nextComponents, sectionId)) continue;
+
+    const sectionAssets = nextComponents.filter(
+      (c) =>
+        c.type === 'asset' &&
+        String(c.properties?.section_id ?? '') === sectionId &&
+        !c.properties?.managed_by_provider &&
+        !c.properties?.managed_service_key &&
+        c.subType !== 'database'
+    );
+    const promoteable = sectionAssets.find(
+      (c) =>
+        c.subType === 'application' ||
+        c.subType === 'service' ||
+        c.subType === 'api' ||
+        c.subType === undefined
+    );
+
+    const sample = nextComponents.find(
+      (c) => String(c.properties?.section_id ?? '') === sectionId
+    );
+    const label =
+      String(sample?.properties?.section_label ?? '').trim() || sectionId;
+    const role =
+      String(sample?.properties?.section_role ?? '').trim() || 'service';
+
+    if (promoteable) {
+      promoteable.properties = {
+        ...promoteable.properties,
+        isMainApplication: true,
+        section_id: sectionId,
+        section_label:
+          String(promoteable.properties?.section_label ?? '').trim() || label,
+        section_role:
+          String(promoteable.properties?.section_role ?? '').trim() || role,
+      };
+      if (
+        promoteable.properties?.isSectionApiNode !== true &&
+        promoteable.properties?.isSectionApiNode !== 'true'
+      ) {
+        promoteable.name = label;
+      }
+      continue;
+    }
+
+    nextComponents.push({
+      id: nextSyntheticComponentId(nextComponents),
+      name: label,
+      type: 'asset',
+      subType: 'application',
+      confidence: 1,
+      detectedFrom: [],
+      sourceLocations: [],
+      properties: {
+        section_id: sectionId,
+        section_label: label,
+        section_role: role,
+        isMainApplication: true,
+        sourceContext: INJECTED_SECTION_HUB_SOURCE_CONTEXT,
+      },
+    });
+  }
+
+  const byId = componentById(nextComponents);
+  const nextFlows = [...flows];
+  const pairKeys = new Set(nextFlows.map((f) => flowPairKey(f)));
+  const hasInSectionInbound = new Set<string>();
+
+  for (const flow of nextFlows) {
+    const source = byId.get(flow.sourceComponentId);
+    const target = byId.get(flow.targetComponentId);
+    if (!source || !target || target.type !== 'third_party') continue;
+    const sourceSection = String(source.properties?.section_id ?? '').trim();
+    const targetSection = String(target.properties?.section_id ?? '').trim();
+    if (!sourceSection || sourceSection !== targetSection) continue;
+    hasInSectionInbound.add(target.id);
+  }
+
+  const orphanThirdParties = nextComponents
+    .filter((c) => {
+      if (c.type !== 'third_party') return false;
+      if (hasInSectionInbound.has(c.id)) return false;
+      const sid = String(c.properties?.section_id ?? '').trim();
+      return isConcreteServiceSectionId(sid, policy);
+    })
+    .sort((a, b) => a.id.localeCompare(b.id));
+
+  for (const tp of orphanThirdParties) {
+    const sectionId = String(tp.properties?.section_id ?? '').trim();
+    const hub = nextComponents.find(
+      (c) =>
+        c.type === 'asset' &&
+        String(c.properties?.section_id ?? '') === sectionId &&
+        (c.properties?.isMainApplication === true ||
+          c.properties?.isMainApplication === 'true')
+    );
+    if (!hub || hub.id === tp.id) continue;
+    const key = flowPairKey({
+      sourceComponentId: hub.id,
+      targetComponentId: tp.id,
+    });
+    if (pairKeys.has(key)) continue;
+    pairKeys.add(key);
+    nextFlows.push({
+      id: `flow_fallback_${nextFlows.length + 1}`,
+      sourceComponentId: hub.id,
+      targetComponentId: tp.id,
+      type: 'api_call',
+      confidence: 0.6,
+      description: 'Section hub to orphan third party',
+    });
+  }
+
+  return { components: nextComponents, flows: nextFlows };
+}
+
 function getStringValues(value: unknown): string[] {
   if (typeof value === 'string') return [value.toLowerCase()];
   if (!Array.isArray(value)) return [];
@@ -605,14 +756,19 @@ export function applyDeterministicInferenceFallbacks(
   components: DetectedComponent[],
   flows: DetectedDataFlow[]
 ): { components: DetectedComponent[]; dataFlows: DetectedDataFlow[] } {
-  const nextComponents = components.map((c) => ({
+  const fallbackPolicy = loadProviderTopologyFallbackPolicy();
+  const ensured = ensureSectionHubsAndOrphanThirdPartyFlows(
+    components,
+    flows,
+    fallbackPolicy
+  );
+  const nextComponents = ensured.components.map((c) => ({
     ...c,
     properties: { ...c.properties },
   }));
   const byId = componentById(nextComponents);
-  const next = flows.map((flow) => ({ ...flow }));
+  const next = ensured.flows.map((flow) => ({ ...flow }));
   const keys = new Set(next.map((flow) => flowPairKey(flow)));
-  const fallbackPolicy = loadProviderTopologyFallbackPolicy();
 
   for (const flow of next) {
     const source = byId.get(flow.sourceComponentId);
