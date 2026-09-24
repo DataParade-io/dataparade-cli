@@ -606,6 +606,9 @@ function createProgram(): Command {
               console.log(
                 `[scan] dataparade.json written to ${scanDiscoveriesPaths.dataparadeJsonPath}`,
               );
+              console.log(
+                `[scan] discoveries diagram written to ${scanDiscoveriesPaths.collectedDiagramJsonPath}`,
+              );
 
               const skipAutoUpload =
                 Boolean(options.skipAutoUpload) ||
