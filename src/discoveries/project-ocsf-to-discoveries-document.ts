@@ -4,14 +4,12 @@ import {
   validateA0DiscoveriesDocument,
 } from "../../tests/eval/a0-diagram/a0-discoveries-document.schema";
 import { indexDiscoverySlots, discoveryValue } from "./load-ocsf-discoveries";
+import { parseScanEntityAsserts, projectedEntityId } from "./scan-entity-uri";
 
 const SYSTEM_ASSERTS_URI = "dp:a0/system";
 
 function parseScanEntityId(asserts: string): string | null {
-  if (!asserts.startsWith("dp:scan/entity/")) {
-    return null;
-  }
-  return asserts.slice("dp:scan/entity/".length);
+  return parseScanEntityAsserts(asserts)?.entityId ?? null;
 }
 
 function entityKind(entityId: string): "component" | "flow" | "mention" | "data_item" | null {
@@ -75,6 +73,16 @@ function parseNumber(raw: string | undefined, fallback = 0): number {
   return Number.isFinite(value) ? value : fallback;
 }
 
+function assertsForProjectedId(scanUris: Set<string>, projectedId: string): string {
+  for (const uri of scanUris) {
+    const parsed = parseScanEntityAsserts(uri);
+    if (parsed && projectedEntityId(parsed.scanPath, parsed.entityId) === projectedId) {
+      return uri;
+    }
+  }
+  throw new Error(`Missing scan entity URI for ${projectedId}`);
+}
+
 function scanEntityUrisFromRecords(records: OcsfDiscoveryRecord[]): Set<string> {
   const uris = new Set<string>();
   for (const record of records) {
@@ -82,7 +90,7 @@ function scanEntityUrisFromRecords(records: OcsfDiscoveryRecord[]): Set<string> 
       continue;
     }
     const asserts = record.dataparade.asserts;
-    if (asserts.startsWith("dp:scan/entity/")) {
+    if (parseScanEntityAsserts(asserts)) {
       uris.add(asserts);
     }
   }
@@ -105,11 +113,12 @@ export function projectOcsfToDiscoveriesDocument(
   const dataItemIds: string[] = [];
 
   for (const uri of scanUris) {
-    const entityId = parseScanEntityId(uri);
-    if (!entityId) {
+    const parsed = parseScanEntityAsserts(uri);
+    if (!parsed) {
       continue;
     }
-    const kind = entityKind(entityId);
+    const entityId = projectedEntityId(parsed.scanPath, parsed.entityId);
+    const kind = entityKind(parsed.entityId);
     switch (kind) {
       case "component":
         componentIds.push(entityId);
@@ -134,39 +143,48 @@ export function projectOcsfToDiscoveriesDocument(
   dataItemIds.sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
 
   const components = componentIds.map((id) => {
-    const asserts = `dp:scan/entity/${id}`;
+    const asserts = assertsForProjectedId(scanUris, id);
+    const parsed = parseScanEntityAsserts(asserts);
+    const scanPath = parsed?.scanPath ?? "";
     const actorKind = discoveryValue(slotIndex, asserts, "actor_kind");
+    const dataItemIdsForComponent = parseJsonArray(
+      discoveryValue(slotIndex, asserts, "data_item_ids"),
+    ).map((dataItemId) => projectedEntityId(scanPath, dataItemId));
     return {
       id,
+      ...(scanPath ? { scanPath } : {}),
       name: discoveryValue(slotIndex, asserts, "name") ?? id,
       type: discoveryValue(slotIndex, asserts, "type") ?? "asset",
       subType: discoveryValue(slotIndex, asserts, "sub_type") ?? "",
       confidence: parseNumber(discoveryValue(slotIndex, asserts, "confidence")),
       sourceLocations: parseSourceLocations(discoveryValue(slotIndex, asserts, "source_locations")),
-      dataItemIds: parseJsonArray(discoveryValue(slotIndex, asserts, "data_item_ids")),
+      dataItemIds: dataItemIdsForComponent,
       ...(actorKind ? { actor_kind: actorKind } : {}),
     };
   });
 
   const dataFlows = flowIds.map((id) => {
-    const asserts = `dp:scan/entity/${id}`;
+    const asserts = assertsForProjectedId(scanUris, id);
+    const scanPath = parseScanEntityAsserts(asserts)?.scanPath ?? "";
     const categoriesRaw = discoveryValue(slotIndex, asserts, "data_categories");
     const purpose = discoveryValue(slotIndex, asserts, "purpose");
     const dataCategories = parseCategoriesValue(categoriesRaw);
     const targetScope = discoveryValue(slotIndex, asserts, "target_scope");
 
+    const sourceComponentId = discoveryValue(slotIndex, asserts, "source_component");
+    const targetComponentId = discoveryValue(slotIndex, asserts, "target_component");
+    if (!sourceComponentId) {
+      throw new Error(`Flow ${id} missing source_component in scan OCSF`);
+    }
+    if (!targetComponentId) {
+      throw new Error(`Flow ${id} missing target_component in scan OCSF`);
+    }
+
     return {
       id,
-      sourceComponentId:
-        discoveryValue(slotIndex, asserts, "source_component") ??
-        (() => {
-          throw new Error(`Flow ${id} missing source_component in scan OCSF`);
-        })(),
-      targetComponentId:
-        discoveryValue(slotIndex, asserts, "target_component") ??
-        (() => {
-          throw new Error(`Flow ${id} missing target_component in scan OCSF`);
-        })(),
+      ...(scanPath ? { scanPath } : {}),
+      sourceComponentId: projectedEntityId(scanPath, sourceComponentId),
+      targetComponentId: projectedEntityId(scanPath, targetComponentId),
       type: discoveryValue(slotIndex, asserts, "type") ?? "data_transfer",
       confidence: parseNumber(discoveryValue(slotIndex, asserts, "confidence")),
       ...(targetScope ? { targetScope } : {}),
@@ -176,10 +194,12 @@ export function projectOcsfToDiscoveriesDocument(
   });
 
   const mentions = mentionIds.map((id) => {
-    const asserts = `dp:scan/entity/${id}`;
+    const asserts = assertsForProjectedId(scanUris, id);
+    const scanPath = parseScanEntityAsserts(asserts)?.scanPath ?? "";
     const code = discoveryValue(slotIndex, asserts, "code");
     return {
       id,
+      ...(scanPath ? { scanPath } : {}),
       filePath:
         discoveryValue(slotIndex, asserts, "file_path") ??
         (() => {
@@ -192,21 +212,23 @@ export function projectOcsfToDiscoveriesDocument(
   });
 
   const dataItems = dataItemIds.map((id) => {
-    const asserts = `dp:scan/entity/${id}`;
+    const asserts = assertsForProjectedId(scanUris, id);
+    const scanPath = parseScanEntityAsserts(asserts)?.scanPath ?? "";
     const mentionIdsFromSlot = parseJsonArray(
       discoveryValue(slotIndex, asserts, "mention_ids"),
-    );
+    ).map((mentionId) => projectedEntityId(scanPath, mentionId));
     const legacyMentionId = discoveryValue(slotIndex, asserts, "mention");
     const mentionIds =
       mentionIdsFromSlot.length > 0
         ? mentionIdsFromSlot
         : legacyMentionId
-          ? [legacyMentionId]
+          ? [projectedEntityId(scanPath, legacyMentionId)]
           : (() => {
               throw new Error(`Data item ${id} missing mention_ids in scan OCSF`);
             })();
     return {
       id,
+      ...(scanPath ? { scanPath } : {}),
       mentionIds,
     };
   });
@@ -234,7 +256,7 @@ export function projectOcsfToDiscoveriesDocument(
       }
       continue;
     }
-    if (!asserts.startsWith("dp:scan/entity/")) {
+    if (!parseScanEntityAsserts(asserts)) {
       throw new Error(
         `Interview record ${record.metadata.uid} asserts unsupported URI ${asserts}`,
       );

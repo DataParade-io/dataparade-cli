@@ -591,6 +591,7 @@ function createProgram(): Command {
               const scanDiscoveriesPaths = writeScanDiscoveriesArtifacts(
                 orchestratorResult,
                 dataflowOutputPath,
+                { scanRootDir: scanEntry.scanRootDir },
               );
 
               // Always print a short message so non-interactive callers and

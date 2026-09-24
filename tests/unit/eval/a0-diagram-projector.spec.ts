@@ -153,6 +153,57 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(document.dataItems).toEqual([]);
   });
 
+  it("keeps two scans of the same relative path distinct by scan path", () => {
+    const mention = {
+      id: "mention:email:config/contacts.yml:2",
+      filePath: "config/contacts.yml",
+      startLine: 2,
+      endLine: 2,
+      code: "email: a@example.com",
+      labels: ["email"],
+    };
+    const dataItem = {
+      id: "data_item:email",
+      mentionIds: [mention.id],
+      labels: ["email"],
+    };
+    const firstPath = "/checkouts/partner-api";
+    const secondPath = "/checkouts/partner-web";
+    const first = landDiscoverySeedToOcsfRecords({
+      scanPath: firstPath,
+      components: [],
+      dataFlows: [],
+      mentions: [mention],
+      dataItems: [dataItem],
+    });
+    const second = landDiscoverySeedToOcsfRecords({
+      scanPath: secondPath,
+      components: [],
+      dataFlows: [],
+      mentions: [mention],
+      dataItems: [dataItem],
+    });
+
+    const document = projectOcsfToDiscoveriesDocument({
+      records: [...first, ...second],
+    });
+
+    expect(document.mentions.map((row) => row.id).sort()).toEqual([
+      `${firstPath}::${mention.id}`,
+      `${secondPath}::${mention.id}`,
+    ]);
+    expect(document.mentions.map((row) => row.scanPath).sort()).toEqual([
+      firstPath,
+      secondPath,
+    ]);
+    expect(document.dataItems.map((row) => row.mentionIds[0]).sort()).toEqual([
+      `${firstPath}::${mention.id}`,
+      `${secondPath}::${mention.id}`,
+    ]);
+    expect(first[0]?.dataparade.asserts).toContain(encodeURIComponent(firstPath));
+    expect(second[0]?.dataparade.asserts).not.toBe(first[0]?.dataparade.asserts);
+  });
+
   it("rejects interview OCSF that would create a new component", () => {
     const interviewOnlyComponent: OcsfDiscoveryRecord = {
       ...discoveries.records[0],

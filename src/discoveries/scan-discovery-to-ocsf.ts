@@ -13,6 +13,7 @@ import type {
   ScanDiscoveryMentionInput,
   ScanDiscoverySourceLocation,
 } from "./scan-discovery-input";
+import { scanEntityAsserts } from "./scan-entity-uri";
 import {
   PINNED_SCAN_ASSERTED_AT,
   PINNED_SCAN_LAND_DATE,
@@ -112,12 +113,12 @@ function entityRecord(
   return buildScanOcsfRecord({ asserts }, timing);
 }
 
-function mentionAssertUri(mentionId: string): string {
-  return `dp:scan/entity/${mentionId}`;
+function mentionAssertUri(scanPath: string | undefined, mentionId: string): string {
+  return scanEntityAsserts(scanPath, mentionId);
 }
 
-function dataItemAssertUri(dataItemId: string): string {
-  return `dp:scan/entity/${dataItemId}`;
+function dataItemAssertUri(scanPath: string | undefined, dataItemId: string): string {
+  return scanEntityAsserts(scanPath, dataItemId);
 }
 
 function resolveLandTiming(options?: LandScanDiscoveryOcsfOptions): {
@@ -179,6 +180,7 @@ export function landScanDiscoveryToOcsfRecords(
   options?: LandScanDiscoveryOcsfOptions,
 ): OcsfDiscoveryRecord[] {
   const timing = resolveLandTiming(options);
+  const scanPath = input.scanPath;
   const records: OcsfDiscoveryRecord[] = [];
   const componentDataItemIds = new Map<string, string[]>(
     input.components.map((row) => [row.id, [] as string[]]),
@@ -187,8 +189,11 @@ export function landScanDiscoveryToOcsfRecords(
   const mentionById = new Map(input.mentions.map((mention) => [mention.id, mention]));
 
   for (const component of input.components) {
-    const asserts = `dp:scan/entity/${component.id}`;
+    const asserts = scanEntityAsserts(scanPath, component.id);
     records.push(entityRecord(asserts, timing));
+    if (scanPath) {
+      records.push(slotRecord(asserts, "scan_path", scanPath, timing));
+    }
     records.push(slotRecord(asserts, "name", component.name, timing));
     records.push(slotRecord(asserts, "type", component.type, timing));
     records.push(slotRecord(asserts, "sub_type", component.subType, timing));
@@ -199,8 +204,11 @@ export function landScanDiscoveryToOcsfRecords(
   }
 
   for (const flow of input.dataFlows) {
-    const asserts = `dp:scan/entity/${flow.id}`;
+    const asserts = scanEntityAsserts(scanPath, flow.id);
     records.push(entityRecord(asserts, timing));
+    if (scanPath) {
+      records.push(slotRecord(asserts, "scan_path", scanPath, timing));
+    }
     records.push(slotRecord(asserts, "source_component", flow.sourceComponentId, timing));
     records.push(slotRecord(asserts, "target_component", flow.targetComponentId, timing));
     records.push(slotRecord(asserts, "type", flow.type, timing));
@@ -211,8 +219,11 @@ export function landScanDiscoveryToOcsfRecords(
   }
 
   for (const mention of input.mentions) {
-    const mentionUri = mentionAssertUri(mention.id);
+    const mentionUri = mentionAssertUri(scanPath, mention.id);
     records.push(entityRecord(mentionUri, timing));
+    if (scanPath) {
+      records.push(slotRecord(mentionUri, "scan_path", scanPath, timing));
+    }
     records.push(slotRecord(mentionUri, "file_path", mention.filePath, timing));
     records.push(slotRecord(mentionUri, "start_line", String(mention.startLine), timing));
     records.push(slotRecord(mentionUri, "end_line", String(mention.endLine), timing));
@@ -227,8 +238,11 @@ export function landScanDiscoveryToOcsfRecords(
   }
 
   for (const dataItem of input.dataItems) {
-    const dataItemUri = dataItemAssertUri(dataItem.id);
+    const dataItemUri = dataItemAssertUri(scanPath, dataItem.id);
     records.push(entityRecord(dataItemUri, timing));
+    if (scanPath) {
+      records.push(slotRecord(dataItemUri, "scan_path", scanPath, timing));
+    }
     records.push(
       slotRecord(dataItemUri, "mention_ids", JSON.stringify(dataItem.mentionIds), timing),
     );
@@ -252,7 +266,7 @@ export function landScanDiscoveryToOcsfRecords(
   }
 
   for (const component of input.components) {
-    const asserts = `dp:scan/entity/${component.id}`;
+    const asserts = scanEntityAsserts(scanPath, component.id);
     const dataItemIds = componentDataItemIds.get(component.id) ?? [];
     records.push(slotRecord(asserts, "data_item_ids", JSON.stringify(dataItemIds), timing));
   }

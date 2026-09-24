@@ -26,15 +26,19 @@ export function resolveScanDiscoveriesOutputPaths(dataflowOutputPath: string): S
 
 export interface WriteScanDiscoveriesOptions {
   assertedAt?: string;
+  scanRootDir: string;
 }
 
 export function writeScanDiscoveriesArtifacts(
   scanResult: OrchestratorScanResult,
   dataflowOutputPath: string,
-  options: WriteScanDiscoveriesOptions = {},
+  options: WriteScanDiscoveriesOptions,
 ): ScanDiscoveriesOutputPaths {
   const assertedAt = options.assertedAt ?? new Date().toISOString();
-  const discoveryInput = orchestratorScanResultToDiscoveryInput(scanResult);
+  const discoveryInput = {
+    ...orchestratorScanResultToDiscoveryInput(scanResult),
+    scanPath: options.scanRootDir,
+  };
   const scanRecords = landScanDiscoveryToOcsfRecords(discoveryInput, { assertedAt });
 
   const paths = resolveScanDiscoveriesOutputPaths(dataflowOutputPath);
