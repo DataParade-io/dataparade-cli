@@ -7,6 +7,10 @@ import pkg from '../package.json';
 
 import type { DiagramGraphJsonSchema } from './core/schema';
 import { buildDataflowWrapper, writeDataflowJson } from './output/json';
+import {
+  gitContextSchema,
+  type GitContextSchema,
+} from './core/schema/dataflow-wrapper.schema';
 import { resolveSkipAutoUpload } from './config/upload-env';
 import { AI_PROVIDER_IDS, type AiProviderId } from './ai-enrichment/types';
 import type { CliConfigFlags } from './config/types';
@@ -20,6 +24,11 @@ import {
   type ScanCliAiMode,
 } from './observability/scan-sentry';
 import { reportCliUsageEvent } from './platform-api/telemetry-client';
+import {
+  summarizeScanErrors,
+  truncateFailureMessage,
+  type CliScanFailureReport,
+} from './platform-api/cli-scan-failure-report';
 import { validateScanConfiguration } from './core/schema/scan-config.schema';
 import type { AiInferenceProposalDetail } from './core/types';
 import { resolveScanFilesystemEntry } from '@dataparade/scanner';
@@ -200,6 +209,10 @@ function createProgram(): Command {
       '--skip-auto-upload',
       'Do not upload dataflow.json to the dashboard after scan (env: DATAPARADE_SKIP_AUTO_UPLOAD)'
     )
+    .option(
+      '--git-context <json>',
+      'Git repository context for evidence linking (JSON: {"provider":"github"|"gitlab","repository":"owner/repo","commitSha":"...","baseUrl?":"..."})'
+    )
     .action(
       async (
         path: string,
@@ -232,16 +245,44 @@ function createProgram(): Command {
           byokProvider?: AiProviderId;
           byokModel?: string;
           skipAutoUpload?: boolean;
+          gitContext?: string;
         }
       ) => {
         let cliQuotaJobId: string | undefined;
         let platformQuotaApiKey: string | undefined;
         let quotaCompletionReported = false;
         let fallbackFailureMessage = 'CLI scan did not complete successfully';
+        let reportedFailure: CliScanFailureReport | undefined;
         let sentryScanRoot: string | undefined;
         let sentryAiMode: ScanCliAiMode | undefined;
         let sentryAiProvider: string | undefined;
         const isInteractive = process.stdout.isTTY;
+
+        // Parse and validate --git-context if provided
+        let parsedGitContext: GitContextSchema | undefined;
+        if (options.gitContext) {
+          try {
+            const rawJson = JSON.parse(options.gitContext) as unknown;
+            const validated = gitContextSchema.safeParse(rawJson);
+            if (!validated.success) {
+              const errors = validated.error.issues
+                .map((i) => `${i.path.join('.') || '<root>'}: ${i.message}`)
+                .join('; ');
+              // eslint-disable-next-line no-console
+              console.error(`[scan] invalid --git-context: ${errors}`);
+              process.exitCode = 2;
+              return;
+            }
+            parsedGitContext = validated.data;
+          } catch (parseErr) {
+            const message =
+              parseErr instanceof Error ? parseErr.message : 'Invalid JSON';
+            // eslint-disable-next-line no-console
+            console.error(`[scan] failed to parse --git-context: ${message}`);
+            process.exitCode = 2;
+            return;
+          }
+        }
         const workspaceApiKey =
           options.workspaceApiKey?.trim() ||
           options.apiKey?.trim() ||
@@ -273,6 +314,10 @@ function createProgram(): Command {
             const message =
               err instanceof Error ? err.message : 'Path does not exist.';
             sentryScanRoot = resolvedScanRoot;
+            reportedFailure = {
+              code: 'path_not_found',
+              message: truncateFailureMessage(message),
+            };
             await reportScanCliError({
               error: err,
               scanRoot: sentryScanRoot,
@@ -413,7 +458,7 @@ function createProgram(): Command {
           } else if (
             !workspaceApiKey &&
             !usesByok &&
-            aiMode !== "hosted_worker" &&
+            aiMode !== 'hosted_worker' &&
             config.enableAiInference
           ) {
             try {
@@ -449,6 +494,10 @@ function createProgram(): Command {
                 anonSessionError instanceof Error
                   ? anonSessionError.message
                   : 'Anonymous AI session failed.';
+              reportedFailure = {
+                code: 'anonymous_ai_session_failed',
+                message: truncateFailureMessage(message),
+              };
               // eslint-disable-next-line no-console
               console.error(`[scan] ${message}`);
               process.exitCode =
@@ -459,6 +508,12 @@ function createProgram(): Command {
 
           const configValidation = validateScanConfiguration(config);
           if (!configValidation.ok) {
+            reportedFailure = {
+              code: 'invalid_configuration',
+              message: truncateFailureMessage(
+                configValidation.errors.join('; ')
+              ),
+            };
             await reportScanCliError({
               error: configValidation.errors.join('\n'),
               scanRoot: sentryScanRoot,
@@ -542,6 +597,10 @@ function createProgram(): Command {
           }
 
           if (scanResult.errors?.length) {
+            reportedFailure = {
+              code: 'scan_errors',
+              message: summarizeScanErrors(scanResult.errors),
+            };
             await reportScanCliError({
               error: scanResult.errors.join('\n'),
               scanRoot: sentryScanRoot,
@@ -559,6 +618,14 @@ function createProgram(): Command {
           try {
             diagramGraph = buildDiagramGraphFromScanResult(scanResult);
           } catch (graphError) {
+            reportedFailure = {
+              code: 'graph_build_failed',
+              message: truncateFailureMessage(
+                graphError instanceof Error
+                  ? graphError.message
+                  : 'Unknown error while building diagram graph.'
+              ),
+            };
             await reportScanCliError({
               error: graphError,
               scanRoot: sentryScanRoot,
@@ -597,6 +664,7 @@ function createProgram(): Command {
                 outputPath: dataflowOutputPath,
                 projectName: resolvedProjectName,
                 redFlags,
+                gitContext: parsedGitContext,
               });
 
               // Always print a short message so non-interactive callers and
@@ -616,7 +684,11 @@ function createProgram(): Command {
                   const dataflowWrapper = buildDataflowWrapper(
                     scanResult,
                     diagramGraph,
-                    { projectName: resolvedProjectName, redFlags }
+                    {
+                      projectName: resolvedProjectName,
+                      redFlags,
+                      gitContext: parsedGitContext,
+                    }
                   );
                   await runDataflowUpload({
                     apiKey: workspaceApiKey,
@@ -637,6 +709,14 @@ function createProgram(): Command {
                 }
               }
             } catch (dataflowError) {
+              reportedFailure = {
+                code: 'dataflow_write_failed',
+                message: truncateFailureMessage(
+                  dataflowError instanceof Error
+                    ? dataflowError.message
+                    : 'Unknown error while writing dataflow.json.'
+                ),
+              };
               await reportScanCliError({
                 error: dataflowError,
                 scanRoot: sentryScanRoot,
@@ -670,9 +750,11 @@ function createProgram(): Command {
               aiTokensUsed: platformAiMode
                 ? 0
                 : (scanResult.aiInferenceSummary?.totalTokens ?? 0),
-              failureCode: exitFailed ? 'scan_failed' : undefined,
+              failureCode: exitFailed
+                ? (reportedFailure?.code ?? 'scan_failed')
+                : undefined,
               failureMessage: exitFailed
-                ? 'CLI scan did not complete successfully'
+                ? (reportedFailure?.message ?? fallbackFailureMessage)
                 : undefined,
             });
             quotaCompletionReported = true;
@@ -691,6 +773,14 @@ function createProgram(): Command {
             await import('./platform-api/scan-quota-client');
           const quotaBlocked = err instanceof CliScanQuotaExceededError;
           const scanInProgress = err instanceof CliScanAlreadyRunningError;
+          reportedFailure = {
+            code: quotaBlocked
+              ? 'scan_quota_exceeded'
+              : scanInProgress
+                ? 'scan_already_running'
+                : 'scan_exception',
+            message: truncateFailureMessage(message),
+          };
           await reportScanCliError({
             error: err,
             scanRoot: sentryScanRoot,
@@ -723,8 +813,12 @@ function createProgram(): Command {
             hasApiKey: Boolean(workspaceApiKey),
             apiKey: workspaceApiKey,
             cliVersion: pkg.version,
-            errorCode: scanFailed ? 'scan_failed' : undefined,
-            errorMessage: scanFailed ? fallbackFailureMessage : undefined,
+            errorCode: scanFailed
+              ? (reportedFailure?.code ?? 'scan_failed')
+              : undefined,
+            errorMessage: scanFailed
+              ? (reportedFailure?.message ?? fallbackFailureMessage)
+              : undefined,
           });
           if (
             platformQuotaApiKey &&
@@ -738,8 +832,9 @@ function createProgram(): Command {
                 apiKey: platformQuotaApiKey,
                 jobId: cliQuotaJobId,
                 status: 'failed',
-                failureCode: 'scan_failed',
-                failureMessage: fallbackFailureMessage,
+                failureCode: reportedFailure?.code ?? 'scan_failed',
+                failureMessage:
+                  reportedFailure?.message ?? fallbackFailureMessage,
               });
               quotaCompletionReported = true;
               if (isInteractive) {

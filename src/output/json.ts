@@ -4,6 +4,7 @@ import type { DiagramGraphJsonSchema } from '../core/schema';
 import {
   type DataflowMetadataSchema,
   type DataflowWrapperSchema,
+  type GitContextSchema,
   validateDataflowJson,
 } from '../core/schema/dataflow-wrapper.schema';
 import type { ScanResult } from '../core/types';
@@ -25,6 +26,11 @@ export interface BuildDataflowWrapperOptions {
    * Written under `metadata.redFlags` (passthrough metadata schema).
    */
   redFlags?: ScanRedFlag[];
+  /**
+   * Git repository context for evidence linking.
+   * When provided, enables converting evidence file paths to clickable GitHub/GitLab URLs.
+   */
+  gitContext?: GitContextSchema;
 }
 
 /**
@@ -63,6 +69,10 @@ export function buildDataflowWrapper(
     (metadata as Record<string, unknown>).redFlags = options.redFlags;
   }
 
+  if (options.gitContext) {
+    (metadata as Record<string, unknown>).gitContext = options.gitContext;
+  }
+
   return {
     schemaVersion,
     graph,
@@ -91,6 +101,8 @@ export interface WriteDataflowJsonOptions {
   projectName?: string;
   /** Optional connectivity RED flags for `metadata.redFlags`. */
   redFlags?: ScanRedFlag[];
+  /** Git repository context for evidence linking. */
+  gitContext?: GitContextSchema;
 }
 
 /**
@@ -113,12 +125,14 @@ export function writeDataflowJson(options: WriteDataflowJsonOptions): void {
     schemaVersion,
     projectName,
     redFlags,
+    gitContext,
   } = options;
 
   const wrapper = buildDataflowWrapper(scanResult, graph, {
     schemaVersion,
     projectName,
     redFlags,
+    gitContext,
   });
 
   const validation = validateDataflowJson(wrapper);
