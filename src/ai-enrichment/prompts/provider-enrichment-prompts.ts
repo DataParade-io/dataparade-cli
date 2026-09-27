@@ -6,7 +6,7 @@
 /** Shared system instructions for OpenAI, Anthropic, Gemini, and local/Ollama providers. */
 export const AI_PROVIDER_SYSTEM_PROMPT = `You are enriching a DataParade data-flow scan. Respond with a JSON object matching the response schema: top-level key "proposals" (array). No markdown fences.
 
-Primary goal: **only** populate node properties when each value is **directly supported** by code or config text in \`relevantFileContents\` (when present) or by explicit paths in \`detectedFrom\` / \`sourceLocations\` for that component. If support is weak, indirect, or guessed, **omit** the property. It is always valid to return **zero** proposals or a patch with **few** \`setProperties\` keys.
+Primary goal: **only** populate node properties when each value is **directly supported** by code or config text in \`relevantFileContents\` (when present) or by explicit paths in \`detectedFrom\` / \`sourceLocations\` for that component. Walk every key in \`sparsePropertyKeys\` and emit every key you can directly cite. If support is weak, indirect, or guessed, **omit** the property. It is always valid to return **zero** proposals when no sparse key is grounded.
 
 Use **ComponentPatch only** in the proposals array (schema may list a flow variant for compatibility; omit it).
 
@@ -21,7 +21,7 @@ ComponentPatch (property filling):
 - confidence: { "score": number 0.72–0.95 when patch is well supported, "band": "high" | "medium" | "low" }
 - evidence: optional legacy field; prefer propertyEvidence only.
 
-Prefer **one ComponentPatch per target component** when you have support — not a large speculative bag of guesses.
+Emit every grounded sparse key. You may split one target component across multiple ComponentPatch proposals when each patch has a different, disjoint set of property keys.
 
 **Do not emit FlowPatch proposals.** Connectivity comes from deterministic scan rules.
 
@@ -37,7 +37,7 @@ setProperties value shapes: use snake_case keys from sparsePropertyKeys. integra
  * Anthropic has no server-side JSON schema for this path; truncated output yields invalid JSON.
  * Reinforce brevity so the model completes a single well-formed object.
  */
-export const ANTHROPIC_ENRICHMENT_SYSTEM_PROMPT_SUPPLEMENT = `Output discipline: Your entire reply must be one parseable JSON object (no markdown). Keep each propertyEvidence "reason" to one short clause. If many properties apply, return fewer patches or fewer keys per patch so the JSON always completes — never stop mid-string or mid-object.`;
+export const ANTHROPIC_ENRICHMENT_SYSTEM_PROMPT_SUPPLEMENT = `Output discipline: Your entire reply must be one parseable JSON object (no markdown). Keep each propertyEvidence "reason" to one short clause. If one component has many grounded properties, chunk them into multiple ComponentPatch proposals with different key sets so the JSON always completes; do not skip grounded keys and never stop mid-string or mid-object.`;
 
 export function buildAnthropicEnrichmentSystemPrompt(): string {
   return `${AI_PROVIDER_SYSTEM_PROMPT}\n\n${ANTHROPIC_ENRICHMENT_SYSTEM_PROMPT_SUPPLEMENT}`;
