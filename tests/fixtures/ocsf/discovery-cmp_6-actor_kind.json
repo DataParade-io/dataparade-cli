@@ -1,0 +1,41 @@
+{
+  "class_name": "Architecture Discovery",
+  "class_uid": 900101,
+  "category_name": "Architecture",
+  "category_uid": 9001,
+  "activity_id": 1,
+  "activity_name": "Create",
+  "type_uid": 90010101,
+  "time": 1789642758,
+  "metadata": {
+    "version": "1.7.0",
+    "uid": "dp:discovery/interview/dp_scan_entity_cmp_6/actor_kind/20260917",
+    "extension": {
+      "name": "dataparade_discovery",
+      "version": "1.0.0"
+    }
+  },
+  "resources": [
+    {
+      "uid": "dp:scan/entity/cmp_6",
+      "name": "cmp_6",
+      "type": "entity"
+    }
+  ],
+  "dataparade": {
+    "record_kind": "discovery",
+    "ontology_version": "0.3.0",
+    "source": "interview",
+    "asserted_at": "2026-09-17T10:59:18.000Z",
+    "asserts": "dp:scan/entity/cmp_6",
+    "asserted_slot": "actor_kind",
+    "asserted_value": "person",
+    "eligible_shape": "D4",
+    "raw_evidence_ref": "project/wiki/graph/dogfood/evidence/2026-09-17-ryan-a0-dogfood-interview.md",
+    "reviewer": "ryan@dataparade.io",
+    "reviewed_at": "2026-09-17T10:59:18.000Z",
+    "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
+    "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768",
+    "related_resource_refs": ["cmp_6"]
+  }
+}

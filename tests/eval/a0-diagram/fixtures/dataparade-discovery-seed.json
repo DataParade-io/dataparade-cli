@@ -1,0 +1,887 @@
+{
+  "provenance": "scan",
+  "seedRepo": "DataParade-io/dataparade",
+  "seedPath": "/Users/home/Projects/dataparade",
+  "scannedAt": "2026-09-15T19:01:30.070Z",
+  "elapsedMs": 6873,
+  "filesScanned": 1147,
+  "filesSkipped": 0,
+  "totalLines": 227725,
+  "scanDurationMs": 6865,
+  "warningsCount": 0,
+  "errorsCount": 0,
+  "rawFindingCount": 920,
+  "componentCount": 28,
+  "dataFlowCount": 20,
+  "components": [
+    {
+      "id": "cmp_12",
+      "name": "Auth0",
+      "type": "third_party",
+      "subType": "saas_service",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/package.json",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/src/admin-notifications/admin-notification.service.ts",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/src/auth/auth.service.ts",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_11",
+      "name": "Aws",
+      "type": "third_party",
+      "subType": "cloud_provider",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/migrate.js",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/package.json",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/src/analytics/posthog-capture.service.ts",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_10",
+      "name": "Aws Lambda Handler",
+      "type": "asset",
+      "subType": "function",
+      "confidence": 0.9,
+      "sourceLocations": [
+        {
+          "filePath": "backend/src/lambda.ts",
+          "startLine": 72,
+          "endLine": 72,
+          "code": "export const handler"
+        },
+        {
+          "filePath": "backend/src/scan-worker.lambda.ts",
+          "startLine": 13,
+          "endLine": 13,
+          "code": "export const handler"
+        }
+      ]
+    },
+    {
+      "id": "cmp_7",
+      "name": "backend",
+      "type": "asset",
+      "subType": "api",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/src/auth/auth.service.ts",
+          "startLine": 205,
+          "endLine": 205,
+          "code": "axios.post("
+        },
+        {
+          "filePath": "backend/src/auth/auth.service.ts",
+          "startLine": 699,
+          "endLine": 699,
+          "code": "axios.post("
+        }
+      ]
+    },
+    {
+      "id": "cmp_6",
+      "name": "Customer",
+      "type": "actor",
+      "subType": "customer",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/src/actors/actors.controller.ts",
+          "startLine": 57,
+          "endLine": 57,
+          "code": "    return this.actorsService.findAllByUser(req.user!.id);"
+        },
+        {
+          "filePath": "backend/src/assets/assets.controller.ts",
+          "startLine": 61,
+          "endLine": 61,
+          "code": "    return this.assetsService.findAllByUser(req.user!.id);"
+        },
+        {
+          "filePath": "backend/src/auth/auth.controller.ts",
+          "startLine": 282,
+          "endLine": 282,
+          "code": "      req.user!.id,"
+        }
+      ]
+    },
+    {
+      "id": "cmp_8",
+      "name": "Pg",
+      "type": "asset",
+      "subType": "database",
+      "confidence": 0.9,
+      "sourceLocations": [
+        {
+          "filePath": "backend/package.json",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/scripts/clear-dev-db.ts",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/scripts/clear-dev-db.ts",
+          "startLine": 30,
+          "endLine": 30,
+          "code": "new Client("
+        }
+      ]
+    },
+    {
+      "id": "cmp_13",
+      "name": "Sendgrid",
+      "type": "third_party",
+      "subType": "saas_service",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/package.json",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/src/admin-notifications/admin-notification.service.ts",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/src/comments/diagram-comments.service.ts",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_14",
+      "name": "Sentry",
+      "type": "third_party",
+      "subType": "saas_service",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/package.json",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/src/app.module.ts",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/src/filters/sentry-lambda.filter.ts",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_9",
+      "name": "Typeorm",
+      "type": "asset",
+      "subType": "database",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/package.json",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/scripts/seed-email-digest-local-test.ts",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/src/actors/actors.module.ts",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_3",
+      "name": "Aws",
+      "type": "third_party",
+      "subType": "cloud_provider",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/lambdas/adjust-workspace-quota/index.js",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/lambdas/adjust-workspace-quota/package.json",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/lambdas/auth-helper/index.js",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_1",
+      "name": "lambdas",
+      "type": "asset",
+      "subType": "api",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/lambdas/auth-helper/index.js",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/lambdas/auth-helper/index.js",
+          "startLine": 34,
+          "endLine": 34,
+          "code": "axios.post("
+        },
+        {
+          "filePath": "backend/lambdas/auth-helper/index.js",
+          "startLine": 75,
+          "endLine": 75,
+          "code": "axios.post("
+        }
+      ]
+    },
+    {
+      "id": "cmp_2",
+      "name": "Pg",
+      "type": "asset",
+      "subType": "database",
+      "confidence": 0.9,
+      "sourceLocations": [
+        {
+          "filePath": "backend/lambdas/adjust-workspace-quota/index.js",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/lambdas/adjust-workspace-quota/index.js",
+          "startLine": 228,
+          "endLine": 228,
+          "code": "new Client("
+        },
+        {
+          "filePath": "backend/lambdas/adjust-workspace-quota/package.json",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_4",
+      "name": "Sendgrid",
+      "type": "third_party",
+      "subType": "saas_service",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/lambdas/mail-helper/index.js",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/lambdas/mail-helper/package.json",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_5",
+      "name": "Sentry",
+      "type": "third_party",
+      "subType": "saas_service",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "backend/lambdas/scan-cli-infer-task-worker/index.js",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/lambdas/sentry-helper/index.js",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "backend/lambdas/sentry-helper/package.json",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_15",
+      "name": "Openai",
+      "type": "third_party",
+      "subType": "ai_provider",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "cli/src/ai-enrichment/providers/families/chat-completions-family.ts",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "cli/src/ai-enrichment/providers/provider-contract.ts",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_16",
+      "name": "Sentry",
+      "type": "third_party",
+      "subType": "saas_service",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "cli/bin/cli.ts",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "cli/package.json",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "cli/src/cli.ts",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_18",
+      "name": "API",
+      "type": "asset",
+      "subType": "api",
+      "confidence": 1,
+      "sourceLocations": [
+        {
+          "filePath": "docs-site/app/[[...mdxPath]]/page.tsx",
+          "startLine": 7,
+          "endLine": 7,
+          "code": "export async function generateMetadata("
+        },
+        {
+          "filePath": "docs-site/app/[[...mdxPath]]/page.tsx",
+          "startLine": 18,
+          "endLine": 18,
+          "code": "export default async function Page("
+        },
+        {
+          "filePath": "docs-site/app/layout.tsx",
+          "startLine": 33,
+          "endLine": 33,
+          "code": "export default async function RootLayout("
+        }
+      ]
+    },
+    {
+      "id": "cmp_19",
+      "name": "docs-site",
+      "type": "asset",
+      "subType": "api",
+      "confidence": 0.75,
+      "sourceLocations": [
+        {
+          "filePath": "docs-site/app/[[...mdxPath]]/page.tsx",
+          "startLine": 7,
+          "endLine": 7,
+          "code": "export async function generateMetadata("
+        },
+        {
+          "filePath": "docs-site/app/[[...mdxPath]]/page.tsx",
+          "startLine": 18,
+          "endLine": 18,
+          "code": "export default async function Page("
+        },
+        {
+          "filePath": "docs-site/app/layout.tsx",
+          "startLine": 33,
+          "endLine": 33,
+          "code": "export default async function RootLayout("
+        }
+      ]
+    },
+    {
+      "id": "cmp_17",
+      "name": "User",
+      "type": "actor",
+      "subType": "customer",
+      "confidence": 0.5,
+      "sourceLocations": []
+    },
+    {
+      "id": "cmp_21",
+      "name": "API",
+      "type": "asset",
+      "subType": "api",
+      "confidence": 1,
+      "sourceLocations": [
+        {
+          "filePath": "frontend/app/(authenticated)/diagrams/[id]/diagram-dataflow-update-handler.ts",
+          "startLine": 21,
+          "endLine": 21,
+          "code": "export function handleDataFlowUpdate("
+        },
+        {
+          "filePath": "frontend/app/(authenticated)/diagrams/[id]/diagram-save-handler.ts",
+          "startLine": 52,
+          "endLine": 52,
+          "code": "export function mergeSaveResponseEdgesWithCurrent("
+        },
+        {
+          "filePath": "frontend/app/(authenticated)/diagrams/[id]/diagram-save-handler.ts",
+          "startLine": 90,
+          "endLine": 90,
+          "code": "export function mergeResponseWithCurrent("
+        }
+      ]
+    },
+    {
+      "id": "cmp_24",
+      "name": "Auth0",
+      "type": "third_party",
+      "subType": "saas_service",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "frontend/app/auth/[...auth0]/route.ts",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "frontend/app/layout.tsx",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "frontend/app/providers/auth0-provider.tsx",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_20",
+      "name": "Customer",
+      "type": "actor",
+      "subType": "customer",
+      "confidence": 0.9,
+      "sourceLocations": [
+        {
+          "filePath": "frontend/app/hooks/useSession.ts",
+          "startLine": 1,
+          "endLine": 1,
+          "code": "'use client';"
+        }
+      ]
+    },
+    {
+      "id": "cmp_22",
+      "name": "frontend",
+      "type": "asset",
+      "subType": "api",
+      "confidence": 0.75,
+      "sourceLocations": [
+        {
+          "filePath": "frontend/app/(authenticated)/diagrams/[id]/diagram-dataflow-update-handler.ts",
+          "startLine": 21,
+          "endLine": 21,
+          "code": "export function handleDataFlowUpdate("
+        },
+        {
+          "filePath": "frontend/app/(authenticated)/diagrams/[id]/diagram-save-handler.ts",
+          "startLine": 52,
+          "endLine": 52,
+          "code": "export function mergeSaveResponseEdgesWithCurrent("
+        },
+        {
+          "filePath": "frontend/app/(authenticated)/diagrams/[id]/diagram-save-handler.ts",
+          "startLine": 90,
+          "endLine": 90,
+          "code": "export function mergeResponseWithCurrent("
+        }
+      ]
+    },
+    {
+      "id": "cmp_23",
+      "name": "Sentry",
+      "type": "third_party",
+      "subType": "saas_service",
+      "confidence": 0.85,
+      "sourceLocations": [
+        {
+          "filePath": "frontend/app/api/sentry-example-api/route.ts",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "frontend/app/global-error.tsx",
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "filePath": "frontend/app/sentry-example-page/page.tsx",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_26",
+      "name": "API",
+      "type": "asset",
+      "subType": "api",
+      "confidence": 1,
+      "sourceLocations": [
+        {
+          "filePath": "landing/app/privacy/page.tsx",
+          "startLine": 5,
+          "endLine": 5,
+          "code": "export function generateMetadata("
+        },
+        {
+          "filePath": "landing/app/terms/page.tsx",
+          "startLine": 5,
+          "endLine": 5,
+          "code": "export function generateMetadata("
+        },
+        {
+          "filePath": "landing/package.json",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_28",
+      "name": "Dataparade.io",
+      "type": "third_party",
+      "subType": "saas_service",
+      "confidence": 0.8,
+      "sourceLocations": [
+        {
+          "filePath": "landing/app/layout.tsx",
+          "startLine": 55,
+          "endLine": 55,
+          "code": "url: \"https://dataparade.io\""
+        }
+      ]
+    },
+    {
+      "id": "cmp_27",
+      "name": "landing",
+      "type": "asset",
+      "subType": "api",
+      "confidence": 0.75,
+      "sourceLocations": [
+        {
+          "filePath": "landing/app/privacy/page.tsx",
+          "startLine": 5,
+          "endLine": 5,
+          "code": "export function generateMetadata("
+        },
+        {
+          "filePath": "landing/app/terms/page.tsx",
+          "startLine": 5,
+          "endLine": 5,
+          "code": "export function generateMetadata("
+        },
+        {
+          "filePath": "landing/package.json",
+          "startLine": 1,
+          "endLine": 1
+        }
+      ]
+    },
+    {
+      "id": "cmp_25",
+      "name": "User",
+      "type": "actor",
+      "subType": "customer",
+      "confidence": 0.5,
+      "sourceLocations": []
+    }
+  ],
+  "dataFlows": [
+    {
+      "id": "flow_289",
+      "sourceComponentId": "cmp_19",
+      "targetComponentId": "cmp_18",
+      "type": "api_call",
+      "confidence": 1,
+      "targetScope": "local"
+    },
+    {
+      "id": "flow_109",
+      "sourceComponentId": "cmp_7",
+      "targetComponentId": "cmp_13",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "backend/src/admin-notifications/admin-notification.service.ts",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_106",
+      "sourceComponentId": "cmp_7",
+      "targetComponentId": "cmp_14",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "backend/src/app.module.ts",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_254",
+      "sourceComponentId": "cmp_7",
+      "targetComponentId": "cmp_12",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "backend/package.json",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_111",
+      "sourceComponentId": "cmp_7",
+      "targetComponentId": "cmp_11",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "backend/migrate.js",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_103",
+      "sourceComponentId": "cmp_6",
+      "targetComponentId": "cmp_7",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "local",
+      "sourceLocation": {
+        "filePath": "backend/src/actors/actors.controller.ts",
+        "startLine": 57,
+        "endLine": 57,
+        "code": "    return this.actorsService.findAllByUser(req.user!.id);"
+      }
+    },
+    {
+      "id": "flow_10",
+      "sourceComponentId": "cmp_1",
+      "targetComponentId": "cmp_3",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "backend/lambdas/adjust-workspace-quota/index.js",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_14",
+      "sourceComponentId": "cmp_1",
+      "targetComponentId": "cmp_4",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "backend/lambdas/mail-helper/index.js",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_20",
+      "sourceComponentId": "cmp_1",
+      "targetComponentId": "cmp_5",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "backend/lambdas/scan-cli-infer-task-worker/index.js",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_267",
+      "sourceComponentId": "cmp_22",
+      "targetComponentId": "cmp_24",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "frontend/app/auth/[...auth0]/route.ts",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_268",
+      "sourceComponentId": "cmp_22",
+      "targetComponentId": "cmp_23",
+      "type": "api_call",
+      "confidence": 0.85,
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "frontend/app/global-error.tsx",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_287",
+      "sourceComponentId": "cmp_22",
+      "targetComponentId": "cmp_21",
+      "type": "api_call",
+      "confidence": 1,
+      "targetScope": "local"
+    },
+    {
+      "id": "flow_269",
+      "sourceComponentId": "cmp_20",
+      "targetComponentId": "cmp_22",
+      "type": "api_call",
+      "confidence": 0.9,
+      "targetScope": "local",
+      "sourceLocation": {
+        "filePath": "frontend/app/hooks/useSession.ts",
+        "startLine": 1,
+        "endLine": 1,
+        "code": "'use client';"
+      }
+    },
+    {
+      "id": "flow_279",
+      "sourceComponentId": "cmp_27",
+      "targetComponentId": "cmp_28",
+      "type": "api_call",
+      "confidence": 0.8,
+      "method": "",
+      "endpoint": "https://dataparade.io",
+      "targetScope": "external",
+      "sourceLocation": {
+        "filePath": "landing/app/layout.tsx",
+        "startLine": 55,
+        "endLine": 55,
+        "code": "url: \"https://dataparade.io\""
+      }
+    },
+    {
+      "id": "flow_288",
+      "sourceComponentId": "cmp_27",
+      "targetComponentId": "cmp_26",
+      "type": "api_call",
+      "confidence": 1,
+      "targetScope": "local"
+    },
+    {
+      "id": "flow_290",
+      "sourceComponentId": "cmp_17",
+      "targetComponentId": "cmp_19",
+      "type": "api_call",
+      "confidence": 0.5
+    },
+    {
+      "id": "flow_291",
+      "sourceComponentId": "cmp_25",
+      "targetComponentId": "cmp_27",
+      "type": "api_call",
+      "confidence": 0.5
+    },
+    {
+      "id": "flow_24",
+      "sourceComponentId": "cmp_7",
+      "targetComponentId": "cmp_8",
+      "type": "database_query",
+      "confidence": 0.9,
+      "targetScope": "local",
+      "sourceLocation": {
+        "filePath": "backend/package.json",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_61",
+      "sourceComponentId": "cmp_7",
+      "targetComponentId": "cmp_9",
+      "type": "database_query",
+      "confidence": 0.85,
+      "targetScope": "local",
+      "sourceLocation": {
+        "filePath": "backend/package.json",
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "flow_1",
+      "sourceComponentId": "cmp_1",
+      "targetComponentId": "cmp_2",
+      "type": "database_query",
+      "confidence": 0.9,
+      "targetScope": "local",
+      "sourceLocation": {
+        "filePath": "backend/lambdas/adjust-workspace-quota/index.js",
+        "startLine": 1,
+        "endLine": 1
+      }
+    }
+  ]
+}

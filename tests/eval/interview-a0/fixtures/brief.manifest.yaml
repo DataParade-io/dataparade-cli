@@ -1,0 +1,20 @@
+# Source-of-truth pins from DataParade-io/knowledge-base.
+# Brief @ DATAP-671 (16f2e85); skill/rubric @ DATAP-692 (f8b4f28); write-back @ DATAP-685 (2616ebc).
+# Checked-in fixtures under dpkb/ are byte copies at these commits.
+# To update: bump commit SHAs + fixture_sha256 values + regenerate dpkb/*.md.
+repository: DataParade-io/knowledge-base
+brief_path: project/wiki/dogfood-brief-a0.md
+commit: 16f2e857a47d54bfea6ca5d7f23a6c4f2732da29
+brief_fixture: dpkb/dogfood-brief-a0.md
+brief_fixture_sha256: 06dbc6fc61d6b137216dd46a5cf5a571ce327f4da31845862a114520a6726b91
+skill_path: project/wiki/skills/a0-dataflow-interview
+skill_commit: f8b4f2810f0be856f9bf5421af5ea0db51ecd768
+skill_fixture: dpkb/a0-dataflow-interview/SKILL.md
+skill_fixture_sha256: 51dc43505ef711f597d49c05c827ab80de9e2682c04c54a1fbb3ac9cb583db63
+rubric_fixture: dpkb/a0-dataflow-interview/score-rubric.md
+rubric_fixture_sha256: 6e23ffa4caab7023857f80b717b748ca206f977fc6d23f3898b9fdb7862b15e4
+write_back_fixture: dpkb/a0-dataflow-interview/write-back-rules.md
+write_back_fixture_sha256: f098b4d8cee838967fbcfebffec60366f50ad78696a685117ac94890fa7cfe29
+ontology_version: 0.3.0
+ontology_tag: v0.3.0
+ontology_sha: 7a6f438d855bd8f03c8ebbd61c2863ed11c33153

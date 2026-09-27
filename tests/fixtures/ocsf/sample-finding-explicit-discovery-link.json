@@ -1,0 +1,22 @@
+{
+  "class_name": "Vulnerability Finding",
+  "class_uid": 2002,
+  "category_name": "Findings",
+  "category_uid": 2,
+  "activity_id": 1,
+  "activity_name": "Create",
+  "type_uid": 200201,
+  "time": 1789642758,
+  "metadata": {
+    "version": "1.7.0",
+    "uid": "finding-fixture/dogfood/cmp_6-explicit-backlink"
+  },
+  "resources": [],
+  "unmapped": {
+    "dataparade": {
+      "related_discovery_ids": [
+        "dp:discovery/interview/dp_scan_entity_cmp_6/actor_kind/20260917"
+      ]
+    }
+  }
+}

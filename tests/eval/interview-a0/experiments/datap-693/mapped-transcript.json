@@ -1,0 +1,676 @@
+{
+  "id": "datap-693-mapped-from-raw",
+  "description": "Mechanical mapper output from raw-model-transcript.jsonl (DATAP-693). Not hand-edited.",
+  "actions": [
+    {
+      "kind": "ask",
+      "slot": "system_identity",
+      "text": "Please confirm the system name and whether DataParade is in scope for this A0 system-context data-flow projection."
+    },
+    {
+      "kind": "write",
+      "slot": "system_identity",
+      "text": "Recorded DataParade as the system; the customer-facing application in DataParade-io/dataparade is in scope.",
+      "value": "DataParade",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "system_boundary",
+      "text": "Please identify which repositories or assets belong inside the DataParade system boundary versus outside it. In particular, can you confirm whether scanner, ontology, knowledge-base, or dataparade-cli are in scope? If you cannot determine the boundary, say so; I will not infer it."
+    },
+    {
+      "kind": "refuse",
+      "slot": "system_boundary",
+      "text": "System boundary and sibling-repository membership remain unknown; not inventing a repository map."
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "text": "For discovery cmp_6 (Customer), which ActorKind applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_6",
+      "text": "Recorded ActorKind persona for discovery cmp_6.",
+      "value": "persona",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "text": "For discovery cmp_17 (User), which ActorKind applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_17",
+      "text": "Recorded ActorKind person for discovery cmp_17.",
+      "value": "person",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "text": "For discovery cmp_20 (Customer), which ActorKind applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_20",
+      "text": "Recorded ActorKind persona for discovery cmp_20.",
+      "value": "persona",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "text": "For discovery cmp_25 (User), which ActorKind applies: person, role, or persona?"
+    },
+    {
+      "kind": "write",
+      "slot": "actors",
+      "discoveryId": "cmp_25",
+      "text": "Recorded ActorKind person for discovery cmp_25.",
+      "value": "person",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "text": "For flow_289, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_289",
+      "text": "No specific data category was provided; recorded other for flow_289.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "text": "For flow_289, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_289",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_289.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "text": "For flow_109, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_109",
+      "text": "No specific data category was provided; recorded other for flow_109.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "text": "For flow_109, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_109",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_109.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "text": "For flow_106, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_106",
+      "text": "No specific data category was provided; recorded other for flow_106.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "text": "For flow_106, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_106",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_106.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "text": "For flow_254, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_254",
+      "text": "No specific data category was provided; recorded other for flow_254.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "text": "For flow_254, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_254",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_254.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "text": "For flow_111, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_111",
+      "text": "No specific data category was provided; recorded other for flow_111.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "text": "For flow_111, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_111",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_111.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "text": "For flow_103, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_103",
+      "text": "No specific data category was provided; recorded other for flow_103.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "text": "For flow_103, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_103",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_103.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "text": "For flow_10, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_10",
+      "text": "No specific data category was provided; recorded other for flow_10.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "text": "For flow_10, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_10",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_10.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "text": "For flow_14, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_14",
+      "text": "No specific data category was provided; recorded other for flow_14.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "text": "For flow_14, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_14",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_14.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "text": "For flow_20, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_20",
+      "text": "No specific data category was provided; recorded other for flow_20.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "text": "For flow_20, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_20",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_20.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "text": "For flow_267, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_267",
+      "text": "No specific data category was provided; recorded other for flow_267.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "text": "For flow_267, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_267",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_267.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "text": "For flow_268, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_268",
+      "text": "No specific data category was provided; recorded other for flow_268.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "text": "For flow_268, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_268",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_268.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "text": "For flow_287, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_287",
+      "text": "No specific data category was provided; recorded other for flow_287.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "text": "For flow_287, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_287",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_287.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "text": "For flow_269, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_269",
+      "text": "No specific data category was provided; recorded other for flow_269.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "text": "For flow_269, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_269",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_269.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "text": "For flow_279, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_279",
+      "text": "No specific data category was provided; recorded other for flow_279.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "text": "For flow_279, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_279",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_279.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "text": "For flow_288, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_288",
+      "text": "No specific data category was provided; recorded other for flow_288.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "text": "For flow_288, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_288",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_288.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "text": "For flow_290, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_290",
+      "text": "No specific data category was provided; recorded other for flow_290.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "text": "For flow_290, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_290",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_290.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "text": "For flow_291, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_291",
+      "text": "No specific data category was provided; recorded other for flow_291.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_291",
+      "text": "For flow_291, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_291",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_291.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "text": "For flow_24, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_24",
+      "text": "No specific data category was provided; recorded other for flow_24.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "text": "For flow_24, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_24",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_24.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "text": "For flow_61, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_61",
+      "text": "No specific data category was provided; recorded other for flow_61.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "text": "For flow_61, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_61",
+      "text": "Stakeholder did not provide a purpose; recorded unspecified for flow_61.",
+      "value": "unspecified",
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "text": "For flow_1, what data categories apply? Choose one or more DataCategory tokens: personal, identifiers, contact, demographic, credentials, financial, health, location, communications, commercial, other."
+    },
+    {
+      "kind": "write",
+      "slot": "sends_data_to.data_categories",
+      "discoveryId": "flow_1",
+      "text": "No specific data category was provided; recorded other for flow_1.",
+      "value": [
+        "other"
+      ],
+      "provenance": "interview"
+    },
+    {
+      "kind": "ask",
+      "slot": "sends_data_to.purpose",
+      "discoveryId": "flow_1",
+      "text": "For flow_1, what purpose applies? Choose one Purpose token: service_provision, analytics, marketing, security, legal_obligation, research, debugging, or unspecified."
+    }
+  ]
+}
