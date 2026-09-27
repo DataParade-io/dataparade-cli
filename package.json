@@ -73,7 +73,7 @@
     "@sentry/node": "^10.38.0",
     "commander": "^12.1.0",
     "dotenv": "^16.4.7",
-    "langsmith": "^0.3.14",
+    "langsmith": "^0.6.0",
     "typescript": "^5.7.3",
     "yaml": "^2.8.2",
     "zod": "^4.3.5"
