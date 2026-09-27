@@ -471,10 +471,8 @@ async function runScanPipelineInner(
     };
   }
 
-  return {
-    ...enrichOrchestratorResultWithPersonalDataLayers(rootPath, result),
-    redFlags,
-  };
+  const enriched = await enrichOrchestratorResultWithPersonalDataLayers(rootPath, result);
+  return { ...enriched, redFlags };
 }
 
 /**
