@@ -7,7 +7,6 @@ import pkg from '../package.json';
 
 import type { DiagramGraphJsonSchema } from './core/schema';
 import { buildDataflowWrapper, writeDataflowJson } from './output/json';
-import { writeScanDiscoveriesArtifacts } from './output/write-scan-discoveries';
 import {
   gitContextSchema,
   type GitContextSchema,
@@ -539,7 +538,7 @@ function createProgram(): Command {
             );
           }
 
-          const orchestratorResult = await runScanPipeline(
+          const { scanResult, redFlags } = await runScanPipeline(
             resolvedScanRoot,
             config,
             (progress) => {
@@ -550,7 +549,6 @@ function createProgram(): Command {
               );
             }
           );
-          const { scanResult, redFlags } = orchestratorResult;
 
           if (scanResult.structuralEnrichmentSummary) {
             const st = scanResult.structuralEnrichmentSummary;
@@ -669,27 +667,11 @@ function createProgram(): Command {
                 gitContext: parsedGitContext,
               });
 
-              const scanDiscoveriesPaths = writeScanDiscoveriesArtifacts(
-                orchestratorResult,
-                dataflowOutputPath,
-                { scanRootDir: scanEntry.scanRootDir },
-              );
-
               // Always print a short message so non-interactive callers and
               // tests can rely on it.
               // eslint-disable-next-line no-console
-              console.log(`[scan] dataflow.json written to ${dataflowOutputPath}`);
-              // eslint-disable-next-line no-console
               console.log(
-                `[scan] OCSF discoveries written to ${scanDiscoveriesPaths.ocsfDiscoveriesDir}`,
-              );
-              // eslint-disable-next-line no-console
-              console.log(
-                `[scan] dataparade.json written to ${scanDiscoveriesPaths.dataparadeJsonPath}`,
-              );
-              // eslint-disable-next-line no-console
-              console.log(
-                `[scan] discoveries diagram written to ${scanDiscoveriesPaths.collectedDiagramJsonPath}`,
+                `[scan] dataflow.json written to ${dataflowOutputPath}`
               );
 
               const skipAutoUpload =

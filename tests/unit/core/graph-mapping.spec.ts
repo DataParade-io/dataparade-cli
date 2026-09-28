@@ -70,12 +70,24 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
             cloudProvider: "AWS",
           },
         },
+        // Self-loop flows are dropped from the graph, so the flow needs a
+        // distinct target to become an edge.
+        {
+          id: "component-2",
+          name: "Health Monitor",
+          type: "asset",
+          subType: "service",
+          confidence: 0.9,
+          detectedFrom: [],
+          sourceLocations: [],
+          properties: {},
+        },
       ],
       dataFlows: [
         {
           id: "flow-1",
           sourceComponentId: "component-1",
-          targetComponentId: "component-1",
+          targetComponentId: "component-2",
           type: "api_call",
           description: "Health check endpoint",
           confidence: 0.9,
@@ -108,11 +120,12 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
 
     const graph = buildDiagramGraphFromScanResult(scanResult);
 
-    expect(graph.nodes).toHaveLength(1);
+    expect(graph.nodes).toHaveLength(2);
     expect(graph.edges).toHaveLength(1);
 
-    const node = graph.nodes[0];
-    const nodeData = node.data as any;
+    const node = graph.nodes.find((n) => n.id === "component-1");
+    expect(node).toBeDefined();
+    const nodeData = node!.data as any;
 
     expect(nodeData.label).toBe("Test Application");
     expect(nodeData.description).toBe("Main application service");
