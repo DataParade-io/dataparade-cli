@@ -52,7 +52,7 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(document.components.length).toBe(28);
     expect(document.dataFlows.length).toBe(20);
     expect(document.dataItems).toEqual([]);
-    expect(document.mentions).toEqual([]);
+    expect(document.occurrences).toEqual([]);
     expect(document.system?.in_scope).toContain("Every repository in the DataParade-io GitHub organization");
 
     const cmp6 = document.components.find((row) => row.id === "cmp_6");
@@ -66,23 +66,23 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(flow103?.sourceComponentId).toBeDefined();
     expect(flow103?.targetComponentId).toBeDefined();
     expect(flow103).not.toHaveProperty("sourceLocation");
-    expect(document.mentions.some((row) => row.id.startsWith("mention:flow_103:"))).toBe(false);
+    expect(document.occurrences.some((row) => row.id.startsWith("occurrence:flow_103:"))).toBe(false);
 
     const flow254 = document.dataFlows.find((row) => row.id === "flow_254");
     expect(flow254).not.toHaveProperty("sourceLocation");
-    expect(document.mentions.some((row) => row.id.startsWith("mention:flow_254:"))).toBe(false);
+    expect(document.occurrences.some((row) => row.id.startsWith("occurrence:flow_254:"))).toBe(false);
 
     const serialized = JSON.stringify(document);
     expect(serialized).not.toContain('"position"');
     expect(serialized).not.toContain('"viewport"');
   });
 
-  it("projects scanner personal-data mentions and data items from discovery input", () => {
+  it("projects scanner personal-data occurrences and data items from discovery input", () => {
     const scanInput: ScanDiscoveryInput = {
       ...discoverySeedToDiscoveryInput(discoverySeed),
-      mentions: [
+      occurrences: [
         {
-          id: "mention:email",
+          id: "occurrence:email",
           filePath: "backend/src/auth/login.ts",
           startLine: 12,
           endLine: 12,
@@ -93,7 +93,7 @@ describe("a0DiagramProjector (DATAP-699)", () => {
       dataItems: [
         {
           id: "data_item:email",
-          mentionIds: ["mention:email"],
+          occurrenceIds: ["occurrence:email"],
           labels: ["user_email"],
         },
       ],
@@ -103,16 +103,44 @@ describe("a0DiagramProjector (DATAP-699)", () => {
       records: [...scanRecords, ...discoveries.records],
     });
 
-    const mention = document.mentions.find((row) => row.id === "mention:email");
-    expect(mention?.filePath).toBe("backend/src/auth/login.ts");
-    expect(mention?.startLine).toBe(12);
+    const occurrence = document.occurrences.find((row) => row.id === "occurrence:email");
+    expect(occurrence?.filePath).toBe("backend/src/auth/login.ts");
+    expect(occurrence?.startLine).toBe(12);
 
     const dataItem = document.dataItems.find((row) => row.id === "data_item:email");
-    expect(dataItem?.mentionIds).toEqual(["mention:email"]);
-    expect(document.mentions.some((row) => row.id.startsWith("mention:flow_103:"))).toBe(false);
+    expect(dataItem?.occurrenceIds).toEqual(["occurrence:email"]);
+    expect(document.occurrences.some((row) => row.id.startsWith("occurrence:flow_103:"))).toBe(false);
   });
 
-  it("does not manufacture mentions when flows only have sourceLocations", () => {
+  it("reads discoveries written before the mention -> occurrence rename", () => {
+    const scanInput: ScanDiscoveryInput = {
+      ...discoverySeedToDiscoveryInput(discoverySeed),
+      occurrences: [
+        {
+          id: "occurrence:email",
+          filePath: "backend/src/auth/login.ts",
+          startLine: 12,
+          endLine: 12,
+          labels: ["user_email"],
+        },
+      ],
+      dataItems: [{ id: "data_item:email", occurrenceIds: ["occurrence:email"], labels: ["user_email"] }],
+    };
+    // Rewrite the records into the pre-0.4.0 shape: mention:* entities, mention_ids slot.
+    const legacyRecords = JSON.parse(
+      JSON.stringify(landDiscoverySeedToOcsfRecords(scanInput))
+        .replace(/occurrence_ids/g, "mention_ids")
+        .replace(/occurrence:/g, "mention:"),
+    ) as OcsfDiscoveryRecord[];
+    expect(JSON.stringify(legacyRecords)).toContain("mention:email");
+
+    const document = projectOcsfToDiscoveriesDocument({ records: [...legacyRecords, ...discoveries.records] });
+    expect(document.occurrences.map((row) => row.id)).toContain("occurrence:email");
+    const dataItem = document.dataItems.find((row) => row.id === "data_item:email");
+    expect(dataItem?.occurrenceIds).toEqual(["occurrence:email"]);
+  });
+
+  it("does not manufacture occurrences when flows only have sourceLocations", () => {
     const flowOnlySeed: ScanDiscoveryInput = {
       components: [
         {
@@ -142,14 +170,14 @@ describe("a0DiagramProjector (DATAP-699)", () => {
           targetScope: "local",
         },
       ],
-      mentions: [],
+      occurrences: [],
       dataItems: [],
     };
 
     const scanRecords = landDiscoverySeedToOcsfRecords(flowOnlySeed);
     const document = projectOcsfToDiscoveriesDocument({ records: scanRecords });
 
-    expect(document.mentions).toEqual([]);
+    expect(document.occurrences).toEqual([]);
     expect(document.dataItems).toEqual([]);
   });
 

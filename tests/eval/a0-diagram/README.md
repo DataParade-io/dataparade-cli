@@ -6,13 +6,13 @@ Projects **scan OCSF Architecture Discovery** records (plus optional **interview
 Scanner discovery seed JSON  ──land──►  scan OCSF records (in-memory or ocsf-discoveries/)
                                               │
 Optional interview OCSF overlay ──────────────┤
-Scanner mentions/dataItems (PII layer) ───────┘
+Scanner occurrences/dataItems (PII layer) ───────┘
                                               │
                                               ▼
                               projectOcsfToDiscoveriesDocument
                                               │
                                               ▼
-                              dataparade.json (components, dataFlows, dataItems, mentions, system.in_scope)
+                              dataparade.json (components, dataFlows, dataItems, occurrences, system.in_scope)
                                               │
                                               ▼
                               projectA0DiagramGraph (mode: interview | filled)
@@ -26,13 +26,13 @@ Scanner mentions/dataItems (PII layer) ───────┘
                                          (D2 renderer)     (this ticket)        (eval / manual import)
 ```
 
-The vendored `fixtures/dataparade-discovery-seed.json` is **scan input to the lander only** — `dataparade.json` is not built by copying the seed. Flow `sourceLocation` / `sourceLocations` on the seed are **not** projected to mentions; personal-data mentions and data items come from the scanner PII inventory layer passed through `scanResultToDiscoveryInput`.
+The vendored `fixtures/dataparade-discovery-seed.json` is **scan input to the lander only** — `dataparade.json` is not built by copying the seed. Flow `sourceLocation` / `sourceLocations` on the seed are **not** projected to occurrences; personal-data occurrences and data items come from the scanner PII inventory layer passed through `scanResultToDiscoveryInput`.
 
 ## Artifacts
 
 | File | Role |
 | --- | --- |
-| `{basename}.dataparade.json` | **Discoveries document** projected from scan OCSF (+ interview overlays): `components`, `dataFlows`, `dataItems`, `mentions`, optional `system.in_scope`. Not a diagram. |
+| `{basename}.dataparade.json` | **Discoveries document** projected from scan OCSF (+ interview overlays): `components`, `dataFlows`, `dataItems`, `occurrences`, optional `system.in_scope`. Not a diagram. |
 | `{basename}.diagram.json` | **A0 projection** in the existing React Flow wrapper (`dataflowWrapperSchema`: `schemaVersion`, `graph`, `metadata`). Modes `interview` \| `filled`. |
 | `{basename}.d2`, `{basename}.svg` | Rendered from the **diagram** graph, not from `dataparade.json`. |
 
