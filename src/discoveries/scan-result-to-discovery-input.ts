@@ -18,15 +18,15 @@ export function discoverySeedToDiscoveryInput(seed: DiscoverySeedLike): ScanDisc
     dataFlows: seed.dataFlows.map(
       ({ sourceLocation: _sourceLocation, sourceLocations: _sourceLocations, ...flow }) => flow,
     ),
-    mentions: [],
+    occurrences: [],
     dataItems: [],
   };
 }
 
 export function scanResultToDiscoveryInput(
   scanResult: ScanResult,
-  personalData: Pick<OrchestratorScanResult, "mentions" | "dataItems"> = {
-    mentions: [],
+  personalData: Pick<OrchestratorScanResult, "occurrences" | "dataItems"> = {
+    occurrences: [],
     dataItems: [],
   },
 ): ScanDiscoveryInput {
@@ -52,17 +52,17 @@ export function scanResultToDiscoveryInput(
       confidence: flow.confidence,
       ...(flow.targetScope !== undefined ? { targetScope: flow.targetScope } : {}),
     })),
-    mentions: personalData.mentions.map((mention) => ({
-      id: mention.id,
-      filePath: mention.filePath,
-      startLine: mention.startLine,
-      endLine: mention.endLine,
-      labels: [...mention.labels],
-      ...(mention.code !== undefined ? { code: mention.code } : {}),
+    occurrences: personalData.occurrences.map((occurrence) => ({
+      id: occurrence.id,
+      filePath: occurrence.filePath,
+      startLine: occurrence.startLine,
+      endLine: occurrence.endLine,
+      labels: [...occurrence.labels],
+      ...(occurrence.code !== undefined ? { code: occurrence.code } : {}),
     })),
     dataItems: personalData.dataItems.map((dataItem) => ({
       id: dataItem.id,
-      mentionIds: [...dataItem.mentionIds],
+      occurrenceIds: [...dataItem.occurrenceIds],
       labels: [...dataItem.labels],
     })),
   };
@@ -72,7 +72,7 @@ export function orchestratorScanResultToDiscoveryInput(
   result: OrchestratorScanResult,
 ): ScanDiscoveryInput {
   return scanResultToDiscoveryInput(result.scanResult, {
-    mentions: result.mentions ?? [],
+    occurrences: result.occurrences ?? [],
     dataItems: result.dataItems ?? [],
   });
 }

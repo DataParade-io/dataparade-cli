@@ -35,7 +35,7 @@ describe("tracing/langsmith-tracing", () => {
     const result: OrchestratorScanResult = {
       files: [],
       findings: [{ pattern: "x", name: "n", confidence: 1, properties: {} } as never],
-      mentions: [],
+      occurrences: [],
       dataItems: [],
       scanResult: {
         components: [

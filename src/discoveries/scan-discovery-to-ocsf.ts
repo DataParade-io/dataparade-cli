@@ -10,7 +10,7 @@ import { PINNED_ONTOLOGY_VERSION } from "../../tests/eval/interview-a0/pins";
 import type { OcsfDiscoveryRecord } from "../../tests/eval/interview-a0/ocsf-discovery-types";
 import type {
   ScanDiscoveryInput,
-  ScanDiscoveryMentionInput,
+  ScanDiscoveryOccurrenceInput,
   ScanDiscoverySourceLocation,
 } from "./scan-discovery-input";
 import {
@@ -112,8 +112,8 @@ function entityRecord(
   return buildScanOcsfRecord({ asserts }, timing);
 }
 
-function mentionAssertUri(mentionId: string): string {
-  return `dp:scan/entity/${mentionId}`;
+function occurrenceAssertUri(occurrenceId: string): string {
+  return `dp:scan/entity/${occurrenceId}`;
 }
 
 function dataItemAssertUri(dataItemId: string): string {
@@ -130,26 +130,26 @@ function resolveLandTiming(options?: LandScanDiscoveryOcsfOptions): {
 }
 
 function locationOverlapsComponentSource(
-  mention: ScanDiscoveryMentionInput,
+  occurrence: ScanDiscoveryOccurrenceInput,
   location: ScanDiscoverySourceLocation,
 ): boolean {
-  if (location.filePath !== mention.filePath) {
+  if (location.filePath !== occurrence.filePath) {
     return false;
   }
   return (
-    mention.startLine >= location.startLine &&
-    mention.endLine <= location.endLine
+    occurrence.startLine >= location.startLine &&
+    occurrence.endLine <= location.endLine
   );
 }
 
-function componentIdsForMention(
-  mention: ScanDiscoveryMentionInput,
+function componentIdsForOccurrence(
+  occurrence: ScanDiscoveryOccurrenceInput,
   input: ScanDiscoveryInput,
 ): string[] {
   const matches = input.components
     .filter((component) =>
       component.sourceLocations.some((location) =>
-        locationOverlapsComponentSource(mention, location),
+        locationOverlapsComponentSource(occurrence, location),
       ),
     )
     .map((component) => component.id);
@@ -157,17 +157,17 @@ function componentIdsForMention(
 }
 
 function componentIdsForDataItem(
-  dataItemMentionIds: string[],
-  mentionById: Map<string, ScanDiscoveryMentionInput>,
+  dataItemOccurrenceIds: string[],
+  occurrenceById: Map<string, ScanDiscoveryOccurrenceInput>,
   input: ScanDiscoveryInput,
 ): string[] {
   const attached = new Set<string>();
-  for (const mentionId of dataItemMentionIds) {
-    const mention = mentionById.get(mentionId);
-    if (!mention) {
+  for (const occurrenceId of dataItemOccurrenceIds) {
+    const occurrence = occurrenceById.get(occurrenceId);
+    if (!occurrence) {
       continue;
     }
-    for (const componentId of componentIdsForMention(mention, input)) {
+    for (const componentId of componentIdsForOccurrence(occurrence, input)) {
       attached.add(componentId);
     }
   }
@@ -184,7 +184,7 @@ export function landScanDiscoveryToOcsfRecords(
     input.components.map((row) => [row.id, [] as string[]]),
   );
 
-  const mentionById = new Map(input.mentions.map((mention) => [mention.id, mention]));
+  const occurrenceById = new Map(input.occurrences.map((occurrence) => [occurrence.id, occurrence]));
 
   for (const component of input.components) {
     const asserts = `dp:scan/entity/${component.id}`;
@@ -210,18 +210,18 @@ export function landScanDiscoveryToOcsfRecords(
     }
   }
 
-  for (const mention of input.mentions) {
-    const mentionUri = mentionAssertUri(mention.id);
-    records.push(entityRecord(mentionUri, timing));
-    records.push(slotRecord(mentionUri, "file_path", mention.filePath, timing));
-    records.push(slotRecord(mentionUri, "start_line", String(mention.startLine), timing));
-    records.push(slotRecord(mentionUri, "end_line", String(mention.endLine), timing));
-    if (mention.code !== undefined) {
-      records.push(slotRecord(mentionUri, "code", mention.code, timing));
+  for (const occurrence of input.occurrences) {
+    const occurrenceUri = occurrenceAssertUri(occurrence.id);
+    records.push(entityRecord(occurrenceUri, timing));
+    records.push(slotRecord(occurrenceUri, "file_path", occurrence.filePath, timing));
+    records.push(slotRecord(occurrenceUri, "start_line", String(occurrence.startLine), timing));
+    records.push(slotRecord(occurrenceUri, "end_line", String(occurrence.endLine), timing));
+    if (occurrence.code !== undefined) {
+      records.push(slotRecord(occurrenceUri, "code", occurrence.code, timing));
     }
-    if (mention.labels.length > 0) {
+    if (occurrence.labels.length > 0) {
       records.push(
-        slotRecord(mentionUri, "labels", JSON.stringify(mention.labels), timing),
+        slotRecord(occurrenceUri, "labels", JSON.stringify(occurrence.labels), timing),
       );
     }
   }
@@ -230,7 +230,7 @@ export function landScanDiscoveryToOcsfRecords(
     const dataItemUri = dataItemAssertUri(dataItem.id);
     records.push(entityRecord(dataItemUri, timing));
     records.push(
-      slotRecord(dataItemUri, "mention_ids", JSON.stringify(dataItem.mentionIds), timing),
+      slotRecord(dataItemUri, "occurrence_ids", JSON.stringify(dataItem.occurrenceIds), timing),
     );
     if (dataItem.labels.length > 0) {
       records.push(
@@ -239,8 +239,8 @@ export function landScanDiscoveryToOcsfRecords(
     }
 
     const attachedComponentIds = componentIdsForDataItem(
-      dataItem.mentionIds,
-      mentionById,
+      dataItem.occurrenceIds,
+      occurrenceById,
       input,
     );
     for (const componentId of attachedComponentIds) {

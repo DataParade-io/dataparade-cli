@@ -8,6 +8,7 @@ import pkg from "../package.json";
 import type { DiagramGraphJsonSchema } from "./core/schema";
 import { buildDataflowWrapper, writeDataflowJson } from "./output/json";
 import { writeScanDiscoveriesArtifacts } from "./output/write-scan-discoveries";
+import { writeScanKnowledgeGraph } from "./output/write-knowledge-graph";
 import { resolveSkipAutoUpload } from "./config/upload-env";
 import { AI_PROVIDER_IDS, type AiProviderId } from "./ai-enrichment/types";
 import type { CliConfigFlags } from "./config/types";
@@ -197,6 +198,10 @@ function createProgram(): Command {
       "--skip-auto-upload",
       "Do not upload dataflow.json to the dashboard after scan (env: DATAPARADE_SKIP_AUTO_UPLOAD)",
     )
+    .option(
+      "--no-structure-graph",
+      "Do not write the knowledge graph (graphify-out/graph.json from graphify, when installed, and dataparade-graph.json)",
+    )
     .action(
       async (
         path: string,
@@ -229,6 +234,7 @@ function createProgram(): Command {
           byokProvider?: AiProviderId;
           byokModel?: string;
           skipAutoUpload?: boolean;
+          structureGraph?: boolean;
         },
       ) => {
         let cliQuotaJobId: string | undefined;
@@ -605,6 +611,14 @@ function createProgram(): Command {
               console.log(
                 `[scan] dataparade.json written to ${scanDiscoveriesPaths.dataparadeJsonPath}`,
               );
+
+              if (options.structureGraph !== false) {
+                await writeScanKnowledgeGraph(
+                  orchestratorResult,
+                  resolvedScanRoot,
+                  pathModule.dirname(dataflowOutputPath),
+                );
+              }
 
               const skipAutoUpload =
                 Boolean(options.skipAutoUpload) ||

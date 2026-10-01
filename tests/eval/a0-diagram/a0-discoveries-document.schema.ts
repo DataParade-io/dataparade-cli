@@ -7,7 +7,7 @@ const sourceLocationSchema = z.object({
   code: z.string().optional(),
 });
 
-export const a0DiscoveriesMentionSchema = z.object({
+export const a0DiscoveriesOccurrenceschema = z.object({
   id: z.string(),
   filePath: z.string(),
   startLine: z.number(),
@@ -17,7 +17,7 @@ export const a0DiscoveriesMentionSchema = z.object({
 
 export const a0DiscoveriesDataItemSchema = z.object({
   id: z.string(),
-  mentionIds: z.array(z.string()).min(1),
+  occurrenceIds: z.array(z.string()).min(1),
 });
 
 export const a0DiscoveriesComponentSchema = z.object({
@@ -46,7 +46,7 @@ export const a0DiscoveriesDocumentSchema = z.object({
   components: z.array(a0DiscoveriesComponentSchema),
   dataFlows: z.array(a0DiscoveriesDataFlowSchema),
   dataItems: z.array(a0DiscoveriesDataItemSchema),
-  mentions: z.array(a0DiscoveriesMentionSchema),
+  occurrences: z.array(a0DiscoveriesOccurrenceschema),
   system: z
     .object({
       in_scope: z.string().optional(),

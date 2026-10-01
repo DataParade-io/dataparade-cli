@@ -2,4 +2,5 @@ packages:
   - "."
 
 allowBuilds:
-  "@dataparade/scanner@https://codeload.github.com/DataParade-io/scanner/tar.gz/e0dcef681c88f5b78ed12139308e5193c2a783f6": true
+  '@dataparade/scanner@https://codeload.github.com/DataParade-io/scanner/tar.gz/262602e4ede9f006c62c80f13e56796269c697db': set this to true or false
+  "@dataparade/scanner@https://codeload.github.com/DataParade-io/scanner/tar.gz/67c6b06650e7f2541f26e8174e365a8f32f27d06": true
