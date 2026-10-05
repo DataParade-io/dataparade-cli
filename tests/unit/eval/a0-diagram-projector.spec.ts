@@ -181,6 +181,57 @@ describe("a0DiagramProjector (DATAP-699)", () => {
     expect(document.dataItems).toEqual([]);
   });
 
+  it("keeps two scans of the same relative path distinct by scan path", () => {
+    const occurrence = {
+      id: "occurrence:email:config/contacts.yml:2",
+      filePath: "config/contacts.yml",
+      startLine: 2,
+      endLine: 2,
+      code: "email: a@example.com",
+      labels: ["email"],
+    };
+    const dataItem = {
+      id: "data_item:email",
+      occurrenceIds: [occurrence.id],
+      labels: ["email"],
+    };
+    const firstPath = "/checkouts/partner-api";
+    const secondPath = "/checkouts/partner-web";
+    const first = landDiscoverySeedToOcsfRecords({
+      scanPath: firstPath,
+      components: [],
+      dataFlows: [],
+      occurrences: [occurrence],
+      dataItems: [dataItem],
+    });
+    const second = landDiscoverySeedToOcsfRecords({
+      scanPath: secondPath,
+      components: [],
+      dataFlows: [],
+      occurrences: [occurrence],
+      dataItems: [dataItem],
+    });
+
+    const document = projectOcsfToDiscoveriesDocument({
+      records: [...first, ...second],
+    });
+
+    expect(document.occurrences.map((row) => row.id).sort()).toEqual([
+      `${firstPath}::${occurrence.id}`,
+      `${secondPath}::${occurrence.id}`,
+    ]);
+    expect(document.occurrences.map((row) => row.scanPath).sort()).toEqual([
+      firstPath,
+      secondPath,
+    ]);
+    expect(document.dataItems.map((row) => row.occurrenceIds[0]).sort()).toEqual([
+      `${firstPath}::${occurrence.id}`,
+      `${secondPath}::${occurrence.id}`,
+    ]);
+    expect(first[0]?.dataparade.asserts).toContain(encodeURIComponent(firstPath));
+    expect(second[0]?.dataparade.asserts).not.toBe(first[0]?.dataparade.asserts);
+  });
+
   it("rejects interview OCSF that would create a new component", () => {
     const interviewOnlyComponent: OcsfDiscoveryRecord = {
       ...discoveries.records[0],

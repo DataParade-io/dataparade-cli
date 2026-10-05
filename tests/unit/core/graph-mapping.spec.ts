@@ -70,12 +70,23 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
             cloudProvider: "AWS",
           },
         },
+        // The flow needs a distinct target: diagrams drop self-loop flows.
+        {
+          id: "component-2",
+          name: "Customer Database",
+          type: "asset",
+          subType: "database",
+          confidence: 0.9,
+          detectedFrom: [],
+          sourceLocations: [],
+          properties: {},
+        },
       ],
       dataFlows: [
         {
           id: "flow-1",
           sourceComponentId: "component-1",
-          targetComponentId: "component-1",
+          targetComponentId: "component-2",
           type: "api_call",
           description: "Health check endpoint",
           confidence: 0.9,
@@ -108,10 +119,10 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
 
     const graph = buildDiagramGraphFromScanResult(scanResult);
 
-    expect(graph.nodes).toHaveLength(1);
+    expect(graph.nodes).toHaveLength(2);
     expect(graph.edges).toHaveLength(1);
 
-    const node = graph.nodes[0];
+    const node = graph.nodes.find((candidate) => candidate.id === "component-1")!;
     const nodeData = node.data as any;
 
     expect(nodeData.label).toBe("Test Application");
