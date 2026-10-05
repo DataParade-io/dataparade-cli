@@ -1,12 +1,24 @@
 import { spawnSync } from "child_process";
-import { existsSync, readFileSync } from "fs";
+import { existsSync, readFileSync, rmSync } from "fs";
 import path from "path";
 
 const cliDistPath = path.join(__dirname, "../../dist/bin/cli.js");
 const cliCwd = path.join(__dirname, "../../");
 const scanFixturePath = path.join(cliCwd, "tests/fixtures/typescript-basic");
 
+/** Scan outputs the CLI writes next to dataflow.json in the working directory. */
+const SCAN_OUTPUTS = ["dataflow.json", "dataparade.json", "dataparade-graph.json", "ocsf-discoveries", "graphify-out"];
+
 describe("CLI", () => {
+  // Discovery records refuse to overwrite a same-day record, so each scan test starts
+  // from a clean working directory.
+  beforeEach(() => {
+    for (const name of SCAN_OUTPUTS) rmSync(path.join(cliCwd, name), { recursive: true, force: true });
+  });
+  afterAll(() => {
+    for (const name of SCAN_OUTPUTS) rmSync(path.join(cliCwd, name), { recursive: true, force: true });
+  });
+
   beforeAll(() => {
     if (!existsSync(cliDistPath)) {
       throw new Error(

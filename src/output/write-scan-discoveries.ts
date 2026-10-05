@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import type { OrchestratorScanResult } from "../core/pipeline/orchestrator-result";
-import { loadOcsfDiscoveriesFromDir } from "../discoveries/load-ocsf-discoveries";
+import { loadOcsfDiscoveriesFromDir, OcsfDiscoveryLoadError, type LoadedOcsfDiscoveries } from "../discoveries/load-ocsf-discoveries";
 import { projectCollectedDiscoveriesDiagram } from "../discoveries/project-collected-diagram";
 import { projectOcsfToDiscoveriesDocument } from "../discoveries/project-ocsf-to-discoveries-document";
 import { orchestratorScanResultToDiscoveryInput } from "../discoveries/scan-result-to-discovery-input";
@@ -36,6 +36,21 @@ export interface WriteScanDiscoveriesOptions {
   scanRootDir: string;
 }
 
+/**
+ * Every discovery record in the output directory. A scan that found nothing (an empty or
+ * unsupported repository) writes no records, and that is an empty inventory, not an error.
+ */
+function loadScanRecords(directory: string): LoadedOcsfDiscoveries["records"] {
+  try {
+    return loadOcsfDiscoveriesFromDir(directory).records;
+  } catch (error) {
+    if (error instanceof OcsfDiscoveryLoadError && ["EMPTY_DIRECTORY", "MISSING_DIRECTORY"].includes(error.code)) {
+      return [];
+    }
+    throw error;
+  }
+}
+
 export function writeScanDiscoveriesArtifacts(
   scanResult: OrchestratorScanResult,
   dataflowOutputPath: string,
@@ -51,8 +66,7 @@ export function writeScanDiscoveriesArtifacts(
   const paths = resolveScanDiscoveriesOutputPaths(dataflowOutputPath);
   writeOcsfDiscoveryRecordsToDir(scanRecords, paths.ocsfDiscoveriesDir);
 
-  const loaded = loadOcsfDiscoveriesFromDir(paths.ocsfDiscoveriesDir);
-  const document = projectOcsfToDiscoveriesDocument({ records: loaded.records });
+  const document = projectOcsfToDiscoveriesDocument({ records: loadScanRecords(paths.ocsfDiscoveriesDir) });
   fs.writeFileSync(paths.dataparadeJsonPath, `${JSON.stringify(document, null, 2)}\n`, "utf8");
 
   const collected = projectCollectedDiscoveriesDiagram(document);

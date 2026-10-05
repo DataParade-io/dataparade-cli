@@ -38,17 +38,17 @@ const document: A0DiscoveriesDocument = {
     {
       id: "/repo-a::data_item:email",
       scanPath: "/repo-a",
-      mentionIds: ["/repo-a::mention:email:src/a.ts:3"],
+      occurrenceIds: ["/repo-a::occurrence:email:src/a.ts:3"],
     },
     {
       id: "/repo-b::data_item:email",
       scanPath: "/repo-b",
-      mentionIds: ["/repo-b::mention:email:src/a.ts:3"],
+      occurrenceIds: ["/repo-b::occurrence:email:src/a.ts:3"],
     },
   ],
-  mentions: [
+  occurrences: [
     {
-      id: "/repo-a::mention:email:src/a.ts:3",
+      id: "/repo-a::occurrence:email:src/a.ts:3",
       scanPath: "/repo-a",
       filePath: "src/a.ts",
       startLine: 3,
@@ -56,7 +56,7 @@ const document: A0DiscoveriesDocument = {
       code: "email",
     },
     {
-      id: "/repo-b::mention:email:src/a.ts:3",
+      id: "/repo-b::occurrence:email:src/a.ts:3",
       scanPath: "/repo-b",
       filePath: "src/a.ts",
       startLine: 3,
@@ -86,15 +86,15 @@ describe("projectCollectedDiscoveriesDiagram", () => {
     expect(JSON.stringify(diagram.graph)).not.toContain("?");
   });
 
-  it("keeps mentions on the data item and does not draw them as nodes", () => {
+  it("keeps occurrences on the data item and does not draw them as nodes", () => {
     const api = diagram.graph.nodes.find((node) => node.id === "/repo-a::cmp_1");
     const collected = api?.data.collected as {
-      dataItems: Array<{ mentions: Array<{ filePath: string; startLine: number }> }>;
+      dataItems: Array<{ occurrences: Array<{ filePath: string; startLine: number }> }>;
     };
-    expect(collected.dataItems[0]?.mentions).toEqual([
+    expect(collected.dataItems[0]?.occurrences).toEqual([
       expect.objectContaining({ filePath: "src/a.ts", startLine: 3 }),
     ]);
-    expect(diagram.graph.nodes.some((node) => String(node.id).includes("mention:"))).toBe(false);
+    expect(diagram.graph.nodes.some((node) => String(node.id).includes("occurrence:"))).toBe(false);
 
     const loose = diagram.graph.nodes.find((node) => node.id === "/repo-b::data_item:email");
     expect(loose?.type).toBe("data_item");

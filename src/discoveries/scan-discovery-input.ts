@@ -23,7 +23,7 @@ export interface ScanDiscoveryFlowInput {
   targetScope?: string;
 }
 
-export interface ScanDiscoveryMentionInput {
+export interface ScanDiscoveryOccurrenceInput {
   id: string;
   filePath: string;
   startLine: number;
@@ -34,7 +34,7 @@ export interface ScanDiscoveryMentionInput {
 
 export interface ScanDiscoveryDataItemInput {
   id: string;
-  mentionIds: string[];
+  occurrenceIds: string[];
   labels: string[];
 }
 
@@ -42,6 +42,6 @@ export interface ScanDiscoveryInput {
   scanPath?: string;
   components: ScanDiscoveryComponentInput[];
   dataFlows: ScanDiscoveryFlowInput[];
-  mentions: ScanDiscoveryMentionInput[];
+  occurrences: ScanDiscoveryOccurrenceInput[];
   dataItems: ScanDiscoveryDataItemInput[];
 }

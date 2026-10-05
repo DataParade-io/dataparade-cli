@@ -8,6 +8,7 @@ import pkg from '../package.json';
 import type { DiagramGraphJsonSchema } from './core/schema';
 import { buildDataflowWrapper, writeDataflowJson } from './output/json';
 import { writeScanDiscoveriesArtifacts } from './output/write-scan-discoveries';
+import { writeScanKnowledgeGraph } from './output/write-knowledge-graph';
 import {
   gitContextSchema,
   type GitContextSchema,
@@ -214,6 +215,10 @@ function createProgram(): Command {
       '--git-context <json>',
       'Git repository context for evidence linking (JSON: {"provider":"github"|"gitlab","repository":"owner/repo","commitSha":"...","baseUrl?":"..."})'
     )
+    .option(
+      "--no-structure-graph",
+      "Do not write the knowledge graph (graphify-out/graph.json from graphify, when installed, and dataparade-graph.json)",
+    )
     .action(
       async (
         path: string,
@@ -246,8 +251,9 @@ function createProgram(): Command {
           byokProvider?: AiProviderId;
           byokModel?: string;
           skipAutoUpload?: boolean;
+          structureGraph?: boolean;
           gitContext?: string;
-        }
+        },
       ) => {
         let cliQuotaJobId: string | undefined;
         let platformQuotaApiKey: string | undefined;
@@ -691,6 +697,14 @@ function createProgram(): Command {
               console.log(
                 `[scan] discoveries diagram written to ${scanDiscoveriesPaths.collectedDiagramJsonPath}`,
               );
+
+              if (options.structureGraph !== false) {
+                await writeScanKnowledgeGraph(
+                  orchestratorResult,
+                  resolvedScanRoot,
+                  pathModule.dirname(dataflowOutputPath),
+                );
+              }
 
               const skipAutoUpload =
                 Boolean(options.skipAutoUpload) ||

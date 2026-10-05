@@ -51,6 +51,9 @@ jest.mock("../../../src/output/json", () => ({
   })),
 }));
 
+// Each test runs a real scan; the scanner loads tree-sitter grammars, which can pass 5 s under load.
+jest.setTimeout(30_000);
+
 describe("cli scan command ai flags", () => {
   let consoleLogSpy: jest.SpyInstance;
   let prevSkipAutoUpload: string | undefined;

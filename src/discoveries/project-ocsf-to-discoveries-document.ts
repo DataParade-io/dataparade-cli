@@ -12,9 +12,27 @@ function parseScanEntityId(asserts: string): string | null {
   return parseScanEntityAsserts(asserts)?.entityId ?? null;
 }
 
-function entityKind(entityId: string): "component" | "flow" | "mention" | "data_item" | null {
-  if (entityId.startsWith("mention:")) {
-    return "mention";
+/** Discoveries written before the mention -> occurrence rename (ontology < 0.4.0). */
+const LEGACY_OCCURRENCE_PREFIX = "mention:";
+
+/** `mention:email:a.ts:3` -> `occurrence:email:a.ts:3`; other ids unchanged. */
+export function normalizeOccurrenceId(entityId: string): string {
+  return entityId.startsWith(LEGACY_OCCURRENCE_PREFIX)
+    ? `occurrence:${entityId.slice(LEGACY_OCCURRENCE_PREFIX.length)}`
+    : entityId;
+}
+
+/** A projected id (`<scanPath>::<entityId>` or a bare entity id) with a legacy `mention:` entity renamed. */
+function normalizeProjectedOccurrenceId(projectedId: string): string {
+  const at = projectedId.lastIndexOf("::");
+  return at === -1
+    ? normalizeOccurrenceId(projectedId)
+    : `${projectedId.slice(0, at + 2)}${normalizeOccurrenceId(projectedId.slice(at + 2))}`;
+}
+
+function entityKind(entityId: string): "component" | "flow" | "occurrence" | "data_item" | null {
+  if (entityId.startsWith("occurrence:") || entityId.startsWith(LEGACY_OCCURRENCE_PREFIX)) {
+    return "occurrence";
   }
   if (entityId.startsWith("data_item:")) {
     return "data_item";
@@ -109,7 +127,7 @@ export function projectOcsfToDiscoveriesDocument(
 
   const componentIds: string[] = [];
   const flowIds: string[] = [];
-  const mentionIds: string[] = [];
+  const occurrenceIds: string[] = [];
   const dataItemIds: string[] = [];
 
   for (const uri of scanUris) {
@@ -126,8 +144,8 @@ export function projectOcsfToDiscoveriesDocument(
       case "flow":
         flowIds.push(entityId);
         break;
-      case "mention":
-        mentionIds.push(entityId);
+      case "occurrence":
+        occurrenceIds.push(entityId);
         break;
       case "data_item":
         dataItemIds.push(entityId);
@@ -139,7 +157,7 @@ export function projectOcsfToDiscoveriesDocument(
 
   componentIds.sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
   flowIds.sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
-  mentionIds.sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
+  occurrenceIds.sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
   dataItemIds.sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
 
   const components = componentIds.map((id) => {
@@ -193,17 +211,17 @@ export function projectOcsfToDiscoveriesDocument(
     };
   });
 
-  const mentions = mentionIds.map((id) => {
+  const occurrences = occurrenceIds.map((id) => {
     const asserts = assertsForProjectedId(scanUris, id);
     const scanPath = parseScanEntityAsserts(asserts)?.scanPath ?? "";
     const code = discoveryValue(slotIndex, asserts, "code");
     return {
-      id,
+      id: normalizeProjectedOccurrenceId(id),
       ...(scanPath ? { scanPath } : {}),
       filePath:
         discoveryValue(slotIndex, asserts, "file_path") ??
         (() => {
-          throw new Error(`Mention ${id} missing file_path in scan OCSF`);
+          throw new Error(`Occurrence ${id} missing file_path in scan OCSF`);
         })(),
       startLine: parseNumber(discoveryValue(slotIndex, asserts, "start_line")),
       endLine: parseNumber(discoveryValue(slotIndex, asserts, "end_line")),
@@ -214,22 +232,27 @@ export function projectOcsfToDiscoveriesDocument(
   const dataItems = dataItemIds.map((id) => {
     const asserts = assertsForProjectedId(scanUris, id);
     const scanPath = parseScanEntityAsserts(asserts)?.scanPath ?? "";
-    const mentionIdsFromSlot = parseJsonArray(
-      discoveryValue(slotIndex, asserts, "mention_ids"),
-    ).map((mentionId) => projectedEntityId(scanPath, mentionId));
-    const legacyMentionId = discoveryValue(slotIndex, asserts, "mention");
-    const mentionIds =
-      mentionIdsFromSlot.length > 0
-        ? mentionIdsFromSlot
-        : legacyMentionId
-          ? [projectedEntityId(scanPath, legacyMentionId)]
+    const projectOccurrence = (occurrenceId: string): string =>
+      projectedEntityId(scanPath, normalizeOccurrenceId(occurrenceId));
+    const occurrenceIdsFromSlot = parseJsonArray(
+      discoveryValue(slotIndex, asserts, "occurrence_ids") ??
+        discoveryValue(slotIndex, asserts, "mention_ids"),
+    ).map(projectOccurrence);
+    const singleOccurrenceId =
+      discoveryValue(slotIndex, asserts, "occurrence") ?? discoveryValue(slotIndex, asserts, "mention");
+    const legacyOccurrenceId = singleOccurrenceId ? projectOccurrence(singleOccurrenceId) : undefined;
+    const occurrenceIds =
+      occurrenceIdsFromSlot.length > 0
+        ? occurrenceIdsFromSlot
+        : legacyOccurrenceId
+          ? [legacyOccurrenceId]
           : (() => {
-              throw new Error(`Data item ${id} missing mention_ids in scan OCSF`);
+              throw new Error(`Data item ${id} missing occurrence_ids in scan OCSF`);
             })();
     return {
       id,
       ...(scanPath ? { scanPath } : {}),
-      mentionIds,
+      occurrenceIds,
     };
   });
 
@@ -238,7 +261,7 @@ export function projectOcsfToDiscoveriesDocument(
     components,
     dataFlows,
     dataItems,
-    mentions,
+    occurrences,
     ...(inScope ? { system: { in_scope: inScope } } : {}),
   };
 

@@ -45,7 +45,7 @@ function componentLabel(component: A0DiscoveriesDocument["components"][number]):
 export function projectCollectedDiscoveriesDiagram(
   document: A0DiscoveriesDocument,
 ): CollectedDiagram {
-  const mentionById = new Map(document.mentions.map((mention) => [mention.id, mention]));
+  const occurrenceById = new Map(document.occurrences.map((occurrence) => [occurrence.id, occurrence]));
   const dataItemById = new Map(document.dataItems.map((item) => [item.id, item]));
   const componentIds = new Set(document.components.map((component) => component.id));
 
@@ -81,15 +81,15 @@ export function projectCollectedDiscoveriesDiagram(
         .filter((item): item is NonNullable<typeof item> => item !== undefined)
         .map((item) => ({
           id: item.id,
-          mentions: item.mentionIds
-            .map((mentionId) => mentionById.get(mentionId))
-            .filter((mention): mention is NonNullable<typeof mention> => mention !== undefined)
-            .map((mention) => ({
-              id: mention.id,
-              filePath: mention.filePath,
-              startLine: mention.startLine,
-              endLine: mention.endLine,
-              ...(mention.code !== undefined ? { code: mention.code } : {}),
+          occurrences: item.occurrenceIds
+            .map((occurrenceId) => occurrenceById.get(occurrenceId))
+            .filter((occurrence): occurrence is NonNullable<typeof occurrence> => occurrence !== undefined)
+            .map((occurrence) => ({
+              id: occurrence.id,
+              filePath: occurrence.filePath,
+              startLine: occurrence.startLine,
+              endLine: occurrence.endLine,
+              ...(occurrence.code !== undefined ? { code: occurrence.code } : {}),
             })),
         }));
       return {
@@ -111,9 +111,9 @@ export function projectCollectedDiscoveriesDiagram(
     const dataItem = dataItemById.get(id);
     if (dataItem) {
       const where = pathLabel(dataItem.scanPath);
-      const mentions = dataItem.mentionIds
-        .map((mentionId) => mentionById.get(mentionId))
-        .filter((mention): mention is NonNullable<typeof mention> => mention !== undefined);
+      const occurrences = dataItem.occurrenceIds
+        .map((occurrenceId) => occurrenceById.get(occurrenceId))
+        .filter((occurrence): occurrence is NonNullable<typeof occurrence> => occurrence !== undefined);
       return {
         id,
         type: "data_item",
@@ -123,11 +123,11 @@ export function projectCollectedDiscoveriesDiagram(
           privacy: { slotStatus: "known" as const, source: "ocsf" },
           collected: {
             scanPath: dataItem.scanPath,
-            mentions: mentions.map((mention) => ({
-              id: mention.id,
-              filePath: mention.filePath,
-              startLine: mention.startLine,
-              endLine: mention.endLine,
+            occurrences: occurrences.map((occurrence) => ({
+              id: occurrence.id,
+              filePath: occurrence.filePath,
+              startLine: occurrence.startLine,
+              endLine: occurrence.endLine,
             })),
           },
         },

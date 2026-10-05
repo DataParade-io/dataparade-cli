@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import fs from "fs";
 import path from "path";
 
@@ -8,8 +9,21 @@ export function slugifyDiscoveryId(id: string): string {
   return id.replace(/[:/]/g, "_");
 }
 
+/** File names stay well under the 255-byte limit of common filesystems. */
+const MAX_SLUG_LENGTH = 200;
+
+/**
+ * The record's file. A long id (a deep scan path plus an occurrence's file and line)
+ * keeps a readable prefix and ends in a hash of the whole id; loaders read the id from
+ * the record, not the name.
+ */
 function ocsfDiscoveryPath(outputDir: string, discoveryId: string): string {
-  return path.join(outputDir, `${slugifyDiscoveryId(discoveryId)}.json`);
+  const slug = slugifyDiscoveryId(discoveryId);
+  if (slug.length <= MAX_SLUG_LENGTH) {
+    return path.join(outputDir, `${slug}.json`);
+  }
+  const hash = createHash("sha256").update(discoveryId).digest("hex").slice(0, 16);
+  return path.join(outputDir, `${slug.slice(0, MAX_SLUG_LENGTH - hash.length - 1)}_${hash}.json`);
 }
 
 export function writeOcsfDiscoveryRecordsToDir(

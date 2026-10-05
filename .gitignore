@@ -5,6 +5,15 @@ outputs/
 # Local default scan outputs (regenerated on every scan; use --output or outputs/)
 dataflow.json
 scan-frontend-summary.json
+dataparade.json
+dataparade-graph.json
+discoveries-diagram.json
+discoveries-diagram.d2
+ocsf-discoveries/
+graphify-out/
+
+# dependencies
+node_modules/
 
 # Local secrets (use .env.example as template)
 .env

@@ -1,10 +1,10 @@
 {
   "export_kind": "interview_discovery_bundle",
   "surface": "a0-data-flow",
-  "ontology_version": "0.2.0",
-  "ontology_tag": "v0.2.0",
-  "ontology_sha": "0656c5d9a6ce0d31440c63327ce597ce8df4414f",
-  "write_back_kb_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a",
+  "ontology_version": "0.3.0",
+  "ontology_tag": "v0.3.0",
+  "ontology_sha": "7a6f438d855bd8f03c8ebbd61c2863ed11c33153",
+  "write_back_kb_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768",
   "adapter_only": true,
   "landable": false,
   "promotion_blocked": false,
@@ -14,326 +14,326 @@
       "id": "dp:discovery/interview/dp_a0_system/in_scope/1",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:a0/system",
       "asserted_slot": "in_scope",
       "asserted_value": "DataParade",
       "eligible_shape": "D2",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_cmp_6/actor_kind/5",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/cmp_6",
       "asserted_slot": "actor_kind",
       "asserted_value": "persona",
       "eligible_shape": "D4",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_cmp_17/actor_kind/7",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/cmp_17",
       "asserted_slot": "actor_kind",
       "asserted_value": "person",
       "eligible_shape": "D4",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_cmp_20/actor_kind/9",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/cmp_20",
       "asserted_slot": "actor_kind",
       "asserted_value": "persona",
       "eligible_shape": "D4",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_cmp_25/actor_kind/11",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/cmp_25",
       "asserted_slot": "actor_kind",
       "asserted_value": "person",
       "eligible_shape": "D4",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_1/purpose/15",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_1",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_10/purpose/19",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_10",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_14/purpose/23",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_14",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_20/purpose/27",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_20",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_24/purpose/31",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_24",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_61/purpose/35",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_61",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_103/purpose/39",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_103",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_106/purpose/43",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_106",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_109/purpose/47",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_109",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_111/purpose/51",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_111",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_254/purpose/55",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_254",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_267/purpose/59",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_267",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_268/purpose/63",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_268",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_269/purpose/67",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_269",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_279/purpose/71",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_279",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_287/purpose/75",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_287",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_288/purpose/79",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_288",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_289/purpose/83",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_289",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_290/purpose/87",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_290",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     },
     {
       "id": "dp:discovery/interview/dp_scan_entity_flow_291/purpose/91",
       "class": "Discovery",
       "source": "interview",
-      "asserted_at": "2026-09-16T19:37:21.098Z",
+      "asserted_at": "2026-10-05T19:58:36.132Z",
       "asserts": "dp:scan/entity/flow_291",
       "asserted_slot": "purpose",
       "asserted_value": "unspecified",
       "eligible_shape": "D8",
       "raw_evidence_ref": "transcript:experiments/datap-691/raw-model-transcript.jsonl",
       "brief_sha": "16f2e857a47d54bfea6ca5d7f23a6c4f2732da29",
-      "skill_sha": "2616ebccb4f424bd4281ae07e1bb94046b66f41a"
+      "skill_sha": "f8b4f2810f0be856f9bf5421af5ea0db51ecd768"
     }
   ],
   "refused": [
