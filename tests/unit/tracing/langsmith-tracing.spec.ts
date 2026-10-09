@@ -3,10 +3,10 @@ import {
   buildLangSmithInferencePipelineTraceSummary,
   buildLangSmithScanTraceSummary,
   isLangSmithTracingEnabled,
-} from "../../../src/tracing/langsmith-tracing";
-import type { OrchestratorScanResult } from "../../../src/core/pipeline/orchestrator-result";
+} from '../../../src/tracing/langsmith-tracing';
+import type { OrchestratorScanResult } from '../../../src/core/pipeline/orchestrator-result';
 
-describe("tracing/langsmith-tracing", () => {
+describe('tracing/langsmith-tracing', () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
@@ -21,30 +21,34 @@ describe("tracing/langsmith-tracing", () => {
     process.env = originalEnv;
   });
 
-  it("isLangSmithTracingEnabled requires key and tracing flag", () => {
+  it('isLangSmithTracingEnabled requires key and tracing flag', () => {
     expect(isLangSmithTracingEnabled()).toBe(false);
 
-    process.env.LANGSMITH_API_KEY = "test-key";
+    process.env.LANGSMITH_API_KEY = 'test-key';
     expect(isLangSmithTracingEnabled()).toBe(false);
 
-    process.env.LANGCHAIN_TRACING_V2 = "true";
+    process.env.LANGCHAIN_TRACING_V2 = 'true';
     expect(isLangSmithTracingEnabled()).toBe(true);
   });
 
-  it("buildLangSmithScanTraceSummary omits full component payloads", () => {
+  it('buildLangSmithScanTraceSummary omits full component payloads', () => {
     const result: OrchestratorScanResult = {
       files: [],
-      findings: [{ pattern: "x", name: "n", confidence: 1, properties: {} } as never],
+      findings: [
+        { pattern: 'x', name: 'n', confidence: 1, properties: {} } as never,
+      ],
+      occurrences: [],
+      dataItems: [],
       scanResult: {
         components: [
           {
-            id: "cmp_1",
-            name: "Payments API",
-            type: "asset",
+            id: 'cmp_1',
+            name: 'Payments API',
+            type: 'asset',
             confidence: 0.9,
             detectedFrom: [],
             sourceLocations: [],
-            properties: { section_id: "packages/server" },
+            properties: { section_id: 'packages/server' },
           },
         ],
         dataFlows: [],
@@ -52,7 +56,7 @@ describe("tracing/langsmith-tracing", () => {
         filesSkipped: 1,
         totalLines: 100,
         scanDurationMs: 500,
-        warnings: ["w1"],
+        warnings: ['w1'],
         errors: [],
         aiInferenceSummary: {
           ran: true,
@@ -68,8 +72,8 @@ describe("tracing/langsmith-tracing", () => {
           inputTokens: 10,
           outputTokens: 5,
           totalTokens: 15,
-          aiProvider: "mock",
-          aiModel: "heuristic",
+          aiProvider: 'mock',
+          aiModel: 'heuristic',
         },
       },
     };
@@ -78,20 +82,22 @@ describe("tracing/langsmith-tracing", () => {
     expect(summary.filesScanned).toBe(42);
     expect(summary.componentCount).toBe(1);
     expect(summary.findingCount).toBe(1);
-    expect(summary.sectionIds).toEqual(["packages/server"]);
-    expect(summary).not.toHaveProperty("components");
-    expect((summary.aiInference as { proposalsGenerated: number }).proposalsGenerated).toBe(2);
+    expect(summary.sectionIds).toEqual(['packages/server']);
+    expect(summary).not.toHaveProperty('components');
+    expect(
+      (summary.aiInference as { proposalsGenerated: number }).proposalsGenerated
+    ).toBe(2);
   });
 
-  it("buildLangSmithInferencePipelineTraceSummary summarizes pipeline output", () => {
+  it('buildLangSmithInferencePipelineTraceSummary summarizes pipeline output', () => {
     const summary = buildLangSmithInferencePipelineTraceSummary({
-      candidates: [{ id: "c1" } as never],
+      candidates: [{ id: 'c1' } as never],
       plan: { queues: [], droppedCandidates: [] },
-      proposals: [{ id: "p1", proposal: {} as never }],
+      proposals: [{ id: 'p1', proposal: {} as never }],
       mergeResult: {
         components: [],
         dataFlows: [],
-        appliedProposalIds: ["p1"],
+        appliedProposalIds: ['p1'],
         rejectedProposalIds: [],
         provenanceByTarget: {},
       },
@@ -107,11 +113,11 @@ describe("tracing/langsmith-tracing", () => {
     expect(summary.proposalCount).toBe(1);
     expect(summary.appliedProposalCount).toBe(1);
     expect(summary.usageSummary).toEqual(
-      expect.objectContaining({ providerCalls: 2, totalTokens: 150 }),
+      expect.objectContaining({ providerCalls: 2, totalTokens: 150 })
     );
   });
 
-  it("buildLangSmithAiInferenceTraceSummary copies summary counters", () => {
+  it('buildLangSmithAiInferenceTraceSummary copies summary counters', () => {
     const summary = buildLangSmithAiInferenceTraceSummary({
       ran: true,
       candidatesConsidered: 5,
@@ -126,11 +132,11 @@ describe("tracing/langsmith-tracing", () => {
       inputTokens: 20,
       outputTokens: 10,
       totalTokens: 30,
-      aiProvider: "openai",
-      aiModel: "gpt-4",
+      aiProvider: 'openai',
+      aiModel: 'gpt-4',
     });
 
     expect(summary.proposalsGenerated).toBe(4);
-    expect(summary.aiProvider).toBe("openai");
+    expect(summary.aiProvider).toBe('openai');
   });
 });

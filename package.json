@@ -1,6 +1,6 @@
 {
   "name": "@dataparade/cli",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "dataPARADE CLI — scan codebases for privacy and security data flows",
   "publishConfig": {
     "access": "public",
@@ -54,7 +54,7 @@
     "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js"
   },
   "dependencies": {
-    "@dataparade/scanner": "github:DataParade-io/scanner#25a77c9576a5e7694955252ca2914ee828ea022c",
+    "@dataparade/scanner": "github:DataParade-io/scanner#e66e1bcaef55b61214d170c617df529bd300fc89",
     "@sentry/node": "^10.38.0",
     "commander": "^12.1.0",
     "dotenv": "^16.4.7",
