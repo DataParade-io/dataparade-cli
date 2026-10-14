@@ -1,12 +1,12 @@
-import { runAgentQueue } from "./agents";
-import { buildProviderPromptPayload } from "./provider-prompt";
-import { createAiProvider } from "./providers";
-import { createAgentTooling, type AiScanContext } from "./tools";
-import { traceDataparadeProviderInfer } from "../tracing/langsmith-tracing";
+import { runAgentQueue } from './agents';
+import { buildProviderPromptPayload } from './provider-prompt';
+import { createAiProvider } from './providers';
+import { createAgentTooling, type AiScanContext } from './tools';
+import { traceDataparadeProviderInfer } from '../tracing/langsmith-tracing';
 import {
   buildThirdPartyHeuristicProposal,
   verifyThirdPartyProposal,
-} from "./third-party-evidence";
+} from './third-party-evidence';
 import type {
   AiAgentName,
   AiProposal,
@@ -17,13 +17,14 @@ import type {
   AiInferenceUsageSummary,
   AiCandidateAgentTrace,
   AiToolCallTrace,
-} from "./types";
-import { aiDebugEnabled } from "./providers/provider-contract";
-import { resolveScannedFileExact } from "./scan-paths";
+} from './types';
+import { aiDebugEnabled } from './providers/provider-contract';
+import { resolveScannedFileExact } from './scan-paths';
 
-import type { PlatformProxyProviderConfig } from "./providers/platform-proxy-provider";
-import { PlatformProxyProvider } from "./providers/platform-proxy-provider";
-import { HostedWorkerInferProvider } from "./providers/hosted-worker-infer-provider";
+import type { PlatformProxyProviderConfig } from './providers/platform-proxy-provider';
+import { PlatformProxyProvider } from './providers/platform-proxy-provider';
+import { HostedWorkerInferProvider } from './providers/hosted-worker-infer-provider';
+import type { AiProviderResult } from './providers/types';
 
 export interface AgentOrchestratorOptions {
   provider: AiProviderId;
@@ -51,11 +52,33 @@ const PROPERTY_AGENT_SLICE_SIZE = 12;
 const TP_AGENT_MAX_ROUNDS = 3;
 const TP_AGENT_MAX_FILES = 8;
 const TP_AGENT_SEARCH_LIMIT = 6;
-const IMPORT_RE = /\bimport\s+(?:[^"']+from\s+)?["']([^"']+)["']|\brequire\(["']([^"']+)["']\)/g;
+/**
+ * Hosted infer proxy rejects prompts over 512 KB, and the request body re-escapes
+ * the prompt JSON, so keep a margin below that.
+ */
+export const MAX_PROVIDER_PROMPT_BYTES = 400_000;
+const PROMPT_TOO_LARGE_RE =
+  /request_body_too_large|prompt too large|prompt is too long|context_length_exceeded|maximum context length|\(413\)/i;
+
+function promptBytes(prompt: string): number {
+  return Buffer.byteLength(prompt, 'utf8');
+}
+
+export function isPromptTooLargeError(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : String(err);
+  return PROMPT_TOO_LARGE_RE.test(message);
+}
+
+function warnSkippedProviderCall(agent: AiAgentName, detail: string): void {
+  if (!aiDebugEnabled()) return;
+  console.warn(`[dataparade-ai] ${agent} provider call skipped: ${detail}`);
+}
+const IMPORT_RE =
+  /\bimport\s+(?:[^"']+from\s+)?["']([^"']+)["']|\brequire\(["']([^"']+)["']\)/g;
 
 function chunkCandidates(
   queue: AiInferenceCandidate[],
-  size: number,
+  size: number
 ): AiInferenceCandidate[][] {
   const n = Math.max(1, Math.floor(size));
   const out: AiInferenceCandidate[][] = [];
@@ -69,10 +92,10 @@ function shouldCallProviderForAgent(agent: AiAgentName): boolean {
   // Flow patches are now merge-gated to intra-section changes only, so provider
   // calls can safely support both property and flow-oriented queues.
   return (
-    agent === "tpAgent" ||
-    agent === "propertyAgent" ||
-    agent === "directionAgent" ||
-    agent === "interactionAgent"
+    agent === 'tpAgent' ||
+    agent === 'propertyAgent' ||
+    agent === 'directionAgent' ||
+    agent === 'interactionAgent'
   );
 }
 
@@ -84,7 +107,7 @@ function estimateTokens(text: string): number {
 async function mapWithConcurrency<TIn, TOut>(
   items: TIn[],
   concurrency: number,
-  mapper: (item: TIn, index: number) => Promise<TOut>,
+  mapper: (item: TIn, index: number) => Promise<TOut>
 ): Promise<TOut[]> {
   if (items.length === 0) return [];
   const limit = Math.max(1, Math.floor(concurrency));
@@ -101,7 +124,7 @@ async function mapWithConcurrency<TIn, TOut>(
   };
 
   const workers = Array.from({ length: Math.min(limit, items.length) }, () =>
-    worker(),
+    worker()
   );
   await Promise.all(workers);
   return out;
@@ -109,13 +132,14 @@ async function mapWithConcurrency<TIn, TOut>(
 
 function gatherSeedPathsForCandidate(
   candidate: AiInferenceCandidate,
-  components: RunInferencePipelineInput["components"],
+  components: RunInferencePipelineInput['components']
 ): string[] {
   const component = components.find((c) => c.id === candidate.componentId);
   if (!component) return [];
   const out = new Set<string>();
   const sectionId = component.properties.section_id;
-  if (typeof sectionId === "string" && sectionId.trim()) out.add(sectionId.trim());
+  if (typeof sectionId === 'string' && sectionId.trim())
+    out.add(sectionId.trim());
   for (const loc of component.sourceLocations ?? []) {
     if (loc.filePath?.trim()) out.add(loc.filePath.trim());
   }
@@ -128,11 +152,18 @@ function gatherSeedPathsForCandidate(
 
 function gatherSearchTerms(componentName: string): string[] {
   const base = componentName.trim().toLowerCase();
-  const terms = new Set<string>([base, "auth", "token", "api", "storage", "database"]);
-  if (base.includes("supabase")) {
-    terms.add("supabase");
-    terms.add("storage.from");
-    terms.add("create_client");
+  const terms = new Set<string>([
+    base,
+    'auth',
+    'token',
+    'api',
+    'storage',
+    'database',
+  ]);
+  if (base.includes('supabase')) {
+    terms.add('supabase');
+    terms.add('storage.from');
+    terms.add('create_client');
   }
   return [...terms].filter((t) => t.length >= 3);
 }
@@ -140,7 +171,7 @@ function gatherSearchTerms(componentName: string): string[] {
 function pickUniqueSearchMatches<T extends { filePath: string }>(
   matches: T[],
   alreadyReviewed: Set<string>,
-  limit: number,
+  limit: number
 ): T[] {
   const max = Math.max(1, Math.floor(limit));
   const preferred: T[] = [];
@@ -158,28 +189,35 @@ function pickUniqueSearchMatches<T extends { filePath: string }>(
   return [...preferred, ...fallback].slice(0, max);
 }
 
-function resolveRelativeImportPath(fromFile: string, rawImport: string): string | undefined {
-  if (!rawImport.startsWith(".")) return undefined;
-  const normalizedFrom = fromFile.replace(/\\/g, "/");
-  const parts = normalizedFrom.split("/");
+function resolveRelativeImportPath(
+  fromFile: string,
+  rawImport: string
+): string | undefined {
+  if (!rawImport.startsWith('.')) return undefined;
+  const normalizedFrom = fromFile.replace(/\\/g, '/');
+  const parts = normalizedFrom.split('/');
   parts.pop();
-  for (const piece of rawImport.split("/")) {
-    if (piece === "." || piece === "") continue;
-    if (piece === "..") parts.pop();
+  for (const piece of rawImport.split('/')) {
+    if (piece === '.' || piece === '') continue;
+    if (piece === '..') parts.pop();
     else parts.push(piece);
   }
-  const base = parts.join("/");
-  const candidates = [base, `${base}.ts`, `${base}.js`, `${base}.py`, `${base}/index.ts`, `${base}/index.js`];
+  const base = parts.join('/');
+  const candidates = [
+    base,
+    `${base}.ts`,
+    `${base}.js`,
+    `${base}.py`,
+    `${base}/index.ts`,
+    `${base}/index.js`,
+  ];
   return candidates[0];
 }
 
-function expandImportPaths(
-  filePath: string,
-  content: string,
-): string[] {
+function expandImportPaths(filePath: string, content: string): string[] {
   const out: string[] = [];
   for (const match of content.matchAll(IMPORT_RE)) {
-    const rawImport = (match[1] ?? match[2] ?? "").trim();
+    const rawImport = (match[1] ?? match[2] ?? '').trim();
     if (!rawImport) continue;
     const rel = resolveRelativeImportPath(filePath, rawImport);
     if (rel) out.push(rel);
@@ -187,25 +225,19 @@ function expandImportPaths(
   return out;
 }
 
-function appendTraceStep(
-  list: AiToolCallTrace[],
-  step: AiToolCallTrace,
-): void {
+function appendTraceStep(list: AiToolCallTrace[], step: AiToolCallTrace): void {
   list.push(step);
 }
 
-function logToolStep(
-  candidateId: string,
-  step: AiToolCallTrace,
-): void {
+function logToolStep(candidateId: string, step: AiToolCallTrace): void {
   if (!aiDebugEnabled()) return;
   const touched = step.filesTouched?.length ?? 0;
   const stats =
     step.stats && Object.keys(step.stats).length > 0
       ? ` stats=${JSON.stringify(step.stats)}`
-      : "";
+      : '';
   console.warn(
-    `[dataparade-ai] tpAgent tool call candidate=${candidateId} round=${step.round} action=${step.action} files_touched=${touched} detail="${step.detail}"${stats}`,
+    `[dataparade-ai] tpAgent tool call candidate=${candidateId} round=${step.round} action=${step.action} files_touched=${touched} detail="${step.detail}"${stats}`
   );
 }
 
@@ -213,7 +245,7 @@ export async function generateAgenticProposals(
   input: RunInferencePipelineInput,
   plan: InferencePlannerResult,
   candidates: AiInferenceCandidate[],
-  options: AgentOrchestratorOptions,
+  options: AgentOrchestratorOptions
 ): Promise<{
   proposals: Array<{ id: string; proposal: AiProposal }>;
   usageSummary?: AiInferenceUsageSummary;
@@ -234,10 +266,38 @@ export async function generateAgenticProposals(
     : options.hostedWorkerInferProxyUrl?.trim()
       ? new HostedWorkerInferProvider(options.hostedWorkerInferProxyUrl.trim())
       : createAiProvider(options.provider, {
-        endpoint: options.endpoint,
+          endpoint: options.endpoint,
+          model: options.model,
+          apiKey: options.apiKey,
+        });
+
+  const inferUnlessTooLarge = async (
+    agent: AiAgentName,
+    prompt: string
+  ): Promise<AiProviderResult | null> => {
+    try {
+      return await traceDataparadeProviderInfer({
+        providerId: options.provider,
         model: options.model,
-        apiKey: options.apiKey,
+        run: () =>
+          provider.infer({
+            prompt,
+            model: options.model,
+            endpoint: options.endpoint,
+            apiKey: options.apiKey,
+            maxTokens: options.maxTokens,
+            temperature: options.temperature,
+          }),
       });
+    } catch (err) {
+      if (!isPromptTooLargeError(err)) throw err;
+      warnSkippedProviderCall(
+        agent,
+        err instanceof Error ? err.message : String(err)
+      );
+      return null;
+    }
+  };
 
   const generated: Array<{ id: string; proposal: AiProposal }> = [];
   const agenticTrace: AiCandidateAgentTrace[] = [];
@@ -251,11 +311,13 @@ export async function generateAgenticProposals(
   let sequence = 0;
 
   for (const queue of plan.queues) {
-    if (!skipStructural && queue.agent === "tpAgent") {
+    if (!skipStructural && queue.agent === 'tpAgent') {
       for (const candidate of queue.queue) {
         if (!candidate.componentId) continue;
-        const component = input.components.find((item) => item.id === candidate.componentId);
-        if (!component || component.type !== "third_party") continue;
+        const component = input.components.find(
+          (item) => item.id === candidate.componentId
+        );
+        if (!component || component.type !== 'third_party') continue;
         const patch = buildThirdPartyHeuristicProposal({
           candidate,
           component,
@@ -281,18 +343,29 @@ export async function generateAgenticProposals(
       continue;
     }
 
-    if (queue.agent === "tpAgent") {
+    if (queue.agent === 'tpAgent') {
       const maxCalls = Math.max(0, Math.floor(queue.maxModelCalls));
       const maxCandidates =
         maxCalls === 0 ? 0 : Math.min(queue.queue.length, maxCalls);
       const tpCandidates = queue.queue.slice(0, maxCandidates);
-      const maxRounds = Math.max(1, options.toolLoopMaxRounds ?? TP_AGENT_MAX_ROUNDS);
-      const maxFiles = Math.max(1, options.toolLoopMaxFiles ?? TP_AGENT_MAX_FILES);
-      const maxSearches = Math.max(1, options.toolLoopMaxSearches ?? TP_AGENT_SEARCH_LIMIT);
+      const maxRounds = Math.max(
+        1,
+        options.toolLoopMaxRounds ?? TP_AGENT_MAX_ROUNDS
+      );
+      const maxFiles = Math.max(
+        1,
+        options.toolLoopMaxFiles ?? TP_AGENT_MAX_FILES
+      );
+      const maxSearches = Math.max(
+        1,
+        options.toolLoopMaxSearches ?? TP_AGENT_SEARCH_LIMIT
+      );
       const queueBudget = Math.max(0, Math.floor(queue.budgetTokens));
       let queueBudgetSpent = 0;
       for (const candidate of tpCandidates) {
-        const component = input.components.find((c) => c.id === candidate.componentId);
+        const component = input.components.find(
+          (c) => c.id === candidate.componentId
+        );
         if (!component) continue;
         const traceSteps: AiToolCallTrace[] = [];
         const reviewed = new Set<string>();
@@ -300,8 +373,8 @@ export async function generateAgenticProposals(
         for (const p of seed) reviewed.add(p);
         appendTraceStep(traceSteps, {
           round: 0,
-          action: "seed_files",
-          detail: "Seed files from detectedFrom/sourceLocations/section_id",
+          action: 'seed_files',
+          detail: 'Seed files from detectedFrom/sourceLocations/section_id',
           filesTouched: [...reviewed],
           stats: { seedCount: reviewed.size },
         });
@@ -309,12 +382,15 @@ export async function generateAgenticProposals(
 
         const searchTerms = gatherSearchTerms(component.name);
         for (const term of searchTerms.slice(0, maxSearches)) {
-          const rawMatches = tools.searchInFiles(term, seed.length > 0 ? seed : undefined);
+          const rawMatches = tools.searchInFiles(
+            term,
+            seed.length > 0 ? seed : undefined
+          );
           const matches = pickUniqueSearchMatches(rawMatches, reviewed, 8);
           for (const match of matches) reviewed.add(match.filePath);
           appendTraceStep(traceSteps, {
             round: 0,
-            action: "search_text",
+            action: 'search_text',
             detail: `Search term: ${term}`,
             filesTouched: matches.map((m) => m.filePath),
             stats: { hits: matches.length },
@@ -336,15 +412,18 @@ export async function generateAgenticProposals(
               sections: input.sections,
               files: input.files,
               preferredPaths,
-            }),
+            })
           );
           const estimatedTokens =
             estimateTokens(prompt) + Math.max(1, options.maxTokens ?? 8192);
-          if (queueBudget > 0 && queueBudgetSpent + estimatedTokens > queueBudget) {
+          if (
+            queueBudget > 0 &&
+            queueBudgetSpent + estimatedTokens > queueBudget
+          ) {
             appendTraceStep(traceSteps, {
               round,
-              action: "provider_infer",
-              detail: "Skipped provider inference due to queue budget limit",
+              action: 'provider_infer',
+              detail: 'Skipped provider inference due to queue budget limit',
               filesTouched: preferredPaths,
               stats: { estimatedTokens, queueBudget, queueBudgetSpent },
             });
@@ -352,19 +431,22 @@ export async function generateAgenticProposals(
             break;
           }
 
-          const providerResult = await traceDataparadeProviderInfer({
-            providerId: options.provider,
-            model: options.model,
-            run: () =>
-              provider.infer({
-                prompt,
-                model: options.model,
-                endpoint: options.endpoint,
-                apiKey: options.apiKey,
-                maxTokens: options.maxTokens,
-                temperature: options.temperature,
-              }),
-          });
+          const providerResult =
+            promptBytes(prompt) > MAX_PROVIDER_PROMPT_BYTES
+              ? null
+              : await inferUnlessTooLarge(queue.agent, prompt);
+          if (!providerResult) {
+            appendTraceStep(traceSteps, {
+              round,
+              action: 'provider_infer',
+              detail:
+                'Skipped provider inference because the prompt is too large',
+              filesTouched: preferredPaths,
+              stats: { promptBytes: promptBytes(prompt) },
+            });
+            logToolStep(candidate.id, traceSteps[traceSteps.length - 1]!);
+            break;
+          }
           if (queueBudget > 0) queueBudgetSpent += estimatedTokens;
 
           if (providerResult.usage) {
@@ -372,9 +454,10 @@ export async function generateAgenticProposals(
             aggregateUsage.inputTokens += providerResult.usage.inputTokens;
             aggregateUsage.outputTokens += providerResult.usage.outputTokens;
             aggregateUsage.totalTokens += providerResult.usage.totalTokens;
-            if (typeof providerResult.usage.estimatedCostUsd === "number") {
+            if (typeof providerResult.usage.estimatedCostUsd === 'number') {
               aggregateUsage.estimatedCostUsd =
-                (aggregateUsage.estimatedCostUsd ?? 0) + providerResult.usage.estimatedCostUsd;
+                (aggregateUsage.estimatedCostUsd ?? 0) +
+                providerResult.usage.estimatedCostUsd;
             } else {
               aggregateUsage.estimatedCostUsd = undefined;
             }
@@ -382,10 +465,13 @@ export async function generateAgenticProposals(
 
           appendTraceStep(traceSteps, {
             round,
-            action: "provider_infer",
-            detail: "Provider inference call for current reviewed file set",
+            action: 'provider_infer',
+            detail: 'Provider inference call for current reviewed file set',
             filesTouched: preferredPaths,
-            stats: { reviewedCount: preferredPaths.length, proposals: providerResult.proposals.length },
+            stats: {
+              reviewedCount: preferredPaths.length,
+              proposals: providerResult.proposals.length,
+            },
           });
           logToolStep(candidate.id, traceSteps[traceSteps.length - 1]!);
 
@@ -395,7 +481,7 @@ export async function generateAgenticProposals(
             if (!verification.ok) {
               if (aiDebugEnabled()) {
                 console.warn(
-                  `[dataparade-ai] tpAgent proposal rejected by verifyThirdPartyProposal: ${verification.reason}`,
+                  `[dataparade-ai] tpAgent proposal rejected by verifyThirdPartyProposal: ${verification.reason}`
                 );
               }
               continue;
@@ -404,7 +490,7 @@ export async function generateAgenticProposals(
             if (!validation.ok) {
               if (aiDebugEnabled()) {
                 console.warn(
-                  `[dataparade-ai] provider proposal rejected by tooling validation: ${validation.reason}`,
+                  `[dataparade-ai] provider proposal rejected by tooling validation: ${validation.reason}`
                 );
               }
               continue;
@@ -416,7 +502,9 @@ export async function generateAgenticProposals(
           const beforeExpand = reviewed.size;
           const filesForExpand = [...reviewed].slice(0, maxFiles);
           for (const fp of filesForExpand) {
-            const fi = input.files ? resolveScannedFileExact(input.files, fp) : undefined;
+            const fi = input.files
+              ? resolveScannedFileExact(input.files, fp)
+              : undefined;
             if (!fi) continue;
             const imports = expandImportPaths(fi.path, fi.content);
             for (const imp of imports) {
@@ -431,8 +519,8 @@ export async function generateAgenticProposals(
           const added = reviewed.size - beforeExpand;
           appendTraceStep(traceSteps, {
             round,
-            action: "expand_imports",
-            detail: "Expand import graph from reviewed files",
+            action: 'expand_imports',
+            detail: 'Expand import graph from reviewed files',
             filesTouched: [...reviewed],
             stats: { addedFiles: added, totalReviewed: reviewed.size },
           });
@@ -442,8 +530,8 @@ export async function generateAgenticProposals(
 
         appendTraceStep(traceSteps, {
           round: executedRounds,
-          action: "finalize",
-          detail: "Finalize accepted proposals for candidate",
+          action: 'finalize',
+          detail: 'Finalize accepted proposals for candidate',
           filesTouched: [...reviewed],
           stats: { finalProposalCount: finalProposals.length },
         });
@@ -454,7 +542,7 @@ export async function generateAgenticProposals(
           generated.push({ id: `provider_${sequence}`, proposal });
           if (aiDebugEnabled()) {
             console.warn(
-              `[dataparade-ai] provider proposal accepted: kind=${proposal.kind} candidate=${proposal.candidateType} agent=${queue.agent}`,
+              `[dataparade-ai] provider proposal accepted: kind=${proposal.kind} candidate=${proposal.candidateType} agent=${queue.agent}`
             );
           }
         }
@@ -472,9 +560,16 @@ export async function generateAgenticProposals(
     }
 
     // Non-tp agents stay in bounded prompt batches.
-    const providerSlices = chunkCandidates(queue.queue, PROPERTY_AGENT_SLICE_SIZE);
-
-    const preparedProviderCalls = providerSlices.map((slice) => {
+    const pendingSlices = chunkCandidates(
+      queue.queue,
+      PROPERTY_AGENT_SLICE_SIZE
+    );
+    const preparedProviderCalls: Array<{
+      prompt: string;
+      estimatedTokens: number;
+    }> = [];
+    while (pendingSlices.length > 0) {
+      const slice = pendingSlices.shift()!;
       const prompt = JSON.stringify(
         buildProviderPromptPayload({
           agent: queue.agent,
@@ -483,21 +578,38 @@ export async function generateAgenticProposals(
           dataFlows: input.dataFlows,
           sections: input.sections,
           files: input.files,
-        }),
+        })
       );
+      const bytes = promptBytes(prompt);
+      if (bytes > MAX_PROVIDER_PROMPT_BYTES) {
+        if (slice.length > 1) {
+          const mid = Math.ceil(slice.length / 2);
+          pendingSlices.unshift(slice.slice(0, mid), slice.slice(mid));
+        } else {
+          warnSkippedProviderCall(
+            queue.agent,
+            `prompt for ${slice[0]!.id} is ${bytes} bytes (limit ${MAX_PROVIDER_PROMPT_BYTES})`
+          );
+        }
+        continue;
+      }
       const estimatedTokens =
         estimateTokens(prompt) + Math.max(1, options.maxTokens ?? 8192);
-      return { prompt, estimatedTokens };
-    });
+      preparedProviderCalls.push({ prompt, estimatedTokens });
+    }
 
     const maxCalls = Math.max(0, Math.floor(queue.maxModelCalls));
     const callsWithinLimit =
       maxCalls === 0
         ? []
-        : preparedProviderCalls.slice(0, Math.min(maxCalls, preparedProviderCalls.length));
+        : preparedProviderCalls.slice(
+            0,
+            Math.min(maxCalls, preparedProviderCalls.length)
+          );
 
     const budget = Math.max(0, Math.floor(queue.budgetTokens));
-    const budgetedCalls: Array<{ prompt: string; estimatedTokens: number }> = [];
+    const budgetedCalls: Array<{ prompt: string; estimatedTokens: number }> =
+      [];
     if (budget > 0) {
       let spent = 0;
       for (const call of callsWithinLimit) {
@@ -507,7 +619,7 @@ export async function generateAgenticProposals(
       }
       // Avoid starving property enrichment when estimated tokens are conservative.
       if (
-        queue.agent === "propertyAgent" &&
+        queue.agent === 'propertyAgent' &&
         budgetedCalls.length === 0 &&
         callsWithinLimit.length > 0
       ) {
@@ -520,36 +632,25 @@ export async function generateAgenticProposals(
 
     const providerConcurrency = Math.max(
       1,
-      Math.floor(options.providerConcurrency ?? 1),
+      Math.floor(options.providerConcurrency ?? 1)
     );
     const providerResults = await mapWithConcurrency(
       budgetedCalls,
       providerConcurrency,
-      (call) =>
-        traceDataparadeProviderInfer({
-          providerId: options.provider,
-          model: options.model,
-          run: () =>
-            provider.infer({
-              prompt: call.prompt,
-              model: options.model,
-              endpoint: options.endpoint,
-              apiKey: options.apiKey,
-              maxTokens: options.maxTokens,
-              temperature: options.temperature,
-            }),
-        }),
+      (call) => inferUnlessTooLarge(queue.agent, call.prompt)
     );
 
     for (const providerResult of providerResults) {
+      if (!providerResult) continue;
       if (providerResult.usage) {
         aggregateUsage.providerCalls += 1;
         aggregateUsage.inputTokens += providerResult.usage.inputTokens;
         aggregateUsage.outputTokens += providerResult.usage.outputTokens;
         aggregateUsage.totalTokens += providerResult.usage.totalTokens;
-        if (typeof providerResult.usage.estimatedCostUsd === "number") {
+        if (typeof providerResult.usage.estimatedCostUsd === 'number') {
           aggregateUsage.estimatedCostUsd =
-            (aggregateUsage.estimatedCostUsd ?? 0) + providerResult.usage.estimatedCostUsd;
+            (aggregateUsage.estimatedCostUsd ?? 0) +
+            providerResult.usage.estimatedCostUsd;
         } else {
           aggregateUsage.estimatedCostUsd = undefined;
         }
@@ -559,7 +660,7 @@ export async function generateAgenticProposals(
         if (!validation.ok) {
           if (aiDebugEnabled()) {
             console.warn(
-              `[dataparade-ai] provider proposal rejected by tooling validation: ${validation.reason}`,
+              `[dataparade-ai] provider proposal rejected by tooling validation: ${validation.reason}`
             );
           }
           continue;
@@ -568,7 +669,7 @@ export async function generateAgenticProposals(
         generated.push({ id: `provider_${sequence}`, proposal });
         if (aiDebugEnabled()) {
           console.warn(
-            `[dataparade-ai] provider proposal accepted: kind=${proposal.kind} candidate=${proposal.candidateType} agent=${queue.agent}`,
+            `[dataparade-ai] provider proposal accepted: kind=${proposal.kind} candidate=${proposal.candidateType} agent=${queue.agent}`
           );
         }
       }
@@ -586,4 +687,3 @@ export async function generateAgenticProposals(
     usageSummary: hasUsage ? { ...aggregateUsage, agenticTrace } : undefined,
   };
 }
-

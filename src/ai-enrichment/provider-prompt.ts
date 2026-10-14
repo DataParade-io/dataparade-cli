@@ -13,11 +13,44 @@ const MAX_SOURCE_LOCS = 12;
 const MAX_FILES_IN_PROMPT = 28;
 const MAX_CHARS_PER_FILE = 14_000;
 const MAX_TOTAL_EXCERPT_CHARS = 100_000;
-const NON_ENRICHMENT_PROPERTY_KEYS = new Set(['inference_status']);
+/** Cap per already-set property value; scanner evidence lists can reach hundreds of KB. */
+const MAX_PROPERTY_VALUE_CHARS = 4_000;
+const NON_ENRICHMENT_PROPERTY_KEYS = new Set([
+  'inference_status',
+  'propertyEvidence',
+]);
 
 function truncateChars(text: string, max: number): string {
   if (text.length <= max) return text;
   return `${text.slice(0, max)}\n\n...[truncated]`;
+}
+
+function compactDataActions(value: unknown): unknown {
+  if (!Array.isArray(value)) return value;
+  const actions = value.map((entry) =>
+    entry && typeof entry === 'object' && 'action' in entry
+      ? (entry as { action: unknown }).action
+      : entry
+  );
+  return [...new Set(actions)];
+}
+
+function capPropertyValue(value: unknown): unknown {
+  if (JSON.stringify(value).length <= MAX_PROPERTY_VALUE_CHARS) return value;
+  if (typeof value === 'string') {
+    return truncateChars(value, MAX_PROPERTY_VALUE_CHARS);
+  }
+  if (Array.isArray(value)) {
+    const kept: unknown[] = [];
+    let size = 2;
+    for (const item of value) {
+      size += JSON.stringify(item).length + 1;
+      if (size > MAX_PROPERTY_VALUE_CHARS) break;
+      kept.push(item);
+    }
+    return kept;
+  }
+  return undefined;
 }
 
 function pathsFromComponent(comp: DetectedComponent | undefined): string[] {
@@ -132,7 +165,10 @@ export function slimComponentForLlm(
     if (isSparseValue(value)) {
       sparseKeys.push(key);
     } else {
-      propertiesSet[key] = value;
+      const compact = capPropertyValue(
+        key === 'dataActions' ? compactDataActions(value) : value
+      );
+      if (compact !== undefined) propertiesSet[key] = compact;
     }
   }
   const prioritizedSparseKeys = sortPropertyKeysByPriority(sparseKeys);

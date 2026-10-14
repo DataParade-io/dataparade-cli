@@ -45,6 +45,44 @@ describe('provider-prompt', () => {
     expect((slim.sparsePropertyKeys as string[])[0]).toBe('encrypt_at_rest');
   });
 
+  it('slimComponentForLlm drops scanner evidence and caps oversized set values', () => {
+    const evidence = Array.from({ length: 2_000 }, (_, i) => ({
+      filePath: `backend/src/entities/e${i}.ts`,
+      startLine: i,
+      endLine: i,
+      reason: 'property.patterns.yaml:database_connection',
+    }));
+    const c: DetectedComponent = {
+      id: 'cmp_orm',
+      name: 'Typeorm',
+      type: 'asset',
+      confidence: 0.9,
+      detectedFrom: [],
+      sourceLocations: [],
+      properties: {
+        propertyEvidence: { audit_logging_enabled: evidence },
+        dataActions: [
+          { action: 'store', source: 'deterministic', evidence },
+          { action: 'combine', source: 'deterministic', evidence },
+          { action: 'store', source: 'deterministic', evidence },
+        ],
+        data_categories: Array.from({ length: 2_000 }, (_, i) => `cat_${i}`),
+        vendor: null,
+      },
+    };
+
+    const slim = slimComponentForLlm(c);
+    const propertiesSet = slim.propertiesSet as Record<string, unknown>;
+
+    expect(propertiesSet.propertyEvidence).toBeUndefined();
+    expect(slim.sparsePropertyKeys).not.toContain('propertyEvidence');
+    expect(propertiesSet.dataActions).toEqual(['store', 'combine']);
+    const categories = propertiesSet.data_categories as string[];
+    expect(categories.length).toBeGreaterThan(0);
+    expect(categories.length).toBeLessThan(2_000);
+    expect(JSON.stringify(slim).length).toBeLessThan(10_000);
+  });
+
   it('buildProviderPromptPayload includes componentContext for queued componentIds', () => {
     const components: DetectedComponent[] = [
       {
