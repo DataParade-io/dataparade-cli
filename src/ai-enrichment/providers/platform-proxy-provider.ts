@@ -1,10 +1,16 @@
-import type { AiProposal } from "../types";
-import type { AiProvider, AiProviderRequest, AiProviderResult } from "./types";
+import type { AiProposal } from '../types';
+import type { AiProvider, AiProviderRequest, AiProviderResult } from './types';
 import {
   isLambdaInitializingError,
   LAMBDA_INIT_RETRY_DELAYS_MS,
   toUserFacingLambdaInitError,
-} from "../lambda-init-error";
+} from '../lambda-init-error';
+import {
+  describeRequestTarget,
+  fetchFailureDetail,
+  isTransientFetchError,
+  toApiReachabilityError,
+} from '../../platform-api/fetch-failure';
 
 export type PlatformProxyProviderConfig = {
   apiBaseUrl: string;
@@ -16,10 +22,14 @@ export type PlatformProxyProviderConfig = {
   pollTimeoutMs?: number;
   /** Backoff delays when a task fails because the helper Lambda is still INIT. */
   lambdaInitRetryDelaysMs?: number[];
+  /** Backoff delays after a dropped connection. Each entry is one retry. */
+  networkRetryDelaysMs?: number[];
   sleep?: (ms: number) => Promise<void>;
 };
 
-type InferTaskStatus = "pending" | "running" | "completed" | "failed";
+const DEFAULT_NETWORK_RETRY_DELAYS_MS = [1000, 2000];
+
+type InferTaskStatus = 'pending' | 'running' | 'completed' | 'failed';
 
 type InferTaskResponse = {
   taskId: string;
@@ -35,10 +45,14 @@ type InferTaskResponse = {
 };
 
 function resolvePollTimeoutMs(configured?: number): number {
-  if (typeof configured === "number" && Number.isFinite(configured) && configured > 0) {
+  if (
+    typeof configured === 'number' &&
+    Number.isFinite(configured) &&
+    configured > 0
+  ) {
     return Math.floor(configured);
   }
-  const fromEnv = Number(process.env.SCAN_AI_HTTP_TIMEOUT_MS ?? "");
+  const fromEnv = Number(process.env.SCAN_AI_HTTP_TIMEOUT_MS ?? '');
   if (Number.isFinite(fromEnv) && fromEnv > 0) return Math.floor(fromEnv);
   return 180_000;
 }
@@ -48,27 +62,27 @@ function sleep(ms: number): Promise<void> {
 }
 
 export class PlatformProxyProvider implements AiProvider {
-  readonly id = "openai" as const;
+  readonly id = 'openai' as const;
 
   constructor(private readonly config: PlatformProxyProviderConfig) {}
 
   private authHeaders(): Record<string, string> {
     return {
       Authorization: `Bearer ${this.config.workspaceApiKey}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
   }
 
   private apiBase(): string {
-    return this.config.apiBaseUrl.replace(/\/$/, "");
+    return this.config.apiBaseUrl.replace(/\/$/, '');
   }
 
   private async readErrorMessage(res: Response): Promise<string> {
     let message = `Platform AI infer failed (${res.status})`;
     try {
       const body = (await res.json()) as { message?: string | string[] };
-      if (typeof body.message === "string") message = body.message;
-      else if (Array.isArray(body.message)) message = body.message.join(", ");
+      if (typeof body.message === 'string') message = body.message;
+      else if (Array.isArray(body.message)) message = body.message.join(', ');
     } catch {
       // ignore
     }
@@ -86,10 +100,10 @@ export class PlatformProxyProvider implements AiProvider {
     if (res.status >= 500) {
       const detail =
         message === `Platform AI infer failed (${res.status})`
-          ? "Internal server error"
+          ? 'Internal server error'
           : message;
       throw new Error(
-        `Platform AI service error (${res.status}): ${detail}. If this persists, redeploy the API with the CLI bundle and verify SCAN_WORKER_LLM_API_KEY.`,
+        `Platform AI service error (${res.status}): ${detail}. If this persists, redeploy the API with the CLI bundle and verify SCAN_WORKER_LLM_API_KEY.`
       );
     }
     throw new Error(message);
@@ -114,21 +128,53 @@ export class PlatformProxyProvider implements AiProvider {
     throw toUserFacingLambdaInitError(lastErr);
   }
 
-  private async inferOnce(request: AiProviderRequest): Promise<AiProviderResult> {
-    const submitRes = await fetch(`${this.apiBase()}/api/scans/cli/ai/infer/tasks`, {
-      method: "POST",
-      headers: this.authHeaders(),
-      body: JSON.stringify({
-        jobId: this.config.jobId,
-        tasks: [
-          {
-            prompt: request.prompt,
-            maxTokens: request.maxTokens,
-            temperature: request.temperature,
-          },
-        ],
-      }),
-    });
+  private async fetchPlatform(
+    url: string,
+    init: RequestInit
+  ): Promise<Response> {
+    const delays = this.config.networkRetryDelaysMs ?? [
+      ...DEFAULT_NETWORK_RETRY_DELAYS_MS,
+    ];
+    const method = init.method ?? 'GET';
+    let lastErr: unknown;
+    for (let attempt = 0; attempt <= delays.length; attempt += 1) {
+      try {
+        return await fetch(url, init);
+      } catch (err) {
+        lastErr = err;
+        if (attempt >= delays.length || !isTransientFetchError(err)) {
+          throw toApiReachabilityError(err, url, method, attempt + 1);
+        }
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[dataparade-ai] ${describeRequestTarget(url, method)} failed (${fetchFailureDetail(err)}). Retrying (${attempt + 1}/${delays.length}).`
+        );
+        await this.wait(delays[attempt] ?? 0);
+      }
+    }
+    throw toApiReachabilityError(lastErr, url, method, delays.length + 1);
+  }
+
+  private async inferOnce(
+    request: AiProviderRequest
+  ): Promise<AiProviderResult> {
+    const submitRes = await this.fetchPlatform(
+      `${this.apiBase()}/api/scans/cli/ai/infer/tasks`,
+      {
+        method: 'POST',
+        headers: this.authHeaders(),
+        body: JSON.stringify({
+          jobId: this.config.jobId,
+          tasks: [
+            {
+              prompt: request.prompt,
+              maxTokens: request.maxTokens,
+              temperature: request.temperature,
+            },
+          ],
+        }),
+      }
+    );
 
     if (!submitRes.ok) {
       const message = await this.readErrorMessage(submitRes);
@@ -140,22 +186,23 @@ export class PlatformProxyProvider implements AiProvider {
     };
     const task = submitBody.tasks?.[0];
     if (!task?.taskId) {
-      throw new Error("Platform AI infer submit returned no task id");
+      throw new Error('Platform AI infer submit returned no task id');
     }
 
     const pollIntervalMs = Math.max(
       500,
-      Math.floor(this.config.pollIntervalMs ?? 1500),
+      Math.floor(this.config.pollIntervalMs ?? 1500)
     );
-    const deadline = Date.now() + resolvePollTimeoutMs(this.config.pollTimeoutMs);
+    const deadline =
+      Date.now() + resolvePollTimeoutMs(this.config.pollTimeoutMs);
 
     while (Date.now() < deadline) {
-      const pollRes = await fetch(
+      const pollRes = await this.fetchPlatform(
         `${this.apiBase()}/api/scans/cli/ai/infer/tasks?jobId=${encodeURIComponent(this.config.jobId)}&taskIds=${encodeURIComponent(task.taskId)}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: this.authHeaders(),
-        },
+        }
       );
 
       if (!pollRes.ok) {
@@ -168,10 +215,10 @@ export class PlatformProxyProvider implements AiProvider {
       };
       const current = pollBody.tasks?.[0];
       if (!current) {
-        throw new Error("Platform AI infer poll returned no task");
+        throw new Error('Platform AI infer poll returned no task');
       }
 
-      if (current.status === "completed") {
+      if (current.status === 'completed') {
         const proposals = (
           Array.isArray(current.proposals) ? current.proposals : []
         ) as AiProposal[];
@@ -179,7 +226,7 @@ export class PlatformProxyProvider implements AiProvider {
         return {
           proposals,
           usage:
-            usage && typeof usage.totalTokens === "number"
+            usage && typeof usage.totalTokens === 'number'
               ? {
                   inputTokens: Math.max(0, usage.inputTokens ?? 0),
                   outputTokens: Math.max(0, usage.outputTokens ?? 0),
@@ -189,10 +236,10 @@ export class PlatformProxyProvider implements AiProvider {
         };
       }
 
-      if (current.status === "failed") {
+      if (current.status === 'failed') {
         throw new Error(
           current.errorMessage?.trim() ||
-            "Platform AI infer task failed without details",
+            'Platform AI infer task failed without details'
         );
       }
 
@@ -200,7 +247,7 @@ export class PlatformProxyProvider implements AiProvider {
     }
 
     throw new Error(
-      `Platform AI infer task timed out after ${resolvePollTimeoutMs(this.config.pollTimeoutMs)}ms (taskId=${task.taskId})`,
+      `Platform AI infer task timed out after ${resolvePollTimeoutMs(this.config.pollTimeoutMs)}ms (taskId=${task.taskId})`
     );
   }
 }

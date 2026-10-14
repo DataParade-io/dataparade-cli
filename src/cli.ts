@@ -23,6 +23,7 @@ import {
   reportScanCliError,
   type ScanCliAiMode,
 } from './observability/scan-sentry';
+import { describeThrownError } from './platform-api/fetch-failure';
 import { reportCliUsageEvent } from './platform-api/telemetry-client';
 import {
   summarizeScanErrors,
@@ -766,8 +767,7 @@ function createProgram(): Command {
             }
           }
         } catch (err) {
-          const message =
-            err instanceof Error ? err.message : 'Unknown error during scan.';
+          const message = describeThrownError(err);
           fallbackFailureMessage = message;
           const { CliScanQuotaExceededError, CliScanAlreadyRunningError } =
             await import('./platform-api/scan-quota-client');
