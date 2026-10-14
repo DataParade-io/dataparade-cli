@@ -5,6 +5,8 @@ outputs/
 # Local default scan outputs (regenerated on every scan; use --output or outputs/)
 dataflow.json
 scan-frontend-summary.json
+scan-fixture-summary.json
+scan-teaching-progress.json
 
 # Local secrets (use .env.example as template)
 .env

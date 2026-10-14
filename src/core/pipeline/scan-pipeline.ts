@@ -36,6 +36,7 @@ import type {
 } from '../../ai-enrichment/types';
 import type { DetectedComponent } from '../types';
 import type { OrchestratorScanResult } from './orchestrator-result';
+import type { ScanRecognitionPayload } from '../../ui/types';
 
 function buildAiProposalDetails(input: {
   proposals: Array<{ id: string; proposal: AiProposal }>;
@@ -164,7 +165,8 @@ function buildThirdPartyCoverage(input: {
 async function runScanPipelineInner(
   rootPath: string,
   config: ScanConfiguration,
-  onProgress?: (progress: ScanProgress) => void
+  onProgress?: (progress: ScanProgress) => void,
+  onRecognition?: (payload: ScanRecognitionPayload) => void
 ): Promise<OrchestratorScanResult> {
   const start = Date.now();
   const warnings: string[] = [];
@@ -187,6 +189,10 @@ async function runScanPipelineInner(
   const components = work.components;
   const dataFlows = work.dataFlows;
   const { files, findings, sections, filesScanned } = work;
+
+  // Stable recognition surface for teaching lines (findings + components after
+  // deterministic phases). No scanner-internal coupling beyond this payload.
+  onRecognition?.({ findings, components });
 
   const subTypesFilledEarly = ensureThirdPartySubTypes(components);
   if (subTypesFilledEarly > 0) {
@@ -275,7 +281,7 @@ async function runScanPipelineInner(
     }));
     emitScanProgress(
       onProgress,
-      'data_flow',
+      'ai_enrichment',
       0.85,
       filesScanned,
       'Running LLM inference...'
@@ -480,12 +486,14 @@ async function runScanPipelineInner(
 export async function runScanPipeline(
   rootPath: string,
   config: ScanConfiguration,
-  onProgress?: (progress: ScanProgress) => void
+  onProgress?: (progress: ScanProgress) => void,
+  onRecognition?: (payload: ScanRecognitionPayload) => void
 ): Promise<OrchestratorScanResult> {
   return traceDataparadeScan({
     rootPath: rootPath.toString(),
     projectName: config.projectName,
     enableAiInference: config.enableAiInference,
-    run: () => runScanPipelineInner(rootPath, config, onProgress),
+    run: () =>
+      runScanPipelineInner(rootPath, config, onProgress, onRecognition),
   });
 }

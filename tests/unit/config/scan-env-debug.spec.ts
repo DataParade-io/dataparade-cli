@@ -1,20 +1,34 @@
-import { isScanAiDebugEnabled } from "../../../src/config/scan-env";
+import {
+  isScanAiDebugEnabled,
+  setScanAiDebugSuppressed,
+} from '../../../src/config/scan-env';
 
-describe("isScanAiDebugEnabled", () => {
-  it("accepts SCAN_AI_DEBUG", () => {
-    expect(isScanAiDebugEnabled({ SCAN_AI_DEBUG: "true" })).toBe(true);
+describe('isScanAiDebugEnabled', () => {
+  afterEach(() => {
+    setScanAiDebugSuppressed(false);
   });
 
-  it("ignores legacy DATAPARADE_AI_DEBUG", () => {
-    expect(isScanAiDebugEnabled({ DATAPARADE_AI_DEBUG: "1" })).toBe(false);
+  it('is off while suppressed, even with SCAN_AI_DEBUG=true', () => {
+    setScanAiDebugSuppressed(true);
+    expect(isScanAiDebugEnabled({ SCAN_AI_DEBUG: 'true' })).toBe(false);
+    setScanAiDebugSuppressed(false);
+    expect(isScanAiDebugEnabled({ SCAN_AI_DEBUG: 'true' })).toBe(true);
   });
 
-  it("uses SCAN_AI_DEBUG only when legacy is also present", () => {
+  it('accepts SCAN_AI_DEBUG', () => {
+    expect(isScanAiDebugEnabled({ SCAN_AI_DEBUG: 'true' })).toBe(true);
+  });
+
+  it('ignores legacy DATAPARADE_AI_DEBUG', () => {
+    expect(isScanAiDebugEnabled({ DATAPARADE_AI_DEBUG: '1' })).toBe(false);
+  });
+
+  it('uses SCAN_AI_DEBUG only when legacy is also present', () => {
     expect(
       isScanAiDebugEnabled({
-        SCAN_AI_DEBUG: "false",
-        DATAPARADE_AI_DEBUG: "true",
-      }),
+        SCAN_AI_DEBUG: 'false',
+        DATAPARADE_AI_DEBUG: 'true',
+      })
     ).toBe(false);
   });
 });

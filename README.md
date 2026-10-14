@@ -24,8 +24,10 @@ pnpm dlx @dataparade/cli scan .
 
 **What to expect:**
 
-- Progress messages such as `[scan] starting scan for .` and `[scan] output: Scan complete.`
-- On success: `[scan] dataflow.json written to /absolute/path/to/dataflow.json`
+- In a TTY: brand header, staged progress (spinner → checkmarks), a short **What we found** summary (routes, databases, outbound services), and a clear next-step note.
+- In CI / non-TTY (or with `NO_COLOR`): the same content as plain logs — no spinners or ANSI.
+- On success: `[scan] dataflow.json written to /absolute/path/to/dataflow.json` (always printed for scripts/tests).
+- When auto-upload runs: `[scan] Preview ready: <URL>` (plus a friendly next-step note with the same URL).
 - By default, `dataflow.json` is created in the **current working directory** (override with `-o` / `--output`).
 
 ```bash
@@ -67,14 +69,14 @@ By default, the CLI writes `./dataflow.json` in the current working directory.
 
 ## Documentation
 
-| Topic | Link |
-|-------|------|
-| CLI hub (all topics) | [CLI Run and Export](https://app.dataparade.io/docs/cli-import-and-zip) |
-| Scan arguments & flags | [Scan arguments](https://app.dataparade.io/docs/cli-import-and-zip/scan-arguments) |
-| `dataparade.config.json` | [Config file](https://app.dataparade.io/docs/cli-import-and-zip/config-file) |
-| Environment variables | [Environment variables](https://app.dataparade.io/docs/cli-import-and-zip/environment-variables) |
-| AI inference | [AI inference](https://app.dataparade.io/docs/cli-import-and-zip/ai-inference) |
-| Scan patterns (YAML) | [Scan patterns](https://app.dataparade.io/docs/cli-import-and-zip/scan-patterns) |
+| Topic                    | Link                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------ |
+| CLI hub (all topics)     | [CLI Run and Export](https://app.dataparade.io/docs/cli-import-and-zip)                          |
+| Scan arguments & flags   | [Scan arguments](https://app.dataparade.io/docs/cli-import-and-zip/scan-arguments)               |
+| `dataparade.config.json` | [Config file](https://app.dataparade.io/docs/cli-import-and-zip/config-file)                     |
+| Environment variables    | [Environment variables](https://app.dataparade.io/docs/cli-import-and-zip/environment-variables) |
+| AI inference             | [AI inference](https://app.dataparade.io/docs/cli-import-and-zip/ai-inference)                   |
+| Scan patterns (YAML)     | [Scan patterns](https://app.dataparade.io/docs/cli-import-and-zip/scan-patterns)                 |
 
 ---
 

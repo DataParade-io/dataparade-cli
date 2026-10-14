@@ -150,6 +150,9 @@ describe('scan quota flow', () => {
   it('prints ready-for-new-scan message after platform scan completes', async () => {
     process.env.DATAPARADE_WORKSPACE_API_KEY = 'dp_live_test';
     process.env.DATAPARADE_SKIP_AUTO_UPLOAD = 'true';
+    // Plain TTY (no Clack chrome): the Clack outro replaces this line.
+    const previousNoColor = process.env.NO_COLOR;
+    process.env.NO_COLOR = '1';
     const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
     const isTty = Object.getOwnPropertyDescriptor(process.stdout, 'isTTY');
     Object.defineProperty(process.stdout, 'isTTY', {
@@ -180,6 +183,11 @@ describe('scan quota flow', () => {
       Object.defineProperty(process.stdout, 'isTTY', isTty);
     } else {
       delete (process.stdout as { isTTY?: boolean }).isTTY;
+    }
+    if (previousNoColor === undefined) {
+      delete process.env.NO_COLOR;
+    } else {
+      process.env.NO_COLOR = previousNoColor;
     }
     logSpy.mockRestore();
   });

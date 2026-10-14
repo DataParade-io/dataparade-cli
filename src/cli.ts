@@ -17,7 +17,10 @@ import type { CliConfigFlags } from './config/types';
 import { parseAiInferenceScope } from './config/inference-scope';
 import { redactScanConfigurationForDisplay } from './config/redact';
 import { resolveScanConfiguration } from './config/resolve';
-import { resolveWorkspaceApiKey } from './config/scan-env';
+import {
+  resolveWorkspaceApiKey,
+  setScanAiDebugSuppressed,
+} from './config/scan-env';
 import { resolveAiMode } from './config/validate-scan-ai';
 import {
   reportScanCliError,
@@ -33,6 +36,7 @@ import {
 import { validateScanConfiguration } from './core/schema/scan-config.schema';
 import type { AiInferenceProposalDetail } from './core/types';
 import { resolveScanFilesystemEntry } from '@dataparade/scanner';
+import { createScanProgressRenderer } from './ui/scan-progress-renderer';
 
 function formatEvidence(detail: AiInferenceProposalDetail): string {
   const evidence = detail.evidence;
@@ -60,31 +64,25 @@ function formatProposalTarget(detail: AiInferenceProposalDetail): string {
   return 'unknown';
 }
 
-function printAiInferenceVerbose(details: AiInferenceProposalDetail[]): void {
+function formatAiInferenceVerbose(
+  details: AiInferenceProposalDetail[]
+): string[] {
   if (details.length === 0) {
-    // eslint-disable-next-line no-console
-    console.log('[scan] ai-inference details: no proposals generated');
-    return;
+    return ['[scan] ai-inference details: no proposals generated'];
   }
 
-  // eslint-disable-next-line no-console
-  console.log('[scan] ai-inference details:');
+  const lines = ['[scan] ai-inference details:'];
   for (const detail of details) {
     const status =
       detail.status === 'applied'
         ? 'applied'
         : `rejected (${detail.rejectionReason})`;
     const confidence = detail.confidence.toFixed(2);
-    // eslint-disable-next-line no-console
-    console.log(
-      `[scan]   - ${detail.id}: ${status} | ${detail.source} | ${detail.kind} | target=${formatProposalTarget(detail)} | confidence=${confidence} (${detail.confidenceBand})`
+    lines.push(
+      `[scan]   - ${detail.id}: ${status} | ${detail.source} | ${detail.kind} | target=${formatProposalTarget(detail)} | confidence=${confidence} (${detail.confidenceBand})`,
+      `[scan]       candidate=${detail.candidateType} agent=${detail.agent} provider=${detail.provider}/${detail.model}`,
+      `[scan]       evidence=${formatEvidence(detail)}`
     );
-    // eslint-disable-next-line no-console
-    console.log(
-      `[scan]       candidate=${detail.candidateType} agent=${detail.agent} provider=${detail.provider}/${detail.model}`
-    );
-    // eslint-disable-next-line no-console
-    console.log(`[scan]       evidence=${formatEvidence(detail)}`);
     if (
       detail.status === 'applied' &&
       detail.propertyChanges &&
@@ -96,11 +94,11 @@ function printAiInferenceVerbose(details: AiInferenceProposalDetail[]): void {
         return `${change.key}: ${from} -> ${to}`;
       });
       for (const line of formatted) {
-        // eslint-disable-next-line no-console
-        console.log(`[scan]       changes=${line}`);
+        lines.push(`[scan]       changes=${line}`);
       }
     }
   }
+  return lines;
 }
 
 function formatUsd(value: number | undefined): string {
@@ -258,6 +256,9 @@ function createProgram(): Command {
         let sentryAiMode: ScanCliAiMode | undefined;
         let sentryAiProvider: string | undefined;
         const isInteractive = process.stdout.isTTY;
+        // True once Clack owns the terminal: raw `[scan]` lines would break its
+        // guide rail, so they go through the renderer or are skipped.
+        let friendlyTty = false;
 
         // Parse and validate --git-context if provided
         let parsedGitContext: GitContextSchema | undefined;
@@ -341,10 +342,21 @@ function createProgram(): Command {
             import('./core/pipeline/graph-mapping'),
           ]);
 
-          if (isInteractive) {
-            // eslint-disable-next-line no-console
-            console.log(`[scan] starting scan for ${resolvedScanRoot}`);
-          }
+          const progressUi = await createScanProgressRenderer({
+            isTTY: Boolean(isInteractive),
+            noColor: Boolean(
+              typeof process.env.NO_COLOR === 'string' &&
+              process.env.NO_COLOR.length > 0
+            ),
+            projectLabel: resolvedScanRoot,
+            version: pkg.version,
+          });
+          progressUi.start();
+          friendlyTty = progressUi.usesClackChrome;
+          setScanAiDebugSuppressed(friendlyTty && !options.aiVerbose);
+          // Technical meters, shown as one block after the scan (TTY) or
+          // printed as before (non-TTY).
+          const technicalLines: string[] = [];
 
           const flags: CliConfigFlags = {
             exclude: options.exclude,
@@ -451,10 +463,13 @@ function createProgram(): Command {
               config.aiMode = 'platform';
             }
             if (isInteractive) {
-              // eslint-disable-next-line no-console
-              console.log(
-                `[scan] quota: scans_remaining=${preflight.scansRemaining} ai_tokens_remaining=${preflight.aiTokensRemaining} job_id=${preflight.jobId} working_budget=${config.aiBudgetTokens ?? 0}`
-              );
+              const quotaLine = `[scan] quota: scans_remaining=${preflight.scansRemaining} ai_tokens_remaining=${preflight.aiTokensRemaining} job_id=${preflight.jobId} working_budget=${config.aiBudgetTokens ?? 0}`;
+              if (friendlyTty) {
+                technicalLines.push(quotaLine);
+              } else {
+                // eslint-disable-next-line no-console
+                console.log(quotaLine);
+              }
             }
           } else if (
             !workspaceApiKey &&
@@ -483,10 +498,13 @@ function createProgram(): Command {
                 config.aiMode = 'platform';
               }
               if (isInteractive) {
-                // eslint-disable-next-line no-console
-                console.log(
-                  `[scan] anonymous platform AI: job_id=${session.jobId} working_budget=${config.aiBudgetTokens ?? 0} server_cap=${session.suggestedAiBudgetTokens} (claim debits actual tokens used)`
-                );
+                const sessionLine = `[scan] anonymous platform AI: job_id=${session.jobId} working_budget=${config.aiBudgetTokens ?? 0} server_cap=${session.suggestedAiBudgetTokens} (claim debits actual tokens used)`;
+                if (friendlyTty) {
+                  technicalLines.push(sessionLine);
+                } else {
+                  // eslint-disable-next-line no-console
+                  console.log(sessionLine);
+                }
               }
             } catch (anonSessionError) {
               const { CliAnonymousIpLimitError } =
@@ -533,49 +551,70 @@ function createProgram(): Command {
           }
 
           if (isInteractive && warnings.length > 0) {
-            // eslint-disable-next-line no-console
-            console.warn(
-              `[scan] warnings:\n${warnings.map((w) => `  - ${w}`).join('\n')}`
-            );
+            if (friendlyTty) {
+              for (const w of warnings) progressUi.warn(w);
+            } else {
+              // eslint-disable-next-line no-console
+              console.warn(
+                `[scan] warnings:\n${warnings.map((w) => `  - ${w}`).join('\n')}`
+              );
+            }
           }
 
           const { scanResult, redFlags } = await runScanPipeline(
             resolvedScanRoot,
             config,
             (progress) => {
-              if (!isInteractive) return;
-              // eslint-disable-next-line no-console
-              console.log(
-                `[scan] ${progress.phase}: ${progress.message ?? ''}`.trim()
-              );
+              progressUi.onProgress(progress);
+            },
+            (recognition) => {
+              progressUi.onRecognition(recognition);
             }
           );
+          if (scanResult.aiInferenceSummary) {
+            progressUi.onAiResult({
+              proposalsApplied: scanResult.aiInferenceSummary.proposalsApplied,
+            });
+          }
 
-          if (scanResult.structuralEnrichmentSummary) {
+          // Keep technical enrichment/AI meter lines out of the friendly TTY
+          // progress UI; still print in CI / non-TTY, or with --ai-verbose.
+          const showTechnicalScanMeters =
+            !isInteractive || Boolean(options.aiVerbose);
+
+          if (
+            showTechnicalScanMeters &&
+            scanResult.structuralEnrichmentSummary
+          ) {
             const st = scanResult.structuralEnrichmentSummary;
-            // eslint-disable-next-line no-console
-            console.log(
+            technicalLines.push(
               `[scan] structural enrichment: proposals=${st.proposalsGenerated} applied=${st.proposalsApplied} rejected=${st.proposalsRejected}`
             );
           }
 
-          if (scanResult.aiInferenceSummary) {
+          if (showTechnicalScanMeters && scanResult.aiInferenceSummary) {
             const s = scanResult.aiInferenceSummary;
-            // eslint-disable-next-line no-console
-            console.log(
-              `[scan] llm-inference summary: candidates=${s.candidatesConsidered} proposals=${s.proposalsGenerated} (provider=${s.proposalsGeneratedProvider}) applied=${s.proposalsApplied} (provider=${s.proposalsAppliedProvider}) rejected=${s.proposalsRejected} (${s.aiProvider}/${s.aiModel})`
-            );
-            // Always show real provider token usage (budget_cap is only a ceiling, not cost).
-            // eslint-disable-next-line no-console
-            console.log(
+            technicalLines.push(
+              `[scan] llm-inference summary: candidates=${s.candidatesConsidered} proposals=${s.proposalsGenerated} (provider=${s.proposalsGeneratedProvider}) applied=${s.proposalsApplied} (provider=${s.proposalsAppliedProvider}) rejected=${s.proposalsRejected} (${s.aiProvider}/${s.aiModel})`,
+              // Always show real provider token usage (budget_cap is only a ceiling, not cost).
               `[scan] ai-usage: provider_calls=${s.providerCalls} tokens_in=${s.inputTokens} tokens_out=${s.outputTokens} tokens_total=${s.totalTokens}` +
                 (typeof s.estimatedCostUsd === 'number'
                   ? ` estimated_cost_usd=${formatUsd(s.estimatedCostUsd)}`
                   : '')
             );
-            if (options.aiVerbose && scanResult.aiInferenceProposalDetails) {
-              printAiInferenceVerbose(scanResult.aiInferenceProposalDetails);
-            }
+          }
+          if (
+            options.aiVerbose &&
+            scanResult.aiInferenceSummary &&
+            scanResult.aiInferenceProposalDetails
+          ) {
+            technicalLines.push(
+              ...formatAiInferenceVerbose(scanResult.aiInferenceProposalDetails)
+            );
+          }
+          // Friendly TTY only shows the block on request (--ai-verbose).
+          if (!friendlyTty || options.aiVerbose) {
+            progressUi.showTechnicalDetails('Scan details', technicalLines);
           }
 
           for (const w of scanResult.warnings ?? []) {
@@ -589,11 +628,9 @@ function createProgram(): Command {
                 failurePhase: 'ai_provider',
                 failureCode: 'ai_provider_warning',
               });
-              // eslint-disable-next-line no-console
-              console.warn(`[scan] ${w}`);
+              progressUi.warn(w);
             } else if (w.startsWith('red-flag:')) {
-              // eslint-disable-next-line no-console
-              console.warn(`[scan] ${w}`);
+              progressUi.warn(w);
             }
           }
 
@@ -668,12 +705,16 @@ function createProgram(): Command {
                 gitContext: parsedGitContext,
               });
 
-              // Always print a short message so non-interactive callers and
-              // tests can rely on it.
-              // eslint-disable-next-line no-console
-              console.log(
-                `[scan] dataflow.json written to ${dataflowOutputPath}`
-              );
+              // Friendly TTY/plain progress line (additive).
+              progressUi.onWroteDataflow(dataflowOutputPath);
+              // Machine line for scripts / CI (non-TTY). The friendly TTY UI
+              // shows the path in its own success line instead.
+              if (!friendlyTty) {
+                // eslint-disable-next-line no-console
+                console.log(
+                  `[scan] dataflow.json written to ${dataflowOutputPath}`
+                );
+              }
 
               const skipAutoUpload =
                 Boolean(options.skipAutoUpload) ||
@@ -691,7 +732,7 @@ function createProgram(): Command {
                       gitContext: parsedGitContext,
                     }
                   );
-                  await runDataflowUpload({
+                  const uploadResult = await runDataflowUpload({
                     apiKey: workspaceApiKey,
                     dataflow: dataflowWrapper,
                     projectName: resolvedProjectName,
@@ -699,16 +740,30 @@ function createProgram(): Command {
                     logPrefix: '[scan]',
                     cliUsageSessionId: usageSessionId,
                     command: 'scan',
+                    quiet: friendlyTty,
                   });
+                  if (uploadResult.previewUrl) {
+                    progressUi.onPreviewUrl(
+                      uploadResult.previewUrl,
+                      uploadResult.notice
+                    );
+                  }
                 } catch (uploadError) {
                   const uploadMessage =
                     uploadError instanceof Error
                       ? uploadError.message
                       : 'Unknown upload error.';
-                  // eslint-disable-next-line no-console
-                  console.error(`[scan] Auto-upload failed: ${uploadMessage}`);
+                  if (friendlyTty) {
+                    progressUi.warn(`Auto-upload failed: ${uploadMessage}`);
+                  } else {
+                    // eslint-disable-next-line no-console
+                    console.error(
+                      `[scan] Auto-upload failed: ${uploadMessage}`
+                    );
+                  }
                 }
               }
+              progressUi.finish();
             } catch (dataflowError) {
               reportedFailure = {
                 code: 'dataflow_write_failed',
@@ -759,7 +814,8 @@ function createProgram(): Command {
                 : undefined,
             });
             quotaCompletionReported = true;
-            if (isInteractive) {
+            // The Clack outro already closes the run in friendly TTY.
+            if (isInteractive && !friendlyTty) {
               // eslint-disable-next-line no-console
               console.log(
                 '[scan] Scan finished — you can start a new scan now.'

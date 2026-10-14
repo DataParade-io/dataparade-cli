@@ -952,7 +952,7 @@
     "componentsCount": 5,
     "dataFlowsCount": 4,
     "filesScanned": 6,
-    "scanDurationMs": 906,
+    "scanDurationMs": 714,
     "projectName": "typescript-basic"
   }
 }
