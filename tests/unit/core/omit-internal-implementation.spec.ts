@@ -42,7 +42,8 @@ describe('omitInternalImplementationNodes', () => {
           detectedFrom: [{ pattern: 'auth_middleware' }],
           sourceLocations: [
             {
-              filePath: 'backend/src/diagrams/services/asset-context.service.ts',
+              filePath:
+                'backend/src/diagrams/services/asset-context.service.ts',
               startLine: 5,
             },
           ],
@@ -70,7 +71,11 @@ describe('omitInternalImplementationNodes', () => {
           id: 'sendgrid',
           name: 'Sendgrid',
           type: 'third_party',
-          properties: { serviceName: 'sendgrid', client: 'axios', section_id: 'backend' },
+          properties: {
+            serviceName: 'sendgrid',
+            client: 'axios',
+            section_id: 'backend',
+          },
         },
       ],
       [
@@ -102,15 +107,72 @@ describe('omitInternalImplementationNodes', () => {
       { readSource }
     );
 
-    expect(result.components.map((component) => component.name).sort()).toEqual([
-      'Sendgrid',
-      'Users',
-      'backend',
-    ]);
-    expect(result.dataFlows.map((flow) => [flow.sourceComponentId, flow.targetComponentId])).toEqual([
+    expect(result.components.map((component) => component.name).sort()).toEqual(
+      ['Sendgrid', 'Users', 'backend']
+    );
+    expect(
+      result.dataFlows.map((flow) => [
+        flow.sourceComponentId,
+        flow.targetComponentId,
+      ])
+    ).toEqual([
       ['hub', 'users'],
       ['hub', 'sendgrid'],
     ]);
+  });
+
+  it('keeps section hubs that were promoted from a service class or an HTTP call', () => {
+    const result = omitInternalImplementationNodes(
+      [
+        {
+          id: 'backend',
+          name: 'backend',
+          type: 'asset',
+          subType: 'service',
+          detectedFrom: [{ pattern: 'auth_middleware' }],
+          sourceLocations: [
+            {
+              filePath:
+                'backend/src/diagrams/services/asset-context.service.ts',
+              startLine: 5,
+            },
+          ],
+          properties: { isMainApplication: true, section_id: 'backend' },
+        },
+        {
+          id: 'lambdas',
+          name: 'lambdas',
+          type: 'asset',
+          subType: 'api',
+          properties: {
+            isMainApplication: 'true',
+            client: 'axios',
+            section_id: 'backend/lambdas',
+          },
+        },
+        {
+          id: 'customer',
+          name: 'Customer',
+          type: 'actor',
+          properties: { section_id: 'backend' },
+        },
+      ],
+      [
+        {
+          sourceComponentId: 'customer',
+          targetComponentId: 'backend',
+          type: 'user_interaction',
+        },
+      ],
+      { readSource }
+    );
+
+    expect(result.components.map((component) => component.id)).toEqual([
+      'backend',
+      'lambdas',
+      'customer',
+    ]);
+    expect(result.dataFlows).toHaveLength(1);
   });
 
   it('keeps a service class when its source file cannot be read', () => {

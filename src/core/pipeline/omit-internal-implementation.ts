@@ -48,7 +48,10 @@ export interface OmitInternalImplementationOptions {
 }
 
 function compactName(value: string): string {
-  return value.trim().toLowerCase().replace(/[\s_-]+/g, '');
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_-]+/g, '');
 }
 
 function isMainApplication(component: OmittableComponent): boolean {
@@ -69,7 +72,10 @@ function serviceFileLocations(
   );
 }
 
-function declarationWindow(source: string, startLine: number | undefined): string {
+function declarationWindow(
+  source: string,
+  startLine: number | undefined
+): string {
   const lines = source.split(/\r?\n/);
   const start = Math.max(0, (startLine ?? 1) - 1);
   return lines.slice(start, start + 4).join('\n');
@@ -99,11 +105,15 @@ function isNestServiceClassNode(
   component: OmittableComponent,
   readSource: (filePath: string) => string | undefined
 ): boolean {
-  if (component.type !== 'asset' || component.subType !== 'service') return false;
+  if (component.type !== 'asset' || component.subType !== 'service')
+    return false;
   const locations = serviceFileLocations(component);
   if (locations.length === 0) return false;
   const patterns = (component.detectedFrom ?? []).map((ref) => ref.pattern);
-  if (patterns.length === 0 || patterns.some((pattern) => pattern !== 'auth_middleware')) {
+  if (
+    patterns.length === 0 ||
+    patterns.some((pattern) => pattern !== 'auth_middleware')
+  ) {
     return false;
   }
   if (isDirectusItemsService(component, readSource)) return false;
@@ -124,25 +134,23 @@ function isNestServiceClassNode(
   return false;
 }
 
-function stringProp(
-  component: OmittableComponent,
-  key: string
-): string {
+function stringProp(component: OmittableComponent, key: string): string {
   const value = component.properties?.[key];
   return typeof value === 'string' ? value : '';
 }
 
 function hasPublicUrl(component: OmittableComponent): boolean {
-  const url = stringProp(component, 'url') || (
-    /^https?:\/\//i.test(component.name) ? component.name : ''
-  );
+  const url =
+    stringProp(component, 'url') ||
+    (/^https?:\/\//i.test(component.name) ? component.name : '');
   if (!/^https?:\/\//i.test(url)) return false;
   if (/\$\{|process\.env|localhost|127\.0\.0\.1/i.test(url)) return false;
   return true;
 }
 
 function isBareHttpTransportNode(component: OmittableComponent): boolean {
-  if (component.properties?.sourceContext === 'dependency_manifest') return false;
+  if (component.properties?.sourceContext === 'dependency_manifest')
+    return false;
   if (hasPublicUrl(component)) return false;
 
   const serviceName = compactName(stringProp(component, 'serviceName'));
@@ -186,8 +194,9 @@ export function omitInternalImplementationNodes<
     components
       .filter(
         (component) =>
-          isNestServiceClassNode(component, readSource) ||
-          isBareHttpTransportNode(component)
+          !isMainApplication(component) &&
+          (isNestServiceClassNode(component, readSource) ||
+            isBareHttpTransportNode(component))
       )
       .map((component) => component.id)
   );
