@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 import type {
   AiInferenceProposalDetail,
   AiInferenceSummary,
@@ -7,6 +10,7 @@ import type {
   StructuralEnrichmentSummary,
 } from '../types';
 import { buildAgentOrchestratorOptions } from './ai-orchestrator-options';
+import { omitInternalImplementationNodes } from './omit-internal-implementation';
 import {
   emitScanProgress,
   finalizeDeterministicScanResult,
@@ -422,6 +426,21 @@ async function runScanPipelineInner(
   );
   components.splice(0, components.length, ...fallbackResult.components);
   let finalizedFlows: DetectedDataFlow[] = fallbackResult.dataFlows;
+
+  const omitted = omitInternalImplementationNodes(components, finalizedFlows, {
+    readSource: (filePath) => {
+      const absolute = path.isAbsolute(filePath)
+        ? filePath
+        : path.join(rootPath, filePath);
+      try {
+        return fs.readFileSync(absolute, 'utf8');
+      } catch {
+        return undefined;
+      }
+    },
+  });
+  components.splice(0, components.length, ...omitted.components);
+  finalizedFlows = omitted.dataFlows;
 
   const redFlagPass = applyConnectivityRedFlagPass(components, finalizedFlows);
   components.splice(0, components.length, ...redFlagPass.components);
