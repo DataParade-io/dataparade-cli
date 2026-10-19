@@ -24,6 +24,7 @@ const fileLanguageEnum = z.enum([
 
 export const scanConfigurationSchema = z.object({
   projectName: z.string().min(1).max(255).optional(),
+  organizationDomains: z.array(z.string().min(1)).optional(),
   excludePaths: z.array(z.string().min(1)).optional(),
   enableAPIDetection: z.boolean(),
   enableDatabaseDetection: z.boolean(),

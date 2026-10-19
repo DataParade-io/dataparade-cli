@@ -13,6 +13,7 @@ import { buildAgentOrchestratorOptions } from './ai-orchestrator-options';
 import { omitInternalImplementationNodes } from './omit-internal-implementation';
 import {
   emitScanProgress,
+  enrichOrchestratorResultWithPersonalDataLayers,
   finalizeDeterministicScanResult,
   runDeterministicScanPhases,
   type DeterministicScanWork,
@@ -495,7 +496,8 @@ async function runScanPipelineInner(
     };
   }
 
-  return { ...result, redFlags };
+  const enriched = await enrichOrchestratorResultWithPersonalDataLayers(rootPath, result);
+  return { ...enriched, redFlags };
 }
 
 /**

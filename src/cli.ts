@@ -7,11 +7,19 @@ import pkg from '../package.json';
 
 import type { DiagramGraphJsonSchema } from './core/schema';
 import { buildDataflowWrapper, writeDataflowJson } from './output/json';
+import { writeScanDiscoveriesArtifacts } from './output/write-scan-discoveries';
+import {
+  buildScanHierarchy,
+  writeScanKnowledgeGraph,
+} from './output/write-knowledge-graph';
+import { registerKbCommands } from './kb/register-kb-commands';
+import { scanOutputExcludes } from './output/scan-output-excludes';
 import {
   gitContextSchema,
   type GitContextSchema,
 } from './core/schema/dataflow-wrapper.schema';
 import { resolveSkipAutoUpload } from './config/upload-env';
+import { collectScanUploadFiles } from './upload/collect-scan-sidecars';
 import { AI_PROVIDER_IDS, type AiProviderId } from './ai-enrichment/types';
 import type { CliConfigFlags } from './config/types';
 import { parseAiInferenceScope } from './config/inference-scope';
@@ -212,6 +220,10 @@ function createProgram(): Command {
       '--git-context <json>',
       'Git repository context for evidence linking (JSON: {"provider":"github"|"gitlab","repository":"owner/repo","commitSha":"...","baseUrl?":"..."})'
     )
+    .option(
+      '--no-structure-graph',
+      'Do not write the knowledge graph (graphify-out/graph.json from graphify, when installed, and dataparade-graph.json)'
+    )
     .action(
       async (
         path: string,
@@ -244,6 +256,7 @@ function createProgram(): Command {
           byokProvider?: AiProviderId;
           byokModel?: string;
           skipAutoUpload?: boolean;
+          structureGraph?: boolean;
           gitContext?: string;
         }
       ) => {
@@ -359,7 +372,16 @@ function createProgram(): Command {
           const technicalLines: string[] = [];
 
           const flags: CliConfigFlags = {
-            exclude: options.exclude,
+            exclude: [
+              ...(options.exclude ?? []),
+              ...scanOutputExcludes(
+                resolvedScanRoot,
+                pathModule.resolve(
+                  process.cwd(),
+                  options.output ?? 'dataflow.json'
+                )
+              ),
+            ],
             minimumConfidence:
               typeof options.minimumConfidence === 'string'
                 ? Number(options.minimumConfidence)
@@ -561,7 +583,7 @@ function createProgram(): Command {
             }
           }
 
-          const { scanResult, redFlags } = await runScanPipeline(
+          const orchestratorResult = await runScanPipeline(
             resolvedScanRoot,
             config,
             (progress) => {
@@ -571,6 +593,7 @@ function createProgram(): Command {
               progressUi.onRecognition(recognition);
             }
           );
+          const { scanResult, redFlags } = orchestratorResult;
           if (scanResult.aiInferenceSummary) {
             progressUi.onAiResult({
               proposalsApplied: scanResult.aiInferenceSummary.proposalsApplied,
@@ -695,6 +718,11 @@ function createProgram(): Command {
               config.projectName?.trim() ||
               pathModule.basename(scanEntry.scanRootDir);
 
+            const hierarchy = await buildScanHierarchy(
+              orchestratorResult,
+              diagramGraph.nodes.map((node) => node.id)
+            );
+
             try {
               writeDataflowJson({
                 scanResult,
@@ -703,7 +731,14 @@ function createProgram(): Command {
                 projectName: resolvedProjectName,
                 redFlags,
                 gitContext: parsedGitContext,
+                hierarchy,
               });
+
+              const scanDiscoveriesPaths = writeScanDiscoveriesArtifacts(
+                orchestratorResult,
+                dataflowOutputPath,
+                { scanRootDir: scanEntry.scanRootDir }
+              );
 
               // Friendly TTY/plain progress line (additive).
               progressUi.onWroteDataflow(dataflowOutputPath);
@@ -713,6 +748,26 @@ function createProgram(): Command {
                 // eslint-disable-next-line no-console
                 console.log(
                   `[scan] dataflow.json written to ${dataflowOutputPath}`
+                );
+              }
+              // eslint-disable-next-line no-console
+              console.log(
+                `[scan] OCSF discoveries written to ${scanDiscoveriesPaths.ocsfDiscoveriesDir}`
+              );
+              // eslint-disable-next-line no-console
+              console.log(
+                `[scan] dataparade.json written to ${scanDiscoveriesPaths.dataparadeJsonPath}`
+              );
+              // eslint-disable-next-line no-console
+              console.log(
+                `[scan] discoveries diagram written to ${scanDiscoveriesPaths.collectedDiagramJsonPath}`
+              );
+
+              if (options.structureGraph !== false) {
+                await writeScanKnowledgeGraph(
+                  orchestratorResult,
+                  resolvedScanRoot,
+                  pathModule.dirname(dataflowOutputPath)
                 );
               }
 
@@ -730,8 +785,10 @@ function createProgram(): Command {
                       projectName: resolvedProjectName,
                       redFlags,
                       gitContext: parsedGitContext,
+                      hierarchy,
                     }
                   );
+                  const files = collectScanUploadFiles(dataflowOutputPath);
                   const uploadResult = await runDataflowUpload({
                     apiKey: workspaceApiKey,
                     dataflow: dataflowWrapper,
@@ -740,6 +797,7 @@ function createProgram(): Command {
                     logPrefix: '[scan]',
                     cliUsageSessionId: usageSessionId,
                     command: 'scan',
+                    files,
                     quiet: friendlyTty,
                   });
                   if (uploadResult.previewUrl) {
@@ -967,12 +1025,14 @@ function createProgram(): Command {
 
         try {
           const { runDataflowUpload } = await import('./upload/run-upload');
+          const files = collectScanUploadFiles(filePath);
           await runDataflowUpload({
             apiKey,
             dataflow,
             projectName,
             cliUsageSessionId: usageSessionId,
             command: 'upload',
+            files,
           });
         } catch (err) {
           const message = err instanceof Error ? err.message : 'Upload failed.';
@@ -1026,6 +1086,8 @@ function createProgram(): Command {
         process.exitCode = 1;
       }
     });
+
+  registerKbCommands(program);
 
   return program;
 }

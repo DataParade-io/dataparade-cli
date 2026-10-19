@@ -15,5 +15,10 @@ export type CliUploadPreviewInput = {
   projectName?: string;
   scanJobId?: string;
   cliUsageSessionId?: string;
-  command?: "scan" | "upload";
+  command?: 'scan' | 'upload';
+  graphifyGraph?: unknown;
+  dataparadeGraph?: unknown;
+  facts?: unknown[];
+  /** Written beside dataflow.json. Sent in later requests, not this body. */
+  files?: Array<{ relativePath: string; content: string }>;
 };

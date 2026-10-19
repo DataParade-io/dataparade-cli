@@ -1,0 +1,9 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {
+    "schema": "dataparade-graph/1"
+  },
+  "nodes": [],
+  "links": []
+}

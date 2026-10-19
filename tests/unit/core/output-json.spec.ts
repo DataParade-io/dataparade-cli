@@ -69,6 +69,21 @@ describe("output/json - DP-P0-CLI-403", () => {
     fs.unlinkSync(outputPath);
   });
 
+  it("creates a missing output folder (e.g. a new <repo>/.dataparade knowledge base)", async () => {
+    const fixturesRoot = path.join(__dirname, "..", "..", "fixtures", "typescript-basic");
+    const config = createDefaultScanConfiguration({ enableAiInference: false });
+    const { scanResult } = await runScanPipeline(fixturesRoot, config);
+    const graph = buildDiagramGraphFromScanResult(scanResult);
+    const kbDir = fs.mkdtempSync(path.join(os.tmpdir(), "dp-kb-out-"));
+    const outputPath = path.join(kbDir, "nested", ".dataparade", "dataflow.json");
+    try {
+      writeDataflowJson({ scanResult, graph, outputPath });
+      expect(validateDataflowJson(JSON.parse(fs.readFileSync(outputPath, "utf8"))).ok).toBe(true);
+    } finally {
+      fs.rmSync(kbDir, { recursive: true, force: true });
+    }
+  });
+
   it("throws and does not write a file when validation fails", async () => {
     const fixturesRoot = path.join(
       __dirname,

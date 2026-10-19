@@ -32,6 +32,22 @@ describe("scanConfigurationSchema", () => {
     }
   });
 
+  it("accepts organizationDomains", () => {
+    const input = {
+      enableAPIDetection: true,
+      enableDatabaseDetection: true,
+      enableDataFlowDetection: true,
+      minimumConfidence: 0.5,
+      organizationDomains: ["dataparade.io"],
+    };
+
+    const result = validateScanConfiguration(input);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.organizationDomains).toEqual(["dataparade.io"]);
+    }
+  });
+
   it("accepts python in languages", () => {
     const input = {
       enableAPIDetection: true,

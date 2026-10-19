@@ -55,6 +55,10 @@ describe('runDataflowUpload anonymous path', () => {
       scanJobId: 'job-anon-1',
       cliUsageSessionId: undefined,
       command: 'scan',
+      graphifyGraph: undefined,
+      dataparadeGraph: undefined,
+      facts: undefined,
+      files: undefined,
     });
     expect(cliUploadPreview).not.toHaveBeenCalled();
     expect(result.previewUrl).toContain('claim-1');

@@ -222,6 +222,9 @@ export function resolveScanConfiguration(
     if (fileResult) {
       const { config } = fileResult;
       if (config.projectName) overrides.projectName = config.projectName;
+      if (config.organizationDomains && config.organizationDomains.length > 0) {
+        overrides.organizationDomains = config.organizationDomains;
+      }
       if (config.excludePaths) overrides.excludePaths = config.excludePaths;
       if (typeof config.enableAPIDetection === 'boolean') {
         overrides.enableAPIDetection = config.enableAPIDetection;

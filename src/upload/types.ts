@@ -5,7 +5,12 @@ export type RunDataflowUploadInput = {
   scanJobId?: string;
   logPrefix?: string;
   cliUsageSessionId?: string;
-  command?: "scan" | "upload";
+  command?: 'scan' | 'upload';
+  graphifyGraph?: unknown;
+  dataparadeGraph?: unknown;
+  facts?: unknown[];
+  /** Scan files uploaded in their own requests, not inside the diagram body. */
+  files?: Array<{ relativePath: string; content: string }>;
   /** Skip the `[prefix] Preview ready` lines (TTY scan renders its own block). */
   quiet?: boolean;
 };

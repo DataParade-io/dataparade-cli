@@ -1,6 +1,6 @@
 {
   "name": "@dataparade/cli",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "dataPARADE CLI — scan codebases for privacy and security data flows",
   "publishConfig": {
     "access": "public",
@@ -41,30 +41,32 @@
     }
   },
   "bin": {
-    "@dataparade/cli": "dist/bin/cli.js"
+    "dataparade": "dist/bin/cli.js"
   },
   "scripts": {
     "ensure-scanner": "node scripts/ensure-scanner-built.mjs",
-    "build": "pnpm exec tsc -p tsconfig.json",
-    "prepublishOnly": "pnpm run ensure-scanner && pnpm run build && pnpm run test",
+    "build": "node scripts/ensure-scanner-built.mjs && pnpm exec tsc -p tsconfig.json && node scripts/vendor-scanner.mjs",
+    "prepublishOnly": "pnpm run build && pnpm run test",
     "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
-    "pretest": "pnpm run ensure-scanner && pnpm run build",
+    "pretest": "pnpm run build",
     "test": "jest",
     "scan": "node dist/bin/cli.js scan",
     "eval:models": "pnpm exec node dist/src/evals/run-model-matrix.js"
   },
   "dependencies": {
     "@clack/prompts": "^1.8.1",
-    "@dataparade/scanner": "github:DataParade-io/scanner#e66e1bcaef55b61214d170c617df529bd300fc89",
     "@sentry/node": "^10.38.0",
     "commander": "^12.1.0",
     "dotenv": "^16.4.7",
     "langsmith": "^0.3.14",
+    "tree-sitter-wasms": "^0.1.13",
     "typescript": "^5.7.3",
+    "web-tree-sitter": "0.25.10",
     "yaml": "^2.8.2",
     "zod": "^4.3.5"
   },
   "devDependencies": {
+    "@dataparade/scanner": "github:DataParade-io/scanner#8133cd81f377d5a6a80a84fa0eb41b0c85d26087",
     "@eslint/js": "^9.18.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.0.0",

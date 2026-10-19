@@ -28,6 +28,7 @@ const fileLanguageEnum = z.enum([
 const cliConfigFileSchema = z
   .object({
     projectName: z.string().min(1).max(255).optional(),
+    organizationDomains: z.array(z.string().min(1)).optional(),
     excludePaths: z.array(z.string().min(1)).optional(),
     enableAPIDetection: z.boolean().optional(),
     enableDatabaseDetection: z.boolean().optional(),

@@ -5,6 +5,8 @@ import type { AiInferenceScope, AiProviderId } from "../ai-enrichment/types";
 // Shape of values loaded from dataparade.config.json
 export interface CliConfigFile {
   projectName?: string;
+  /** Hostnames treated as the scanned org (not third parties). Subdomains match. */
+  organizationDomains?: string[];
   excludePaths?: string[];
   enableAPIDetection?: boolean;
   enableDatabaseDetection?: boolean;

@@ -7,6 +7,7 @@ import { assignStableComponentIds } from "@dataparade/scanner";
 import type { AiProposal } from "../../../src/ai-enrichment/types";
 import type { DetectedComponent } from "../../../src/core/types/component";
 import type { FileInfo } from "../../../src/core/types/file";
+import { STABLE_COMPONENT_ID_PATTERN } from "@dataparade/scanner";
 
 function thirdPartyComponent(): DetectedComponent {
   return {
@@ -903,7 +904,7 @@ describe("buildThirdPartyDataFlowSummary", () => {
     );
     const finalGoogle = stable.components.find((c) => c.name === "Google");
     const finalAuth0 = stable.components.find((c) => c.name === "Auth0");
-    expect(finalGoogle?.id).toMatch(/^cmp_\d+$/);
+    expect(finalGoogle?.id).toMatch(STABLE_COMPONENT_ID_PATTERN);
     expect(finalGoogle?.id).not.toBe("cmp_old_google");
 
     const remap = buildProposalTargetComponentIdRemap(
@@ -967,7 +968,7 @@ describe("buildThirdPartyDataFlowSummary", () => {
     expect(googleEntry).toBeDefined();
     expect(googleEntry?.source).toBe("provider");
     expect(googleEntry?.notes).toContain("ai_provider_inference_present");
-    expect(summary.entries.every((e) => /^cmp_\d+$/.test(e.componentId))).toBe(true);
+    expect(summary.entries.every((e) => STABLE_COMPONENT_ID_PATTERN.test(e.componentId))).toBe(true);
   });
 
   it("includes managed-service third parties with heuristic-only insights when absent post-AI", () => {

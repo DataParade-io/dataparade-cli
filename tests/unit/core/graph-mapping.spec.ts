@@ -70,13 +70,12 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
             cloudProvider: "AWS",
           },
         },
-        // Self-loop flows are dropped from the graph, so the flow needs a
-        // distinct target to become an edge.
+        // The flow needs a distinct target: diagrams drop self-loop flows.
         {
           id: "component-2",
-          name: "Health Monitor",
+          name: "Customer Database",
           type: "asset",
-          subType: "service",
+          subType: "database",
           confidence: 0.9,
           detectedFrom: [],
           sourceLocations: [],
@@ -123,9 +122,8 @@ describe("core/pipeline/graph-mapping - DP-P0-CLI-402", () => {
     expect(graph.nodes).toHaveLength(2);
     expect(graph.edges).toHaveLength(1);
 
-    const node = graph.nodes.find((n) => n.id === "component-1");
-    expect(node).toBeDefined();
-    const nodeData = node!.data as any;
+    const node = graph.nodes.find((candidate) => candidate.id === "component-1")!;
+    const nodeData = node.data as any;
 
     expect(nodeData.label).toBe("Test Application");
     expect(nodeData.description).toBe("Main application service");

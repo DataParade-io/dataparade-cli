@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 
 import type { DiagramGraphJsonSchema } from '../core/schema';
 import {
@@ -9,6 +10,7 @@ import {
 } from '../core/schema/dataflow-wrapper.schema';
 import type { ScanResult } from '../core/types';
 import type { ScanRedFlag } from '../ai-enrichment/red-flags';
+import type { DataflowHierarchy } from './c4-hierarchy';
 
 export interface BuildDataflowWrapperOptions {
   /**
@@ -31,6 +33,11 @@ export interface BuildDataflowWrapperOptions {
    * When provided, enables converting evidence file paths to clickable GitHub/GitLab URLs.
    */
   gitContext?: GitContextSchema;
+  /**
+   * C4 container/component hierarchy, written under `metadata.hierarchy`.
+   * Component ids must equal `graph` node ids (see `buildDataflowHierarchy`).
+   */
+  hierarchy?: DataflowHierarchy;
 }
 
 /**
@@ -73,6 +80,10 @@ export function buildDataflowWrapper(
     (metadata as Record<string, unknown>).gitContext = options.gitContext;
   }
 
+  if (options.hierarchy) {
+    (metadata as Record<string, unknown>).hierarchy = options.hierarchy;
+  }
+
   return {
     schemaVersion,
     graph,
@@ -103,6 +114,8 @@ export interface WriteDataflowJsonOptions {
   redFlags?: ScanRedFlag[];
   /** Git repository context for evidence linking. */
   gitContext?: GitContextSchema;
+  /** C4 hierarchy for `metadata.hierarchy`. */
+  hierarchy?: DataflowHierarchy;
 }
 
 /**
@@ -126,6 +139,7 @@ export function writeDataflowJson(options: WriteDataflowJsonOptions): void {
     projectName,
     redFlags,
     gitContext,
+    hierarchy,
   } = options;
 
   const wrapper = buildDataflowWrapper(scanResult, graph, {
@@ -133,6 +147,7 @@ export function writeDataflowJson(options: WriteDataflowJsonOptions): void {
     projectName,
     redFlags,
     gitContext,
+    hierarchy,
   });
 
   const validation = validateDataflowJson(wrapper);
@@ -143,5 +158,7 @@ export function writeDataflowJson(options: WriteDataflowJsonOptions): void {
 
   const json = JSON.stringify(validation.value, null, 2);
 
+  // `-o <kb>/dataflow.json` names a knowledge base folder that may not exist yet.
+  fs.mkdirSync(path.dirname(path.resolve(outputPath)), { recursive: true });
   fs.writeFileSync(outputPath, json, 'utf8');
 }

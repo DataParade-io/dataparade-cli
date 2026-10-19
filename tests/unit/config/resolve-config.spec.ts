@@ -79,6 +79,31 @@ describe("resolveScanConfiguration", () => {
     }
   });
 
+  it("reads organizationDomains from dataparade.config.json", () => {
+    const tempCwd = fs.mkdtempSync(path.join(os.tmpdir(), "dp-cli-org-domains-"));
+    const configPath = path.join(tempCwd, "dataparade.config.json");
+
+    try {
+      fs.writeFileSync(
+        configPath,
+        JSON.stringify({ organizationDomains: ["dataparade.io", "api.example.com"] }),
+        "utf8",
+      );
+
+      const { overrides } = resolveScanConfiguration({
+        cwd: tempCwd,
+        flags: {},
+      });
+
+      expect(overrides.organizationDomains).toEqual([
+        "dataparade.io",
+        "api.example.com",
+      ]);
+    } finally {
+      fs.rmSync(tempCwd, { recursive: true, force: true });
+    }
+  });
+
   it("reads terraformStackSectionPathDepth from dataparade.config.json", () => {
     const tempCwd = fs.mkdtempSync(path.join(os.tmpdir(), "dp-cli-tfsec-"));
     const configPath = path.join(tempCwd, "dataparade.config.json");

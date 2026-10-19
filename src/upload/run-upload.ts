@@ -26,6 +26,10 @@ export async function runDataflowUpload(
         scanJobId: input.scanJobId,
         cliUsageSessionId: sessionId,
         command,
+        graphifyGraph: input.graphifyGraph,
+        dataparadeGraph: input.dataparadeGraph,
+        facts: input.facts,
+        files: input.files,
       });
       const previewUrl = buildImportPreviewUrl(result.draftId, sessionId);
       if (!input.quiet) {
@@ -51,6 +55,10 @@ export async function runDataflowUpload(
       scanJobId: input.scanJobId,
       cliUsageSessionId: sessionId,
       command,
+      graphifyGraph: input.graphifyGraph,
+      dataparadeGraph: input.dataparadeGraph,
+      facts: input.facts,
+      files: input.files,
     });
     const previewUrl = buildAnonymousCliPreviewUrl(
       result.claimToken,
