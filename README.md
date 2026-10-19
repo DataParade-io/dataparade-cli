@@ -4,7 +4,7 @@ The **dataPARADE CLI** (`@dataparade/cli`) scans a codebase and produces a **`da
 
 - **Primary command**: `scan <path>`
 - **Supported languages**: TypeScript, JavaScript, Python, Go, Java, Kotlin, C++, C#/.NET, Terraform
-- **License**: GPL-3.0-or-later — see [`LICENSE`](./LICENSE). Source: [DataParade-io/dataparade-cli](https://github.com/DataParade-io/dataparade-cli)
+- **License**: Apache-2.0 — see [`LICENSE`](./LICENSE). Source: [DataParade-io/dataparade-cli](https://github.com/DataParade-io/dataparade-cli)
 
 **Full documentation:** [app.dataparade.io/docs/cli-import-and-zip](https://app.dataparade.io/docs/cli-import-and-zip)
 
@@ -82,4 +82,4 @@ By default, the CLI writes `./dataflow.json` in the current working directory.
 
 ## License
 
-GPL-3.0-or-later · Source: [github.com/DataParade-io/dataparade-cli](https://github.com/DataParade-io/dataparade-cli)
+Apache-2.0 · Source: [github.com/DataParade-io/dataparade-cli](https://github.com/DataParade-io/dataparade-cli)

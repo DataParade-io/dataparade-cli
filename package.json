@@ -1,12 +1,12 @@
 {
   "name": "@dataparade/cli",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "dataPARADE CLI — scan codebases for privacy and security data flows",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "license": "GPL-3.0-or-later",
+  "license": "Apache-2.0",
   "author": "DataParade",
   "homepage": "https://dataparade.io",
   "repository": {
@@ -66,7 +66,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@dataparade/scanner": "github:DataParade-io/scanner#8133cd81f377d5a6a80a84fa0eb41b0c85d26087",
+    "@dataparade/scanner": "github:DataParade-io/scanner#0b1a31e7444acbf1e43d800e26a37746f11e7232",
     "@eslint/js": "^9.18.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.0.0",
@@ -79,6 +79,7 @@
   "files": [
     "dist",
     "LICENSE",
+    "NOTICE",
     "README.md",
     "package.json"
   ]

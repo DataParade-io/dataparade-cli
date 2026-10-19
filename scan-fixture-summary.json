@@ -952,7 +952,7 @@
     "componentsCount": 5,
     "dataFlowsCount": 4,
     "filesScanned": 6,
-    "scanDurationMs": 864,
+    "scanDurationMs": 923,
     "projectName": "typescript-basic",
     "hierarchy": {
       "heuristic": "L2 containers = first path segment of in-boundary asset component source files (sub type when no path); L3 = asset components nested under them. Component ids equal diagram graph node ids.",

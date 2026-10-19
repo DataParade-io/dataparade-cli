@@ -49,8 +49,10 @@ function main() {
   mkdirSync(join(vendorDir, "dist"), { recursive: true });
   cpSync(scannerDist, join(vendorDir, "dist", "src"), { recursive: true });
   cpSync(join(scannerRoot, "patterns"), join(vendorDir, "patterns"), { recursive: true });
-  if (existsSync(join(scannerRoot, "LICENSE"))) {
-    cpSync(join(scannerRoot, "LICENSE"), join(vendorDir, "LICENSE"));
+  for (const file of ["LICENSE", "NOTICE"]) {
+    if (existsSync(join(scannerRoot, file))) {
+      cpSync(join(scannerRoot, file), join(vendorDir, file));
+    }
   }
   // Minimal manifest: marks the package root for the scanner's own path lookups. No dependencies —
   // typescript, yaml and zod are dependencies of @dataparade/cli and resolve from its node_modules.
