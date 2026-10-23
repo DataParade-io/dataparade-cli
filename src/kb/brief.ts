@@ -4,13 +4,12 @@ import path from "path";
 
 import type { A0DiscoveriesDocument } from "../discoveries/contract/discoveries-document.schema";
 import { PINNED_ONTOLOGY_VERSION } from "../discoveries/contract/ontology-pins";
-import { scanEntityAsserts } from "../discoveries/scan-entity-uri";
 import { ensureDir, KbError, loadKbState, type KbPaths } from "./kb-store";
 import { SHAPE_FOR_SLOT, SYSTEM_ASSERTS_URI, type EligibleShape, type InterviewSlot } from "./slot-shapes";
 
 /**
  * A KB brief is a snapshot of what the knowledge base knows and what an
- * interview may ask, generated from the Discovery records. It replaces the
+ * interview may ask, generated from facts.json, the data item files and answers.json. It replaces the
  * hand-pinned dogfood brief for live sessions: its content SHA is the
  * `brief_sha` every answer cites, and the file stays in `<kb>/briefs/` so that
  * provenance resolves to the exact state the question was asked from.
@@ -47,7 +46,6 @@ export interface KbBrief {
   kind: "dataparade_kb_brief";
   version: 1;
   ontology_version: string;
-  scan_paths: string[];
   system: { asserts: string; in_scope: string | null };
   actors: Array<KbBriefEntity & { actor_kind: string | null }>;
   external_systems: KbBriefEntity[];
@@ -63,8 +61,9 @@ function rawEntityId(projectedId: string): string {
   return at === -1 ? projectedId : projectedId.slice(at + RAW_ID_SEPARATOR.length);
 }
 
-function entityAsserts(entity: { id: string; scanPath?: string }): string {
-  return scanEntityAsserts(entity.scanPath || undefined, rawEntityId(entity.id));
+/** What a question is about: the Fact's id (or `dp:a0/system`). */
+function entityAsserts(entity: { id: string }): string {
+  return rawEntityId(entity.id);
 }
 
 export function buildKbBrief(document: A0DiscoveriesDocument): KbBrief {
@@ -128,15 +127,10 @@ export function buildKbBrief(document: A0DiscoveriesDocument): KbBrief {
     ...actors.map((a) => question(a.asserts, "actor_kind", Boolean(a.actor_kind), `Is "${a.name}" a specific person, a role, or a persona?`)),
   );
 
-  const scanPaths = Array.from(
-    new Set(document.components.map((c) => c.scanPath).filter((p): p is string => Boolean(p))),
-  ).sort();
-
   return {
     kind: "dataparade_kb_brief",
     version: 1,
     ontology_version: PINNED_ONTOLOGY_VERSION,
-    scan_paths: scanPaths,
     system: { asserts: SYSTEM_ASSERTS_URI, in_scope: inScope },
     actors,
     external_systems: externalSystems,

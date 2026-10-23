@@ -79,4 +79,29 @@ describe('buildTeachingLineGroups', () => {
     const groups = buildTeachingLineGroups([], []);
     expect(flattenTeachingLines(groups)).toEqual([]);
   });
+
+  it('counts every Next.js spelling as one framework and skips manifest hints', () => {
+    const groups = buildTeachingLineGroups(
+      [
+        finding('express_route', { framework: 'next_or_react_route' }),
+        finding('express_route', { framework: 'nextjs' }),
+        finding('express_route', { framework: 'next' }),
+        finding('express_route', {
+          framework: 'nextjs',
+          sourceContext: 'dependency_manifest',
+        }),
+      ],
+      []
+    );
+    expect(groups.routes).toEqual(['Found 3 Next.js routes']);
+  });
+
+  it('turns underscores in vendor names into title-cased words', () => {
+    const groups = buildTeachingLineGroups(
+      [],
+      [thirdParty('Google_identity'), thirdParty('stripe')]
+    );
+    expect(groups.outbound).toEqual(['Calls out to Google Identity and Stripe']);
+  });
 });
+

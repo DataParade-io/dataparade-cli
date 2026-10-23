@@ -33,7 +33,7 @@ export async function runDataflowUpload(
       });
       const previewUrl = buildImportPreviewUrl(result.draftId, sessionId);
       if (!input.quiet) {
-        // eslint-disable-next-line no-console
+         
         console.log(`${prefix} Preview ready: ${previewUrl}`);
       }
       if (sessionId) {
@@ -70,9 +70,9 @@ export async function runDataflowUpload(
         ? ' and any platform AI tokens used during the scan.'
         : '.');
     if (!input.quiet) {
-      // eslint-disable-next-line no-console
+       
       console.log(`${prefix} Preview ready: ${previewUrl}`);
-      // eslint-disable-next-line no-console
+       
       console.log(`${prefix} ${notice}`);
     }
     if (sessionId) {

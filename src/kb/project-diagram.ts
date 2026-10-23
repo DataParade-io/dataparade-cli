@@ -4,9 +4,9 @@ import type { A0DiscoveriesDocument } from "../discoveries/contract/discoveries-
 import { loadKbState, type KbPaths } from "./kb-store";
 
 /**
- * Project the KB (scan + interview Discoveries) into the DiagramGraphJson the
+ * Project the KB (scan Facts + answers) into the DiagramGraphJson the
  * viewer renders. Diagrams are projections of KB facts (c4-from-kb.md): nothing
- * here is stored back, and every label traces to a Discovery.
+ * here is stored back, and every label traces to a Fact or an answer.
  */
 const NODE_TYPE: Record<string, string> = {
   asset: "asset",
@@ -127,7 +127,7 @@ export function projectKbDiagram(
 
 function projectNameFromScan(paths: KbPaths): string | undefined {
   try {
-    const dataflow = JSON.parse(fs.readFileSync(`${paths.root}/dataflow.json`, "utf8")) as {
+    const dataflow = JSON.parse(fs.readFileSync(paths.dataflowPath, "utf8")) as {
       metadata?: { projectName?: string };
     };
     return dataflow.metadata?.projectName;
@@ -145,7 +145,7 @@ export function writeKbDiagram(paths: KbPaths, options: { projectName?: string }
   const state = loadKbState(paths);
   const wrapper = projectKbDiagram(state.document, {
     projectName: options.projectName ?? projectNameFromScan(paths),
-    interviewAnswerCount: state.records.filter((r) => r.dataparade.source === "interview").length,
+    interviewAnswerCount: state.answers.filter((a) => a.source === "interview").length,
     orphanCount: state.orphans.length,
   });
   fs.writeFileSync(paths.diagramPath, `${JSON.stringify(wrapper, null, 2)}\n`, "utf8");

@@ -73,7 +73,7 @@ async function run(): Promise<void> {
   ].join("\n");
   fs.writeFileSync(markdownPath, markdown, "utf8");
 
-  // eslint-disable-next-line no-console
+   
   console.log(`Model eval reports written:\n- ${jsonPath}\n- ${markdownPath}`);
 }
 

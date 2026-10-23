@@ -7,12 +7,14 @@ import pkg from '../package.json';
 
 import type { DiagramGraphJsonSchema } from './core/schema';
 import { buildDataflowWrapper, writeDataflowJson } from './output/json';
-import { writeScanDiscoveriesArtifacts } from './output/write-scan-discoveries';
 import {
   buildScanHierarchy,
-  writeScanKnowledgeGraph,
-} from './output/write-knowledge-graph';
+  prepareScanKnowledge,
+  writeScanFacts,
+} from './output/write-scan-knowledge';
+import { DEFAULT_DATAFLOW_OUTPUT, resolveOutputLayout } from './facts/layout';
 import { registerKbCommands } from './kb/register-kb-commands';
+import { registerExportCommands } from './export/register-export-commands';
 import { scanOutputExcludes } from './output/scan-output-excludes';
 import {
   gitContextSchema,
@@ -45,6 +47,18 @@ import { validateScanConfiguration } from './core/schema/scan-config.schema';
 import type { AiInferenceProposalDetail } from './core/types';
 import { resolveScanFilesystemEntry } from '@dataparade/scanner';
 import { createScanProgressRenderer } from './ui/scan-progress-renderer';
+
+/** The scanner is vendored into the CLI; its version is the commit the CLI depends on. */
+function scannerVersionFromPackage(): string {
+  // Built from parts: the vendor step rewrites the scanner's package name in string literals.
+  const scannerPackage = ['@dataparade', 'scanner'].join('/');
+  const spec = (pkg.devDependencies as Record<string, string> | undefined)?.[
+    scannerPackage
+  ];
+  if (!spec) return 'unknown';
+  const ref = spec.split('#')[1];
+  return ref ? ref.slice(0, 12) : spec;
+}
 
 function formatEvidence(detail: AiInferenceProposalDetail): string {
   const evidence = detail.evidence;
@@ -129,7 +143,7 @@ function createProgram(): Command {
     )
     .option(
       '-o, --output <file>',
-      'Write dataflow.json wrapper to the given file (default: ./dataflow.json)'
+      `Write dataflow.json to the given file; facts.json, data-items/ and graphify.json go next to it (default: ./${DEFAULT_DATAFLOW_OUTPUT})`
     )
     .option(
       '--exclude <pattern...>',
@@ -222,7 +236,7 @@ function createProgram(): Command {
     )
     .option(
       '--no-structure-graph',
-      'Do not write the knowledge graph (graphify-out/graph.json from graphify, when installed, and dataparade-graph.json)'
+      'Do not run graphify (graphify.json is not written, and Facts have no code references)'
     )
     .action(
       async (
@@ -283,7 +297,7 @@ function createProgram(): Command {
               const errors = validated.error.issues
                 .map((i) => `${i.path.join('.') || '<root>'}: ${i.message}`)
                 .join('; ');
-              // eslint-disable-next-line no-console
+
               console.error(`[scan] invalid --git-context: ${errors}`);
               process.exitCode = 2;
               return;
@@ -292,7 +306,7 @@ function createProgram(): Command {
           } catch (parseErr) {
             const message =
               parseErr instanceof Error ? parseErr.message : 'Invalid JSON';
-            // eslint-disable-next-line no-console
+
             console.error(`[scan] failed to parse --git-context: ${message}`);
             process.exitCode = 2;
             return;
@@ -339,7 +353,7 @@ function createProgram(): Command {
               failurePhase: 'resolve_path',
               failureCode: 'path_not_found',
             });
-            // eslint-disable-next-line no-console
+
             console.error(`[scan] error: ${message}`);
             process.exitCode = 2;
             return;
@@ -378,7 +392,7 @@ function createProgram(): Command {
                 resolvedScanRoot,
                 pathModule.resolve(
                   process.cwd(),
-                  options.output ?? 'dataflow.json'
+                  options.output ?? DEFAULT_DATAFLOW_OUTPUT
                 )
               ),
             ],
@@ -489,7 +503,6 @@ function createProgram(): Command {
               if (friendlyTty) {
                 technicalLines.push(quotaLine);
               } else {
-                // eslint-disable-next-line no-console
                 console.log(quotaLine);
               }
             }
@@ -524,7 +537,6 @@ function createProgram(): Command {
                 if (friendlyTty) {
                   technicalLines.push(sessionLine);
                 } else {
-                  // eslint-disable-next-line no-console
                   console.log(sessionLine);
                 }
               }
@@ -539,7 +551,7 @@ function createProgram(): Command {
                 code: 'anonymous_ai_session_failed',
                 message: truncateFailureMessage(message),
               };
-              // eslint-disable-next-line no-console
+
               console.error(`[scan] ${message}`);
               process.exitCode =
                 anonSessionError instanceof CliAnonymousIpLimitError ? 2 : 1;
@@ -564,7 +576,7 @@ function createProgram(): Command {
               failurePhase: 'config_validation',
               failureCode: 'invalid_configuration',
             });
-            // eslint-disable-next-line no-console
+
             console.error(
               `[scan] invalid configuration:\n${configValidation.errors.map((e) => `  - ${e}`).join('\n')}`
             );
@@ -576,11 +588,24 @@ function createProgram(): Command {
             if (friendlyTty) {
               for (const w of warnings) progressUi.warn(w);
             } else {
-              // eslint-disable-next-line no-console
               console.warn(
                 `[scan] warnings:\n${warnings.map((w) => `  - ${w}`).join('\n')}`
               );
             }
+          }
+
+          {
+            const { summarizeScanTree, describeScanTree } = await import(
+              './platform-api/estimate-scan-footprint'
+            );
+            const tree = describeScanTree(
+              await summarizeScanTree(
+                scanEntry.scanRootDir,
+                config.excludePaths ?? []
+              )
+            );
+            progressUi.info(tree.line);
+            if (tree.warning) progressUi.warn(tree.warning);
           }
 
           const orchestratorResult = await runScanPipeline(
@@ -701,7 +726,7 @@ function createProgram(): Command {
                 graphError instanceof Error
                   ? graphError.message
                   : 'Unknown error while building diagram graph.';
-              // eslint-disable-next-line no-console
+
               console.error(
                 `[scan] warning: unable to build diagram graph: ${message}`
               );
@@ -712,14 +737,21 @@ function createProgram(): Command {
           if (diagramGraph) {
             const dataflowOutputPath = pathModule.resolve(
               process.cwd(),
-              options.output ?? 'dataflow.json'
+              options.output ?? DEFAULT_DATAFLOW_OUTPUT
             );
             const resolvedProjectName =
               config.projectName?.trim() ||
               pathModule.basename(scanEntry.scanRootDir);
 
-            const hierarchy = await buildScanHierarchy(
+            const layout = resolveOutputLayout(dataflowOutputPath);
+            const knowledge = await prepareScanKnowledge(
               orchestratorResult,
+              resolvedScanRoot,
+              layout,
+              { structureGraph: options.structureGraph !== false }
+            );
+            const hierarchy = buildScanHierarchy(
+              knowledge.graph,
               diagramGraph.nodes.map((node) => node.id)
             );
 
@@ -734,43 +766,27 @@ function createProgram(): Command {
                 hierarchy,
               });
 
-              const scanDiscoveriesPaths = writeScanDiscoveriesArtifacts(
-                orchestratorResult,
-                dataflowOutputPath,
-                { scanRootDir: scanEntry.scanRootDir }
-              );
+              writeScanFacts(layout, {
+                knowledge,
+                scanRoot: scanEntry.scanRootDir,
+                projectName: resolvedProjectName,
+                cliVersion: pkg.version,
+                scannerVersion: scannerVersionFromPackage(),
+              });
 
               // Friendly TTY/plain progress line (additive).
               progressUi.onWroteDataflow(dataflowOutputPath);
               // Machine line for scripts / CI (non-TTY). The friendly TTY UI
               // shows the path in its own success line instead.
               if (!friendlyTty) {
-                // eslint-disable-next-line no-console
                 console.log(
                   `[scan] dataflow.json written to ${dataflowOutputPath}`
                 );
               }
-              // eslint-disable-next-line no-console
-              console.log(
-                `[scan] OCSF discoveries written to ${scanDiscoveriesPaths.ocsfDiscoveriesDir}`
-              );
-              // eslint-disable-next-line no-console
-              console.log(
-                `[scan] dataparade.json written to ${scanDiscoveriesPaths.dataparadeJsonPath}`
-              );
-              // eslint-disable-next-line no-console
-              console.log(
-                `[scan] discoveries diagram written to ${scanDiscoveriesPaths.collectedDiagramJsonPath}`
-              );
 
-              if (options.structureGraph !== false) {
-                await writeScanKnowledgeGraph(
-                  orchestratorResult,
-                  resolvedScanRoot,
-                  pathModule.dirname(dataflowOutputPath)
-                );
-              }
-
+              console.log(
+                `[scan] facts.json and data-items/ written to ${layout.dir}`
+              );
               const skipAutoUpload =
                 Boolean(options.skipAutoUpload) ||
                 resolveSkipAutoUpload(process.env);
@@ -814,7 +830,6 @@ function createProgram(): Command {
                   if (friendlyTty) {
                     progressUi.warn(`Auto-upload failed: ${uploadMessage}`);
                   } else {
-                    // eslint-disable-next-line no-console
                     console.error(
                       `[scan] Auto-upload failed: ${uploadMessage}`
                     );
@@ -844,7 +859,7 @@ function createProgram(): Command {
                 dataflowError instanceof Error
                   ? dataflowError.message
                   : 'Unknown error while writing dataflow.json.';
-              // eslint-disable-next-line no-console
+
               console.error(
                 `[scan] error: failed to write dataflow.json: ${message}`
               );
@@ -874,7 +889,6 @@ function createProgram(): Command {
             quotaCompletionReported = true;
             // The Clack outro already closes the run in friendly TTY.
             if (isInteractive && !friendlyTty) {
-              // eslint-disable-next-line no-console
               console.log(
                 '[scan] Scan finished — you can start a new scan now.'
               );
@@ -909,7 +923,7 @@ function createProgram(): Command {
                 ? 'scan_already_running'
                 : 'scan_exception',
           });
-          // eslint-disable-next-line no-console
+
           console.error(
             quotaBlocked
               ? `[scan] workspace quota: ${message}`
@@ -952,7 +966,6 @@ function createProgram(): Command {
               });
               quotaCompletionReported = true;
               if (isInteractive) {
-                // eslint-disable-next-line no-console
                 console.log(
                   '[scan] Scan finished — you can start a new scan now.'
                 );
@@ -996,7 +1009,7 @@ function createProgram(): Command {
 
         const filePath = pathModule.resolve(
           process.cwd(),
-          file || 'dataflow.json'
+          file || DEFAULT_DATAFLOW_OUTPUT
         );
         let dataflow: unknown;
         try {
@@ -1005,7 +1018,7 @@ function createProgram(): Command {
         } catch (err) {
           const message =
             err instanceof Error ? err.message : 'Failed to read dataflow.json';
-          // eslint-disable-next-line no-console
+
           console.error(`[upload] error: ${message}`);
           process.exitCode = 1;
           return;
@@ -1036,7 +1049,7 @@ function createProgram(): Command {
           });
         } catch (err) {
           const message = err instanceof Error ? err.message : 'Upload failed.';
-          // eslint-disable-next-line no-console
+
           console.error(`[upload] error: ${message}`);
           process.exitCode = 1;
         }
@@ -1074,20 +1087,20 @@ function createProgram(): Command {
         const config = createDefaultScanConfiguration(overrides);
         const displayConfig = redactScanConfigurationForDisplay(config);
 
-        // eslint-disable-next-line no-console
         console.log(JSON.stringify(displayConfig, null, 2));
       } catch (err) {
         const message =
           err instanceof Error
             ? err.message
             : 'Unknown error while loading configuration.';
-        // eslint-disable-next-line no-console
+
         console.error('Failed to read configuration:', message);
         process.exitCode = 1;
       }
     });
 
   registerKbCommands(program);
+  registerExportCommands(program);
 
   return program;
 }

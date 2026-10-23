@@ -1,55 +1,33 @@
 import fs from "fs";
-import os from "os";
 import path from "path";
 
-import { landScanDiscoveryToOcsfRecords } from "../../../src/discoveries/scan-discovery-to-ocsf";
-import { scanEntityAsserts } from "../../../src/discoveries/scan-entity-uri";
-import {
-  removeScanRecordsForScanPath,
-  writeOcsfDiscoveryRecordsToDir,
-} from "../../../src/discoveries/write-ocsf-discoveries";
+import { readAnswers, writeFactsOutput } from "../../../src/facts/io";
 import { readKbBrief, writeKbBrief } from "../../../src/kb/brief";
-import { loadKbState, resolveKbPaths, type KbPaths } from "../../../src/kb/kb-store";
-import { landInterviewAnswer } from "../../../src/kb/land";
+import { loadKbState, type KbPaths } from "../../../src/kb/kb-store";
+import { landInterviewAnswer, landReviewAnswer } from "../../../src/kb/land";
 import { writeKbDiagram } from "../../../src/kb/project-diagram";
+import { makeKbDir, sampleFacts } from "../../helpers/facts-fixture";
 
-const SCAN_PATH = "/repo";
 const SKILL_SHA = "f".repeat(40);
 const REVIEWER = "dev@example.com";
 
-function writeScan(paths: KbPaths, flows = ["flow_mail", "flow_login"]) {
-  const records = landScanDiscoveryToOcsfRecords(
-    {
-      scanPath: SCAN_PATH,
-      components: [
-        { id: "cmp_api", name: "backend", type: "asset", subType: "service", confidence: 0.9, sourceLocations: [{ filePath: "backend/src/main.ts", startLine: 1, endLine: 1 }] },
-        { id: "cmp_mail", name: "Sendgrid", type: "third_party", subType: "email", confidence: 0.9, sourceLocations: [] },
-        { id: "cmp_user", name: "Customer", type: "actor", subType: "", confidence: 0.8, sourceLocations: [] },
-      ],
-      dataFlows: [
-        { id: "flow_mail", sourceComponentId: "cmp_api", targetComponentId: "cmp_mail", type: "api_call", confidence: 0.9 },
-        { id: "flow_login", sourceComponentId: "cmp_user", targetComponentId: "cmp_api", type: "api_call", confidence: 0.9 },
-      ].filter((f) => flows.includes(f.id)),
-      occurrences: [],
-      dataItems: [],
-    },
-    { assertedAt: "2026-10-09T00:00:00.000Z" },
-  );
-  removeScanRecordsForScanPath(paths.discoveriesDir, SCAN_PATH);
-  writeOcsfDiscoveryRecordsToDir(records, paths.discoveriesDir);
+/** A rescan: Facts are replaced, answers.json is not touched. */
+function rescan(paths: KbPaths, keepFlows = ["flow_mail", "flow_login"]) {
+  const { facts, files } = sampleFacts();
+  facts.dataFlows = facts.dataFlows.filter((f) => keepFlows.includes(f.id));
+  writeFactsOutput(paths, facts, new Map(files.map((file) => [`data-items/${file.name}.json`, file])));
 }
 
 describe("live interview loop: brief → land → project", () => {
   let paths: KbPaths;
   let evidence: string;
   beforeEach(() => {
-    paths = resolveKbPaths(fs.mkdtempSync(path.join(os.tmpdir(), "dp-kb-")));
-    writeScan(paths);
+    paths = makeKbDir();
     fs.mkdirSync(paths.evidenceDir, { recursive: true });
     evidence = "evidence/2026-10-09-session.md";
-    fs.writeFileSync(path.join(paths.root, evidence), "Q: What goes to Sendgrid?\nA: Customer email addresses, to send receipts.\n");
+    fs.writeFileSync(path.join(paths.dir, evidence), "Q: What goes to Sendgrid?\nA: Customer email addresses, to send receipts.\n");
   });
-  afterEach(() => fs.rmSync(paths.root, { recursive: true, force: true }));
+  afterEach(() => fs.rmSync(paths.dir, { recursive: true, force: true }));
 
   const land = (brief: string, target: string, slot: string, value: string, extra: Record<string, unknown> = {}) =>
     landInterviewAnswer(paths, { briefSha: brief, target, slot, value, reviewer: REVIEWER, evidence, skillSha: SKILL_SHA, ...extra });
@@ -98,11 +76,12 @@ describe("live interview loop: brief → land → project", () => {
 
   it("records a correction that supersedes the earlier answer", () => {
     const { sha } = writeKbBrief(paths);
-    const first = land(sha, "flow_mail", "purpose", "marketing");
-    const second = land(sha, "flow_mail", "purpose", "service_provision");
-    expect(second.supersedes).toBe(first.uid);
-    expect(second.uid).not.toBe(first.uid);
-    const flow = loadKbState(paths).document.dataFlows.find((f) => f.id.endsWith("flow_mail"));
+    const first = land(sha, "flow_mail", "purpose", "marketing", { now: new Date(Date.now() - 1000) });
+    const second = land(sha, "flow_mail", "purpose", "service_provision", { now: new Date(Date.now() + 1000) });
+    expect(second.supersedes).toBe(first.id);
+    expect(second.id).not.toBe(first.id);
+    expect(readAnswers(paths).answers).toHaveLength(2);
+    const flow = loadKbState(paths).document.dataFlows.find((f) => f.id === "flow_mail");
     expect(flow?.purpose).toBe("service_provision");
   });
 
@@ -126,7 +105,7 @@ describe("live interview loop: brief → land → project", () => {
     expect(() => land("0".repeat(40), "flow_mail", "purpose", "security")).toThrow(/No brief/);
     const { sha, path: briefPath } = writeKbBrief(paths);
     const edited = JSON.parse(fs.readFileSync(briefPath, "utf8"));
-    edited.questions.push({ asserts: scanEntityAsserts(SCAN_PATH, "cmp_mail"), slot: "actor_kind", shape: "D4", status: "unknown", about: "" });
+    edited.questions.push({ asserts: "cmp_mail", slot: "actor_kind", shape: "D4", status: "unknown", about: "" });
     fs.writeFileSync(briefPath, JSON.stringify(edited));
     expect(() => readKbBrief(paths, sha)).toThrow(/edited after it was written/);
   });
@@ -134,10 +113,10 @@ describe("live interview loop: brief → land → project", () => {
   it("keeps an answer about a flow the next scan no longer has, without breaking projection", () => {
     const { sha } = writeKbBrief(paths);
     land(sha, "flow_mail", "purpose", "security");
-    writeScan(paths, ["flow_login"]); // re-scan: flow_mail is gone
+    rescan(paths, ["flow_login"]); // re-scan: flow_mail is gone
     const state = loadKbState(paths);
     expect(state.orphans).toHaveLength(1);
-    expect(state.records.filter((r) => r.dataparade.source === "interview")).toHaveLength(1);
+    expect(state.answers.filter((a) => a.source === "interview")).toHaveLength(1);
     expect(() => writeKbDiagram(paths)).not.toThrow();
     expect(writeKbBrief(paths).orphanCount).toBe(1);
   });
@@ -146,6 +125,77 @@ describe("live interview loop: brief → land → project", () => {
     const { sha } = writeKbBrief(paths);
     const result = land(sha, "flow_mail", "purpose", "security", { dryRun: true });
     expect(result.path).toBeNull();
-    expect(loadKbState(paths).records.some((r) => r.dataparade.source === "interview")).toBe(false);
+    expect(fs.existsSync(paths.answersPath)).toBe(false);
+  });
+
+  it("stores the who, when and evidence of an interview answer, with a category list as a list", () => {
+    const { sha } = writeKbBrief(paths);
+    const landed = land(sha, "flow_mail", "data_categories", "identifiers, contact", { now: new Date("2026-10-10T12:00:00.000Z") });
+    expect(landed.path).toBe(paths.answersPath);
+    expect(readAnswers(paths).answers).toEqual([
+      {
+        id: landed.id,
+        factId: "flow_mail",
+        action: "set",
+        property: "data_categories",
+        value: ["contact", "identifiers"],
+        by: REVIEWER,
+        at: "2026-10-10T12:00:00.000Z",
+        source: "interview",
+        evidence,
+        briefSha: sha,
+        skillSha: SKILL_SHA,
+      },
+    ]);
+  });
+
+  it("does not change facts.json when answers land, and a rescan keeps answers.json", () => {
+    const { sha } = writeKbBrief(paths);
+    land(sha, "flow_mail", "purpose", "security");
+    const factsBefore = fs.readFileSync(paths.factsPath, "utf8");
+    expect(factsBefore).not.toContain("security");
+    const answersBefore = fs.readFileSync(paths.answersPath, "utf8");
+    rescan(paths);
+    expect(fs.readFileSync(paths.answersPath, "utf8")).toBe(answersBefore);
+    expect(loadKbState(paths).document.dataFlows.find((f) => f.id === "flow_mail")?.purpose).toBe("security");
+  });
+
+  describe("review answers", () => {
+    const review = (input: Partial<Parameters<typeof landReviewAnswer>[1]> & { target: string }) =>
+      landReviewAnswer(paths, { action: "set", reviewer: REVIEWER, ...input });
+
+    it("removes a Fact and sets a property, and the applied state shows both", () => {
+      review({ target: "flow_login", action: "remove", evidence: "not a real flow" });
+      review({ target: "cmp_mail", property: "name", value: "SendGrid Inc" });
+      const state = loadKbState(paths);
+      expect(state.applied.facts.dataFlows.map((f) => f.id)).toEqual(["flow_mail"]);
+      expect(state.document.components.find((c) => c.id === "cmp_mail")?.name).toBe("SendGrid Inc");
+      const [removed, set] = readAnswers(paths).answers;
+      expect(removed).toMatchObject({ factId: "flow_login", action: "remove", source: "review", by: REVIEWER, evidence: "not a real flow" });
+      expect(set).toMatchObject({ factId: "cmp_mail", action: "set", property: "name", value: "SendGrid Inc" });
+      // The removed flow is no longer asked about.
+      expect(writeKbBrief(paths).brief.flows.map((f) => f.id)).toEqual(["flow_mail"]);
+    });
+
+    it("reads a JSON value for lists", () => {
+      review({ target: "data_item:email", property: "labels", value: '["contact","pii"]' });
+      expect(loadKbState(paths).applied.facts.dataItems[0].labels).toEqual(["contact", "pii"]);
+    });
+
+    it.each([
+      ["an unknown Fact", { target: "flow_nope", action: "remove" as const }, /not a Fact in this scan/],
+      ["a protected property", { target: "cmp_api", property: "id", value: "x" }, /can't be changed/],
+      ["a set without a value", { target: "cmp_api", property: "name" }, /needs both a property and a value/],
+      ["a remove with a value", { target: "cmp_api", action: "remove" as const, value: "x" }, /takes no property or value/],
+      ["a model as reviewer", { target: "cmp_api", property: "name", value: "x", reviewer: "claude-code" }, /reviewer must be the developer/],
+    ])("refuses %s", (_label, input, message) => {
+      expect(() => review(input)).toThrow(message);
+      expect(fs.existsSync(paths.answersPath)).toBe(false);
+    });
+  });
+
+  it("needs a scan first", () => {
+    fs.rmSync(paths.factsPath);
+    expect(() => writeKbBrief(paths)).toThrow(/No facts\.json/);
   });
 });

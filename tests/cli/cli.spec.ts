@@ -1,25 +1,25 @@
 import { spawnSync } from 'child_process';
-import { existsSync, readFileSync, rmSync } from 'fs';
+import { existsSync, readdirSync, readFileSync, rmSync } from 'fs';
 import path from 'path';
 
 const cliDistPath = path.join(__dirname, '../../dist/bin/cli.js');
 const cliCwd = path.join(__dirname, '../../');
 const scanFixturePath = path.join(cliCwd, 'tests/fixtures/typescript-basic');
 
-/** Scan outputs the CLI writes next to dataflow.json in the working directory. */
+/** Scan outputs the CLI writes in the working directory (default `.dataparade/`, plus `-o` files in the tests). */
 const SCAN_OUTPUTS = [
+  '.dataparade',
+  '.cli-test-out',
   'dataflow.json',
-  'dataparade.json',
-  'dataparade-graph.json',
-  'discoveries-diagram.json',
-  'discoveries-diagram.d2',
-  'ocsf-discoveries',
-  'graphify-out',
+  'facts.json',
+  'data-items',
+  'graphify.json',
+  'scan-fixture-summary.json',
+  'scan-teaching-progress.json',
 ];
 
 describe('CLI', () => {
-  // Discovery records refuse to overwrite a same-day record, so each scan test starts
-  // from a clean working directory.
+  // Each scan test starts from a clean working directory.
   beforeEach(() => {
     for (const name of SCAN_OUTPUTS)
       rmSync(path.join(cliCwd, name), { recursive: true, force: true });
@@ -54,7 +54,7 @@ describe('CLI', () => {
 
     expect(result.status).toBe(0);
 
-    const outputPath = path.join(cliCwd, 'dataflow.json');
+    const outputPath = path.join(cliCwd, '.dataparade', 'dataflow.json');
     const exists = existsSync(outputPath);
 
     expect(exists).toBe(true);
@@ -66,6 +66,28 @@ describe('CLI', () => {
     expect(dataflow.graph).toBeDefined();
     expect(Array.isArray(dataflow.graph.nodes)).toBe(true);
     expect(Array.isArray(dataflow.graph.edges)).toBe(true);
+
+    // The default folder holds Facts, one file per data item, and nothing from older versions.
+    const outputDir = path.join(cliCwd, '.dataparade');
+    const names = readdirSync(outputDir).sort();
+    expect(names).toEqual(
+      expect.arrayContaining(['dataflow.json', 'facts.json'])
+    );
+    for (const legacy of [
+      'dataparade.json',
+      'dataparade-graph.json',
+      'ocsf-discoveries',
+      'discoveries-diagram.json',
+      'graphify-out',
+    ]) {
+      expect(names).not.toContain(legacy);
+    }
+    const facts = JSON.parse(
+      readFileSync(path.join(outputDir, 'facts.json'), 'utf8')
+    );
+    expect(facts.schemaVersion).toBe(1);
+    expect(facts.components.length).toBeGreaterThan(0);
+    expect(JSON.stringify(facts)).not.toContain(cliCwd);
   });
 
   it('scan fixture produces a dataflow.json wrapper with at least one node', () => {
@@ -86,7 +108,7 @@ describe('CLI', () => {
 
     expect(result.status).toBe(0);
 
-    const outputPath = path.join(cliCwd, 'dataflow.json');
+    const outputPath = path.join(cliCwd, '.dataparade', 'dataflow.json');
     const contents = readFileSync(outputPath, 'utf8').trim();
     const dataflow = JSON.parse(contents);
 
@@ -95,7 +117,7 @@ describe('CLI', () => {
   });
 
   it('scan fixture --output writes a dataflow.json wrapper to the given file and prints a short message', () => {
-    const outputFile = 'scan-fixture-summary.json';
+    const outputFile = '.cli-test-out/scan-fixture-summary.json';
 
     const result = spawnSync(
       'node',
@@ -134,7 +156,7 @@ describe('CLI', () => {
       cliCwd,
       'tests/fixtures/mixed-language-basic'
     );
-    const outputFile = 'scan-teaching-progress.json';
+    const outputFile = '.cli-test-out/scan-teaching-progress.json';
 
     const result = spawnSync(
       'node',

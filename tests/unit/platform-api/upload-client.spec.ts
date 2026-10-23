@@ -99,7 +99,7 @@ describe('cliUploadPreview', () => {
       dataflow: { schemaVersion: '1.0', graph: { nodes: [], edges: [] } },
       files: [
         {
-          relativePath: 'graphify-out/graph.json',
+          relativePath: 'graphify.json',
           content: '{"nodes":[]}',
         },
       ],
@@ -115,7 +115,7 @@ describe('cliUploadPreview', () => {
     const filesBody = JSON.parse(
       (global.fetch as jest.Mock).mock.calls[1][1].body as string
     ) as { files: Array<{ relativePath: string }> };
-    expect(filesBody.files[0]?.relativePath).toBe('graphify-out/graph.json');
+    expect(filesBody.files[0]?.relativePath).toBe('graphify.json');
   });
 
   it('throws with API error message', async () => {

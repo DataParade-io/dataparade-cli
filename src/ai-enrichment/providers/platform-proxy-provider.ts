@@ -145,7 +145,7 @@ export class PlatformProxyProvider implements AiProvider {
         if (attempt >= delays.length || !isTransientFetchError(err)) {
           throw toApiReachabilityError(err, url, method, attempt + 1);
         }
-        // eslint-disable-next-line no-console
+         
         console.warn(
           `[dataparade-ai] ${describeRequestTarget(url, method)} failed (${fetchFailureDetail(err)}). Retrying (${attempt + 1}/${delays.length}).`
         );

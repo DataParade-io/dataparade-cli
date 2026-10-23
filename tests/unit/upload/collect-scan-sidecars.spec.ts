@@ -2,22 +2,17 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import { collectScanSidecars } from '../../../src/upload/collect-scan-sidecars';
+import { collectScanUploadFiles } from '../../../src/upload/collect-scan-sidecars';
+import {
+  packScanUploadRequests,
+  SCAN_UPLOAD_MAX_JSON_BYTES,
+} from '../../../src/upload/pack-scan-upload';
 
-function fact(entityId: string, slot?: string, value?: string): unknown {
-  return {
-    dataparade: {
-      asserts: `dp:scan/entity/${entityId}`,
-      ...(slot ? { asserted_slot: slot, asserted_value: value } : {}),
-    },
-  };
-}
-
-describe('collectScanSidecars', () => {
+describe('collectScanUploadFiles', () => {
   let dir: string;
 
   beforeEach(() => {
-    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'scan-sidecars-'));
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'scan-upload-files-'));
     fs.writeFileSync(path.join(dir, 'dataflow.json'), '{}\n');
   });
 
@@ -25,69 +20,59 @@ describe('collectScanSidecars', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   });
 
-  it('sends graphify only when the file exists, plus the knowledge graph and occurrence facts', () => {
-    fs.mkdirSync(path.join(dir, 'graphify-out'));
-    fs.writeFileSync(
-      path.join(dir, 'graphify-out', 'graph.json'),
-      JSON.stringify({ nodes: [{ id: 'src/api.ts' }] })
-    );
-    fs.writeFileSync(
-      path.join(dir, 'dataparade-graph.json'),
-      JSON.stringify({
-        nodes: [{ id: 'dp::occurrence:email:src/api.ts:4' }],
-        links: [
-          {
-            source: 'dp::occurrence:email:src/api.ts:4',
-            target: 'src/api.ts',
-            relation: 'occurs_in',
-          },
-        ],
-      })
-    );
-    const discoveries = path.join(dir, 'ocsf-discoveries');
-    fs.mkdirSync(discoveries);
-    fs.writeFileSync(
-      path.join(discoveries, 'component.json'),
-      JSON.stringify(fact('cmp_orders'))
-    );
-    fs.writeFileSync(
-      path.join(discoveries, 'occurrence.json'),
-      JSON.stringify(
-        fact('occurrence:email:src/api.ts:4', 'file_path', 'src/api.ts')
-      )
-    );
-    fs.writeFileSync(
-      path.join(discoveries, 'data-item.json'),
-      JSON.stringify(
-        fact(
-          'data_item:email',
-          'occurrence_ids',
-          '["occurrence:email:src/api.ts:4"]'
-        )
-      )
-    );
+  it('sends facts.json, the data item files, graphify.json and answers.json, in that order', () => {
+    fs.writeFileSync(path.join(dir, 'facts.json'), '{"schemaVersion":1}');
+    fs.mkdirSync(path.join(dir, 'data-items'));
+    fs.writeFileSync(path.join(dir, 'data-items', 'phone.json'), '{"id":"data_item:phone"}');
+    fs.writeFileSync(path.join(dir, 'data-items', 'email.json'), '{"id":"data_item:email"}');
+    fs.writeFileSync(path.join(dir, 'graphify.json'), '{"nodes":[]}');
+    fs.writeFileSync(path.join(dir, 'answers.json'), '{"schemaVersion":1,"answers":[]}');
 
-    const sidecars = collectScanSidecars(path.join(dir, 'dataflow.json'));
+    const files = collectScanUploadFiles(path.join(dir, 'dataflow.json'));
 
-    expect(sidecars.graphifyGraph).toEqual({ nodes: [{ id: 'src/api.ts' }] });
-    expect(sidecars.dataparadeGraph).toMatchObject({
-      links: [
-        expect.objectContaining({
-          relation: 'occurs_in',
-          target: 'src/api.ts',
-        }),
-      ],
-    });
-    expect(sidecars.facts).toHaveLength(2);
-    expect(JSON.stringify(sidecars.facts)).toContain('occurrence:email');
-    expect(JSON.stringify(sidecars.facts)).toContain('data_item:email');
-    expect(JSON.stringify(sidecars.facts)).not.toContain('cmp_orders');
+    expect(files.map((file) => file.relativePath)).toEqual([
+      'facts.json',
+      'data-items/email.json',
+      'data-items/phone.json',
+      'graphify.json',
+      'answers.json',
+    ]);
+    expect(files[0].content).toBe('{"schemaVersion":1}');
   });
 
-  it('omits graphify when that file was not written', () => {
+  it('leaves out answers.json and graphify.json when they do not exist', () => {
+    fs.writeFileSync(path.join(dir, 'facts.json'), '{"schemaVersion":1}');
+    const files = collectScanUploadFiles(path.join(dir, 'dataflow.json'));
+    expect(files.map((file) => file.relativePath)).toEqual(['facts.json']);
+  });
+
+  it('skips a file that is not a JSON object, and ignores the old layout', () => {
+    fs.writeFileSync(path.join(dir, 'facts.json'), 'not json');
     fs.mkdirSync(path.join(dir, 'ocsf-discoveries'));
-    const sidecars = collectScanSidecars(path.join(dir, 'dataflow.json'));
-    expect(sidecars.graphifyGraph).toBeUndefined();
-    expect(sidecars.facts).toEqual([]);
+    fs.writeFileSync(path.join(dir, 'ocsf-discoveries', 'a.json'), '{}');
+    fs.writeFileSync(path.join(dir, 'dataparade-graph.json'), '{}');
+    expect(collectScanUploadFiles(path.join(dir, 'dataflow.json'))).toEqual([]);
+  });
+
+  it('packs many small data item files into few requests and splits a large graphify.json', () => {
+    fs.writeFileSync(path.join(dir, 'facts.json'), '{"schemaVersion":1}');
+    fs.mkdirSync(path.join(dir, 'data-items'));
+    for (let index = 0; index < 5; index += 1) {
+      fs.writeFileSync(path.join(dir, 'data-items', `item-${index}.json`), `{"n":${index}}`);
+    }
+    const big = JSON.stringify({ nodes: [{ id: 'x'.repeat(SCAN_UPLOAD_MAX_JSON_BYTES * 2) }] });
+    fs.writeFileSync(path.join(dir, 'graphify.json'), big);
+
+    const requests = packScanUploadRequests(collectScanUploadFiles(path.join(dir, 'dataflow.json')));
+
+    const batches = requests.filter((request): request is { files: Array<{ relativePath: string; content: string }> } => 'files' in request);
+    const parts = requests.filter((request) => 'part' in request);
+    expect(batches[0].files.map((file) => file.relativePath)).toEqual(
+      expect.arrayContaining(['facts.json', 'data-items/item-0.json', 'data-items/item-4.json'])
+    );
+    expect(parts.length).toBeGreaterThanOrEqual(3);
+    for (const request of requests) {
+      expect(Buffer.byteLength(JSON.stringify(request), 'utf8')).toBeLessThanOrEqual(SCAN_UPLOAD_MAX_JSON_BYTES);
+    }
   });
 });

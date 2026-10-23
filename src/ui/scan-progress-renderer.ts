@@ -286,6 +286,16 @@ export class ScanProgressRenderer {
     this.previewNotice = notice;
   }
 
+  /** One plain informational line, e.g. how many files the scan walks. */
+  info(message: string): void {
+    this.start();
+    if (this.useClack) {
+      this.prompts().log.info(message);
+    } else {
+      this.writePlain(message);
+    }
+  }
+
   /**
    * Non-fatal scan warning. Clack renders it inside the guide rail; plain mode
    * keeps the `[scan] …` stderr line scripts may grep for.

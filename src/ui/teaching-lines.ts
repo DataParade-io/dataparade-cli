@@ -13,11 +13,23 @@ function titleCaseToken(token: string): string {
   return token.charAt(0).toUpperCase() + token.slice(1);
 }
 
+/** Each `_`- or space-separated word title-cased: `Google_identity` -> `Google Identity`. */
+function titleCaseWords(value: string): string {
+  return value
+    .split(/[_\s]+/)
+    .filter((word) => word.length > 0)
+    .map(titleCaseToken)
+    .join(' ');
+}
+
+/** Every spelling the analyzers use for Next.js. */
+const NEXT_JS_SPELLINGS = new Set(['nextjs', 'next', 'next.js', 'next_or_react_route']);
+
 function prettyFramework(framework: string): string {
   const lower = framework.toLowerCase();
   if (lower === 'express') return 'Express';
   if (lower === 'nest') return 'Nest';
-  if (lower === 'next_or_react_route') return 'Next.js';
+  if (NEXT_JS_SPELLINGS.has(lower)) return 'Next.js';
   if (lower === 'fastapi') return 'FastAPI';
   if (lower === 'flask') return 'Flask';
   if (lower === 'django') return 'Django';
@@ -57,7 +69,7 @@ function prettyVendor(serviceName: string): string {
     auth0: 'Auth0',
   };
   if (known[lower]) return known[lower];
-  return titleCaseToken(serviceName);
+  return titleCaseWords(serviceName);
 }
 
 /**
@@ -71,14 +83,17 @@ export function buildTeachingLineGroups(
   const routeCounts = new Map<string, number>();
   for (const finding of findings) {
     if (finding.pattern !== 'express_route') continue;
-    const framework = asString(finding.properties?.framework) ?? 'framework';
-    routeCounts.set(framework, (routeCounts.get(framework) ?? 0) + 1);
+    // A package.json dependency on a framework is a hint about the app, not a route.
+    if (finding.properties?.sourceContext === 'dependency_manifest') continue;
+    const name = prettyFramework(
+      asString(finding.properties?.framework) ?? 'framework'
+    );
+    routeCounts.set(name, (routeCounts.get(name) ?? 0) + 1);
   }
 
   const routes = [...routeCounts.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([framework, count]) => {
-      const name = prettyFramework(framework);
+    .map(([name, count]) => {
       return count === 1
         ? `Found 1 ${name} route`
         : `Found ${count} ${name} routes`;

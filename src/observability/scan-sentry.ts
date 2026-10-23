@@ -89,7 +89,7 @@ export async function reportScanCliError(
   } catch (reportErr) {
     const detail =
       reportErr instanceof Error ? reportErr.message : String(reportErr);
-    // eslint-disable-next-line no-console
+     
     console.warn(`[scan] failed to report error to Sentry: ${detail}`);
   }
 }

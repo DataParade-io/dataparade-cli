@@ -12,3 +12,10 @@ scan-teaching-progress.json
 .env
 .env.example
 .env.*.example
+
+# Scan output written by the CLI tests
+.dataparade/
+.cli-test-out/
+facts.json
+data-items/
+graphify.json

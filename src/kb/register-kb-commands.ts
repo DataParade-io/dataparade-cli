@@ -1,16 +1,18 @@
 import type { Command } from "commander";
 
+import { DEFAULT_OUTPUT_DIRNAME } from "../facts/layout";
 import { writeKbBrief } from "./brief";
 import { KbError, resolveKbPaths } from "./kb-store";
-import { landInterviewAnswer } from "./land";
+import { migrateInterviewRecords } from "./migrate";
+import { landInterviewAnswer, landReviewAnswer } from "./land";
 import { pushKbDiagram, writeKbDiagram } from "./project-diagram";
 import { SlotValueError } from "./slot-shapes";
 
-const DEFAULT_KB_DIR = ".dataparade";
+const DEFAULT_KB_DIR = DEFAULT_OUTPUT_DIRNAME;
 
 /** All kb commands print one JSON object so agents can parse results. */
 function print(result: unknown): void {
-  // eslint-disable-next-line no-console
+   
   console.log(JSON.stringify(result, null, 2));
 }
 
@@ -23,7 +25,7 @@ function fail(error: unknown): void {
 export function registerKbCommands(program: Command): void {
   const kb = program
     .command("kb")
-    .description("Knowledge base: interview briefs, confirmed answers (Discoveries), and diagram projection");
+    .description("Knowledge base: interview briefs, confirmed answers (answers.json), and diagram projection");
 
   kb.command("brief")
     .description("Snapshot the KB as a brief: what is known, and the open interview questions in asking order")
@@ -48,45 +50,97 @@ export function registerKbCommands(program: Command): void {
     });
 
   kb.command("land")
-    .description("Land one developer-confirmed interview answer as a source=interview Discovery")
-    .requiredOption("--brief <sha>", "brief_sha the question was asked from (from 'kb brief')")
-    .requiredOption("--target <id>", "Entity asked about: asserts URI or id from the brief, or dp:a0/system")
-    .requiredOption("--slot <slot>", "in_scope | actor_kind | data_categories | purpose")
-    .requiredOption("--value <value>", "Ontology value (data_categories: comma list or JSON array)")
+    .description("Land one confirmed answer in answers.json: an interview answer, or a reviewer's set/remove of a Fact")
+    .option("--source <source>", "interview (default) or review", "interview")
+    .option("--brief <sha>", "interview: brief_sha the question was asked from (from 'kb brief')")
+    .requiredOption("--target <id>", "The Fact asked about: its id from the brief or facts.json, or dp:a0/system")
+    .option("--slot <slot>", "interview: in_scope | actor_kind | data_categories | purpose")
+    .option("--action <action>", "review: set (default) or remove", "set")
+    .option("--property <name>", "review set: the property to override")
+    .option("--value <value>", "The value (interview data_categories: comma list or JSON array)")
     .requiredOption("--reviewer <email>", "The developer who confirmed this answer")
-    .requiredOption("--evidence <path>", "Unedited interview transcript (relative to the KB dir, or absolute)")
-    .requiredOption("--skill-sha <sha>", "Full SHA of the interview skill (e.g. git hash-object SKILL.md)")
+    .option("--evidence <path>", "interview: unedited transcript (relative to the KB dir, or absolute); review: a note or path")
+    .option("--skill-sha <sha>", "interview: full SHA of the interview skill (e.g. git hash-object SKILL.md)")
     .option("--kb <dir>", "Knowledge base directory", DEFAULT_KB_DIR)
     .option("--dry-run", "Validate without writing")
     .action(
       (options: {
-        brief: string;
+        source: string;
+        brief?: string;
         target: string;
-        slot: string;
-        value: string;
+        slot?: string;
+        action: string;
+        property?: string;
+        value?: string;
         reviewer: string;
-        evidence: string;
-        skillSha: string;
+        evidence?: string;
+        skillSha?: string;
         kb: string;
         dryRun?: boolean;
       }) => {
         try {
-          const landed = landInterviewAnswer(resolveKbPaths(options.kb), {
-            briefSha: options.brief,
-            target: options.target,
-            slot: options.slot,
-            value: options.value,
-            reviewer: options.reviewer,
-            evidence: options.evidence,
-            skillSha: options.skillSha,
-            dryRun: options.dryRun,
+          const paths = resolveKbPaths(options.kb);
+          if (options.source === "review") {
+            if (options.action !== "set" && options.action !== "remove") {
+              throw new KbError("BAD_ANSWER", `--action must be set or remove; got '${options.action}'.`);
+            }
+            print({
+              ok: true,
+              ...landReviewAnswer(paths, {
+                target: options.target,
+                action: options.action,
+                property: options.property ?? options.slot,
+                value: options.value,
+                reviewer: options.reviewer,
+                evidence: options.evidence,
+                dryRun: options.dryRun,
+              }),
+            });
+            return;
+          }
+          if (options.source !== "interview") {
+            throw new KbError("BAD_ANSWER", `--source must be interview or review; got '${options.source}'.`);
+          }
+          for (const [flag, value] of [
+            ["--brief", options.brief],
+            ["--slot", options.slot],
+            ["--value", options.value],
+            ["--evidence", options.evidence],
+            ["--skill-sha", options.skillSha],
+          ] as const) {
+            if (!value) throw new KbError("BAD_ANSWER", `${flag} is required for an interview answer.`);
+          }
+          print({
+            ok: true,
+            ...landInterviewAnswer(paths, {
+              briefSha: options.brief as string,
+              target: options.target,
+              slot: options.slot as string,
+              value: options.value as string,
+              reviewer: options.reviewer,
+              evidence: options.evidence as string,
+              skillSha: options.skillSha as string,
+              dryRun: options.dryRun,
+            }),
           });
-          print({ ok: true, ...landed });
         } catch (error) {
           fail(error);
         }
       },
     );
+
+  kb.command("migrate")
+    .description("Convert interview records from an old ocsf-discoveries/ folder (CLI 0.0.26 and earlier) into answers.json")
+    .option("--kb <dir>", "Knowledge base directory", DEFAULT_KB_DIR)
+    .option("--from <dir>", "Old OCSF folder (default: <kb>/ocsf-discoveries)")
+    .option("--dry-run", "Count what would be migrated without writing")
+    .action((options: { kb: string; from?: string; dryRun?: boolean }) => {
+      try {
+        print({ ok: true, ...migrateInterviewRecords(resolveKbPaths(options.kb), { from: options.from, dryRun: options.dryRun }) });
+      } catch (error) {
+        fail(error);
+      }
+    });
 
   kb.command("project")
     .description("Project the KB into diagram.json for the viewer, optionally pushing it to open tabs")

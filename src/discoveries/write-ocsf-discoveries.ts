@@ -4,7 +4,6 @@ import path from "path";
 
 import { ocsfDiscoveryRecordSchema } from "./contract/ocsf-discovery-record";
 import type { OcsfDiscoveryRecord } from "./contract/ocsf-discovery-record";
-import { parseScanEntityAsserts } from "./scan-entity-uri";
 
 export function slugifyDiscoveryId(id: string): string {
   return id.replace(/[:/]/g, "_");
@@ -47,40 +46,4 @@ export function writeOcsfDiscoveryRecordsToDir(
   }
 
   return writtenPaths;
-}
-
-/**
- * A re-scan replaces that scan path's earlier scan records: the scan is the
- * source of truth for what it found, and its records carry the land date in
- * their ids, so an append would collide on the same day and pile up across days.
- * Interview and cloud records, and scan records for other scan paths, are kept.
- * Returns the paths it removed.
- */
-export function removeScanRecordsForScanPath(outputDir: string, scanPath: string): string[] {
-  const resolved = path.resolve(outputDir);
-  if (!fs.existsSync(resolved)) {
-    return [];
-  }
-  const removed: string[] = [];
-  for (const name of fs.readdirSync(resolved)) {
-    if (!name.endsWith(".json")) {
-      continue;
-    }
-    const filePath = path.join(resolved, name);
-    let record: { dataparade?: { source?: string; asserts?: string } };
-    try {
-      record = JSON.parse(fs.readFileSync(filePath, "utf8"));
-    } catch {
-      continue;
-    }
-    const asserts = record.dataparade?.asserts;
-    if (record.dataparade?.source !== "scan" || !asserts) {
-      continue;
-    }
-    if (parseScanEntityAsserts(asserts)?.scanPath === scanPath) {
-      fs.rmSync(filePath);
-      removed.push(filePath);
-    }
-  }
-  return removed;
 }

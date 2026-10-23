@@ -1,6 +1,6 @@
 {
   "name": "@dataparade/cli",
-  "version": "0.0.26",
+  "version": "0.0.28",
   "description": "dataPARADE CLI — scan codebases for privacy and security data flows",
   "publishConfig": {
     "access": "public",
@@ -56,9 +56,9 @@
   "dependencies": {
     "@clack/prompts": "^1.8.1",
     "@sentry/node": "^10.38.0",
-    "commander": "^12.1.0",
+    "commander": "^14.0.3",
     "dotenv": "^16.4.7",
-    "langsmith": "^0.3.14",
+    "langsmith": "^0.10.13",
     "tree-sitter-wasms": "^0.1.13",
     "typescript": "^5.7.3",
     "web-tree-sitter": "0.25.10",
@@ -66,14 +66,14 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@dataparade/scanner": "github:DataParade-io/scanner#0b1a31e7444acbf1e43d800e26a37746f11e7232",
+    "@dataparade/scanner": "github:DataParade-io/scanner#a08a57b046b7b6be0afd84b7866432e6242d216a",
     "@eslint/js": "^9.18.0",
-    "@types/jest": "^29.5.14",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22.0.0",
     "eslint": "^9.18.0",
     "globals": "^15.14.0",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.5",
+    "jest": "^30.5.2",
+    "ts-jest": "^29.4.6",
     "typescript-eslint": "^8.20.0"
   },
   "files": [
