@@ -88,3 +88,15 @@ export function describeThrownError(err: unknown): string {
   }
   return `Could not reach the DataParade API: ${detail}. Run the scan again.`;
 }
+
+/**
+ * Short reason for an optional platform step (AI session, upload) that failed,
+ * for a one-line "… unavailable (<reason>)" message.
+ */
+export function describeUnavailableReason(err: unknown): string {
+  if (!(err instanceof Error)) return 'unknown error';
+  if (isTransientFetchError(err)) {
+    return `could not reach the DataParade API: ${fetchFailureDetail(err)}`;
+  }
+  return err.message.trim().replace(/\.$/, '') || 'unknown error';
+}

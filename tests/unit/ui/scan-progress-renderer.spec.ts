@@ -110,6 +110,31 @@ describe('ScanProgressRenderer', () => {
     expect(ui.usesClackChrome).toBe(false);
   });
 
+  it('plain finish reports a failed upload instead of the success line', async () => {
+    const { lines, writeLine } = captureLines();
+    const ui = await createScanProgressRenderer({
+      isTTY: false,
+      noColor: true,
+      writeLine,
+    });
+    ui.onUploadFailed({
+      reason: 'Too many anonymous CLI scans from this IP (max 3)',
+      retryCommand: 'dataparade upload .dataparade/dataflow.json',
+      hint: 'Set DATAPARADE_WORKSPACE_API_KEY.',
+    });
+    ui.finish();
+
+    const joined = lines.join('\n');
+    expect(joined).toContain(
+      'The upload did not complete: Too many anonymous CLI scans from this IP (max 3).'
+    );
+    expect(joined).toContain('dataparade upload .dataparade/dataflow.json');
+    expect(joined).toContain('Set DATAPARADE_WORKSPACE_API_KEY.');
+    expect(joined).toContain('Scan finished. The upload did not complete.');
+    expect(joined).not.toContain('All done — nice work.');
+    expect(joined).not.toContain('Jump into DataParade');
+  });
+
   it('formats the preview link with ANSI when color is on', () => {
     const plain = formatPreviewLink('https://example.test/preview', false);
     expect(plain).toBe('https://example.test/preview');

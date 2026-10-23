@@ -1,6 +1,6 @@
 {
   "name": "@dataparade/cli",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "dataPARADE CLI — scan codebases for privacy and security data flows",
   "publishConfig": {
     "access": "public",
@@ -66,7 +66,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@dataparade/scanner": "github:DataParade-io/scanner#a08a57b046b7b6be0afd84b7866432e6242d216a",
+    "@dataparade/scanner": "github:DataParade-io/scanner#6a5a95897fe9ccd60230b0636f3a91b2e21a1ab1",
     "@eslint/js": "^9.18.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.0.0",

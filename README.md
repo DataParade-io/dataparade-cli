@@ -32,6 +32,7 @@ A scan reads the source and config files under the folder (skipping dependencies
 - In a TTY: brand header, staged progress (spinner → checkmarks), a short **What we found** summary (routes, databases, outbound services), and a clear next-step note.
 - In CI / non-TTY (or with `NO_COLOR`): the same content as plain logs — no spinners or ANSI.
 - On success: `[scan] dataflow.json written to /absolute/path/to/dataflow.json` (always printed for scripts/tests).
+- If AI enrichment cannot start (no network, anonymous per-IP limit, server error), the CLI prints `AI enrichment unavailable (<reason>); continuing with a structural scan.` and still writes the output. Use `--no-ai-inference` to skip AI.
 - When auto-upload runs: `[scan] Preview ready: <URL>` (plus a friendly next-step note with the same URL).
 - By default, the output goes to a **`.dataparade/`** folder in the current working directory (override the path of `dataflow.json` with `-o` / `--output`; the other files sit next to it).
 
@@ -50,7 +51,9 @@ After a scan, the CLI **auto-uploads** `dataflow.json` and the Facts next to it 
 - **With a workspace API key** (`DATAPARADE_WORKSPACE_API_KEY` from **Workspace → Access keys**): prints a dashboard link (`?importDraft=`) for that workspace.
 - **Without a workspace key**: prints a sign-up link (`/preview/cli/<token>`). Create an account to open **Preview & Edit** on your dashboard.
 - Opt out: `--skip-auto-upload` or `DATAPARADE_SKIP_AUTO_UPLOAD=true`
-- Upload alone does **not** consume scan quota
+- With a workspace API key, an upload does **not** use scan quota.
+- Without a key, uploads count toward a small per-IP limit on anonymous scans. A default scan (AI on) counts once, when its AI session starts, and its auto-upload does not count again. A scan with `--no-ai-inference`, or a separate `dataparade upload`, counts once when it uploads. When the limit is reached, the scan still writes `.dataparade/`; set `DATAPARADE_WORKSPACE_API_KEY` and run `dataparade upload .dataparade/dataflow.json`.
+- If the upload fails, the scan output stays on disk and the CLI prints the `dataparade upload` command to retry.
 
 ```bash
 npx @dataparade/cli upload .dataparade/dataflow.json --project-name "My service"

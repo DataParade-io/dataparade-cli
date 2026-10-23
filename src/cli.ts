@@ -36,7 +36,10 @@ import {
   reportScanCliError,
   type ScanCliAiMode,
 } from './observability/scan-sentry';
-import { describeThrownError } from './platform-api/fetch-failure';
+import {
+  describeThrownError,
+  describeUnavailableReason,
+} from './platform-api/fetch-failure';
 import { reportCliUsageEvent } from './platform-api/telemetry-client';
 import {
   summarizeScanErrors,
@@ -46,7 +49,10 @@ import {
 import { validateScanConfiguration } from './core/schema/scan-config.schema';
 import type { AiInferenceProposalDetail } from './core/types';
 import { resolveScanFilesystemEntry } from '@dataparade/scanner';
-import { createScanProgressRenderer } from './ui/scan-progress-renderer';
+import {
+  createScanProgressRenderer,
+  type ScanUploadFailure,
+} from './ui/scan-progress-renderer';
 
 /** The scanner is vendored into the CLI; its version is the commit the CLI depends on. */
 function scannerVersionFromPackage(): string {
@@ -121,6 +127,33 @@ function formatAiInferenceVerbose(
     }
   }
   return lines;
+}
+
+/** Retry command and advice shown when the scan's auto-upload fails. */
+export function describeAutoUploadFailure(
+  uploadError: unknown,
+  dataflowOutputPath: string,
+  hasWorkspaceApiKey: boolean
+): ScanUploadFailure {
+  const relative = pathModule.relative(process.cwd(), dataflowOutputPath);
+  const target =
+    relative && !relative.startsWith('..') ? relative : dataflowOutputPath;
+  const quoted = /\s/.test(target) ? `"${target}"` : target;
+  const status =
+    uploadError && typeof uploadError === 'object' && 'status' in uploadError
+      ? (uploadError as { status?: unknown }).status
+      : undefined;
+  const message = uploadError instanceof Error ? uploadError.message : '';
+  const rateLimited =
+    status === 429 || /too many anonymous cli scans/i.test(message);
+  return {
+    reason: describeUnavailableReason(uploadError),
+    retryCommand: `dataparade upload ${quoted}`,
+    hint:
+      rateLimited && !hasWorkspaceApiKey
+        ? 'Anonymous uploads are limited per IP address. To avoid the limit, set DATAPARADE_WORKSPACE_API_KEY (from Workspace → Access keys in DataParade) and run the upload again.'
+        : undefined,
+  };
 }
 
 function formatUsd(value: number | undefined): string {
@@ -462,6 +495,19 @@ function createProgram(): Command {
           sentryAiMode = aiMode;
           sentryAiProvider = config.aiProvider;
 
+          // AI enrichment is optional. When its platform setup fails (no
+          // network, anonymous per-IP cap, server error), say so once and
+          // run the structural scan so the local output is still written.
+          const continueWithoutAi = (setupError: unknown): void => {
+            config.enableAiInference = false;
+            config.cliQuotaJobId = undefined;
+            config.anonSessionToken = undefined;
+            sentryAiMode = 'none';
+            progressUi.warn(
+              `AI enrichment unavailable (${describeUnavailableReason(setupError)}); continuing with a structural scan. Use --no-ai-inference to skip this step.`
+            );
+          };
+
           // Quota preflight for platform billing. Structural-only scans (AI off) do not use quota API.
           if (workspaceApiKey && !usesByok && config.enableAiInference) {
             const [{ cliScanPreflight }, { estimateScanFootprint }] =
@@ -479,31 +525,45 @@ function createProgram(): Command {
               projectName: config.projectName,
               fileCount: footprint.fileCount,
               bytesIngested: footprint.bytesIngested,
+            }).catch(async (preflightError: unknown) => {
+              const { CliScanQuotaExceededError, CliScanAlreadyRunningError } =
+                await import('./platform-api/scan-quota-client');
+              // Workspace quota and concurrency answers stay blocking.
+              if (
+                preflightError instanceof CliScanQuotaExceededError ||
+                preflightError instanceof CliScanAlreadyRunningError
+              ) {
+                throw preflightError;
+              }
+              continueWithoutAi(preflightError);
+              return undefined;
             });
-            cliQuotaJobId = preflight.jobId;
-            platformQuotaApiKey = workspaceApiKey;
-            config.cliQuotaJobId = preflight.jobId;
-            if (
-              config.enableAiInference &&
-              preflight.suggestedAiBudgetTokens > 0
-            ) {
-              // suggestedAiBudgetTokens is a server ceiling (remaining quota /
-              // per-job cap), not a spend target. Never raise the CLI working
-              // budget above the configured default (or user override).
-              config.aiBudgetTokens = Math.min(
-                config.aiBudgetTokens ?? 12_000,
-                preflight.suggestedAiBudgetTokens
-              );
-            }
-            if (preflight.aiDelivery === 'platform_proxy') {
-              config.aiMode = 'platform';
-            }
-            if (isInteractive) {
-              const quotaLine = `[scan] quota: scans_remaining=${preflight.scansRemaining} ai_tokens_remaining=${preflight.aiTokensRemaining} job_id=${preflight.jobId} working_budget=${config.aiBudgetTokens ?? 0}`;
-              if (friendlyTty) {
-                technicalLines.push(quotaLine);
-              } else {
-                console.log(quotaLine);
+            if (preflight) {
+              cliQuotaJobId = preflight.jobId;
+              platformQuotaApiKey = workspaceApiKey;
+              config.cliQuotaJobId = preflight.jobId;
+              if (
+                config.enableAiInference &&
+                preflight.suggestedAiBudgetTokens > 0
+              ) {
+                // suggestedAiBudgetTokens is a server ceiling (remaining quota /
+                // per-job cap), not a spend target. Never raise the CLI working
+                // budget above the configured default (or user override).
+                config.aiBudgetTokens = Math.min(
+                  config.aiBudgetTokens ?? 12_000,
+                  preflight.suggestedAiBudgetTokens
+                );
+              }
+              if (preflight.aiDelivery === 'platform_proxy') {
+                config.aiMode = 'platform';
+              }
+              if (isInteractive) {
+                const quotaLine = `[scan] quota: scans_remaining=${preflight.scansRemaining} ai_tokens_remaining=${preflight.aiTokensRemaining} job_id=${preflight.jobId} working_budget=${config.aiBudgetTokens ?? 0}`;
+                if (friendlyTty) {
+                  technicalLines.push(quotaLine);
+                } else {
+                  console.log(quotaLine);
+                }
               }
             }
           } else if (
@@ -541,21 +601,9 @@ function createProgram(): Command {
                 }
               }
             } catch (anonSessionError) {
-              const { CliAnonymousIpLimitError } =
-                await import('./platform-api/anonymous-ai-session-client');
-              const message =
-                anonSessionError instanceof Error
-                  ? anonSessionError.message
-                  : 'Anonymous AI session failed.';
-              reportedFailure = {
-                code: 'anonymous_ai_session_failed',
-                message: truncateFailureMessage(message),
-              };
-
-              console.error(`[scan] ${message}`);
-              process.exitCode =
-                anonSessionError instanceof CliAnonymousIpLimitError ? 2 : 1;
-              return;
+              // AI is optional: keep scanning without it so the user still
+              // gets the local .dataparade/ output.
+              continueWithoutAi(anonSessionError);
             }
           }
 
@@ -595,9 +643,8 @@ function createProgram(): Command {
           }
 
           {
-            const { summarizeScanTree, describeScanTree } = await import(
-              './platform-api/estimate-scan-footprint'
-            );
+            const { summarizeScanTree, describeScanTree } =
+              await import('./platform-api/estimate-scan-footprint');
             const tree = describeScanTree(
               await summarizeScanTree(
                 scanEntry.scanRootDir,
@@ -834,6 +881,15 @@ function createProgram(): Command {
                       `[scan] Auto-upload failed: ${uploadMessage}`
                     );
                   }
+                  // The scan itself succeeded (exit 0), but do not close with
+                  // the success line: say the upload failed and how to retry.
+                  progressUi.onUploadFailed(
+                    describeAutoUploadFailure(
+                      uploadError,
+                      dataflowOutputPath,
+                      Boolean(workspaceApiKey)
+                    )
+                  );
                 }
               }
               progressUi.finish();

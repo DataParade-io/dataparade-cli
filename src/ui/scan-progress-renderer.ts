@@ -104,6 +104,15 @@ export function formatProjectLabel(projectPath: string): string {
   return projectPath;
 }
 
+export type ScanUploadFailure = {
+  /** Why the upload failed, without a trailing period. */
+  reason: string;
+  /** Exact command to retry the upload. */
+  retryCommand: string;
+  /** Optional extra advice, e.g. how to avoid the anonymous per-IP cap. */
+  hint?: string;
+};
+
 /**
  * Staged scan progress for TTY (Clack) and plain logs for non-TTY / NO_COLOR.
  */
@@ -127,6 +136,7 @@ export class ScanProgressRenderer {
   private teachingSummaryLines: string[] = [];
   private previewUrl: string | undefined;
   private previewNotice: string | undefined;
+  private uploadFailure: ScanUploadFailure | undefined;
 
   constructor(
     options: ScanProgressRendererOptions,
@@ -286,6 +296,14 @@ export class ScanProgressRenderer {
     this.previewNotice = notice;
   }
 
+  /**
+   * Auto-upload failed after the local output was written. finish() then
+   * says so and prints the retry command instead of the success closing.
+   */
+  onUploadFailed(failure: ScanUploadFailure): void {
+    this.uploadFailure = failure;
+  }
+
   /** One plain informational line, e.g. how many files the scan walks. */
   info(message: string): void {
     this.start();
@@ -331,7 +349,16 @@ export class ScanProgressRenderer {
     this.completeActiveStep();
 
     const nextSteps: string[] = [];
-    if (this.previewUrl) {
+    let closing = 'All done — nice work.';
+    if (this.uploadFailure) {
+      const { reason, retryCommand, hint } = this.uploadFailure;
+      nextSteps.push(`The upload did not complete: ${reason}.`);
+      nextSteps.push(
+        `Your scan is saved locally. To upload it, run:\n    ${retryCommand}`
+      );
+      if (hint) nextSteps.push(hint);
+      closing = 'Scan finished. The upload did not complete.';
+    } else if (this.previewUrl) {
       nextSteps.push(
         `Open your diagram:\n${formatPreviewLink(this.previewUrl, this.colorEnabled)}`
       );
@@ -348,7 +375,7 @@ export class ScanProgressRenderer {
       // preview URLs and breaks click-to-open.
       this.prompts().log.step('What to do next');
       this.prompts().log.message(nextSteps.join('\n\n'));
-      this.prompts().outro('All done — nice work.');
+      this.prompts().outro(closing);
     } else {
       this.writePlain('What to do next');
       for (const line of nextSteps) {
@@ -359,7 +386,7 @@ export class ScanProgressRenderer {
           this.writePlain(`  ${line}`);
         }
       }
-      this.writePlain('All done — nice work.');
+      this.writePlain(closing);
     }
   }
 

@@ -20,6 +20,17 @@ function buildAuthHeaders(apiKey: string): Record<string, string> {
   };
 }
 
+/** Upload rejected by the API; `status` is the HTTP status (429 = rate limit). */
+export class CliUploadError extends Error {
+  constructor(
+    message: string,
+    readonly status: number
+  ) {
+    super(message);
+    this.name = 'CliUploadError';
+  }
+}
+
 async function parseUploadError(res: Response): Promise<never> {
   let message = `Upload failed (${res.status})`;
   try {
@@ -33,7 +44,7 @@ async function parseUploadError(res: Response): Promise<never> {
   } catch {
     // ignore
   }
-  throw new Error(message);
+  throw new CliUploadError(message, res.status);
 }
 
 export async function cliUploadAnonymousPreview(input: {
