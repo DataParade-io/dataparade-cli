@@ -60,7 +60,7 @@ describe('scan quota flow', () => {
 
   it('prints workspace quota message when preflight is quota-blocked', async () => {
     process.env.DATAPARADE_WORKSPACE_API_KEY = 'dp_live_test';
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
     fetchMock.mockResolvedValueOnce(
       jsonResponse(
         {
@@ -83,7 +83,7 @@ describe('scan quota flow', () => {
 
   it('prints scan in progress message when preflight is blocked by running job', async () => {
     process.env.DATAPARADE_WORKSPACE_API_KEY = 'dp_live_test';
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
     fetchMock.mockResolvedValueOnce(
       jsonResponse(
         {
@@ -91,7 +91,7 @@ describe('scan quota flow', () => {
           message: {
             code: 'scan_already_running',
             message:
-              'Scan in progress — start a new scan after the current one completes.',
+              'Another scan is already running in this workspace. Wait for it to finish, if it was stopped, it is released automatically after 60 minutes of inactivity.',
           },
         },
         409
@@ -101,7 +101,7 @@ describe('scan quota flow', () => {
     await run(['node', 'cli', 'scan', tempRoot, '--ai-inference']);
 
     expect(errorSpy).toHaveBeenCalledWith(
-      '[scan] scan in progress: Scan in progress — start a new scan after the current one completes.'
+      '[scan] scan in progress: Another scan is already running in this workspace. Wait for it to finish, if it was stopped, it is released automatically after 60 minutes of inactivity.'
     );
     errorSpy.mockRestore();
   });
@@ -153,7 +153,7 @@ describe('scan quota flow', () => {
     // Plain TTY (no Clack chrome): the Clack outro replaces this line.
     const previousNoColor = process.env.NO_COLOR;
     process.env.NO_COLOR = '1';
-    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => { });
     const isTty = Object.getOwnPropertyDescriptor(process.stdout, 'isTTY');
     Object.defineProperty(process.stdout, 'isTTY', {
       value: true,

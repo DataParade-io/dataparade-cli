@@ -50,7 +50,12 @@ import { validateScanConfiguration } from './core/schema/scan-config.schema';
 import type { AiInferenceProposalDetail } from './core/types';
 import { resolveScanFilesystemEntry } from '@dataparade/scanner';
 import {
+  installCliScanInterruptHandlers,
+  type CliScanQuotaCompletionStatus,
+} from './cli/scan-interrupt-handlers';
+import {
   createScanProgressRenderer,
+  type ScanProgressRenderer,
   type ScanUploadFailure,
 } from './ui/scan-progress-renderer';
 
@@ -309,7 +314,9 @@ function createProgram(): Command {
       ) => {
         let cliQuotaJobId: string | undefined;
         let platformQuotaApiKey: string | undefined;
-        let quotaCompletionReported = false;
+        let progressUi: ScanProgressRenderer | undefined;
+        let quotaCompletionStatus: CliScanQuotaCompletionStatus = 'none';
+        let quotaCompletionInFlight: Promise<void> | undefined;
         let fallbackFailureMessage = 'CLI scan did not complete successfully';
         let reportedFailure: CliScanFailureReport | undefined;
         let sentryScanRoot: string | undefined;
@@ -319,6 +326,15 @@ function createProgram(): Command {
         // True once Clack owns the terminal: raw `[scan]` lines would break its
         // guide rail, so they go through the renderer or are skipped.
         let friendlyTty = false;
+        // Errors close the Clack UI as a plain sentence; logs (CI, non-TTY)
+        // keep the `[scan] …:` prefix so they stay greppable.
+        const reportScanError = (logLine: string, friendlyText: string) => {
+          if (friendlyTty && progressUi) {
+            progressUi.fail(friendlyText);
+            return;
+          }
+          console.error(logLine);
+        };
 
         // Parse and validate --git-context if provided
         let parsedGitContext: GitContextSchema | undefined;
@@ -357,6 +373,37 @@ function createProgram(): Command {
           hasApiKey: Boolean(workspaceApiKey),
           apiKey: workspaceApiKey,
           cliVersion: pkg.version,
+        });
+
+        const uninstallInterruptHandlers = installCliScanInterruptHandlers({
+          proc: process,
+          exit: (code) => {
+            process.exit(code);
+          },
+          getState: () => ({
+            apiKey: platformQuotaApiKey,
+            jobId: cliQuotaJobId,
+            completionStatus: quotaCompletionStatus,
+            inFlight: quotaCompletionInFlight,
+          }),
+          setCompletionStatus: (status) => {
+            quotaCompletionStatus = status;
+          },
+          onAbortUi: () => {
+            progressUi?.abort('Scan cancelled');
+          },
+          reportFailed: async ({ apiKey, jobId, timeoutMs }) => {
+            const { cliScanComplete } =
+              await import('./platform-api/scan-quota-client');
+            await cliScanComplete({
+              apiKey,
+              jobId,
+              status: 'failed',
+              failureCode: 'scan_interrupted',
+              failureMessage: 'You stopped this scan',
+              timeoutMs,
+            });
+          },
         });
 
         try {
@@ -402,7 +449,7 @@ function createProgram(): Command {
             import('./core/pipeline/graph-mapping'),
           ]);
 
-          const progressUi = await createScanProgressRenderer({
+          const ui = await createScanProgressRenderer({
             isTTY: Boolean(isInteractive),
             noColor: Boolean(
               typeof process.env.NO_COLOR === 'string' &&
@@ -411,8 +458,9 @@ function createProgram(): Command {
             projectLabel: resolvedScanRoot,
             version: pkg.version,
           });
-          progressUi.start();
-          friendlyTty = progressUi.usesClackChrome;
+          progressUi = ui;
+          ui.start();
+          friendlyTty = ui.usesClackChrome;
           setScanAiDebugSuppressed(friendlyTty && !options.aiVerbose);
           // Technical meters, shown as one block after the scan (TTY) or
           // printed as before (non-TTY).
@@ -503,7 +551,7 @@ function createProgram(): Command {
             config.cliQuotaJobId = undefined;
             config.anonSessionToken = undefined;
             sentryAiMode = 'none';
-            progressUi.warn(
+            ui.warn(
               `AI enrichment unavailable (${describeUnavailableReason(setupError)}); continuing with a structural scan. Use --no-ai-inference to skip this step.`
             );
           };
@@ -624,9 +672,12 @@ function createProgram(): Command {
               failurePhase: 'config_validation',
               failureCode: 'invalid_configuration',
             });
-
-            console.error(
-              `[scan] invalid configuration:\n${configValidation.errors.map((e) => `  - ${e}`).join('\n')}`
+            const configErrors = configValidation.errors
+              .map((e) => `  - ${e}`)
+              .join('\n');
+            reportScanError(
+              `[scan] invalid configuration:\n${configErrors}`,
+              `Invalid configuration:\n${configErrors}`
             );
             process.exitCode = 2;
             return;
@@ -634,7 +685,7 @@ function createProgram(): Command {
 
           if (isInteractive && warnings.length > 0) {
             if (friendlyTty) {
-              for (const w of warnings) progressUi.warn(w);
+              for (const w of warnings) ui.warn(w);
             } else {
               console.warn(
                 `[scan] warnings:\n${warnings.map((w) => `  - ${w}`).join('\n')}`
@@ -659,15 +710,15 @@ function createProgram(): Command {
             resolvedScanRoot,
             config,
             (progress) => {
-              progressUi.onProgress(progress);
+              ui.onProgress(progress);
             },
             (recognition) => {
-              progressUi.onRecognition(recognition);
+              ui.onRecognition(recognition);
             }
           );
           const { scanResult, redFlags } = orchestratorResult;
           if (scanResult.aiInferenceSummary) {
-            progressUi.onAiResult({
+            ui.onAiResult({
               proposalsApplied: scanResult.aiInferenceSummary.proposalsApplied,
             });
           }
@@ -709,7 +760,7 @@ function createProgram(): Command {
           }
           // Friendly TTY only shows the block on request (--ai-verbose).
           if (!friendlyTty || options.aiVerbose) {
-            progressUi.showTechnicalDetails('Scan details', technicalLines);
+            ui.showTechnicalDetails('Scan details', technicalLines);
           }
 
           for (const w of scanResult.warnings ?? []) {
@@ -723,9 +774,9 @@ function createProgram(): Command {
                 failurePhase: 'ai_provider',
                 failureCode: 'ai_provider_warning',
               });
-              progressUi.warn(w);
+              ui.warn(w);
             } else if (w.startsWith('red-flag:')) {
-              progressUi.warn(w);
+              ui.warn(w);
             }
           }
 
@@ -773,9 +824,9 @@ function createProgram(): Command {
                 graphError instanceof Error
                   ? graphError.message
                   : 'Unknown error while building diagram graph.';
-
-              console.error(
-                `[scan] warning: unable to build diagram graph: ${message}`
+              reportScanError(
+                `[scan] warning: unable to build diagram graph: ${message}`,
+                `Could not build the diagram: ${message}`
               );
             }
             process.exitCode = 1;
@@ -822,7 +873,7 @@ function createProgram(): Command {
               });
 
               // Friendly TTY/plain progress line (additive).
-              progressUi.onWroteDataflow(dataflowOutputPath);
+              ui.onWroteDataflow(dataflowOutputPath);
               // Machine line for scripts / CI (non-TTY). The friendly TTY UI
               // shows the path in its own success line instead.
               if (!friendlyTty) {
@@ -864,7 +915,7 @@ function createProgram(): Command {
                     quiet: friendlyTty,
                   });
                   if (uploadResult.previewUrl) {
-                    progressUi.onPreviewUrl(
+                    ui.onPreviewUrl(
                       uploadResult.previewUrl,
                       uploadResult.notice
                     );
@@ -875,7 +926,7 @@ function createProgram(): Command {
                       ? uploadError.message
                       : 'Unknown upload error.';
                   if (friendlyTty) {
-                    progressUi.warn(`Auto-upload failed: ${uploadMessage}`);
+                    ui.warn(`Auto-upload failed: ${uploadMessage}`);
                   } else {
                     console.error(
                       `[scan] Auto-upload failed: ${uploadMessage}`
@@ -892,7 +943,7 @@ function createProgram(): Command {
                   );
                 }
               }
-              progressUi.finish();
+              ui.finish();
             } catch (dataflowError) {
               reportedFailure = {
                 code: 'dataflow_write_failed',
@@ -915,20 +966,25 @@ function createProgram(): Command {
                 dataflowError instanceof Error
                   ? dataflowError.message
                   : 'Unknown error while writing dataflow.json.';
-
-              console.error(
-                `[scan] error: failed to write dataflow.json: ${message}`
+              reportScanError(
+                `[scan] error: failed to write dataflow.json: ${message}`,
+                `Could not save dataflow.json: ${message}`
               );
               process.exitCode = 1;
             }
           }
 
-          if (platformQuotaApiKey && cliQuotaJobId) {
+          if (
+            platformQuotaApiKey &&
+            cliQuotaJobId &&
+            quotaCompletionStatus === 'none'
+          ) {
             const { cliScanComplete } =
               await import('./platform-api/scan-quota-client');
             const exitFailed = (process.exitCode ?? 0) !== 0;
             const platformAiMode = resolveAiMode(config) === 'platform';
-            await cliScanComplete({
+            quotaCompletionStatus = 'in_flight';
+            quotaCompletionInFlight = cliScanComplete({
               apiKey: platformQuotaApiKey,
               jobId: cliQuotaJobId,
               status: exitFailed ? 'failed' : 'completed',
@@ -942,7 +998,16 @@ function createProgram(): Command {
                 ? (reportedFailure?.message ?? fallbackFailureMessage)
                 : undefined,
             });
-            quotaCompletionReported = true;
+            try {
+              await quotaCompletionInFlight;
+              quotaCompletionStatus = 'done';
+            } catch (completeError) {
+              // Not reported: let the finally (or an interrupt) retry as failed.
+              quotaCompletionStatus = 'none';
+              throw completeError;
+            } finally {
+              quotaCompletionInFlight = undefined;
+            }
             // The Clack outro already closes the run in friendly TTY.
             if (isInteractive && !friendlyTty) {
               console.log(
@@ -979,13 +1044,15 @@ function createProgram(): Command {
                 ? 'scan_already_running'
                 : 'scan_exception',
           });
-
-          console.error(
+          // Clack: the error closes the live spinner. A raw line would land
+          // mid-spinner and Clack would add its own "Canceled" on exit.
+          reportScanError(
             quotaBlocked
               ? `[scan] workspace quota: ${message}`
               : scanInProgress
                 ? `[scan] scan in progress: ${message}`
-                : `Scan failed: ${message}`
+                : `Scan failed: ${message}`,
+            quotaBlocked || scanInProgress ? message : `Scan failed: ${message}`
           );
           process.exitCode = 1;
         } finally {
@@ -1007,12 +1074,13 @@ function createProgram(): Command {
           if (
             platformQuotaApiKey &&
             cliQuotaJobId &&
-            !quotaCompletionReported
+            quotaCompletionStatus === 'none'
           ) {
             try {
               const { cliScanComplete } =
                 await import('./platform-api/scan-quota-client');
-              await cliScanComplete({
+              quotaCompletionStatus = 'in_flight';
+              quotaCompletionInFlight = cliScanComplete({
                 apiKey: platformQuotaApiKey,
                 jobId: cliQuotaJobId,
                 status: 'failed',
@@ -1020,16 +1088,24 @@ function createProgram(): Command {
                 failureMessage:
                   reportedFailure?.message ?? fallbackFailureMessage,
               });
-              quotaCompletionReported = true;
-              if (isInteractive) {
+              await quotaCompletionInFlight;
+              quotaCompletionStatus = 'done';
+              // Clack already closed the run with the error line.
+              if (isInteractive && !friendlyTty) {
                 console.log(
                   '[scan] Scan finished — you can start a new scan now.'
                 );
               }
             } catch {
               // Quota report failure must not mask the original scan error.
+              quotaCompletionStatus = 'none';
+            } finally {
+              quotaCompletionInFlight = undefined;
             }
           }
+          // Last: Ctrl+C during the usage event or complete above must still
+          // release the lock.
+          uninstallInterruptHandlers();
         }
       }
     );

@@ -45,11 +45,17 @@ function parseTruthyEnvFlag(value: string | undefined): boolean {
 let scanAiDebugSuppressed = false;
 
 /**
- * Mute SCAN_AI_DEBUG logs for this run. The interactive progress UI sets this:
- * raw `[dataparade-ai]` lines written mid-spinner break its layout.
+ * Mute SCAN_AI_DEBUG logs and transient AI notices (e.g. network retries) for
+ * this run. The interactive progress UI sets this: raw `[dataparade-ai]` lines
+ * written mid-spinner break its layout.
  */
 export function setScanAiDebugSuppressed(suppressed: boolean): void {
   scanAiDebugSuppressed = suppressed;
+}
+
+/** True while the interactive UI owns the terminal (see setScanAiDebugSuppressed). */
+export function isScanAiDebugSuppressed(): boolean {
+  return scanAiDebugSuppressed;
 }
 
 /** Extra provider HTTP / normalization logging (all providers, not OpenAI-only). */

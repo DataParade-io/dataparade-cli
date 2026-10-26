@@ -1,10 +1,13 @@
 import { PlatformProxyProvider } from '../../../src/ai-enrichment/providers/platform-proxy-provider';
+import { setScanAiDebugSuppressed } from '../../../src/config/scan-env';
 
 describe('PlatformProxyProvider', () => {
   const originalFetch = global.fetch;
 
   afterEach(() => {
     global.fetch = originalFetch;
+    setScanAiDebugSuppressed(false);
+    jest.restoreAllMocks();
   });
 
   it('submits a task and polls until completed', async () => {
@@ -281,6 +284,39 @@ describe('PlatformProxyProvider', () => {
       provider.infer({ prompt: 'test', model: 'gpt-4o-mini' })
     ).rejects.toThrow(
       'Could not reach the DataParade API (POST http://localhost:3000/api/scans/cli/ai/infer/tasks): ECONNRESET: other side closed. Tried 3 times. Run the scan again.'
+    );
+  });
+  it('keeps retry notices out of the terminal while the progress UI owns it', async () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    global.fetch = jest.fn(async () => {
+      const err = new TypeError('fetch failed') as TypeError & {
+        cause?: unknown;
+      };
+      err.cause = Object.assign(new Error('other side closed'), {
+        code: 'ECONNRESET',
+      });
+      throw err;
+    }) as typeof fetch;
+    const provider = new PlatformProxyProvider({
+      apiBaseUrl: 'http://localhost:3000',
+      workspaceApiKey: 'dp_anon_test',
+      jobId: 'job-1',
+      networkRetryDelaysMs: [0],
+      sleep: async () => undefined,
+    });
+
+    setScanAiDebugSuppressed(true);
+    await expect(
+      provider.infer({ prompt: 'test', model: 'gpt-4o-mini' })
+    ).rejects.toThrow('Tried 2 times');
+    expect(warnSpy).not.toHaveBeenCalled();
+
+    setScanAiDebugSuppressed(false);
+    await expect(
+      provider.infer({ prompt: 'test', model: 'gpt-4o-mini' })
+    ).rejects.toThrow('Tried 2 times');
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Retrying (1/1)')
     );
   });
 });

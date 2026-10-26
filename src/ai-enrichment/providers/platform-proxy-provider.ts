@@ -11,6 +11,7 @@ import {
   isTransientFetchError,
   toApiReachabilityError,
 } from '../../platform-api/fetch-failure';
+import { isScanAiDebugSuppressed } from '../../config/scan-env';
 
 export type PlatformProxyProviderConfig = {
   apiBaseUrl: string;
@@ -145,10 +146,13 @@ export class PlatformProxyProvider implements AiProvider {
         if (attempt >= delays.length || !isTransientFetchError(err)) {
           throw toApiReachabilityError(err, url, method, attempt + 1);
         }
-         
-        console.warn(
-          `[dataparade-ai] ${describeRequestTarget(url, method)} failed (${fetchFailureDetail(err)}). Retrying (${attempt + 1}/${delays.length}).`
-        );
+        // The Clack UI owns the terminal; a final failure still surfaces
+        // through the scan error ("Tried N times").
+        if (!isScanAiDebugSuppressed()) {
+          console.warn(
+            `[dataparade-ai] ${describeRequestTarget(url, method)} failed (${fetchFailureDetail(err)}). Retrying (${attempt + 1}/${delays.length}).`
+          );
+        }
         await this.wait(delays[attempt] ?? 0);
       }
     }

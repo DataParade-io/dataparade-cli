@@ -35,6 +35,8 @@ const ANSI_PATTERN = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, 'g');
 type SpinnerHandle = {
   start: (msg?: string) => void;
   stop: (msg?: string) => void;
+  cancel?: (msg?: string) => void;
+  error?: (msg?: string) => void;
   message: (msg?: string) => void;
 };
 
@@ -126,9 +128,16 @@ export class ScanProgressRenderer {
   private readonly version?: string;
   private readonly columns?: number;
   private readonly colorDepth?: number;
+  private readonly stdin?: ScanProgressRendererOptions['stdin'];
 
   private readonly clack: ClackPrompts | null;
   private started = false;
+  /**
+   * Set once the run is closed (finish/abort/fail). The scan keeps running
+   * while the interrupt handler reports to the API, and work queued behind a
+   * blocking phase must not draw new steps under "Scan cancelled".
+   */
+  private closed = false;
   private recognitionHandled = false;
   private activeStep: ScanUiStepId | null = null;
   private spinner: SpinnerHandle | null = null;
@@ -153,6 +162,7 @@ export class ScanProgressRenderer {
     this.version = options.version;
     this.columns = options.columns;
     this.colorDepth = options.colorDepth;
+    this.stdin = options.stdin;
     this.writeLine =
       options.writeLine ??
       ((line: string) => {
@@ -197,6 +207,7 @@ export class ScanProgressRenderer {
   }
 
   onProgress(progress: ScanProgress): void {
+    if (this.closed) return;
     this.start();
     switch (progress.phase) {
       case 'ingest':
@@ -222,6 +233,7 @@ export class ScanProgressRenderer {
   }
 
   onRecognition(payload: ScanRecognitionPayload): void {
+    if (this.closed) return;
     if (this.recognitionHandled) return;
     this.recognitionHandled = true;
     this.start();
@@ -264,6 +276,7 @@ export class ScanProgressRenderer {
 
   /** Close the AI step with one plain-language result line. */
   onAiResult(result: ScanAiStepResult): void {
+    if (this.closed) return;
     if (this.activeStep !== 'ai_enrichment') return;
     this.completeActiveStep();
     const line = formatAiStepResult(result);
@@ -275,6 +288,7 @@ export class ScanProgressRenderer {
   }
 
   onWroteDataflow(outputPath?: string): void {
+    if (this.closed) return;
     this.start();
     this.completeActiveStep();
     const label = 'Saved your data-flow map';
@@ -292,6 +306,7 @@ export class ScanProgressRenderer {
 
   /** Store preview URL for the "What to do next" note. Machine line stays in upload. */
   onPreviewUrl(previewUrl: string, notice?: string): void {
+    if (this.closed) return;
     this.previewUrl = previewUrl;
     this.previewNotice = notice;
   }
@@ -319,6 +334,7 @@ export class ScanProgressRenderer {
    * keeps the `[scan] …` stderr line scripts may grep for.
    */
   warn(message: string): void {
+    if (this.closed) return;
     if (this.useClack) {
       this.prompts().log.warn(message);
     } else {
@@ -331,6 +347,7 @@ export class ScanProgressRenderer {
    * Clack folds them into one dimmed note so they don't break the guide rail.
    */
   showTechnicalDetails(title: string, lines: string[]): void {
+    if (this.closed) return;
     if (lines.length === 0) return;
     if (this.useClack) {
       const body = lines
@@ -346,6 +363,8 @@ export class ScanProgressRenderer {
   }
 
   finish(): void {
+    if (this.closed) return;
+    this.closed = true;
     this.completeActiveStep();
 
     const nextSteps: string[] = [];
@@ -390,6 +409,57 @@ export class ScanProgressRenderer {
     }
   }
 
+  /**
+   * Cancel an in-flight scan UI (Ctrl+C). Stops the spinner with a red mark
+   * in Clack mode; prints a short line in plain mode. Does not run finish().
+   */
+  abort(message = 'Scan cancelled'): void {
+    if (this.closed) return;
+    this.closed = true;
+    if (this.useClack && this.spinner) {
+      if (typeof this.spinner.cancel === 'function') {
+        this.spinner.cancel(message);
+      } else {
+        this.spinner.stop(message);
+      }
+      this.spinner = null;
+      this.activeStep = null;
+      return;
+    }
+    this.activeStep = null;
+    if (this.useClack) {
+      // Between steps: a raw line would break Clack's guide rail.
+      this.prompts().log.warn(message);
+      return;
+    }
+    this.writePlain(message);
+  }
+
+  /**
+   * End the scan UI on an error: closes the active spinner with the error
+   * mark (or logs an error line between steps). Does not run finish().
+   */
+  fail(message: string): void {
+    if (this.closed) return;
+    this.closed = true;
+    if (this.useClack && this.spinner) {
+      if (typeof this.spinner.error === 'function') {
+        this.spinner.error(message);
+      } else {
+        this.spinner.stop(message);
+      }
+      this.spinner = null;
+      this.activeStep = null;
+      return;
+    }
+    this.activeStep = null;
+    if (this.useClack) {
+      this.prompts().log.error(message);
+      return;
+    }
+    this.writePlain(message);
+  }
+
   private transitionTo(step: ScanUiStepId): void {
     if (this.activeStep === step || this.completedSteps.has(step)) {
       return;
@@ -400,8 +470,22 @@ export class ScanProgressRenderer {
     if (this.useClack) {
       this.spinner = this.prompts().spinner({ withGuide: true });
       this.spinner.start(label);
+      this.restoreSignalKeys();
     } else {
       this.writePlain(`… ${label}`);
+    }
+  }
+
+  /**
+   * Clack's spinner puts stdin in raw mode, where Ctrl+C is a keypress it
+   * answers with process.exit(0) — skipping our SIGINT handler and leaving
+   * the scan job running. The spinner only writes, so hand Ctrl+C back to
+   * the terminal as a real signal.
+   */
+  private restoreSignalKeys(): void {
+    const stdin = this.stdin;
+    if (stdin?.isTTY && typeof stdin.setRawMode === 'function') {
+      stdin.setRawMode(false);
     }
   }
 
@@ -469,6 +553,7 @@ export async function createScanProgressRenderer(
       projectLabel: options?.projectLabel,
       version: options?.version,
       columns: options?.columns ?? process.stdout.columns,
+      stdin: options?.stdin ?? process.stdin,
       colorDepth:
         options?.colorDepth ??
         (typeof process.stdout.getColorDepth === 'function'

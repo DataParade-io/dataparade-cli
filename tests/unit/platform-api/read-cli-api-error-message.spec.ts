@@ -27,7 +27,7 @@ describe("readCliApiErrorMessage", () => {
           message: {
             code: "scan_already_running",
             message:
-              "Scan in progress — start a new scan after the current one completes.",
+              "Another scan is already running in this workspace. Wait for it to finish, if it was stopped, it is released automatically after 60 minutes of inactivity.",
           },
         },
         "fallback",
@@ -35,7 +35,7 @@ describe("readCliApiErrorMessage", () => {
     ).toEqual({
       code: "scan_already_running",
       message:
-        "Scan in progress — start a new scan after the current one completes.",
+        "Another scan is already running in this workspace. Wait for it to finish, if it was stopped, it is released automatically after 60 minutes of inactivity.",
     });
   });
 

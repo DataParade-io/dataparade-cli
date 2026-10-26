@@ -1,23 +1,23 @@
-import { getDataparadeApiBaseUrl } from "./dataparade-api-base-url";
-import { readCliApiErrorMessage } from "./read-cli-api-error-message";
+import { getDataparadeApiBaseUrl } from './dataparade-api-base-url';
+import { readCliApiErrorMessage } from './read-cli-api-error-message';
 
 /** Thrown when preflight/complete is rejected with HTTP 403 scan_quota_exceeded. */
 export class CliScanQuotaExceededError extends Error {
-  readonly code = "scan_quota_exceeded" as const;
+  readonly code = 'scan_quota_exceeded' as const;
 
   constructor(message: string) {
     super(message);
-    this.name = "CliScanQuotaExceededError";
+    this.name = 'CliScanQuotaExceededError';
   }
 }
 
 /** Thrown when preflight is rejected with HTTP 409 scan_already_running. */
 export class CliScanAlreadyRunningError extends Error {
-  readonly code = "scan_already_running" as const;
+  readonly code = 'scan_already_running' as const;
 
   constructor(message: string) {
     super(message);
-    this.name = "CliScanAlreadyRunningError";
+    this.name = 'CliScanAlreadyRunningError';
   }
 }
 
@@ -33,7 +33,7 @@ export type CliScanPreflightResponse = {
 function buildHeaders(apiKey: string): Record<string, string> {
   return {
     Authorization: `Bearer ${apiKey}`,
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
 }
 
@@ -44,16 +44,19 @@ export async function cliScanPreflight(input: {
   fileCount?: number;
   bytesIngested?: number;
 }): Promise<CliScanPreflightResponse> {
-  const res = await fetch(`${getDataparadeApiBaseUrl()}/api/scans/cli/preflight`, {
-    method: "POST",
-    headers: buildHeaders(input.apiKey),
-    body: JSON.stringify({
-      enableAi: input.enableAi,
-      projectName: input.projectName,
-      fileCount: input.fileCount,
-      bytesIngested: input.bytesIngested,
-    }),
-  });
+  const res = await fetch(
+    `${getDataparadeApiBaseUrl()}/api/scans/cli/preflight`,
+    {
+      method: 'POST',
+      headers: buildHeaders(input.apiKey),
+      body: JSON.stringify({
+        enableAi: input.enableAi,
+        projectName: input.projectName,
+        fileCount: input.fileCount,
+        bytesIngested: input.bytesIngested,
+      }),
+    }
+  );
 
   if (!res.ok) {
     const fallback = `Scan preflight failed (${res.status})`;
@@ -67,10 +70,10 @@ export async function cliScanPreflight(input: {
     } catch {
       // ignore
     }
-    if (res.status === 403 && code === "scan_quota_exceeded") {
+    if (res.status === 403 && code === 'scan_quota_exceeded') {
       throw new CliScanQuotaExceededError(message);
     }
-    if (res.status === 409 && code === "scan_already_running") {
+    if (res.status === 409 && code === 'scan_already_running') {
       throw new CliScanAlreadyRunningError(message);
     }
     throw new Error(message);
@@ -82,34 +85,49 @@ export async function cliScanPreflight(input: {
 export async function cliScanComplete(input: {
   apiKey: string;
   jobId: string;
-  status: "completed" | "failed";
+  status: 'completed' | 'failed';
   aiTokensUsed?: number;
   failureCode?: string;
   failureMessage?: string;
+  /** Optional fetch abort timeout (e.g. interrupt path). */
+  timeoutMs?: number;
 }): Promise<void> {
-  const res = await fetch(
-    `${getDataparadeApiBaseUrl()}/api/scans/cli/${encodeURIComponent(input.jobId)}/complete`,
-    {
-      method: "POST",
-      headers: buildHeaders(input.apiKey),
-      body: JSON.stringify({
-        status: input.status,
-        aiTokensUsed: input.aiTokensUsed,
-        failureCode: input.failureCode,
-        failureMessage: input.failureMessage,
-      }),
-    },
-  );
+  const controller =
+    typeof input.timeoutMs === 'number' && input.timeoutMs > 0
+      ? new AbortController()
+      : undefined;
+  const timer = controller
+    ? setTimeout(() => controller.abort(), input.timeoutMs)
+    : undefined;
 
-  if (!res.ok) {
-    const fallback = `Scan complete report failed (${res.status})`;
-    let message = fallback;
-    try {
-      const body = await res.json();
-      message = readCliApiErrorMessage(body, fallback).message;
-    } catch {
-      // ignore
+  try {
+    const res = await fetch(
+      `${getDataparadeApiBaseUrl()}/api/scans/cli/${encodeURIComponent(input.jobId)}/complete`,
+      {
+        method: 'POST',
+        headers: buildHeaders(input.apiKey),
+        signal: controller?.signal,
+        body: JSON.stringify({
+          status: input.status,
+          aiTokensUsed: input.aiTokensUsed,
+          failureCode: input.failureCode,
+          failureMessage: input.failureMessage,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const fallback = `Scan complete report failed (${res.status})`;
+      let message = fallback;
+      try {
+        const body = await res.json();
+        message = readCliApiErrorMessage(body, fallback).message;
+      } catch {
+        // ignore
+      }
+      throw new Error(message);
     }
-    throw new Error(message);
+  } finally {
+    if (timer) clearTimeout(timer);
   }
 }

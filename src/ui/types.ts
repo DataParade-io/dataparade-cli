@@ -35,6 +35,8 @@ export interface ScanProgressRendererOptions {
   writeLine?: (line: string) => void;
   /** Injected Clack module. Tests pass a mock; production loads the ESM package. */
   prompts?: typeof import('@clack/prompts');
+  /** Terminal input whose raw mode the spinner toggles. Defaults to process.stdin. */
+  stdin?: { isTTY?: boolean; setRawMode?: (mode: boolean) => unknown };
 }
 
 export interface TeachingLineGroups {

@@ -2,6 +2,8 @@ jest.mock('@clack/prompts', () => {
   const spin = {
     start: jest.fn(),
     stop: jest.fn(),
+    cancel: jest.fn(),
+    error: jest.fn(),
     message: jest.fn(),
   };
   return {
@@ -14,6 +16,7 @@ jest.mock('@clack/prompts', () => {
       success: jest.fn(),
       step: jest.fn(),
       warn: jest.fn(),
+      error: jest.fn(),
     },
   };
 });
@@ -305,5 +308,159 @@ describe('ScanProgressRenderer', () => {
     expect(lines).toEqual([
       '[scan] ai-usage: provider_calls=1 tokens_total=10',
     ]);
+  });
+
+  it('abort cancels the active spinner and skips the finish outro', async () => {
+    const { lines, writeLine } = captureLines();
+    const ui = await createScanProgressRenderer({
+      isTTY: true,
+      noColor: false,
+      writeLine,
+      prompts,
+    });
+    const spin = (prompts.spinner as jest.Mock)();
+    (prompts.spinner as jest.Mock).mockClear();
+
+    ui.onProgress({
+      phase: 'ingest',
+      filesProcessed: 0,
+      totalFiles: 0,
+      progress: 0.05,
+    });
+    expect(prompts.spinner).toHaveBeenCalledTimes(1);
+
+    ui.abort('Scan cancelled');
+
+    expect(spin.cancel).toHaveBeenCalledWith('Scan cancelled');
+    expect(spin.stop).not.toHaveBeenCalled();
+    expect(prompts.outro).not.toHaveBeenCalled();
+    expect(lines.some((line) => line.includes('All done'))).toBe(false);
+  });
+
+  it('hands Ctrl+C back to the terminal after starting a spinner', async () => {
+    const { writeLine } = captureLines();
+    const stdin = { isTTY: true, setRawMode: jest.fn() };
+    const ui = await createScanProgressRenderer({
+      isTTY: true,
+      noColor: false,
+      writeLine,
+      prompts,
+      stdin,
+    });
+
+    ui.onProgress({
+      phase: 'ingest',
+      filesProcessed: 0,
+      totalFiles: 0,
+      progress: 0.05,
+    });
+
+    expect(stdin.setRawMode).toHaveBeenLastCalledWith(false);
+  });
+
+  it('abort between steps uses a Clack log line, not a raw write', async () => {
+    const { lines, writeLine } = captureLines();
+    const ui = await createScanProgressRenderer({
+      isTTY: true,
+      noColor: false,
+      writeLine,
+      prompts,
+    });
+
+    ui.abort('Scan cancelled');
+
+    expect(prompts.log.warn).toHaveBeenCalledWith('Scan cancelled');
+    expect(lines).not.toContain('Scan cancelled');
+    expect(prompts.outro).not.toHaveBeenCalled();
+  });
+
+  it('fail closes the active spinner with the error mark', async () => {
+    const { writeLine } = captureLines();
+    const ui = await createScanProgressRenderer({
+      isTTY: true,
+      noColor: false,
+      writeLine,
+      prompts,
+    });
+    const spin = (prompts.spinner as jest.Mock)();
+    (prompts.spinner as jest.Mock).mockClear();
+
+    ui.onProgress({
+      phase: 'ingest',
+      filesProcessed: 0,
+      totalFiles: 0,
+      progress: 0.05,
+    });
+    ui.fail('Scan failed: API unreachable');
+
+    expect(spin.error).toHaveBeenCalledWith('Scan failed: API unreachable');
+    expect(prompts.outro).not.toHaveBeenCalled();
+  });
+
+  it('fail between steps logs a Clack error line', async () => {
+    const { lines, writeLine } = captureLines();
+    const ui = await createScanProgressRenderer({
+      isTTY: true,
+      noColor: false,
+      writeLine,
+      prompts,
+    });
+
+    ui.fail('Another scan is already running in this workspace.');
+
+    expect(prompts.log.error).toHaveBeenCalledWith(
+      'Another scan is already running in this workspace.'
+    );
+    expect(lines).toHaveLength(0);
+  });
+
+  it('ignores progress that arrives after the scan was cancelled', async () => {
+    const { lines, writeLine } = captureLines();
+    const ui = await createScanProgressRenderer({
+      isTTY: false,
+      noColor: true,
+      writeLine,
+    });
+    ui.onProgress({
+      phase: 'ingest',
+      filesProcessed: 0,
+      totalFiles: 0,
+      progress: 0.05,
+    });
+    ui.abort('Scan cancelled');
+    const linesAtAbort = lines.length;
+
+    // Work queued behind a blocking phase lands after Ctrl+C.
+    ui.onProgress({
+      phase: 'ai_enrichment',
+      filesProcessed: 0,
+      totalFiles: 0,
+      progress: 0.6,
+    });
+    ui.warn('late warning');
+    ui.fail('Scan failed: late');
+    ui.finish();
+
+    expect(lines).toHaveLength(linesAtAbort);
+    expect(lines[lines.length - 1]).toBe('Scan cancelled');
+  });
+
+  it('abort prints a plain cancellation line when Clack is off', async () => {
+    const { lines, writeLine } = captureLines();
+    const ui = await createScanProgressRenderer({
+      isTTY: false,
+      noColor: false,
+      writeLine,
+    });
+    ui.onProgress({
+      phase: 'ingest',
+      filesProcessed: 0,
+      totalFiles: 0,
+      progress: 0.05,
+    });
+    ui.abort('Scan cancelled');
+
+    expect(lines).toContain('Scan cancelled');
+    expect(lines.some((line) => line.includes('All done'))).toBe(false);
   });
 });
