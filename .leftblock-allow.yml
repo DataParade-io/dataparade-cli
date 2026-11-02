@@ -1,0 +1,12 @@
+# LeftBlock overrides: each entry approves one reviewed value (one rule
+# matching one exact value in one file). Changing the matched value re-blocks
+# it; unrelated edits to the line do not. `kind` is the rule's category,
+# shown for reviewers; it is not part of matching.
+version: 1
+allow:
+  - id: "1dcd10f2ad25b466"
+    rule: "leftblock-aws-resource-id"
+    file: "src/platform-api/dataparade-api-base-url.ts"
+    kind: "AWS resource id (Amplify app, AppSync API, API Gateway API, Cognito user pool, C"
+    reason: "Public default endpoint of the DataParade platform API (an API Gateway host), compiled into every published CLI install so it works without configuration; it is a routing address, not a credential, and cannot be generated or read from the environment without breaking installs."
+    added: 2026-11-02
