@@ -7,6 +7,7 @@ import pkg from '../package.json';
 
 import type { DiagramGraphJsonSchema } from './core/schema';
 import { buildDataflowWrapper, writeDataflowJson } from './output/json';
+import { detectGitContext } from './output/git-context';
 import {
   buildScanHierarchy,
   prepareScanKnowledge,
@@ -438,6 +439,8 @@ function createProgram(): Command {
             process.exitCode = 2;
             return;
           }
+          parsedGitContext ??=
+            detectGitContext(scanEntry.scanRootDir) ?? undefined;
 
           const [
             { createDefaultScanConfiguration },

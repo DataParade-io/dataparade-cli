@@ -277,6 +277,22 @@ function componentMatchesProvider(
   return keys.some((k) => corpus.has(k) || name.includes(k));
 }
 
+/**
+ * A product of the provider (Google Docs, Google Analytics) has its own
+ * serviceName that is not a provider key. It keeps its name and stays out of
+ * the provider topology, although its name contains the provider key.
+ */
+function isProviderProduct(
+  component: DetectedComponent,
+  keys: string[]
+): boolean {
+  const serviceNameValues = getStringValues(component.properties?.serviceName);
+  return (
+    serviceNameValues.length > 0 &&
+    !serviceNameValues.some((value) => keys.includes(value))
+  );
+}
+
 function isManagedResourceComponent(
   component: DetectedComponent,
   managedResource: ManagedResourceRule,
@@ -812,7 +828,8 @@ export function applyDeterministicInferenceFallbacks(
     const providers = nextComponents.filter(
       (component) =>
         component.type === 'third_party' &&
-        componentMatchesProvider(component, rule.providerMatchKeys)
+        componentMatchesProvider(component, rule.providerMatchKeys) &&
+        !isProviderProduct(component, rule.providerMatchKeys)
     );
     if (providers.length === 0) continue;
 

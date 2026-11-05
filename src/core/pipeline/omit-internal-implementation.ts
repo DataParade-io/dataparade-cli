@@ -139,13 +139,21 @@ function stringProp(component: OmittableComponent, key: string): string {
   return typeof value === 'string' ? value : '';
 }
 
-function hasPublicUrl(component: OmittableComponent): boolean {
-  const url =
-    stringProp(component, 'url') ||
-    (/^https?:\/\//i.test(component.name) ? component.name : '');
+function isPublicUrl(url: string): boolean {
   if (!/^https?:\/\//i.test(url)) return false;
-  if (/\$\{|process\.env|localhost|127\.0\.0\.1/i.test(url)) return false;
-  return true;
+  return !/\$\{|process\.env|localhost|127\.0\.0\.1/i.test(url);
+}
+
+/** A literal URL or a resolved `host` (e.g. a Cloud Run service) names a real destination. */
+function hasPublicUrl(component: OmittableComponent): boolean {
+  const raw = component.properties?.url;
+  const urls = (Array.isArray(raw) ? raw : [raw]).filter(
+    (value): value is string => typeof value === 'string'
+  );
+  if (/^https?:\/\//i.test(component.name)) urls.push(component.name);
+  const host = stringProp(component, 'host');
+  if (host) urls.push(`https://${host}`);
+  return urls.some(isPublicUrl);
 }
 
 function isBareHttpTransportNode(component: OmittableComponent): boolean {

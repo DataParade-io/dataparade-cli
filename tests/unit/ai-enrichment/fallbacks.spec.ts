@@ -1639,5 +1639,35 @@ describe("ai-enrichment deterministic fallbacks", () => {
       ),
     ).toBe(true);
   });
-});
+  it("keeps the names of provider products such as Google Docs and Google Analytics", () => {
+    const component = (id: string, name: string, serviceName: string): DetectedComponent => ({
+      id,
+      name,
+      type: "third_party",
+      confidence: 1,
+      detectedFrom: [],
+      sourceLocations: [],
+      properties: { serviceName, section_id: "backend" },
+    });
+    const components: DetectedComponent[] = [
+      {
+        id: "app_1",
+        name: "Backend",
+        type: "asset",
+        confidence: 1,
+        detectedFrom: [],
+        sourceLocations: [],
+        properties: { section_id: "backend" },
+      },
+      component("docs", "Google Docs", "google_docs"),
+      component("ga", "Google Analytics", "google_analytics"),
+      component("gai", "Google Ai", "google_ai"),
+    ];
 
+    const result = applyDeterministicInferenceFallbacks(components, []);
+    const names = Object.fromEntries(result.components.map((c) => [c.id, c.name]));
+    expect(names.docs).toBe("Google Docs");
+    expect(names.ga).toBe("Google Analytics");
+    expect(names.gai).toBe("Google");
+  });
+});

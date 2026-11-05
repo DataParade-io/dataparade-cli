@@ -195,4 +195,29 @@ describe('omitInternalImplementationNodes', () => {
 
     expect(result.components).toHaveLength(1);
   });
+  it('keeps an HTTP client call whose host is known, such as a Cloud Run service', () => {
+    const result = omitInternalImplementationNodes(
+      [
+        {
+          id: 'cloud-run',
+          name: 'orders (Cloud Run)',
+          type: 'asset',
+          subType: 'api',
+          detectedFrom: [{ pattern: 'external_api_call' }],
+          properties: {
+            client: 'axios',
+            host: 'orders-123.us-central1.run.app',
+            url: [
+              'https://orders-123.us-central1.run.app/health',
+              'https://orders-123.us-central1.run.app/v1/chat',
+            ],
+            platform: 'gcp/cloud_run',
+          },
+        },
+      ],
+      []
+    );
+
+    expect(result.components.map((c) => c.id)).toEqual(['cloud-run']);
+  });
 });
