@@ -1,6 +1,6 @@
 import './config/load-cli-env';
 import pathModule from 'path';
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 import { randomUUID } from 'crypto';
 
 import pkg from '../package.json';
@@ -15,6 +15,8 @@ import {
 } from './output/write-scan-knowledge';
 import { DEFAULT_DATAFLOW_OUTPUT, resolveOutputLayout } from './facts/layout';
 import { registerKbCommands } from './kb/register-kb-commands';
+import { registerDiffCommand } from './diff/register-diff-command';
+import { buildScanStamps, findCliPackageRoot, readGitStamps, scannerBuildInfo } from './facts/scan-stamps';
 import { registerExportCommands } from './export/register-export-commands';
 import { scanOutputExcludes } from './output/scan-output-excludes';
 import {
@@ -59,6 +61,16 @@ import {
   type ScanProgressRenderer,
   type ScanUploadFailure,
 } from './ui/scan-progress-renderer';
+import { writeProjectSensitiveScan } from './sensitive-scan/project';
+import type { ModelMode } from './sensitive-scan/report';
+import { registerSessionScan } from './sensitive-scan/sessions';
+
+/** The full scanner commit the CLI pins (devDependency `github:...#<sha>`). */
+function scannerCommitFromPackage(): string {
+  const scannerPackage = ['@dataparade', 'scanner'].join('/');
+  const spec = (pkg.devDependencies as Record<string, string> | undefined)?.[scannerPackage];
+  return spec?.split('#')[1] ?? 'unknown';
+}
 
 /** The scanner is vendored into the CLI; its version is the commit the CLI depends on. */
 function scannerVersionFromPackage(): string {
@@ -188,6 +200,9 @@ function createProgram(): Command {
       '--exclude <pattern...>',
       'One or more glob patterns to exclude from scanning'
     )
+    .option('--no-sensitive-scan', 'Skip the local LeftBlock rules and Privacy Filter')
+    .addOption(new Option('--privacy-filter <mode>', 'Use the local Privacy Filter when available')
+      .choices(['auto', 'off']).default('auto'))
     .option(
       '--minimum-confidence <number>',
       'Minimum confidence (0-1) for including detections'
@@ -283,6 +298,8 @@ function createProgram(): Command {
         options: {
           output?: string;
           exclude?: string[];
+          sensitiveScan?: boolean;
+          privacyFilter: ModelMode;
           minimumConfidence?: string;
           language?: string[];
           projectName?: string;
@@ -441,6 +458,12 @@ function createProgram(): Command {
           }
           parsedGitContext ??=
             detectGitContext(scanEntry.scanRootDir) ?? undefined;
+          // Read before the scan writes anything, so its own output never counts as a change (DATAP-876).
+          const gitStamps = readGitStamps(
+            scanEntry.scanRootDir,
+            pathModule.dirname(pathModule.resolve(process.cwd(), options.output ?? DEFAULT_DATAFLOW_OUTPUT)),
+            parsedGitContext?.commitSha
+          );
 
           const [
             { createDefaultScanConfiguration },
@@ -469,17 +492,12 @@ function createProgram(): Command {
           // printed as before (non-TTY).
           const technicalLines: string[] = [];
 
+          const outputExcludes = scanOutputExcludes(
+            resolvedScanRoot,
+            pathModule.resolve(process.cwd(), options.output ?? DEFAULT_DATAFLOW_OUTPUT)
+          );
           const flags: CliConfigFlags = {
-            exclude: [
-              ...(options.exclude ?? []),
-              ...scanOutputExcludes(
-                resolvedScanRoot,
-                pathModule.resolve(
-                  process.cwd(),
-                  options.output ?? DEFAULT_DATAFLOW_OUTPUT
-                )
-              ),
-            ],
+            exclude: [...(options.exclude ?? []), ...outputExcludes],
             minimumConfidence:
               typeof options.minimumConfidence === 'string'
                 ? Number(options.minimumConfidence)
@@ -873,7 +891,29 @@ function createProgram(): Command {
                 projectName: resolvedProjectName,
                 cliVersion: pkg.version,
                 scannerVersion: scannerVersionFromPackage(),
+                stamps: buildScanStamps({
+                  cliVersion: pkg.version,
+                  scanner: scannerBuildInfo(findCliPackageRoot(__dirname), scannerCommitFromPackage()),
+                  // Where the output goes is not a setting of the scan (DATAP-876).
+                  config: { ...config, excludePaths: config.excludePaths?.filter((p) => !outputExcludes.includes(p)) },
+                  aiInference: config.enableAiInference === true,
+                  structureGraph: Boolean(knowledge.result.structureGraph),
+                  git: gitStamps,
+                }),
               });
+              if (options.sensitiveScan !== false) {
+                ui.sensitiveScanMessage('Scanning for sensitive information with LeftBlock');
+              }
+              const sensitiveFindings = await writeProjectSensitiveScan(dataflowOutputPath, {
+                root: scanEntry.scanRootDir,
+                target: scanEntry.ingestTarget,
+                excludes: config.excludePaths ?? [],
+                modelMode: options.privacyFilter,
+                enabled: options.sensitiveScan !== false,
+              }, message => ui.warn(message));
+              if (sensitiveFindings !== undefined) {
+                ui.sensitiveScanMessage(`LeftBlock reported ${sensitiveFindings} sensitive information finding(s).`);
+              }
 
               // Friendly TTY/plain progress line (additive).
               ui.onWroteDataflow(dataflowOutputPath);
@@ -915,6 +955,7 @@ function createProgram(): Command {
                     cliUsageSessionId: usageSessionId,
                     command: 'scan',
                     files,
+                    repositoryDir: scanEntry.scanRootDir,
                     quiet: friendlyTty,
                   });
                   if (uploadResult.previewUrl) {
@@ -1181,6 +1222,7 @@ function createProgram(): Command {
             cliUsageSessionId: usageSessionId,
             command: 'upload',
             files,
+            repositoryDir: pathModule.dirname(filePath),
           });
         } catch (err) {
           const message = err instanceof Error ? err.message : 'Upload failed.';
@@ -1235,7 +1277,13 @@ function createProgram(): Command {
     });
 
   registerKbCommands(program);
+  // The scan cache of `diff` is keyed by these stamps (DATAP-878).
+  registerDiffCommand(program, () => ({
+    cliVersion: pkg.version,
+    ...scannerBuildInfo(findCliPackageRoot(__dirname), scannerCommitFromPackage()),
+  }));
   registerExportCommands(program);
+  registerSessionScan(program);
 
   return program;
 }

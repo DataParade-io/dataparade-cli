@@ -3,6 +3,7 @@ import type { Command } from "commander";
 import { DEFAULT_OUTPUT_DIRNAME } from "../facts/layout";
 import { writeKbBrief } from "./brief";
 import { KbError, resolveKbPaths } from "./kb-store";
+import { migrateAnswerFingerprints } from "./answer-fingerprint";
 import { migrateInterviewRecords } from "./migrate";
 import { landInterviewAnswer, landReviewAnswer } from "./land";
 import { pushKbDiagram, writeKbDiagram } from "./project-diagram";
@@ -130,12 +131,19 @@ export function registerKbCommands(program: Command): void {
     );
 
   kb.command("migrate")
-    .description("Convert interview records from an old ocsf-discoveries/ folder (CLI 0.0.26 and earlier) into answers.json")
+    .description(
+      "Convert interview records from an old ocsf-discoveries/ folder (CLI 0.0.26 and earlier) into answers.json, or with --fingerprints give old answers an identity key and fingerprint",
+    )
     .option("--kb <dir>", "Knowledge base directory", DEFAULT_KB_DIR)
     .option("--from <dir>", "Old OCSF folder (default: <kb>/ocsf-discoveries)")
+    .option("--fingerprints", "Add identity keys and fingerprints to answers that have none (from the cited brief and the current scan)")
     .option("--dry-run", "Count what would be migrated without writing")
-    .action((options: { kb: string; from?: string; dryRun?: boolean }) => {
+    .action((options: { kb: string; from?: string; fingerprints?: boolean; dryRun?: boolean }) => {
       try {
+        if (options.fingerprints) {
+          print({ ok: true, ...migrateAnswerFingerprints(resolveKbPaths(options.kb), { dryRun: options.dryRun }) });
+          return;
+        }
         print({ ok: true, ...migrateInterviewRecords(resolveKbPaths(options.kb), { from: options.from, dryRun: options.dryRun }) });
       } catch (error) {
         fail(error);

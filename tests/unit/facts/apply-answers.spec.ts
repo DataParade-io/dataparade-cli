@@ -68,7 +68,7 @@ describe("applyAnswers", () => {
       expect(state.facts).toEqual(facts);
     });
 
-    it.each(["id", "file", "codeRefs", "groups", "occurrences"])("refuses to change %s", (property) => {
+    it.each(["id", "identity", "file", "codeRefs", "groups", "occurrences"])("refuses to change %s", (property) => {
       const a = answer({ factId: "cmp_api", action: "set", property, value: "x" });
       const state = applyAnswers(facts, files, [a]);
       expect(state.ignored).toEqual([a]);

@@ -5,6 +5,7 @@ import path from "path";
 import { applyAnswers } from "../facts/apply-answers";
 import { appendAnswers } from "../facts/io";
 import type { Answer } from "../facts/schema";
+import { fingerprintFields } from "./answer-fingerprint";
 import { readKbBrief } from "./brief";
 import { KbError, loadKbState, type KbPaths } from "./kb-store";
 import { isInterviewSlot, normalizeSlotValue, SHAPE_FOR_SLOT, SYSTEM_ASSERTS_URI, type InterviewSlot } from "./slot-shapes";
@@ -125,6 +126,7 @@ export function landInterviewAnswer(paths: KbPaths, input: LandInterviewAnswerIn
     evidence: evidenceRef,
     briefSha: input.briefSha,
     skillSha: input.skillSha,
+    ...fingerprintFields(state.facts, factId),
   };
   return store(paths, answer, previousAnswerId(state.answers, factId, slot), input.dryRun);
 }
@@ -179,6 +181,7 @@ export function landReviewAnswer(paths: KbPaths, input: LandReviewAnswerInput): 
     at: now.toISOString(),
     source: "review",
     ...(input.evidence ? { evidence: input.evidence } : {}),
+    ...fingerprintFields(state.facts, input.target),
   };
   const trial = applyAnswers(state.facts, state.dataItemFiles, [answer]);
   if (trial.orphans.length > 0) {

@@ -3,6 +3,7 @@ import {
   cliUploadPreview,
 } from '../platform-api/upload-client';
 import { reportCliUsageEvent } from '../platform-api/telemetry-client';
+import { readOriginRemoteUrl } from '../output/git-context';
 import {
   buildAnonymousCliPreviewUrl,
   buildImportPreviewUrl,
@@ -30,8 +31,11 @@ export async function runDataflowUpload(
         dataparadeGraph: input.dataparadeGraph,
         facts: input.facts,
         files: input.files,
+        remoteUrl: input.repositoryDir
+          ? readOriginRemoteUrl(input.repositoryDir)
+          : null,
       });
-      const previewUrl = buildImportPreviewUrl(result.draftId, sessionId);
+      const previewUrl = buildImportPreviewUrl(result.draftId, sessionId, result.appUrl);
       if (!input.quiet) {
          
         console.log(`${prefix} Preview ready: ${previewUrl}`);
@@ -62,7 +66,8 @@ export async function runDataflowUpload(
     });
     const previewUrl = buildAnonymousCliPreviewUrl(
       result.claimToken,
-      sessionId
+      sessionId,
+      result.appUrl
     );
     const notice =
       'You can view the diagram now. Claiming it to your account uses 1 scan slot' +

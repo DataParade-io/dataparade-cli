@@ -93,7 +93,14 @@ describe("buildFacts", () => {
     ]);
     const email = facts.dataItems.find((i) => i.name === "email");
     expect(email?.groups).toEqual([
-      { id: "group:email:customer", label: "customer", basis: "column", occurrenceCount: 2, handledBy: ["cmp_api"] },
+      {
+        id: "group:email:customer",
+        identity: { kind: "group", key: "email:customer", parts: { dataItem: "email", qualifier: "customer" } },
+        label: "customer",
+        basis: "column",
+        occurrenceCount: 2,
+        handledBy: ["cmp_api"],
+      },
     ]);
     expect([...dataItemFiles.keys()].sort()).toEqual(["data-items/credit-card.json", "data-items/email.json"]);
   });
@@ -125,6 +132,68 @@ describe("buildFacts", () => {
       "handled_by group:email:customer cmp_api",
       "sends cmp_api flow_mail",
     ]);
+  });
+
+  it("gives every component, flow, data item and group an identity", () => {
+    expect(facts.components.find((c) => c.id === "cmp_api")?.identity).toEqual({
+      kind: "component",
+      key: "app:<unsectioned>|asset|service|src/api.ts|api",
+      parts: { scheme: "app", section: "<unsectioned>", type: "asset", subType: "service", file: "src/api.ts", name: "api" },
+    });
+    expect(facts.dataFlows[0].identity).toMatchObject({ kind: "dataFlow", parts: { source: "app:<unsectioned>|asset|service|src/api.ts|api", file: "src/api.ts" } });
+    const email = facts.dataItems.find((d) => d.name === "email");
+    expect(email?.identity).toEqual({ kind: "dataItem", key: "email", parts: { name: "email" } });
+    expect(email?.groups[0].identity).toEqual({ kind: "group", key: "email:customer", parts: { dataItem: "email", qualifier: "customer" } });
+    expect(dataItemFiles.get(email!.file)?.identity).toEqual(email?.identity);
+  });
+
+  it("drops the line from a declaration-named group's key, and numbers groups that share a key", () => {
+    const result = scanResult();
+    const occurrences = [
+      { id: "occurrence:phone:src/a.ts:12", filePath: `${ROOT}/src/a.ts`, startLine: 12, endLine: 12, labels: [] },
+      { id: "occurrence:phone:src/a.ts:30", filePath: "src/a.ts", startLine: 30, endLine: 30, labels: [] },
+      { id: "occurrence:phone:src/a.ts:7", filePath: "src/a.ts", startLine: 7, endLine: 7, labels: [] },
+    ];
+    result.occurrences.push(...(occurrences as typeof result.occurrences));
+    result.dataItems.push({
+      id: "data_item:phone",
+      labels: [],
+      occurrenceIds: occurrences.map((o) => o.id),
+      groups: [
+        { id: `phone@${ROOT}/src/a.ts:12#phone`, occurrenceIds: [occurrences[0].id] },
+        { id: "phone@src/a.ts:30", occurrenceIds: [occurrences[1].id] },
+        { id: "phone@src/a.ts:7", occurrenceIds: [occurrences[2].id] },
+      ],
+    } as (typeof result.dataItems)[number]);
+    const groups = buildFacts({ result, graph: graph(), ...meta }).facts.dataItems.find((i) => i.name === "phone")!.groups;
+    const byId = new Map(groups.map((g) => [g.id, g.identity]));
+    expect(byId.get("group:phone@src/a.ts:12#phone")).toEqual({
+      kind: "group",
+      key: "phone@src/a.ts#phone",
+      parts: { dataItem: "phone", declarationFile: "src/a.ts", declarationName: "phone" },
+    });
+    // Two unnamed declarations in one file share a key; the earlier line keeps it.
+    expect(byId.get("group:phone@src/a.ts:7")).toEqual({ kind: "group", key: "phone@src/a.ts", parts: { dataItem: "phone", declarationFile: "src/a.ts" } });
+    expect(byId.get("group:phone@src/a.ts:30")).toMatchObject({ key: "phone@src/a.ts#2", duplicateIndex: 2 });
+  });
+
+  it("writes scan stamps when given, and leaves them out otherwise (DATAP-876)", () => {
+    expect(facts.scan).not.toHaveProperty("stamps");
+    const stamps = {
+      scannerCommit: "f".repeat(40),
+      cliVersion: "0.0.32",
+      catalogHash: "sha256:0123456789abcdef",
+      configHash: "sha256:fedcba9876543210",
+      aiInference: false,
+      structureGraph: true,
+      commitSha: "a".repeat(40),
+      dirty: false,
+      rootCommitSha: "b".repeat(40),
+      scanRoot: "",
+    };
+    const stamped = buildFacts({ result: scanResult(), graph: graph(), ...meta, stamps }).facts;
+    expect(stamped.scan.stamps).toEqual(stamps);
+    expect(() => factsFileSchema.parse(stamped)).not.toThrow();
   });
 
   it("works without a knowledge graph", () => {

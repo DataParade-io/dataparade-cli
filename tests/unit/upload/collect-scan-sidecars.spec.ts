@@ -27,6 +27,7 @@ describe('collectScanUploadFiles', () => {
     fs.writeFileSync(path.join(dir, 'data-items', 'email.json'), '{"id":"data_item:email"}');
     fs.writeFileSync(path.join(dir, 'graphify.json'), '{"nodes":[]}');
     fs.writeFileSync(path.join(dir, 'answers.json'), '{"schemaVersion":1,"answers":[]}');
+    fs.writeFileSync(path.join(dir, 'sensitive-findings.json'), '{"schemaVersion":1,"findings":[]}');
 
     const files = collectScanUploadFiles(path.join(dir, 'dataflow.json'));
 

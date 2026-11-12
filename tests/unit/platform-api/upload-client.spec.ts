@@ -105,7 +105,7 @@ describe('cliUploadPreview', () => {
       ],
     });
 
-    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(global.fetch).toHaveBeenCalledTimes(3);
     const diagram = JSON.parse(
       (global.fetch as jest.Mock).mock.calls[0][1].body as string
     ) as Record<string, unknown>;
@@ -116,6 +116,118 @@ describe('cliUploadPreview', () => {
       (global.fetch as jest.Mock).mock.calls[1][1].body as string
     ) as { files: Array<{ relativePath: string }> };
     expect(filesBody.files[0]?.relativePath).toBe('graphify.json');
+  });
+
+  it('completes the upload once after the files, with the remote URL', async () => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ draftId: 'draft-4', projectName: 'proj' }),
+      })
+      .mockResolvedValue({
+        ok: true,
+        json: async () => ({ ok: true }),
+      }) as typeof fetch;
+
+    await cliUploadPreview({
+      apiKey: 'dp_live_testkey123456',
+      dataflow: {},
+      files: [{ relativePath: 'facts.json', content: '{"scan":{}}' }],
+      remoteUrl: 'https://github.com/org/repo',
+    });
+
+    const calls = (global.fetch as jest.Mock).mock.calls;
+    expect(calls).toHaveLength(3);
+    expect(calls[2][0]).toContain('/api/scans/cli/upload/draft-4/complete');
+    expect(calls[2][1]).toMatchObject({
+      method: 'POST',
+      headers: expect.objectContaining({
+        Authorization: 'Bearer dp_live_testkey123456',
+      }),
+    });
+    expect(JSON.parse(calls[2][1].body as string)).toEqual({
+      remoteUrl: 'https://github.com/org/repo',
+    });
+  });
+
+  it('sends the rename map with a diff --upload head and returns the comparison (DATAP-890)', async () => {
+    const complete = {
+      stored: true,
+      scanId: 'scan-1',
+      repositoryId: 'repo-1',
+      created: true,
+      comparable: true,
+      comparison: { compared: false, reason: 'no_base_scan', message: 'none' },
+    };
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ draftId: 'draft-5' }),
+      })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => complete,
+      }) as typeof fetch;
+    const compare = {
+      baseCommitSha: 'b'.repeat(40),
+      rootCommitSha: 'a'.repeat(40),
+      renames: [{ from: 'a.ts', to: 'b.ts', similarity: 90 }],
+    };
+
+    const result = await cliUploadPreview({
+      apiKey: 'dp_live_testkey123456',
+      dataflow: {},
+      files: [{ relativePath: 'facts.json', content: '{"scan":{}}' }],
+      remoteUrl: null,
+      compare,
+    });
+
+    const calls = (global.fetch as jest.Mock).mock.calls;
+    expect(JSON.parse(calls[2][1].body as string)).toEqual({ compare });
+    expect(result.complete).toEqual(complete);
+  });
+
+  it('does not complete an upload without scan files', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ draftId: 'draft-5' }),
+    }) as typeof fetch;
+
+    await cliUploadPreview({ apiKey: 'dp_live_testkey123456', dataflow: {} });
+
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['a rejected completion', { ok: false, status: 500, json: async () => ({}) }],
+    ['a network error', new Error('socket hang up')],
+  ])('only warns on %s', async (_label, outcome) => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ draftId: 'draft-6' }),
+      })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) });
+    if (outcome instanceof Error) fetchMock.mockRejectedValueOnce(outcome);
+    else fetchMock.mockResolvedValueOnce(outcome);
+    global.fetch = fetchMock as typeof fetch;
+
+    const result = await cliUploadPreview({
+      apiKey: 'dp_live_testkey123456',
+      dataflow: {},
+      files: [{ relativePath: 'facts.json', content: '{}' }],
+    });
+
+    expect(result.draftId).toBe('draft-6');
+    expect(JSON.parse(fetchMock.mock.calls[2][1].body as string)).toEqual({});
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('not stored for comparison')
+    );
   });
 
   it('throws with API error message', async () => {

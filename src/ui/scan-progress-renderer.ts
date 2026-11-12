@@ -311,6 +311,14 @@ export class ScanProgressRenderer {
     this.previewNotice = notice;
   }
 
+  sensitiveScanMessage(message: string): void {
+    if (this.useClack) {
+      this.prompts().log.message(message);
+    } else {
+      this.writePlain(`[scan] ${message}`);
+    }
+  }
+
   /**
    * Auto-upload failed after the local output was written. finish() then
    * says so and prints the retry command instead of the success closing.

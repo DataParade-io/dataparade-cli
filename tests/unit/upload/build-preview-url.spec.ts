@@ -19,6 +19,13 @@ describe("buildImportPreviewUrl", () => {
     );
   });
 
+  it("links to the app the API named when DATAPARADE_APP_URL is unset", () => {
+    delete process.env.DATAPARADE_APP_URL;
+    expect(buildImportPreviewUrl("draft-abc", undefined, "https://dev-app.example.com/")).toBe(
+      "https://dev-app.example.com/dashboard?importDraft=draft-abc",
+    );
+  });
+
   it("appends cliSession when provided", () => {
     process.env.DATAPARADE_APP_URL = "http://localhost:3001";
     const url = buildImportPreviewUrl(

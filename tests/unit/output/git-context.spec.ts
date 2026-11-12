@@ -5,7 +5,9 @@ import { join } from 'node:path';
 import {
   detectGitContext,
   gitContextFromRemote,
+  normalizeGitRemoteUrl,
   parseGitRemote,
+  readOriginRemoteUrl,
 } from '../../../src/output/git-context';
 
 const SHA = 'a'.repeat(40);
@@ -27,6 +29,21 @@ describe('parseGitRemote', () => {
       expect(parseGitRemote(remote)).toBeNull();
     }
   );
+});
+
+describe('normalizeGitRemoteUrl', () => {
+  it.each([
+    ['git@GitHub.com:org/repo.git', 'https://github.com/org/repo'],
+    ['ssh://git@github.com:22/org/repo.git', 'https://github.com/org/repo'],
+    ['https://user:pw@GitLab.com/group/sub/repo.git/', 'https://gitlab.com/group/sub/repo'],
+    ['http://git.internal/org/repo', 'http://git.internal/org/repo'],
+  ])('normalizes %s', (remote, expected) => {
+    expect(normalizeGitRemoteUrl(remote)).toBe(expected);
+  });
+
+  it('returns null for a remote it cannot parse', () => {
+    expect(normalizeGitRemoteUrl('/local/path/repo')).toBeNull();
+  });
 });
 
 describe('gitContextFromRemote', () => {
@@ -80,6 +97,13 @@ describe('detectGitContext', () => {
   it('returns null for a repository without an origin', () => {
     git('init', '-q');
     expect(detectGitContext(dir)).toBeNull();
+    expect(readOriginRemoteUrl(dir)).toBeNull();
+  });
+
+  it('reads the normalized origin remote', () => {
+    git('init', '-q');
+    git('remote', 'add', 'origin', 'https://token@github.com/Org/repo.git');
+    expect(readOriginRemoteUrl(dir)).toBe('https://github.com/Org/repo');
   });
 
   it('reads origin and HEAD', () => {

@@ -3,8 +3,9 @@ import { getDataparadeAppBaseUrl } from "../platform-api/dataparade-app-base-url
 export function buildImportPreviewUrl(
   draftId: string,
   cliSessionId?: string,
+  appUrl?: string,
 ): string {
-  const base = getDataparadeAppBaseUrl();
+  const base = getDataparadeAppBaseUrl(process.env, appUrl);
   const url = new URL("/dashboard", `${base}/`);
   url.searchParams.set("importDraft", draftId);
   if (cliSessionId?.trim()) {
@@ -16,8 +17,9 @@ export function buildImportPreviewUrl(
 export function buildAnonymousCliPreviewUrl(
   claimToken: string,
   cliSessionId?: string,
+  appUrl?: string,
 ): string {
-  const base = getDataparadeAppBaseUrl();
+  const base = getDataparadeAppBaseUrl(process.env, appUrl);
   const encoded = encodeURIComponent(claimToken);
   const url = new URL(`/preview/cli/${encoded}`, `${base}/`);
   if (cliSessionId?.trim()) {

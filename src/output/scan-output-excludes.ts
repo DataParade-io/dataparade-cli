@@ -8,6 +8,7 @@ import path from "path";
 const SCAN_OUTPUT_ENTRIES = [
   "dataflow.json",
   "facts.json",
+  "sensitive-findings.json",
   "data-items/**",
   "graphify.json",
   "answers.json",
@@ -36,5 +37,8 @@ export function scanOutputExcludes(scanRoot: string, dataflowOutputPath: string)
     return [];
   }
   const prefix = relative ? `${relative.split(path.sep).join("/")}/` : "";
-  return prefix ? [`${prefix}**`] : SCAN_OUTPUT_ENTRIES;
+  return prefix ? [`${prefix}**`] : [...new Set([
+    ...SCAN_OUTPUT_ENTRIES,
+    path.basename(dataflowOutputPath),
+  ])];
 }

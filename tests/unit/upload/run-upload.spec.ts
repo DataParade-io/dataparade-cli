@@ -9,6 +9,10 @@ jest.mock('../../../src/platform-api/telemetry-client', () => ({
   reportCliUsageEvent: jest.fn().mockResolvedValue(undefined),
 }));
 
+jest.mock('../../../src/output/git-context', () => ({
+  readOriginRemoteUrl: jest.fn(() => 'https://github.com/org/repo'),
+}));
+
 jest.mock('../../../src/upload/build-preview-url', () => ({
   buildAnonymousCliPreviewUrl: jest.fn(
     (token: string) => `https://app.example/preview/cli/${token}`
@@ -23,6 +27,7 @@ import {
   cliUploadPreview,
 } from '../../../src/platform-api/upload-client';
 import { reportCliUsageEvent } from '../../../src/platform-api/telemetry-client';
+import { readOriginRemoteUrl } from '../../../src/output/git-context';
 
 describe('runDataflowUpload anonymous path', () => {
   const logSpy = jest.spyOn(console, 'log').mockImplementation(() => undefined);
@@ -96,6 +101,47 @@ describe('runDataflowUpload anonymous path', () => {
         event: 'upload_failed',
         errorCode: 'upload_failed',
       })
+    );
+  });
+});
+
+describe('runDataflowUpload with an API key', () => {
+  const logSpy = jest.spyOn(console, 'log').mockImplementation(() => undefined);
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    logSpy.mockRestore();
+  });
+
+  it('sends the origin remote of the scanned checkout', async () => {
+    (cliUploadPreview as jest.Mock).mockResolvedValue({ draftId: 'draft-1' });
+
+    await runDataflowUpload({
+      apiKey: 'dp_live_testkey123456',
+      dataflow: { schemaVersion: '1.0' },
+      repositoryDir: '/work/shop',
+    });
+
+    expect(readOriginRemoteUrl).toHaveBeenCalledWith('/work/shop');
+    expect(cliUploadPreview).toHaveBeenCalledWith(
+      expect.objectContaining({ remoteUrl: 'https://github.com/org/repo' })
+    );
+  });
+
+  it('sends no remote when no checkout folder is known', async () => {
+    (cliUploadPreview as jest.Mock).mockResolvedValue({ draftId: 'draft-1' });
+
+    await runDataflowUpload({
+      apiKey: 'dp_live_testkey123456',
+      dataflow: { schemaVersion: '1.0' },
+    });
+
+    expect(readOriginRemoteUrl).not.toHaveBeenCalled();
+    expect(cliUploadPreview).toHaveBeenCalledWith(
+      expect.objectContaining({ remoteUrl: null })
     );
   });
 });

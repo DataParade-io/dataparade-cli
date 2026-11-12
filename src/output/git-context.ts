@@ -40,6 +40,17 @@ export function parseGitRemote(remote: string): ParsedRemote | null {
   return { host: host.toLowerCase(), repository, protocol };
 }
 
+/**
+ * The remote as `https://host/owner/repo`: SCP-style and ssh remotes become https,
+ * the host is lowercased, and credentials, port and `.git` are dropped. The backend
+ * matches a repository by this URL when its root commit is unknown (DATAP-883).
+ */
+export function normalizeGitRemoteUrl(remote: string): string | null {
+  const parsed = parseGitRemote(remote);
+  if (!parsed) return null;
+  return `${parsed.protocol}//${parsed.host}/${parsed.repository}`;
+}
+
 /** Maps a remote to the dataflow git context; null for hosts other than GitHub and GitLab. */
 export function gitContextFromRemote(
   remote: string,
@@ -98,4 +109,10 @@ export function detectGitContext(dir: string): GitContextSchema | null {
   const commitSha = git(dir, ['rev-parse', 'HEAD']);
   if (!commitSha) return null;
   return gitContextFromRemote(remote, commitSha);
+}
+
+/** The normalized origin remote of the repository containing `dir`, or null. Never throws. */
+export function readOriginRemoteUrl(dir: string): string | null {
+  const remote = git(dir, ['remote', 'get-url', 'origin']);
+  return remote ? normalizeGitRemoteUrl(remote) : null;
 }

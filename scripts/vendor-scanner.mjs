@@ -4,6 +4,7 @@
 //      (layout kept identical to the scanner package, which locates patterns/ relative to its dist/)
 //   2. rewrites "@dataparade/scanner" specifiers in dist/**/*.js and *.d.ts to relative paths
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, join, relative, sep } from "node:path";
 import { cliRoot, resolveScannerRoot } from "./scanner-root.mjs";
 
@@ -19,6 +20,38 @@ function walk(dir, out = []) {
     else if (/\.(js|d\.ts)$/.test(name)) out.push(p);
   }
   return out;
+}
+
+/** The pinned scanner commit, checked against the commit pnpm actually installed. */
+function scannerCommit(cliPkg) {
+  const spec = cliPkg.devDependencies?.[SPECIFIER] ?? "";
+  const commit = spec.split("#")[1];
+  if (!/^[0-9a-f]{40}$/.test(commit ?? "")) throw new Error(`Cannot read the scanner commit from "${spec}".`);
+  const installed = resolveScannerRoot();
+  if (!installed.includes(commit.slice(0, 16))) {
+    throw new Error(`The installed scanner (${installed}) is not the pinned commit ${commit}; run pnpm install.`);
+  }
+  return commit;
+}
+
+/** Same hash as catalogHash() in src/facts/scan-stamps.ts. */
+function patternsCatalogHash(patternsDir) {
+  const files = [];
+  const walkAll = (dir) => {
+    for (const name of readdirSync(dir)) {
+      const p = join(dir, name);
+      if (statSync(p).isDirectory()) walkAll(p);
+      else files.push(relative(patternsDir, p).split(sep).join("/"));
+    }
+  };
+  walkAll(patternsDir);
+  const hash = createHash("sha256");
+  for (const file of files.sort()) {
+    hash.update(`${file}\0`);
+    hash.update(readFileSync(join(patternsDir, file)));
+    hash.update("\0");
+  }
+  return `sha256:${hash.digest("hex").slice(0, 16)}`;
 }
 
 function main() {
@@ -65,6 +98,9 @@ function main() {
         license: scannerPkg.license,
         description: "Vendored build of @dataparade/scanner bundled into @dataparade/cli",
         main: "dist/src/index.js",
+        // Read by the CLI's scan stamps (DATAP-876): the commit that was bundled, and its catalog.
+        gitHead: scannerCommit(cliPkg),
+        catalogHash: patternsCatalogHash(join(vendorDir, "patterns")),
       },
       null,
       2,

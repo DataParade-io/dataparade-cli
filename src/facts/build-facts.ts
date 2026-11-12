@@ -3,6 +3,7 @@ import path from "path";
 import type { DataParadeGraph, DataParadeLink } from "@dataparade/scanner";
 
 import type { OrchestratorScanResult } from "../core/pipeline/orchestrator-result";
+import { buildScanIdentities, dataItemIdentity, groupIdentity, numberGroupDuplicates } from "./identity";
 import { dataItemFilePath, dataItemSlugs } from "./slug";
 import {
   SCHEMA_VERSION,
@@ -15,6 +16,7 @@ import {
   type FactsFile,
   type OccurrenceFact,
   type Relation,
+  type ScanStamps,
   type SourceLocation,
 } from "./schema";
 
@@ -33,6 +35,8 @@ export interface BuildFactsInput {
   cliVersion: string;
   scannerVersion: string;
   scannedAt?: string;
+  /** Scan stamps (DATAP-876); left out of facts.json when not given. */
+  stamps?: ScanStamps;
 }
 
 export interface BuiltFacts {
@@ -131,8 +135,11 @@ export function buildFacts(input: BuildFactsInput): BuiltFacts {
   const locations = (list: Array<{ filePath: string; startLine: number; endLine: number }> | undefined): SourceLocation[] =>
     (list ?? []).map((l) => ({ filePath: scrub(l.filePath), startLine: l.startLine, endLine: l.endLine }));
 
+  const identities = buildScanIdentities(result.scanResult.components, result.scanResult.dataFlows, scrub);
+
   const components: ComponentFact[] = result.scanResult.components.map((c) => ({
     id: scrub(c.id),
+    ...(identities.components.has(scrub(c.id)) ? { identity: identities.components.get(scrub(c.id)) } : {}),
     name: c.name,
     type: c.type,
     subType: c.subType ?? "",
@@ -143,6 +150,7 @@ export function buildFacts(input: BuildFactsInput): BuiltFacts {
 
   const dataFlows: DataFlowFact[] = result.scanResult.dataFlows.map((f) => ({
     id: scrub(f.id),
+    ...(identities.dataFlows.has(scrub(f.id)) ? { identity: identities.dataFlows.get(scrub(f.id)) } : {}),
     sourceComponentId: scrub(f.sourceComponentId),
     targetComponentId: scrub(f.targetComponentId),
     type: f.type,
@@ -169,13 +177,15 @@ export function buildFacts(input: BuildFactsInput): BuiltFacts {
       return o ? [o] : [];
     });
     const groupOf = new Map<string, string>();
-    const groups: DataItemGroup[] = (item.groups ?? []).map((g) => {
+    const groupIdentities = numberGroupDuplicates((item.groups ?? []).map((g) => [scrub(g.id), groupIdentity(name, scrub(g.id))]));
+    const groups: DataItemGroup[] = (item.groups ?? []).map((g, index) => {
       const groupId = scrub(`group:${g.id}`);
       for (const id of g.occurrenceIds) groupOf.set(id, groupId);
       const basis = mostCommon(g.occurrenceIds.map((id) => occurrenceById.get(id)?.groupBasis));
       const prefix = `${name}:`;
       return {
         id: groupId,
+        identity: groupIdentities[index],
         label: g.id.startsWith(prefix) ? g.id.slice(prefix.length) || g.id : g.id,
         ...(basis ? { basis } : {}),
         occurrenceCount: g.occurrenceIds.length,
@@ -203,6 +213,7 @@ export function buildFacts(input: BuildFactsInput): BuiltFacts {
 
     dataItems.push({
       id: itemId,
+      identity: dataItemIdentity(name),
       name,
       labels: [...item.labels],
       occurrenceCount: occurrenceFacts.length,
@@ -212,6 +223,7 @@ export function buildFacts(input: BuildFactsInput): BuiltFacts {
     dataItemFiles.set(file, {
       schemaVersion: SCHEMA_VERSION,
       id: itemId,
+      identity: dataItemIdentity(name),
       name,
       labels: [...item.labels],
       groups: byId(groups.map((g) => ({ ...g }))),
@@ -231,6 +243,7 @@ export function buildFacts(input: BuildFactsInput): BuiltFacts {
         scannedAt: input.scannedAt ?? new Date().toISOString(),
         cliVersion: input.cliVersion,
         scannerVersion: input.scannerVersion,
+        ...(input.stamps ? { stamps: input.stamps } : {}),
       },
       components: byId(components),
       dataFlows: byId(dataFlows),

@@ -4,6 +4,7 @@ import path from "path";
 
 import type { A0DiscoveriesDocument } from "../discoveries/contract/discoveries-document.schema";
 import { PINNED_ONTOLOGY_VERSION } from "../discoveries/contract/ontology-pins";
+import type { FactsFile, Identity } from "../facts/schema";
 import { ensureDir, KbError, loadKbState, type KbPaths } from "./kb-store";
 import { SHAPE_FOR_SLOT, SYSTEM_ASSERTS_URI, type EligibleShape, type InterviewSlot } from "./slot-shapes";
 
@@ -19,6 +20,8 @@ export interface KbBriefEntity {
   asserts: string;
   name: string;
   type: string;
+  /** The Fact's identity (DATAP-842), so an answer can be matched in a later scan. Absent for KBs from CLI 0.0.32 and earlier. */
+  identity?: Identity;
 }
 
 export type FlowCrossing = "outbound_third_party" | "from_actor" | "internal";
@@ -32,6 +35,8 @@ export interface KbBriefFlow {
   target: KbBriefEntity;
   data_categories: string[] | null;
   purpose: string | null;
+  /** The flow's identity (DATAP-842). Absent for KBs from CLI 0.0.32 and earlier. */
+  identity?: Identity;
 }
 
 export interface KbBriefQuestion {
@@ -66,13 +71,27 @@ function entityAsserts(entity: { id: string }): string {
   return rawEntityId(entity.id);
 }
 
-export function buildKbBrief(document: A0DiscoveriesDocument): KbBrief {
+/** Identities of the scan's components and flows, by Fact id. */
+export function factIdentities(facts: FactsFile): Map<string, Identity> {
+  const result = new Map<string, Identity>();
+  for (const fact of [...facts.components, ...facts.dataFlows]) {
+    if (fact.identity) result.set(fact.id, fact.identity);
+  }
+  return result;
+}
+
+export function buildKbBrief(document: A0DiscoveriesDocument, identities: ReadonlyMap<string, Identity> = new Map()): KbBrief {
   const components = new Map(document.components.map((c) => [c.id, c]));
+  const withIdentity = (id: string) => {
+    const identity = identities.get(id);
+    return identity ? { identity } : {};
+  };
   const brief = (c: (typeof document.components)[number]): KbBriefEntity => ({
     id: rawEntityId(c.id),
     asserts: entityAsserts(c),
     name: c.name,
     type: c.type,
+    ...withIdentity(rawEntityId(c.id)),
   });
 
   const actors = document.components
@@ -100,6 +119,7 @@ export function buildKbBrief(document: A0DiscoveriesDocument): KbBrief {
       target: brief(target),
       data_categories: flow.data_categories ?? null,
       purpose: flow.purpose ?? null,
+      ...withIdentity(rawEntityId(flow.id)),
     });
   }
 
@@ -166,7 +186,7 @@ export interface WrittenKbBrief {
 /** Snapshot the current KB as a brief and store it at `<kb>/briefs/<sha>.json`. */
 export function writeKbBrief(paths: KbPaths): WrittenKbBrief {
   const state = loadKbState(paths);
-  const brief = buildKbBrief(state.document);
+  const brief = buildKbBrief(state.document, factIdentities(state.facts));
   const sha = kbBriefSha(brief);
   ensureDir(paths.briefsDir);
   const briefPath = path.join(paths.briefsDir, `${sha}.json`);

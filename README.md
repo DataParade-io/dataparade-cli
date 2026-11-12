@@ -42,6 +42,61 @@ dataparade scan path/to/your/project --output scan-my-project-dataflow.json
 
 List commands and options: `dataparade --help` and `dataparade scan --help`.
 
+## Sensitive information scans
+
+`dataparade scan <path>` runs LeftBlock alongside the data-flow scan. Install
+[Gitleaks](https://github.com/gitleaks/gitleaks#installing) and a
+[LeftBlock](https://github.com/DataParade-io/LeftBlock) version with
+`leftblock scan --format report` on your `PATH`. To use a separate Python
+environment, set `DATAPARADE_LEFTBLOCK` to its LeftBlock executable.
+
+The integration was tested with Gitleaks 8.30.1. For a development build,
+install the tested LeftBlock revision in a separate environment so it does
+not replace the LeftBlock executable used by Git hooks:
+
+```sh
+python3 -m venv ~/.local/share/dataparade/leftblock
+~/.local/share/dataparade/leftblock/bin/pip install \
+  'leftblock @ git+https://github.com/DataParade-io/LeftBlock.git@1b87eeb0f3a2cc142cac25046a3fb0ddd57808cc'
+export DATAPARADE_LEFTBLOCK="$HOME/.local/share/dataparade/leftblock/bin/leftblock"
+```
+
+The local `sensitive-findings.json` file reports findings and the status of
+each pass. DataParade does not upload this file. The scan does not sanitize the
+existing data-flow artifacts. Findings do not change the project scan's exit
+code. If the rule scan cannot run, DataParade warns and continues.
+
+LeftBlock scans UTF-8 project files within the scan path, including supported
+source, configuration, and documentation files. The project scan honors
+`--exclude`, the scan configuration, and repository ignore rules. It skips
+symbolic links, hidden directories, generated files, dependencies, output files,
+and the scanner's default exclusions, including `.env` files. The report records
+the 1 MiB file and 64 MiB scan limits if they affect coverage.
+
+Both sensitive information scans try Privacy Filter only when its files and
+dependencies are available locally. Follow LeftBlock's model setup instructions
+to prepare it. If the model cannot run, DataParade warns and keeps the rule
+findings. Use `--privacy-filter off` for a rules-only scan. Use
+`--no-sensitive-scan` on the project command to skip both passes.
+
+Install a [BotSpy](https://github.com/DataParade-io/BotSpy) version with
+`botspy privacy-audit` to scan coding sessions. DataParade uses `botspy` from
+`PATH`, or the executable set in `DATAPARADE_BOTSPY`.
+
+```sh
+dataparade sessions scan                                  # this project, last 7 days
+dataparade sessions scan ./service --source claude_code --since 24h
+dataparade sessions scan --source codex --session SESSION_ID
+dataparade sessions scan --all --since 24h --format json --fail-on-findings
+```
+
+The session scan reads local agent histories. It does not create a transcript
+index or send session data to a remote service. It reports source coverage and
+finding locations without matched values. Output goes to stdout and warnings go
+to stderr. A completed audit exits 0, or 1 with `--fail-on-findings` when it finds
+sensitive information. An incomplete audit exits 2. An unavailable model alone
+does not change the exit code.
+
 ---
 
 ## Upload to dashboard
@@ -75,7 +130,7 @@ By default, a scan writes these files to `./.dataparade/`:
 | `graphify.json` | The code-structure graph from [Graphify](https://github.com/Graphify-Labs/graphify), when it is installed. |
 | `answers.json` | People's decisions (interview answers, reviews). A scan never writes or changes it. |
 
-`-o` / `--output` is the path of `dataflow.json`; the other files go in the same folder. Scans skip this folder, so rescanning does not read old output. Commit `answers.json` with your code; the rest can be regenerated.
+`-o` / `--output` is the path of `dataflow.json`; the other files go in the same folder. Scans skip this folder, so rescanning does not read old output. Committing `.dataparade/` is optional: DataParade keeps uploaded scans and answers by commit. The scan files can be regenerated; `answers.json` holds people's decisions, so keep it if you do not upload.
 
 Graphify's cache lives outside the output, in `~/.cache/dataparade/graphify/` (set `DATAPARADE_CACHE_DIR` to move it).
 

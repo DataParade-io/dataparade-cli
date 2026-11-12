@@ -4,7 +4,7 @@ import type { Answer, DataItemFile, DataItemGroup, DataItemSummary, FactsFile } 
 export const SYSTEM_FACT_ID = "dp:a0/system";
 
 /** Properties an answer may not change: they identify the Fact or link it to the code. */
-const PROTECTED_PROPERTIES = new Set(["id", "file", "codeRefs", "groups", "occurrences", "schemaVersion"]);
+const PROTECTED_PROPERTIES = new Set(["id", "identity", "file", "codeRefs", "groups", "occurrences", "schemaVersion"]);
 
 type Extra = Record<string, unknown>;
 

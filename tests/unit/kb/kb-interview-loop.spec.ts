@@ -47,6 +47,25 @@ describe("live interview loop: brief → land → project", () => {
     expect(writeKbBrief(paths).sha).toBe(sha);
   });
 
+  it("puts each Fact's identity in the brief, and leaves it out for KBs without identity", () => {
+    expect(writeKbBrief(paths).brief.flows.every((f) => f.identity === undefined)).toBe(true);
+
+    const { facts, files } = sampleFacts();
+    const mail = { kind: "dataFlow" as const, key: "app:api|…|mail", parts: { type: "api_call" } };
+    const sendgrid = { kind: "component" as const, key: "app:<unsectioned>|third_party||src/mail.ts|sendgrid", parts: { name: "sendgrid" } };
+    facts.dataFlows = facts.dataFlows.map((f) => (f.id === "flow_mail" ? { ...f, identity: mail } : f));
+    facts.components = facts.components.map((c) => (c.id === "cmp_mail" ? { ...c, identity: sendgrid } : c));
+    writeFactsOutput(paths, facts, new Map(files.map((file) => [`data-items/${file.name}.json`, file])));
+
+    const { brief, sha } = writeKbBrief(paths);
+    const flow = brief.flows.find((f) => f.id === "flow_mail")!;
+    expect(flow.identity).toEqual(mail);
+    expect(flow.target.identity).toEqual(sendgrid);
+    expect(brief.external_systems.find((e) => e.id === "cmp_mail")?.identity).toEqual(sendgrid);
+    // The snapshot keeps the identity, and its SHA still checks.
+    expect(readKbBrief(paths, sha).flows.find((f) => f.id === "flow_mail")?.identity).toEqual(mail);
+  });
+
   it("lands confirmed answers and projects them onto the diagram", () => {
     const { sha } = writeKbBrief(paths);
     land(sha, "flow_mail", "data_categories", "contact, identifiers");

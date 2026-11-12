@@ -3,12 +3,17 @@ import type { ScanUploadFile } from '../upload/collect-scan-sidecars';
 import { getDataparadeApiBaseUrl } from './dataparade-api-base-url';
 import type {
   CliAnonymousUploadPreviewResponse,
+  CliUploadCompareRequest,
+  CliUploadCompleteResponse,
   CliUploadPreviewInput,
   CliUploadPreviewResponse,
 } from './upload.types';
 
 export type {
   CliAnonymousUploadPreviewResponse,
+  CliUploadComparison,
+  CliUploadCompareRequest,
+  CliUploadCompleteResponse,
   CliUploadPreviewInput,
   CliUploadPreviewResponse,
 } from './upload.types';
@@ -136,11 +141,56 @@ export async function cliUploadPreview(
 
   const created = (await res.json()) as CliUploadPreviewResponse;
   if (input.files && input.files.length > 0) {
+    const draftUrl = `${getDataparadeApiBaseUrl()}/api/scans/cli/upload/${encodeURIComponent(created.draftId)}`;
     await postScanFiles(
-      `${getDataparadeApiBaseUrl()}/api/scans/cli/upload/${encodeURIComponent(created.draftId)}/files`,
+      `${draftUrl}/files`,
       buildAuthHeaders(input.apiKey),
       input.files
     );
+    const complete = await completeScanUpload(
+      draftUrl,
+      input.apiKey,
+      input.remoteUrl ?? null,
+      input.compare
+    );
+    return { ...created, complete };
   }
   return created;
+}
+
+/**
+ * Tells the backend the scan files are all uploaded, so it stores the scan in the
+ * knowledge base (DATAP-883). With `compare` (`diff --upload` head, DATAP-890) the
+ * backend also stores the rename map and compares the head with the base. The
+ * preview works without it, so a failure only warns and gives null.
+ */
+async function completeScanUpload(
+  draftUrl: string,
+  apiKey: string,
+  remoteUrl: string | null,
+  compare?: CliUploadCompareRequest
+): Promise<CliUploadCompleteResponse | null> {
+  try {
+    const res = await fetch(`${draftUrl}/complete`, {
+      method: 'POST',
+      headers: buildAuthHeaders(apiKey),
+      body: JSON.stringify({
+        ...(remoteUrl ? { remoteUrl } : {}),
+        ...(compare ? { compare } : {}),
+      }),
+    });
+    if (!res.ok) {
+      console.warn(
+        `[upload] warning: the scan was uploaded but not stored for comparison (${res.status}).`
+      );
+      return null;
+    }
+    return (await res.json()) as CliUploadCompleteResponse;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(
+      `[upload] warning: the scan was uploaded but not stored for comparison: ${message}`
+    );
+    return null;
+  }
 }

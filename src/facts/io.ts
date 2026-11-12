@@ -68,6 +68,13 @@ export function readAnswers(layout: OutputLayout): AnswersFile {
   return answersFileSchema.parse(JSON.parse(fs.readFileSync(layout.answersPath, "utf8")));
 }
 
+/** Replace answers.json with these answers (used by migrations that add fields to existing answers). */
+export function writeAnswers(layout: OutputLayout, file: AnswersFile): AnswersFile {
+  const next: AnswersFile = answersFileSchema.parse({ ...file, schemaVersion: SCHEMA_VERSION });
+  writeJson(layout.answersPath, next);
+  return next;
+}
+
 /** Append answers to answers.json (created when missing). Existing answers are kept as they are. */
 export function appendAnswers(layout: OutputLayout, answers: Answer[]): AnswersFile {
   const file = readAnswers(layout);

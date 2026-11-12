@@ -25,6 +25,7 @@ import { buildFacts } from '../facts/build-facts';
 import { writeFactsOutput } from '../facts/io';
 import type { OutputLayout } from '../facts/layout';
 import { buildDataflowHierarchy, type DataflowHierarchy } from './c4-hierarchy';
+import type { ScanStamps } from "../facts/schema";
 
 function warn(message: string): void {
   console.warn(`[scan] ${message}`);
@@ -134,6 +135,7 @@ export interface WriteScanFactsOptions {
   cliVersion: string;
   scannerVersion: string;
   scannedAt?: string;
+  stamps?: ScanStamps;
 }
 
 /** Write facts.json and data-items/. answers.json is not touched. */
@@ -149,6 +151,7 @@ export function writeScanFacts(
     cliVersion: options.cliVersion,
     scannerVersion: options.scannerVersion,
     scannedAt: options.scannedAt,
+    stamps: options.stamps,
   });
   writeFactsOutput(layout, built.facts, built.dataItemFiles);
   return built;

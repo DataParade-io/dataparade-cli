@@ -11,7 +11,10 @@
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    // packages/kb-compare is bundled into dist/vendor by scripts/vendor-kb-compare.mjs; the build
+    // builds it first. No package.json entry, so npm installs of the CLI never see it (DATAP-852).
+    "paths": { "@dataparade/kb-compare": ["../packages/kb-compare/dist/src/index.d.ts"] }
   },
   "include": ["src", "bin", "tests"],
   "exclude": ["node_modules", "dist", "tests/fixtures"]
